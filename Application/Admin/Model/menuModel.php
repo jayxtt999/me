@@ -11,6 +11,11 @@ class menuModel extends model{
 
     private $html = "";
 
+    /**
+     * 来自csdn的大神
+     * @param $items
+     * @return array
+     */
     function tree($items){
         foreach ($items as $item){
             $items[$item['pid']]['son'][$item['id']] = &$items[$item['id']];
@@ -20,38 +25,40 @@ class menuModel extends model{
 
     function getMenu(){
         $Db = parent::getDb();
-        $Menu =  $Db->table('common_menu')->getAll()->order('parent_id')->done();
+        //获取菜单数据
+        $Menu =  $Db->table('common_menu')->getAll(array('is_display?<>'=>0))->order('sort')->done();
         $array = array();
+        //排序
         foreach($Menu as $k => $v){
-            $array[$v['id']] = array('id'=>$v['id'],'pid'=>$v['parent_id'],'name'=>$v['name'],'ico'=>$v['icon']);
+            $array[$v['id']] = array('id'=>$v['id'],'pid'=>$v['parent_id'],'name'=>$v['name'],'ico'=>$v['icon'],'sort'=>$v['sort'],'m');
         }
         $items =$this->tree($array);
+        //生成html
+        $this->htmltree($items,0);
 
-        //print_r($items);exit;
-        $this->htmltree($items);
-
-        echo $this->html;
-
-        exit;
+        return $this->html;
 
     }
 
-    public function htmltree($items){
+
+
+
+    public function htmltree($items,$level=0){
+
         foreach($items as $v){
-                if($v['pid'] == 0){
-                    $this->html.="
-                            <li class='has-sub'>
-                            <a href='javascript:;'>
-                                <i class='icon-bookmark-empty'></i>
-                                <span class='title'>".$v['name']."</span>
-                                <span class='arrow'></span>
-                            </a>";
-                }else{
-                    $this->html.="<li><a href='ui_nestable.html'>Nestable List</a></li>";
-                }
+
+                $arrow = isset($v['son'])?"<span class='arrow'></span>":"";
+                $this->html.="
+                        <li>
+                        <a href='javascript:;'>
+                            <i class='icon-diamond'></i>
+                            <span class='title'>".$v['name']."</span>".$arrow."
+                        </a>";
                 if(isset($v['son'])){
-                    $this->html.="<ul class='sub' style='display: none; '>";
-                    $this->htmltree($v['son']);
+                    $display = $level?"style='display: none'":"display: none";
+                    $this->html.="<ul class='sub-menu' ".$display."'>";
+                    $level++;
+                    $this->htmltree($v['son'],$level);
                     $this->html.="</ul>";
                 }
 
@@ -61,4 +68,8 @@ class menuModel extends model{
     }
 
 
-} 
+}
+
+
+
+
