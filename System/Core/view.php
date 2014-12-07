@@ -40,7 +40,7 @@ class View {
         return $this;
     }
     public  function display($template=null){
-        $template = isset($template)?$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['action'].'.html';
+        $template = isset($template)?$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['controller'].'.html';
         if(is_array(self::$assignData)){
             foreach(self::$assignData as $key=>$value){
                 self::$view->assign($key, $value);

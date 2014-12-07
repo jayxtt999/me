@@ -1,71 +1,101 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Administrator
  * Date: 14-11-30
  * Time: 下午9:35
  */
+class menuModel extends model
+{
 
-
-class menuModel extends model{
-
-    private $html = "";
+    private $html = ""; //html
+    public $navArray = array();//我的位置
+    public $array = array();
 
     /**
-     * 来自csdn的大神
+     * 序列树 来自csdn的大神
      * @param $items
      * @return array
      */
-    function tree($items){
-        foreach ($items as $item){
-            $items[$item['pid']]['son'][$item['id']] = &$items[$item['id']];
+    public function tree($items)
+    {
+        foreach ($items as $item) {
+            $items[$item['pid']]['son'][$item['id']] = & $items[$item['id']];
         }
         return isset($items[0]['son']) ? $items[0]['son'] : array();
     }
 
-    function getMenu(){
+    /**
+     *  获取菜单栏
+     * @return string
+     */
+    public function getMenu()
+    {
         $Db = parent::getDb();
         //获取菜单数据
-        $Menu =  $Db->table('common_menu')->getAll(array('is_display?<>'=>0))->order('sort')->done();
-        $array = array();
+        $Menu = $Db->table('common_menu')->getAll(array('is_display?<>' => 0))->order('id')->done();
         //排序
-        foreach($Menu as $k => $v){
-            $array[$v['id']] = array('id'=>$v['id'],'pid'=>$v['parent_id'],'name'=>$v['name'],'ico'=>$v['icon'],'sort'=>$v['sort'],'m');
+        foreach ($Menu as $k => $v) {
+            $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
         }
-        $items =$this->tree($array);
+        $items = $this->tree($this->array);
         //生成html
-        $this->htmltree($items,0);
-
+        $this->htmltree($items, 0);
         return $this->html;
-
     }
 
-
-
-
-    public function htmltree($items,$level=0){
-
-        foreach($items as $v){
-
-                $arrow = isset($v['son'])?"<span class='arrow'></span>":"";
-                $this->html.="
-                        <li>
-                        <a href='javascript:;'>
+    /**
+     * 生成菜单树html
+     * @param $items
+     * @param int $level
+     */
+    public function htmlTree($items, $level = 0)
+    {
+        $route = $this->getRouteInfo();
+        foreach ($items as $v) {
+            $mca = "/index.php?m=" . $v['m'] . "&c=" . $v['c'] . "&a=" . $v['a'] . "";
+            if($route['pid']==$v['id'] || ($route['id']==$v['id'] && $route['pid']==$v['pid'])){
+                $this->navArray[$level]['name'] = $v['name'];
+                $this->navArray[$level]['url'] = $mca;
+                $liClass = "start active open";
+                $arrow = isset($v['son']) ? "<span class='arrow open'></span>" : "";
+            }else{
+                $liClass ="";
+                $arrow = isset($v['son']) ? "<span class='arrow '></span>" : "";
+            }
+            $this->html .= "
+                        <li class='".$liClass."'>
+                        <a href='".$mca."'>
                             <i class='icon-diamond'></i>
-                            <span class='title'>".$v['name']."</span>".$arrow."
+                            <span class='title'>" . $v['name'] . "</span>" . $arrow . "
                         </a>";
-                if(isset($v['son'])){
-                    $display = $level?"style='display: none'":"display: none";
-                    $this->html.="<ul class='sub-menu' ".$display."'>";
-                    $level++;
-                    $this->htmltree($v['son'],$level);
-                    $this->html.="</ul>";
-                }
-
-                $this->html.="</li>";
+            if (isset($v['son'])) {
+                $display = $level ? "style='display: none'" : "display: block";
+                $this->html .= "<ul class='sub-menu' " . $display . "'>";
+                $level++;
+                $this->htmlTree($v['son'], $level);
+                $this->html .= "</ul>";
+            }
+            $this->html .= "</li>";
         }
-
     }
+
+    /**
+     * 获取当前路由信息
+     * @return mixed
+     */
+    public function getRouteInfo()
+    {
+        $ro = Application::$appLib['route'];
+        $routeUrl = $ro::$routeUrl;
+        foreach ($this->array as $v) {
+            if ($v['m'] == $routeUrl['module'] && $v['c'] == $routeUrl['controller'] && $v['a'] == $routeUrl['action']) {
+                return $this->array[$v['id']];
+            }
+        }
+    }
+
 
 
 }

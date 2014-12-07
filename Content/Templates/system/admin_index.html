@@ -11,7 +11,7 @@
 
 
 
-    {include file="admin_menu.html"}
+    {include file="layout_menu.html"}
 
 
 
@@ -129,23 +129,26 @@
 </div>
 <!-- END STYLE CUSTOMIZER -->
 <!-- BEGIN PAGE HEADER-->
+
 <h3 class="page-title">
-    Dashboard <small>dashboard & statistics</small>
+    {$routeInfo['name']} <small>{$routeInfo['desc']}</small>
 </h3>
+
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="index.html">Home</a>
+            <a href="/index.php?m=admin&c=index&a=index">Home</a>
             <i class="fa fa-angle-right"></i>
         </li>
+
+        {foreach from=$navArray item="v" }
         <li>
-            <a href="#">Dashboard</a>
+            <a href="{$v['url']}">{$v['name']}</a>
             <i class="fa fa-angle-right"></i>
         </li>
-        <li>
-            <a href="#">Dashboard</a>
-        </li>
+        {/foreach}
+
     </ul>
     <div class="page-toolbar">
         <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height grey-salt" data-placement="top" data-original-title="Change dashboard date range">

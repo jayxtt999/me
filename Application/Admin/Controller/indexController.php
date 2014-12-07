@@ -9,12 +9,9 @@
 class indexController extends abstractController{
 
     function indexAction(){
-        $menu = Model::init('menu');
-        $menuData = $menu->getMenu();
-        $tplData = array(
-            'menuData'=>$menuData,
-        );
-        $this->View()->assign($tplData)->display();
+
+
+        $this->View()->display();
     }
 
 
