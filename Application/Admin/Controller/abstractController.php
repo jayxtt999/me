@@ -35,5 +35,4 @@ class abstractController extends Controller{
         return Model::init($name);
     }
 
-
 } 

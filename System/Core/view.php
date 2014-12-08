@@ -64,4 +64,6 @@ class View {
         self::$view->display($template);
     }
 
+
+
 }

@@ -9,13 +9,8 @@
 class menuController extends abstractController{
 
     public function indexAction(){
-
-
-
-
-        //载入模型
-        $M = $this->loadModel();
-        $menuAll = $M->getMenuAll();
+        $M = $this->loadModel();//载入模型
+        $menuAll = $M->getMenuAll();//获取全部栏目
         $this->View()->assign(array('menuAll'=>$menuAll));
         $this->View()->display();
     }
