@@ -11,8 +11,13 @@ class View {
     public static $view;
     public static $error;
     public static $config;
-    public static $assignData;
+    public static $assignData = array();
     public static  $routeUrl;
+
+    /**
+     * 初始化
+     * @param $type
+     */
     public static  function init($type) {
         if(self::$view){
             return self::$view;
@@ -35,10 +40,20 @@ class View {
         }
     }
 
+    /**
+     * 模板变量
+     * @param $data
+     * @return $this
+     */
     public  function assign($data){
-        self::$assignData  = $data;
+        self::$assignData  = array_merge(self::$assignData,$data);
         return $this;
     }
+
+    /**
+     * 加载模板
+     * @param null $template
+     */
     public  function display($template=null){
         $template = isset($template)?$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['controller'].'.html';
         if(is_array(self::$assignData)){

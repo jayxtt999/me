@@ -9,6 +9,7 @@
 class Model {
     public $config;
     public static  $routeUrl;
+    public static  $db;
     /**
      * 实例化模型
      * @access      final   protected
@@ -29,10 +30,9 @@ class Model {
     /**
      * 加载类库
      * @param string $lib   类库名称
-     * @param Bool  $my     如果FALSE默认加载系统自动加载的类库，如果为TRUE则加载非自动加载类库
      * @return type
      */
-    final static function load($lib,$auto = TRUE){
+    final static function load($lib){
         if(empty($lib)){
             trigger_error('加载类库名不能为空');
         }else{
@@ -53,10 +53,16 @@ class Model {
     }
 
     final static function getDb(){
-        $DB = new DB();
-        $DB->init(self::getConfig('db'));
-        return $DB;
+        if(self::$db){
+            return self::$db;
+        }else{
+            $DB = new DB();
+            $DB->init(self::getConfig('db'));
+            return $DB;
+        }
     }
 
 
-} 
+
+
+}

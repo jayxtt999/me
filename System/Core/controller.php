@@ -13,6 +13,14 @@ class Controller {
         $view->init(Application::$appConfig['view_type']);
         return $view;
     }
+
+    final public function paramet(){
+
+
+
+    }
+
+
     final public function getConfig($config = null){
         if($config){
             return Application::$appConfig[$config];
