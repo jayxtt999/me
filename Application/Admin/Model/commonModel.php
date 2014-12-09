@@ -33,7 +33,7 @@ class commonModel extends model
     {
         $Db = parent::getDb();
         //获取菜单数据
-        $Menu = $Db->table('common_menu')->getAll(array('is_display?<>' => 0))->order('id')->done();
+        $Menu = $Db->table('common_menu')->getAll(array('is_display?<>' => 0))->order('parent_id')->done();
         //排序
         foreach ($Menu as $k => $v) {
             $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
@@ -51,7 +51,13 @@ class commonModel extends model
      */
     public function htmlTree($items, $level = 0)
     {
+        //获取路由信息
         $route = $this->getRouteInfo();
+        //重置序列 按sort
+        foreach ($items as $key=>$value){
+            $sort[$key] = $value['sort'];
+        }
+        array_multisort($sort,SORT_NUMERIC,SORT_DESC,$items);
         foreach ($items as $v) {
             $mca = "/index.php?m=" . $v['m'] . "&c=" . $v['c'] . "&a=" . $v['a'] . "";
             if($route['pid']==$v['id'] || ($route['id']==$v['id'] && $route['pid']==$v['pid'])){

@@ -8,12 +8,15 @@
 
 class abstractController extends Controller{
 
+    public $common;
+
     function __construct(){
         $this->init();
     }
     public function init(){
         //获取菜单栏 && 获取当前路由相关信息
         $common = Model::init('common');
+        $this->common = $common;
         $menuData = $common->getMenu();
         $navArray = $common->navArray;
         $routeInfo = $common->getRouteInfo();
