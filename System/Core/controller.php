@@ -14,12 +14,6 @@ class Controller {
         return $view;
     }
 
-    final public function paramet(){
-
-
-
-    }
-
 
     final public function getConfig($config = null){
         if($config){

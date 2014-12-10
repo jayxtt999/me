@@ -28,16 +28,32 @@ return array(
         'url_type' => 'default' /*定义URL的形式 default 为普通模式    index.php?m=module&c=controller&a=action&id=2
                                    定义URL的形式 pathinfo为PATHINFO 模式  index.php/module/controller/action/id/2(暂时不实现)*/
     ),
-    'view_type' => 'smarty',
+    'view_type' => 'TpTemplate',
     'templates' => 'default',
     /*缓存文件配置*/
     'view' => array(
+        //smarty
         'smarty' => array(
                 'left_delimiter' => '{',
                 'right_delimiter' => '}',
                 'template_dir' => 'Content/Templates/default',
                 'compile_dir' => 'Data/template_c',
                 'php_handling' => 'SMARTY_PHP_ALLOW',
+        ),
+        //thinkphp
+        'TpTemplate'=>array(
+                'template_dir'=>'Content/Templates/default',
+                'cache_path' =>  'Data/template_c',
+                'template_suffix' =>  '.html',
+                'cache_suffix' =>  '.php',
+                'tmpl_cache' =>  true,
+                'cache_time' =>  0,
+                'taglib_begin' => '<',
+                'taglib_end' =>  '>' ,
+                'tmpl_begin' =>  '\{' ,
+                'tmpl_end' =>  '\}',
+                'default_tmpl' => null,
+                'layout_item' => '{__CONTENT__}',
         ),
     ),
 );
