@@ -1,9 +1,12 @@
 <?
 
-
+/**
+ * 扒自tp 模板引擎
+ * Class TpTemplate
+ */
 class TpTemplate{
-
-    public  $template_dir;
+    //便于smarty 引擎切换
+    public $template_dir;
     public $cache_path;
     public $template_suffix;
     public $cache_suffix;
@@ -14,11 +17,13 @@ class TpTemplate{
     public $tmpl_end;
     public $default_tmpl;
     public $layout_item;
+    public $tmpl_engine_type;
+    public $tmpl_cachfile_suffix;
+    public $tmpl_cache_time;
 
     protected $tVar = array();
 
     public function assign($key, $value){
-
         if (is_array($key)) {
             $this->tVar = array_merge($this->tVar, $key);
         } else {
@@ -28,82 +33,91 @@ class TpTemplate{
 
     }
 
-
     public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '')
     {
-
         $content = $this->fetch($templateFile, $content, $prefix);
-
         $this->render($content, $charset, $contentType);
     }
-
     public function fetch($templateFile = '', $content = '', $prefix = '')
     {
-
         if (empty($content)) {
             $templateFile = $this->parseTemplate($templateFile);
-            if (!is_file($templateFile)) throw_exception(L('_TEMPLATE_NOT_EXIST_') . '[' . $templateFile . ']');
+            if (!is_file($templateFile)){
+                die("模板文件".$templateFile."不存在");
+            }
         }
-
         ob_start();
         ob_implicit_flush(0);
-        if ('php' == strtolower(C('TMPL_ENGINE_TYPE'))) {
+        if ('php' == strtolower($this->tmpl_engine_type)) {
             extract($this->tVar, EXTR_OVERWRITE);
             empty($content) ? include $templateFile : eval('?>' . $content);
         } else {
             $params = array('var' => $this->tVar, 'file' => $templateFile, 'content' => $content, 'prefix' => $prefix);
-            tag('view_parse', $params);
+            $this->ParseTemplateBehavior($params);
         }
 
         $content = ob_get_clean();
         tag('view_filter', $content);
         return $content;
     }
-
-
-
+    //return path
     public function parseTemplate($template = '')
     {
-        $app_name = APP_NAME == basename(dirname($_SERVER['SCRIPT_FILENAME'])) && '' == __APP__ ? '' : APP_NAME . '/';
-        if (is_file($template)) {
-            $group = defined('GROUP_NAME') ? GROUP_NAME . '/' : '';
-            $theme = C('DEFAULT_THEME');
-            if (1 == C('APP_GROUP_MODE')) {
-                define('THEME_PATH', dirname(BASE_LIB_PATH) . '/' . $group . basename(TMPL_PATH) . '/' . $theme);
-                define('APP_TMPL_PATH', __ROOT__ . '/' . $app_name . C('APP_GROUP_PATH') . '/' . $group . basename(TMPL_PATH) . '/' . $theme);
-            } else {
-                define('THEME_PATH', TMPL_PATH . $group . $theme);
-                define('APP_TMPL_PATH', __ROOT__ . '/' . $app_name . basename(TMPL_PATH) . '/' . $group . $theme);
-            }
-            return $template;
-        }
-        $depr = C('TMPL_FILE_DEPR');
-        $template = str_replace(':', $depr, $template);
-        $theme = $this->getTemplateTheme();
-        $group = defined('GROUP_NAME') ? GROUP_NAME . '/' : '';
-        if (defined('GROUP_NAME') && strpos($template, '@')) {
-            list($group, $template) = explode('@', $template);
-            $group .= '/';
-        }
-        if (1 == C('APP_GROUP_MODE')) {
-            define('THEME_PATH', dirname(BASE_LIB_PATH) . '/' . $group . basename(TMPL_PATH) . '/' . $theme);
-            define('APP_TMPL_PATH', __ROOT__ . '/' . $app_name . C('APP_GROUP_PATH') . '/' . $group . basename(TMPL_PATH) . '/' . $theme);
+       return $this->template_dir."/".$template;
+    }
+
+    function ParseTemplateBehavior($_data){
+        $_content = empty($_data['content']) ? $_data['file'] : $_data['content'];
+        $_data['prefix'] = !empty($_data['prefix']) ? $_data['prefix'] : '';
+        if ((!empty($_data['content']) && $this->checkContentCache($_data['content'], $_data['prefix'])) || $this->checkCache($_data['file'], $_data['prefix'])) {
+            extract($_data['var'], EXTR_OVERWRITE);
+            include $this->cache_path ."/". $_data['prefix'] . md5($_content) .$this->tmpl_cachfile_suffix;
         } else {
-            define('THEME_PATH', TMPL_PATH . $group . $theme);
-            define('APP_TMPL_PATH', __ROOT__ . '/' . $app_name . basename(TMPL_PATH) . '/' . $group . $theme);
+            require_once 'ThinkTemplate/ThinkTemplate.class.php';
+            $tpl = new ThinkTemplate();
+            $tpl->config = array(
+                'cache_path'=>$this->cache_path,
+                'cache_suffix'=>$this->cache_suffix,
+                'cache_path'=>$this->cache_path,
+                'taglib_begin'=>$this->taglib_begin,
+                'taglib_end'=>$this->taglib_end,
+                'template_suffix'=>$this->template_suffix,
+                'taglib_begin'=>$this->taglib_begin,
+            );
+            $tpl->fetch($_content, $_data['var'], $_data['prefix']);
         }
-        if ('' == $template) {
-            $template = MODULE_NAME . $depr . ACTION_NAME;
-        } elseif (false === strpos($template, '/')) {
-            $template = MODULE_NAME . $depr . $template;
+    }
+
+    function checkContentCache($tmplContent, $prefix = '')
+    {
+        if (is_file($this->cache_path. $prefix . md5($tmplContent) .$this->tmpl_cachfile_suffix)) {
+            return true;
+        } else {
+            return false;
         }
-        return THEME_PATH . $template . C('TMPL_TEMPLATE_SUFFIX');
+    }
+
+    protected function checkCache($tmplTemplateFile, $prefix = '')
+    {
+        $tmplCacheFile = $this->cache_path . $prefix . md5($tmplTemplateFile) .$this->tmpl_cachfile_suffix;
+        if (!is_file($tmplCacheFile)) {
+            return false;
+        } elseif (filemtime($tmplTemplateFile) > filemtime($tmplCacheFile)) {
+            return false;
+        } elseif ($this->tmpl_cache_time != 0 && time() > filemtime($tmplCacheFile) + $this->tmpl_cache_time) {
+            return false;
+        }
+        if (C('LAYOUT_ON')) {
+            $layoutFile = THEME_PATH . C('LAYOUT_NAME') . C('TMPL_TEMPLATE_SUFFIX');
+            if (filemtime($layoutFile) > filemtime($tmplCacheFile)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
-
-
-
-
-
 }
+
+
+

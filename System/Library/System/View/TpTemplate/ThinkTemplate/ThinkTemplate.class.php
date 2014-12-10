@@ -107,15 +107,6 @@ class  ThinkTemplate {
          // 根据模版文件名定位缓存文件
         $tmplCacheFile = $this->config['cache_path'].$prefix.md5($tmplTemplateFile).$this->config['cache_suffix'];
 
-        // 判断是否启用布局
-        if(C('LAYOUT_ON')) {
-            if(false !== strpos($tmplContent,'{__NOLAYOUT__}')) { // 可以单独定义不使用布局
-                $tmplContent = str_replace('{__NOLAYOUT__}','',$tmplContent);
-            }else{ // 替换布局的主体内容
-                $layoutFile  =  THEME_PATH.C('LAYOUT_NAME').$this->config['template_suffix'];
-                $tmplContent = str_replace($this->config['layout_item'],$tmplContent,file_get_contents($layoutFile));
-            }
-        }
         // 编译模板内容
         $tmplContent =  $this->compiler($tmplContent);
         // 检测模板目录
@@ -123,8 +114,7 @@ class  ThinkTemplate {
         if(!is_dir($dir))
             mkdir($dir,0755,true);
         //重写Cache文件
-        if( false === file_put_contents($tmplCacheFile,trim($tmplContent)))
-            throw_exception(L('_CACHE_WRITE_ERROR_').':'.$tmplCacheFile);
+        die('_CACHE_WRITE_ERROR_'.':'.$tmplCacheFile);
         return $tmplCacheFile;
     }
 
@@ -274,7 +264,8 @@ class  ThinkTemplate {
             // 替换block标签
             $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"\$this->replaceBlock('\\1','\\2')",$content);
         }else{
-            $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
+            //$content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
+            $content    =   preg_replace_callback('/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is', function($match){return stripslashes($match[2]);}, $content);
         }
         return $content;
     }
