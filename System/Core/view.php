@@ -55,7 +55,25 @@ class View {
      * @param null $template
      */
     public  function display($template=null){
-        $template = isset($template)?$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['controller'].'.html';
+        //$template = isset($template)?self::$routeUrl['module']."/".self::$routeUrl['controller']."_".$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['controller'].'.html';
+        //m:c:a or index
+        if(isset($template)){
+            $pos = strpos($template,":");
+            if($pos){
+                $tArr = explode(":",$template);
+                if(count($tArr)==3){
+                    $template = $tArr[0]."/".$tArr[1]."_".$tArr[2];
+                }else{
+                    self::$error->show($template."格式错误，必须为 M:C:A");
+                }
+            }else{
+
+                $template = self::$routeUrl['module']."/".self::$routeUrl['controller']."_".$template;
+            }
+        }else{
+
+                $template = self::$routeUrl['module']."/".self::$routeUrl['controller']."_".self::$routeUrl['action'];
+        }
         if(is_array(self::$assignData)){
             foreach(self::$assignData as $key=>$value){
                 self::$view->assign($key, $value);

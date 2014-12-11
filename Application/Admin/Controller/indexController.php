@@ -14,5 +14,10 @@ class indexController extends abstractController{
         $this->View()->display();
     }
 
+    function index2Action(){
+
+        $this->View()->display();
+    }
+
 
 }

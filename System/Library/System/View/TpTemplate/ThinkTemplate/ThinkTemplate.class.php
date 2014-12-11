@@ -106,7 +106,6 @@ class  ThinkTemplate {
         }
          // 根据模版文件名定位缓存文件
         $tmplCacheFile = $this->config['cache_path'].$prefix.md5($tmplTemplateFile).$this->config['cache_suffix'];
-
         // 编译模板内容
         $tmplContent =  $this->compiler($tmplContent);
         // 检测模板目录
@@ -127,11 +126,12 @@ class  ThinkTemplate {
     protected function compiler($tmplContent) {
         //模板解析
         $tmplContent =  $this->parse($tmplContent);
+        echo "????";exit;
         // 还原被替换的Literal标签
         $tmplContent =  preg_replace('/<!--###literal(\d+)###-->/eis',"\$this->restoreLiteral('\\1')",$tmplContent);
         // 添加安全代码
         $tmplContent =  '<?php if (!defined(\'THINK_PATH\')) exit();?>'.$tmplContent;
-        if(C('TMPL_STRIP_SPACE')) {
+        if($this->config['TMPL_STRIP_SPACE']) {
             /* 去除html空格与换行 */
             $find           = array('~>\s+<~','~>(\s+\n|\r)~');
             $replace        = array('><','>');
@@ -156,37 +156,13 @@ class  ThinkTemplate {
         $end        =   $this->config['taglib_end'];
         // 检查include语法
         $content    =   $this->parseInclude($content);
+
         // 检查PHP语法
         $content    =   $this->parsePhp($content);
         // 首先替换literal标签内容
         $content    =   preg_replace('/'.$begin.'literal'.$end.'(.*?)'.$begin.'\/literal'.$end.'/eis',"\$this->parseLiteral('\\1')",$content);
 
-        // 获取需要引入的标签库列表
-        // 标签库只需要定义一次，允许引入多个一次
-        // 一般放在文件的最前面
-        // 格式：<taglib name="html,mytag..." />
-        // 当TAGLIB_LOAD配置为true时才会进行检测
-        if(C('TAGLIB_LOAD')) {
-            $this->getIncludeTagLib($content);
-            if(!empty($this->tagLib)) {
-                // 对导入的TagLib进行解析
-                foreach($this->tagLib as $tagLibName) {
-                    $this->parseTagLib($tagLibName,$content);
-                }
-            }
-        }
-        // 预先加载的标签库 无需在每个模板中使用taglib标签加载 但必须使用标签库XML前缀
-        if(C('TAGLIB_PRE_LOAD')) {
-            $tagLibs =  explode(',',C('TAGLIB_PRE_LOAD'));
-            foreach ($tagLibs as $tag){
-                $this->parseTagLib($tag,$content);
-            }
-        }
-        // 内置标签库 无需使用taglib标签导入就可以使用 并且不需使用标签库XML前缀
-        $tagLibs =  explode(',',C('TAGLIB_BUILD_IN'));
-        foreach ($tagLibs as $tag){
-            $this->parseTagLib($tag,$content,true);
-        }
+
         //解析普通模板标签 {tagName}
         $content = preg_replace('/('.$this->config['tmpl_begin'].')([^\d\s'.$this->config['tmpl_begin'].$this->config['tmpl_end'].'].+?)('.$this->config['tmpl_end'].')/eis',"\$this->parseTag('\\2')",$content);
         return $content;
@@ -199,7 +175,7 @@ class  ThinkTemplate {
             $content = preg_replace('/(<\?(?!php|=|$))/i', '<?php echo \'\\1\'; ?>'."\n", $content );
         }
         // PHP语法检查
-        if(C('TMPL_DENY_PHP') && false !== strpos($content,'<?php')) {
+        if($this->config['tmpl_deny_php'] && false !== strpos($content,'<?php')) {
             throw_exception(L('_NOT_ALLOW_PHP_'));
         }
         return $content;
@@ -231,19 +207,24 @@ class  ThinkTemplate {
     protected function parseInclude($content) {
         // 解析继承
         $content    =   $this->parseExtend($content);
+
         // 解析布局
-        $content    =   $this->parseLayout($content);
+        //$content    =   $this->parseLayout($content);
+
         // 读取模板中的include标签
         $find       =   preg_match_all('/'.$this->config['taglib_begin'].'include\s(.+?)\s*?\/'.$this->config['taglib_end'].'/is',$content,$matches);
+
         if($find) {
             for($i=0;$i<$find;$i++) {
                 $include    =   $matches[1][$i];
+                echo $include;exit;
                 $array      =   $this->parseXmlAttrs($include);
                 $file       =   $array['file'];
                 unset($array['file']);
                 $content    =   str_replace($matches[0][$i],$this->parseIncludeItem($file,$array),$content);
             }
         }
+
         return $content;
     }
 
@@ -264,8 +245,8 @@ class  ThinkTemplate {
             // 替换block标签
             $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"\$this->replaceBlock('\\1','\\2')",$content);
         }else{
-            //$content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
-            $content    =   preg_replace_callback('/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is', function($match){return stripslashes($match[2]);}, $content);
+            $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
+            //$content    =   preg_replace_callback('/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is', function($match){return stripslashes($match[2]);}, $content);
         }
         return $content;
     }

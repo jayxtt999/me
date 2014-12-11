@@ -15,6 +15,7 @@ define('APP_FUNCTION_PATH', ROOT_PATH.'/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH.'/Core');
 define('MODULE_PATH', ROOT_PATH.'/Application');
 define('LOG_PATH', ROOT_PATH.'/Data/log');
+define('BLOG_TOKEN', "8D053BCA4C590011BE4A6A8D8C1E7BD7");
 final class Application {
         public static $appLib = null;
         public static $appConfig = null;
@@ -67,6 +68,10 @@ final class Application {
             $appFunction = APP_FUNCTION_PATH.'/'.$className.'.class.php';
             if(file_exists($appFunction)){
                 require ($appFunction);
+                $classNameS = explode("/",$className);
+                foreach($classNameS as $v){
+                    $className = $v;
+                }
                 $className = ucfirst($className);
                 return new $className;
             }else{

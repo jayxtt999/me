@@ -19,9 +19,30 @@ class TpTemplate{
     public $layout_item;
     public $tmpl_engine_type;
     public $tmpl_cachfile_suffix;
-    public $tmpl_cache_time;
+    public $tmpl_deny_php;
+    public $tmpl_l_delim;
+    public $tmpl_r_delim;
+    public $tmpl_strip_space;
 
+    public $config;
     protected $tVar = array();
+
+    function __construct(){
+
+        $this->config =array(
+            'cache_path'=>$this->cache_path,
+            'cache_suffix'=>$this->cache_suffix,
+            'cache_path'=>$this->cache_path,
+            'taglib_begin'=>$this->taglib_begin,
+            'taglib_end'=>$this->taglib_end,
+            'template_suffix'=>$this->template_suffix,
+            'taglib_begin'=>$this->taglib_begin,
+            'tmpl_deny_php'=>$this->tmpl_deny_php,
+            'tmpl_begin'=>$this->tmpl_l_delim,
+            'tmpl_end'=>$this->tmpl_r_delim,
+            'tmpl_strip_space'=>$this->tmpl_strip_space,
+        );
+    }
 
     public function assign($key, $value){
         if (is_array($key)) {
@@ -33,9 +54,10 @@ class TpTemplate{
 
     }
 
+
     public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '')
     {
-        $content = $this->fetch($templateFile, $content, $prefix);
+        $content = $this->fetch($templateFile.$this->template_suffix, $content, $prefix);
         $this->render($content, $charset, $contentType);
     }
     public function fetch($templateFile = '', $content = '', $prefix = '')
@@ -75,15 +97,7 @@ class TpTemplate{
         } else {
             require_once 'ThinkTemplate/ThinkTemplate.class.php';
             $tpl = new ThinkTemplate();
-            $tpl->config = array(
-                'cache_path'=>$this->cache_path,
-                'cache_suffix'=>$this->cache_suffix,
-                'cache_path'=>$this->cache_path,
-                'taglib_begin'=>$this->taglib_begin,
-                'taglib_end'=>$this->taglib_end,
-                'template_suffix'=>$this->template_suffix,
-                'taglib_begin'=>$this->taglib_begin,
-            );
+            $tpl->config = $this->config;
             $tpl->fetch($_content, $_data['var'], $_data['prefix']);
         }
     }
@@ -107,12 +121,7 @@ class TpTemplate{
         } elseif ($this->tmpl_cache_time != 0 && time() > filemtime($tmplCacheFile) + $this->tmpl_cache_time) {
             return false;
         }
-        if (C('LAYOUT_ON')) {
-            $layoutFile = THEME_PATH . C('LAYOUT_NAME') . C('TMPL_TEMPLATE_SUFFIX');
-            if (filemtime($layoutFile) > filemtime($tmplCacheFile)) {
-                return false;
-            }
-        }
+
         return true;
     }
 

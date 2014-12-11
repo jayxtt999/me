@@ -1,6 +1,5 @@
-{include file="admin_head.html"}
 
-
+<include file="layout@admin@head"/>
 
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
@@ -9,8 +8,8 @@
 <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
 <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 
+<include file="layout@layout@menu"/>
 
-    {include file="layout_menu.html"}
 
 
 
@@ -139,12 +138,15 @@
             <i class="fa fa-angle-right"></i>
         </li>
 
-        {foreach from=$navArray item="v" }
+        <foreach name="navArray" item="vo">
         <li>
-            <a href="{$v['url']}">{$v['name']}</a>
+            <a href="{$vo.url}">{$vo.name}</a>
             <i class="fa fa-angle-right"></i>
         </li>
-        {/foreach}
+        </foreach>
+
+
+
 
     </ul>
     <div class="page-toolbar">
@@ -893,5 +895,4 @@
 
 
 
-        
-{include file="admin_foot.html"}
+<include file="layout@admin@foot"/>
