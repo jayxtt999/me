@@ -210,11 +210,10 @@ class MyTemp {
         $end        =   $this->taglib_end;
         // 检查include语法
         $content    =   $this->parseInclude($content);
-
         // 检查PHP语法
         $content    =   $this->parsePhp($content);
         // 首先替换literal标签内容
-        $content    =   preg_replace('/'.$begin.'literal'.$end.'(.*?)'.$begin.'\/literal'.$end.'/eis',"\$this->parseLiteral('\\1')",$content);
+        //$content    =   preg_replace('/'.$begin.'literal'.$end.'(.*?)'.$begin.'\/literal'.$end.'/eis',"\$this->parseLiteral('\\1')",$content);
 
         if($this->taglib_load) {
             $this->getIncludeTagLib($content);
@@ -228,7 +227,10 @@ class MyTemp {
 
         $this->parseTagLib('cx',$content,true);
         //解析普通模板标签 {tagName}
-        $content = preg_replace('/('.$this->tmpl_begin.')([^\d\s'.$this->tmpl_begin.$this->tmpl_end.'].+?)('.$this->tmpl_end.')/eis',"\$this->parseTag('\\2')",$content);
+
+
+
+        $content = preg_replace_callback('/('.$this->tmpl_begin.')([^\d\s'.$this->tmpl_begin.$this->tmpl_end.'].+?)('.$this->tmpl_end.')/',function($r){return $this->parseTag($r[2]);},$content);
         return $content;
     }
 
@@ -243,9 +245,8 @@ class MyTemp {
     function compiler($tmplContent) {
         //模板解析
         $tmplContent =  $this->parse($tmplContent);
-
         // 还原被替换的Literal标签
-        $tmplContent =  preg_replace('/<!--###literal(\d+)###-->/eis',"\$this->restoreLiteral('\\1')",$tmplContent);
+        $tmplContent =  preg_replace_callback('/<!--###literal(\d+)###-->/',function($r){return $this->restoreLiteral($r[1]);},$tmplContent);
         // 添加安全代码
         $tmplContent =  '<?php if (!defined(\'BLOG_TOKEN\')) exit();?>'.$tmplContent;
         if($this->tmpl_strip_space) {
@@ -257,7 +258,9 @@ class MyTemp {
 
         // 优化生成的php代码
         $tmplContent = str_replace('?><?php','',$tmplContent);
+
         return $this->strip_whitespace($tmplContent);
+        
     }
 
 
@@ -266,7 +269,6 @@ class MyTemp {
      function parseInclude($content) {
         // 解析继承
         $content    =   $this->parseExtend($content);
-
         // 解析布局
         //$content    =   $this->parseLayout($content);
 
@@ -349,8 +351,9 @@ class MyTemp {
 
     // 解析模板中的extend标签
      function parseExtend($content) {
-        $begin      =   $this->config['taglib_begin'];
-        $end        =   $this->config['taglib_end'];
+        $begin      =   $this->taglib_begin;
+        $end        =   $this->taglib_end;
+
         // 读取模板中的继承标签
         $find       =   preg_match('/'.$begin.'extend\s(.+?)\s*?\/'.$end.'/is',$content,$matches);
         if($find) {
@@ -364,8 +367,8 @@ class MyTemp {
             // 替换block标签
             $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"\$this->replaceBlock('\\1','\\2')",$content);
         }else{
-            $content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
-            //$content    =   preg_replace_callback('/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is', function($match){return stripslashes($match[2]);}, $content);
+            //$content    =   preg_replace('/'.$begin.'block\sname=(.+?)\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/eis',"stripslashes('\\2')",$content);
+            $content    =   preg_replace_callback('/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is', function($match){return stripslashes($match[2]);}, $content);
         }
         return $content;
     }
@@ -397,12 +400,14 @@ class MyTemp {
         $tagStr = stripslashes($tagStr);
         //}
         //还原非模板标签
+
         if(preg_match('/^[\s|\d]/is',$tagStr))
             //过滤空格和数字打头的标签
             return $this->tmpl_l_delim . $tagStr .$this->tmpl_r_delim;
         $flag   =  substr($tagStr,0,1);
         $flag2  =  substr($tagStr,1,1);
         $name   = substr($tagStr,1);
+
         if('$' == $flag && '.' != $flag2 && '(' != $flag2){ //解析模板变量 格式 {$varName}
             return $this->parseVar($name);
         }elseif('-' == $flag || '+'== $flag){ // 输出计算
@@ -485,6 +490,7 @@ class MyTemp {
         static $_varParseList = array();
         //如果已经解析过该变量字串，则直接返回变量值
         if(isset($_varParseList[$varStr])) return $_varParseList[$varStr];
+
         $parseStr   =   '';
         $varExists  =   true;
         if(!empty($varStr)){
@@ -530,6 +536,7 @@ class MyTemp {
             if(count($varArray)>0)
                 $name = $this->parseVarFunction($name,$varArray);
             $parseStr = '<?php echo ('.$name.'); ?>';
+
         }
         $_varParseList[$varStr] = $parseStr;
         return $parseStr;

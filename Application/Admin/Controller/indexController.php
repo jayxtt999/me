@@ -14,9 +14,9 @@ class indexController extends abstractController{
         $this->View()->display();
     }
 
-    function index2Action(){
-
-        $this->View()->display();
+    public function index2Action(){
+        $this->View()->assign(array('name' => 'thinkphp'));
+        $this->View()->display('index2');
     }
 
 
