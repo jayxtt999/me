@@ -2,7 +2,7 @@ var TableManaged = function () {
 
     var initTable1 = function () {
 
-        var table = $('#sample_1');
+        var table = $('#sample_menu');
 
         // begin first table
         table.dataTable({
@@ -47,7 +47,7 @@ var TableManaged = function () {
             ] // set first column as a default sort by asc
         });
 
-        var tableWrapper = jQuery('#sample_1_wrapper');
+        var tableWrapper = jQuery('#sample_menu_wrapper');
 
         table.find('.group-checkable').change(function () {
             var set = jQuery(this).attr("data-set");

@@ -11,11 +11,9 @@ class Route{
     public static  $urlType;
     public static  $urlQuery;
     public static  $routeUrl = array();
-    public static  $error;
 
     public static  function init($config) {
 
-        self::$error = Application::loadLibs('error');
         self::$config = $config;
         self::$urlQuery = parse_url($_SERVER['REQUEST_URI']);
         $urlType = $config['url_type'];
@@ -48,7 +46,7 @@ class Route{
         if(self::$routeUrl['module']){
             self::routeToCm();
         }else{
-            self::$error->notFound();
+            E("notFound");
         }
 
     }
@@ -62,7 +60,7 @@ class Route{
         if(method_exists($controller, $action)){
             isset($params) ? $controller ->$action($params) : $controller ->$action();
         }else{
-            self::$error->show('控制器方法'.$action.'不存在');
+            Show('控制器方法'.$action.'不存在');
         }
     }
 

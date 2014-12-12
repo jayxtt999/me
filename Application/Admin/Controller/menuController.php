@@ -8,32 +8,34 @@
 
 class menuController extends abstractController{
 
+    private $model;
+
+    function __constructor(){
+        $this->model = $this->loadModel();
+    }
     public function indexAction(){
-        $model = $this->loadModel();
-        $menuAll = $model->getMenuAll();//获取全部栏目
-        // 重置序列
-        foreach ($menuAll as $key=>$value){
-            $sort[$key] = $value['sort'];
-        }
-        array_multisort($sort,SORT_NUMERIC,SORT_DESC,$menuAll);
+
+        $menuAll = $this->model->getMenuAll();//获取全部栏目
         $this->View()->assign(array('menuAll'=>$menuAll));
         $this->View()->display();
     }
 
 
-    public function addMenuAction(){
+    public function addAction(){
 
 
 
     }
 
-    public function editMenuAction(){
+    public function editAction(){
 
 
+
+        $this->View()->display();
 
     }
 
-    public function deleteAction(){
+    public function delAction(){
 
 
 

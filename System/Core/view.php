@@ -32,9 +32,13 @@ class View {
             if(self::$routeUrl['module'] == "admin"){
                 self::$config['template_dir'] = APP_TEMP_PATH."/system";
             }
-            foreach(self::$config as $key=>$value){
+            //smarty
+            /*foreach(self::$config as $key=>$value){
                 self::$view -> $key = $value;
-            }
+            }*/
+            //mytemp
+            self::$view->init(self::$config);
+
         }else{
             self::$error->show("模版解析模式不能为空！");
         }
@@ -69,6 +73,8 @@ class View {
             }else{
 
                 $template = self::$routeUrl['module']."/".self::$routeUrl['controller']."_".$template;
+                echo $template;exit;
+
             }
         }else{
 

@@ -63,6 +63,7 @@ return array(
             'tmpl_parse_string'=>array(),
             'tmpl_var_identify'=>"array",
             'taglib_load'=>true,
+            'tmpl_engine_type'=>"mytp",
 
         ),
     ),

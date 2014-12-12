@@ -6,35 +6,45 @@
  * Time: 上午 10:32
  */
 
-class MyTemp {
+class  Factory{
+    public static  $myTemp;
+    public static  $taglibcx;
 
-    //便于smarty 引擎切换
-    public $template_dir;
-    public $cache_path;
-    public $template_suffix;
-    public $cache_suffix;
-    public $tmpl_cache;
-    public $cache_time;
-    public $taglib_begin;
-    public $taglib_end;
-    public $tmpl_end;
-    public $default_tmpl;
-    public $layout_item;
-    public $tmpl_engine_type;
-    public $tmpl_cachfile_suffix;
-    public $tmpl_deny_php;
-    public $tmpl_l_delim;
-    public $tmpl_r_delim;
-    public $tmpl_strip_space;
-    public $tmpl_parse_string;
-    public $tmpl_var_identify;
-    public $taglib_load;
-    public $tmpl_begin;
+    public static function setMyTemp($class){
+        self::$myTemp  =  $class;
+    }
+
+    public static function getMyTemp(){
+        return self::$myTemp;
+    }
+
+    public static function setTagLibCx($class){
+        self::$taglibcx  =  $class;
+    }
+
+    public static function getTagLibCx(){
+        return self::$taglibcx;
+    }
+
+
+}
+
+
+class MyTemp {
 
     public $templateFile;
     public $config;
     protected $tVar = array();
     private $literal = array();
+
+    public function init($config){
+
+        $this->config = $config;
+        Factory::setMyTemp($this);
+        Factory::setMyTemp($this);
+        Factory::setTagLibCx(new TagLibCx());
+    }
+
 
     // 模板变量获取和设置
     public function get($name) {
@@ -73,7 +83,7 @@ class MyTemp {
         }
         ob_start();
         ob_implicit_flush(0);
-        if ('php' == strtolower($this->tmpl_engine_type)) {
+        if ('php' == strtolower($this->config['tmpl_engine_type'])) {
             extract($this->tVar, EXTR_OVERWRITE);
             empty($content) ? include $templateFile : eval('?>' . $content);
         } else {
@@ -101,7 +111,7 @@ class MyTemp {
     //return path
     public function parseTemplate($template = '')
     {
-        return $this->template_dir."/".$template.$this->template_suffix;
+        return $this->config['template_dir']."/".$template.$this->config['template_suffix'];
     }
 
     function ParseTemplateBehavior($_data){
@@ -118,7 +128,7 @@ class MyTemp {
     protected function ContentReplaceBehavior($content)
     {
         $replace = array();
-        if (is_array($this->tmpl_parse_string)) $replace = array_merge($replace,$this->tmpl_parse_string);
+        if (is_array($this->config['tmpl_parse_string'])) $replace = array_merge($replace,$this->config['tmpl_parse_string']);
         $content = str_replace(array_keys($replace), array_values($replace), $content);
         return $content;
     }
@@ -127,7 +137,7 @@ class MyTemp {
 
     function checkContentCache($tmplContent, $prefix = '')
     {
-        if (is_file($this->cache_path. $prefix . md5($tmplContent) .$this->tmpl_cachfile_suffix)) {
+        if (is_file($this->config['cache_path']. $prefix . md5($tmplContent) .$this->config['tmpl_cachfile_suffix'])) {
             return true;
         } else {
             return false;
@@ -136,12 +146,12 @@ class MyTemp {
 
     protected function checkCache($tmplTemplateFile, $prefix = '')
     {
-        $tmplCacheFile = $this->cache_path . $prefix . md5($tmplTemplateFile) .$this->tmpl_cachfile_suffix;
+        $tmplCacheFile = $this->config['cache_path'] . $prefix . md5($tmplTemplateFile) .$this->config['tmpl_cachfile_suffix'];
         if (!is_file($tmplCacheFile)) {
             return false;
         } elseif (filemtime($tmplTemplateFile) > filemtime($tmplCacheFile)) {
             return false;
-        } elseif ($this->tmpl_cache_time != 0 && time() > filemtime($tmplCacheFile) + $this->tmpl_cache_time) {
+        } elseif ($this->config['tmpl_cache_time'] != 0 && time() > filemtime($tmplCacheFile) + $this->config['tmpl_cache_time']) {
             return false;
         }
 
@@ -179,7 +189,7 @@ class MyTemp {
         }
 
         // 根据模版文件名定位缓存文件
-        $tmplCacheFile = $this->cache_path.$prefix.md5($tmplTemplateFile).$this->cache_suffix;
+        $tmplCacheFile = $this->config['cache_path'].$prefix.md5($tmplTemplateFile).$this->config['cache_suffix'];
 
         // 编译模板内容
         $tmplContent =  $this->compiler($tmplContent);
@@ -206,8 +216,8 @@ class MyTemp {
     public function parse($content) {
         // 内容为空不解析
         if(empty($content)) return '';
-        $begin      =   $this->taglib_begin;
-        $end        =   $this->taglib_end;
+        $begin      =   $this->config['taglib_begin'];
+        $end        =   $this->config['taglib_end'];
         // 检查include语法
         $content    =   $this->parseInclude($content);
         // 检查PHP语法
@@ -215,7 +225,7 @@ class MyTemp {
         // 首先替换literal标签内容
         //$content    =   preg_replace('/'.$begin.'literal'.$end.'(.*?)'.$begin.'\/literal'.$end.'/eis',"\$this->parseLiteral('\\1')",$content);
 
-        if($this->taglib_load) {
+        if($this->config['taglib_load']) {
             $this->getIncludeTagLib($content);
             if(!empty($this->tagLib)) {
                 // 对导入的TagLib进行解析
@@ -227,13 +237,9 @@ class MyTemp {
 
         $this->parseTagLib('cx',$content,true);
         //解析普通模板标签 {tagName}
-
-
-
-        $content = preg_replace_callback('/('.$this->tmpl_begin.')([^\d\s'.$this->tmpl_begin.$this->tmpl_end.'].+?)('.$this->tmpl_end.')/',function($r){return $this->parseTag($r[2]);},$content);
+        $content = preg_replace('/('.$this->config['tmpl_begin'].')([^\d\s'.$this->config['tmpl_begin'].$this->config['tmpl_end'].'].+?)('.$this->config['tmpl_end'].')/eis',"\$this->parseTag('\\2')",$content);
         return $content;
     }
-
 
     /**
      * 编译模板文件内容
@@ -249,7 +255,7 @@ class MyTemp {
         $tmplContent =  preg_replace_callback('/<!--###literal(\d+)###-->/',function($r){return $this->restoreLiteral($r[1]);},$tmplContent);
         // 添加安全代码
         $tmplContent =  '<?php if (!defined(\'BLOG_TOKEN\')) exit();?>'.$tmplContent;
-        if($this->tmpl_strip_space) {
+        if($this->config['tmpl_strip_space']) {
             /* 去除html空格与换行 */
             $find           = array('~>\s+<~','~>(\s+\n|\r)~');
             $replace        = array('><','>');
@@ -323,10 +329,10 @@ class MyTemp {
                 if(count($tempArr)!==3){
                     die("Error");
                 }
-                $templateName =  $this->template_dir."/".$tempArr[0]."/".$tempArr[1]."_".$tempArr[2].$this->template_suffix;
+                $templateName =  $this->config['template_dir']."/".$tempArr[0]."/".$tempArr[1]."_".$tempArr[2].$this->config['template_suffix'];
                 $parseStr .= file_get_contents($templateName);
             }else{
-                $templateName =  $this->template_dir."/".Route::$routeUrl['module']."/".Route::$routeUrl['controller']."_".$templateName.$this->template_suffix;
+                $templateName =  $this->config['template_dir']."/".Route::$routeUrl['module']."/".Route::$routeUrl['controller']."_".$templateName.$this->config['template_suffix'];
                 $parseStr .= file_get_contents($templateName);
             }
         }
@@ -351,8 +357,8 @@ class MyTemp {
 
     // 解析模板中的extend标签
      function parseExtend($content) {
-        $begin      =   $this->taglib_begin;
-        $end        =   $this->taglib_end;
+        $begin      =   $this->config['taglib_begin'];
+        $end        =   $this->config['taglib_end'];
 
         // 读取模板中的继承标签
         $find       =   preg_match('/'.$begin.'extend\s(.+?)\s*?\/'.$end.'/is',$content,$matches);
@@ -381,7 +387,7 @@ class MyTemp {
             $content = preg_replace('/(<\?(?!php|=|$))/i', '<?php echo \'\\1\'; ?>'."\n", $content );
         }
         // PHP语法检查
-        if($this->tmpl_deny_php && false !== strpos($content,'<?php')) {
+        if($this->config['tmpl_deny_php'] && false !== strpos($content,'<?php')) {
             die('_NOT_ALLOW_PHP_');
         }
         return $content;
@@ -395,15 +401,11 @@ class MyTemp {
      * @param string $tagStr 标签内容
      * @return string
      */
-    public function parseTag($tagStr){
-        //if (MAGIC_QUOTES_GPC) {
+    protected function parseTag($tagStr){
         $tagStr = stripslashes($tagStr);
-        //}
-        //还原非模板标签
-
         if(preg_match('/^[\s|\d]/is',$tagStr))
             //过滤空格和数字打头的标签
-            return $this->tmpl_l_delim . $tagStr .$this->tmpl_r_delim;
+            return $this->config['tmpl_l_delim'] . $tagStr .$this->config['tmpl_r_delim'];
         $flag   =  substr($tagStr,0,1);
         $flag2  =  substr($tagStr,1,1);
         $name   = substr($tagStr,1);
@@ -421,7 +423,7 @@ class MyTemp {
             return '';
         }
         // 未识别的标签直接返回
-        return  $this->tmpl_l_delim . $tagStr .$this->tmpl_r_delim;
+        return  $this->config['tmpl_l_delim'] . $tagStr .$this->config['tmpl_r_delim'];
     }
 
 
@@ -504,7 +506,7 @@ class MyTemp {
                 //支持 {$var.property}
                 $vars = explode('.',$var);
                 $var  =  array_shift($vars);
-                switch(strtolower($this->tmpl_var_identify)) {
+                switch(strtolower($this->config['tmpl_var_identify'])) {
                     case 'array': // 识别为数组
                         $name = '$'.$var;
                         foreach ($vars as $key=>$val)
@@ -581,7 +583,7 @@ class MyTemp {
      */
     public function getIncludeTagLib(& $content) {
         //搜索是否有TagLib标签
-        $find = preg_match('/'.$this->taglib_begin.'taglib\s(.+?)(\s*?)\/'.$this->taglib_end.'\W/is',$content,$matches);
+        $find = preg_match('/'.$this->config['taglib_begin'].'taglib\s(.+?)(\s*?)\/'.$this->config['taglib_end'].'\W/is',$content,$matches);
         if($find) {
             //替换TagLib标签
             $content        = str_replace($matches[0],'',$content);
@@ -595,66 +597,44 @@ class MyTemp {
 
 
 
-    /**
-     * TagLib库解析
-     * access public
-     * @param string $tagLib 要解析的标签库
-     * @param string $content 要解析的模板内容
-     * @param boolen $hide 是否隐藏标签库前缀
-     * return string
-     */
     public function parseTagLib($tagLib,&$content,$hide=false) {
-        $begin = $this->taglib_begin;
-        $end = $this->taglib_end;
+        $begin = $this->config['taglib_begin'];
+        $end        =   $this->config['taglib_end'];
+        $end = $this->config['taglib_end'];
         $tLib = new TagLibCx();
         $that = $this;
         foreach ($tLib->getTags() as $name=>$val){
+
             $tags = array($name);
             if(isset($val['alias'])) {// 别名设置
-                $tags = explode(',',$val['alias']);
-                $tags[] = $name;
+                $tags       = explode(',',$val['alias']);
+                $tags[]     =  $name;
             }
-            $level = isset($val['level'])?$val['level']:1;
-            $closeTag = isset($val['close'])?$val['close']:true;
+            $level      =   isset($val['level'])?$val['level']:1;
+            $closeTag   =   isset($val['close'])?$val['close']:true;
             foreach ($tags as $tag){
                 $parseTag = !$hide? $tagLib.':'.$tag: $tag;// 实际要解析的标签名称
                 if(!method_exists($tLib,'_'.$tag)) {
                     // 别名可以无需定义解析方法
-                    $tag = $name;
+                    $tag  =  $name;
                 }
                 $n1 = empty($val['attr'])?'(\s*?)':'\s([^'.$end.']*)';
-                $this->tempVar = array($tagLib, $tag);
-
                 if (!$closeTag){
-                    if ( version_compare(PHP_VERSION,'5.3.0')<0 ) {
-                        $patterns = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/eis';
-                        $replacement = "\$this->parseXmlTag('$tagLib','$tag','$1','')";
-                        $content = preg_replace($patterns, $replacement,$content);
-                    }else{
-                        $patterns = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/is';
-                        $content = preg_replace_callback($patterns, function($matches) use($tagLib,$tag,$that){
-                            return $that->parseXmlTag($tagLib,$tag,$matches[1],$matches[2]);
-                        },$content);
-                    }
+                    $patterns       = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/eis';
+                    $replacement    = "\$this->parseXmlTag('$tagLib','$tag','$1','')";
+                    $content        = preg_replace($patterns, $replacement,$content);
                 }else{
-                    if ( version_compare(PHP_VERSION,'5.3.0')<0 ) {
-                        $patterns = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/eis';
-                        $replacement = "\$this->parseXmlTag('$tagLib','$tag','$1','$2')";
-                        for($i=0;$i<$level;$i++)
-                            $content=preg_replace($patterns,$replacement,$content);
-                    }else{
-                        $patterns = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/is';
-                        for($i=0;$i<$level;$i++) {
-                            $content=preg_replace_callback($patterns,function($matches) use($tagLib,$tag,$that){
-                                var_dump($that);exit;
-                                return $that->parseXmlTag($tagLib,$tag,$matches[1],$matches[2]);
-                            },$content);
-                        }
+                    $patterns       = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/eis';
+
+                    $replacement    = "\$this->parseXmlTag('$tagLib','$tag','$1','$2')";
+                    for($i=0;$i<$level;$i++){
+                        $content=preg_replace($patterns,$replacement,$content);
                     }
                 }
             }
         }
     }
+
 
 
 
@@ -675,7 +655,8 @@ class MyTemp {
         //}
         if(ini_get('magic_quotes_sybase'))
             $attr   =  str_replace('\"','\'',$attr);
-        $tLib = new TaglibCx();
+
+        $tLib = Factory::getTagLibCx();
         $parse      = '_'.$tag;
         $content    = trim($content);
         return $tLib->$parse($attr,$content);
@@ -737,7 +718,7 @@ class TagLib {
      */
     public function __construct() {
         $this->tagLib  = strtolower(substr(get_class($this),6));
-        $this->tpl     = new MyTemp();
+        $this->tpl     = Factory::getMyTemp();
     }
 
     /**

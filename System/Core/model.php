@@ -62,6 +62,12 @@ class Model {
         }
     }
 
+    final static function getFrom(){
+
+
+
+    }
+
 
 
 
