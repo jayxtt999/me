@@ -32,6 +32,7 @@ return array(
     'templates' => 'default',
     /*缓存文件配置*/
     'view' => array(
+
         //smarty
         'smarty' => array(
             'left_delimiter' => '{',
@@ -40,7 +41,7 @@ return array(
             'compile_dir' => 'Data/template_c',
             'php_handling' => 'SMARTY_PHP_ALLOW',
         ),
-        //myTemp
+        //Thinkphp
         'myTemp' => array(
             'template_dir' => 'Content/Templates/default',
             'cache_path' => 'Data/template_c',
@@ -67,4 +68,21 @@ return array(
 
         ),
     ),
+    'app_debug'=>true,
+    'debug'=>array(
+        'tmpl_exception_file'=>'exception.html',
+        'log_record'=>true,  // 进行日志记录
+        'log_exception_record'  => true,    // 是否记录异常信息日志
+        'log_level'       =>   'emerg,alert,crit,err,warn,notic,info,debug,sql',  // 允许记录的日志级别
+        'db_fields_cache'=> false, // 字段缓存信息
+        'app_file_case'  =>   true, // 是否检查文件的大小写 对windows平台有效
+        'show_error_msg'        => true,    // 显示错误信息
+    ),
+    'error'=>array(
+        'error_page'=>'/Content/Templates/error.html',
+        'show_error_msg'=>true,
+        'error_message'=>"服务器内部错误....",
+
+    ),
+
 );

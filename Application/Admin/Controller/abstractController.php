@@ -15,7 +15,7 @@ class abstractController extends Controller{
     }
     public function init(){
         //获取菜单栏 && 获取当前路由相关信息
-        $common = Model::init('common');
+        $common = M('common');
         $this->common = $common;
         $menuData = $common->getMenu();
         $navArray = $common->navArray;
@@ -27,7 +27,6 @@ class abstractController extends Controller{
         );
         $this->View()->assign($tplData);
     }
-
     /**
      * 获取模型
      * @param null $name
@@ -35,7 +34,7 @@ class abstractController extends Controller{
      */
     public function loadModel($name=null){
         $name = $name?$name:Route::$routeUrl['controller'];
-        return Model::init($name);
+        return M($name);
     }
 
 } 

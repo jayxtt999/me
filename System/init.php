@@ -1,8 +1,8 @@
 <?php
 /**
  * 应用驱动类
- * @copyright   Copyright(c) 2011
- * @author      yuansir <yuansir@live.cn/yuansir-web.com>
+ * @copyright   Copyright(c) 2014
+ * @author      xietaotao <435024179@qq.com>
  * @version     1.0
  */
 define('SYSTEM_PATH', dirname(__FILE__));
@@ -22,11 +22,6 @@ final class Application
     public static $appLib = null;
     public static $appConfig = null;
 
-    public static function init()
-    {
-        self::setAutoLibs();
-    }
-
     /**
      * 创建应用
      * @access      public
@@ -37,9 +32,30 @@ final class Application
         self::$appConfig = $config;
         self::init();
         self::autoload();
+        // 设定错误和异常处理
+        self::loadError();
+        //App  route start
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
     }
+
+
+    public static function init()
+    {
+        self::setAutoLibs();
+    }
+
+    /**
+     * 设定错误和异常处理
+     */
+    public static function loadError()
+    {
+        error_reporting(0);
+        register_shutdown_function('Error::fatalError');
+        set_error_handler('Error::appError');
+        set_exception_handler('Error::appException');
+    }
+
 
     /**
      * 自动加载类库
@@ -51,13 +67,14 @@ final class Application
         foreach (self::$appLib as $key => $value) {
             require(self::$appLib[$key]);
             $lib = ucfirst($key);
-            self::$appLib[$key] = new $lib;//待解决问题  $lib 为静态
+            self::$appLib[$key] = new $lib; //待解决问题  $lib 为静态
         }
-        require_once(APP_FUNCTION_PATH.'/function.class.php');
+        //加载方法库
+        require_once(APP_FUNCTION_PATH . '/function.class.php');
     }
 
     /**
-     * 自动加载的类库
+     * 设置需要自动加载的类库
      * @access      public
      */
     public static function setAutoLibs()
@@ -68,6 +85,7 @@ final class Application
             'model' => SYS_CORE_PATH . '/model.php',
             'controller' => SYS_CORE_PATH . '/controller.php',
             'db' => SYS_CORE_PATH . '/db.php',
+            'error' => SYS_CORE_PATH . '/error.php',
         );
     }
 
@@ -90,13 +108,8 @@ final class Application
         }
     }
 
-    //自动初始化
-    public static function initLib($config)
-    {
-
-
-    }
 
 }
+
 
 

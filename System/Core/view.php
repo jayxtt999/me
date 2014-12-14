@@ -71,10 +71,7 @@ class View {
                     self::$error->show($template."格式错误，必须为 M:C:A");
                 }
             }else{
-
                 $template = self::$routeUrl['module']."/".self::$routeUrl['controller']."_".$template;
-                echo $template;exit;
-
             }
         }else{
 

@@ -6,14 +6,12 @@
  * Time: 下午2:07
  */
 class Route{
-
     public static  $config;
     public static  $urlType;
     public static  $urlQuery;
     public static  $routeUrl = array();
 
     public static  function init($config) {
-
         self::$config = $config;
         self::$urlQuery = parse_url($_SERVER['REQUEST_URI']);
         $urlType = $config['url_type'];
@@ -30,6 +28,7 @@ class Route{
     }
 
     public static   function defaultToArray(){
+
         $query = explode("&",self::$urlQuery['query']);
         $q = array('m'=>'','c'=>'','a'=>'');
         foreach($query as $v){
@@ -48,7 +47,6 @@ class Route{
         }else{
             E("notFound");
         }
-
     }
 
     public static  function routeToCm(){
@@ -57,11 +55,13 @@ class Route{
         $controller = self::$routeUrl['controller'].'Controller';
         $controller = new $controller;
         $action = self::$routeUrl['action'].'Action';
-        if(method_exists($controller, $action)){
-            isset($params) ? $controller ->$action($params) : $controller ->$action();
-        }else{
+        try{
+            $ca  = new ReflectionMethod($controller,$action);
+            $ca->invoke(new $controller,isset($params)?$params:null);
+        }catch (Exception $e){
             Show('控制器方法'.$action.'不存在');
         }
+
     }
 
 }

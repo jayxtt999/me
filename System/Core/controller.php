@@ -14,12 +14,4 @@ class Controller {
         return $view;
     }
 
-
-    final public function getConfig($config = null){
-        if($config){
-            return Application::$appConfig[$config];
-        }else{
-            return Application::$appConfig;
-        }
-    }
 } 
