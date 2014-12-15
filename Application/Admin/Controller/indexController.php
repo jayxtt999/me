@@ -10,6 +10,7 @@ class indexController extends abstractController{
 
     function indexAction(){
 
+        $this->View()->asasaa();
         $this->View()->display();
     }
 

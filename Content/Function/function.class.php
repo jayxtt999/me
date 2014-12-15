@@ -46,7 +46,7 @@ function C($config=null){
             $configStr = "";
             $config = explode(":",$config);
             foreach($config as $v){
-                $configStr .= "[".$v."]";
+                $configStr .= "['".$v."']";
             }
             $c= "";
             eval("\$c = Application::\$appConfig$configStr;");

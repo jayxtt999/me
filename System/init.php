@@ -5,6 +5,15 @@
  * @author      xietaotao <435024179@qq.com>
  * @version     1.0
  */
+// 记录开始运行时间
+$GLOBALS['_beginTime'] = microtime(TRUE);
+
+// 版本信息
+const BLOG_VERSION  = '1.0';
+// 类文件后缀
+const EXT = '.class.php';
+
+
 define('SYSTEM_PATH', dirname(__FILE__));
 define('ROOT_PATH', substr(SYSTEM_PATH, 0, -7));
 define('SYS_LIB_PATH', SYSTEM_PATH . '/Library/System');
@@ -15,6 +24,10 @@ define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('MODULE_PATH', ROOT_PATH . '/Application');
 define('LOG_PATH', ROOT_PATH . '/Data/log');
+
+define('IS_CGI',substr(PHP_SAPI, 0,3)=='cgi' ? 1 : 0 );
+define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
+define('IS_CLI',PHP_SAPI=='cli'? 1   :   0);
 define('BLOG_TOKEN', "8D053BCA4C590011BE4A6A8D8C1E7BD7");
 
 final class Application
@@ -70,7 +83,7 @@ final class Application
             self::$appLib[$key] = new $lib; //待解决问题  $lib 为静态
         }
         //加载方法库
-        require_once(APP_FUNCTION_PATH . '/function.class.php');
+        require_once(APP_FUNCTION_PATH . '/function'.EXT);
     }
 
     /**
@@ -94,7 +107,7 @@ final class Application
         if (empty($className)) {
             trigger_error('加载类库名不能为空');
         }
-        $appFunction = APP_FUNCTION_PATH . '/' . $className . '.class.php';
+        $appFunction = APP_FUNCTION_PATH . '/' . $className.EXT;
         if (file_exists($appFunction)) {
             require($appFunction);
             $classNameS = explode("/", $className);

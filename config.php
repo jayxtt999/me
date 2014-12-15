@@ -22,14 +22,16 @@ return array(
                 ),
             )
     ),
+    /*路由配置*/
     'route' => array(
         'default_controller' => 'index', //系统默认控制器
         'default_action' => 'index', //系统默认方法
         'url_type' => 'default' /*定义URL的形式 default 为普通模式    index.php?m=module&c=controller&a=action&id=2
                                    定义URL的形式 pathinfo为PATHINFO 模式  index.php/module/controller/action/id/2(暂时不实现)*/
     ),
+    /*视图配置*/
     'view_type' => 'myTemp',
-    'templates' => 'default',
+    'view_templates' => 'default',
     /*缓存文件配置*/
     'view' => array(
 
@@ -68,6 +70,7 @@ return array(
 
         ),
     ),
+    /*Debug*/
     'app_debug'=>true,
     'debug'=>array(
         'tmpl_exception_file'=>'exception.html',
@@ -76,13 +79,25 @@ return array(
         'log_level'       =>   'emerg,alert,crit,err,warn,notic,info,debug,sql',  // 允许记录的日志级别
         'db_fields_cache'=> false, // 字段缓存信息
         'app_file_case'  =>   true, // 是否检查文件的大小写 对windows平台有效
-        'show_error_msg'        => true,    // 显示错误信息
     ),
-    'error'=>array(
-        'error_page'=>'/Content/Templates/error.html',
-        'show_error_msg'=>true,
-        'error_message'=>"服务器内部错误....",
 
+    /* 错误设置 */
+     'error'=> array(
+         'error_message'         =>  '服务器内部错误...',//错误显示信息,非调试模式有效
+         'error_page'            =>  '/Content/Templates/error.html',	// 错误定向页面
+         'show_error_msg'        =>  true,    // 显示错误信息
+         'trace_exception'       =>  false,   // trace错误信息是否抛异常 针对trace方法
+         'trace_max_record'      =>  100,    // 每个级别的错误信息 最大记录数
+     ),
+    /* 日志设置 */
+    'log' => array(
+        'log_record'            =>  false,   // 默认不记录日志
+        'log_type'              =>  'file', // 日志记录类型 默认为文件方式
+        'log_level'             =>  'emerg,alert,crit,err',// 允许记录的日志级别
+        'log_file_size'         =>  2097152,	// 日志文件大小限制
+        'log_exception_record'  =>  false,    // 是否记录异常信息日志
     ),
+
+
 
 );

@@ -23,7 +23,7 @@ class View {
             return self::$view;
         }
         if(!empty($type)){
-            require_once SYS_LIB_PATH.'/View/'.ucfirst($type).'/'.ucfirst($type).'.class.php';
+            require_once SYS_LIB_PATH.'/View/'.ucfirst($type).'/'.ucfirst($type).EXT;
             $types = ucfirst($type);
             self::$view =  new $types;
             self::$config = Application::$appConfig['view'][$type];
