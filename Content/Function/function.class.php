@@ -21,12 +21,10 @@ function E($e){
     }
 }
 
-
 function Show($msg)
 {
     echo "<h3>" . $msg . "</h3>";
 }
-
 
 function M($model){
     $route = Application::$appLib['route'];
@@ -38,7 +36,6 @@ function M($model){
     $model_name = $model . 'Model';
     return new $model_name;
 }
-
 
 function C($config=null){
     if(isset($config)){

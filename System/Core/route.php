@@ -28,7 +28,6 @@ class Route{
     }
 
     public static   function defaultToArray(){
-
         $query = explode("&",self::$urlQuery['query']);
         $q = array('m'=>'','c'=>'','a'=>'');
         foreach($query as $v){

@@ -3,7 +3,6 @@
 class Error
 {
 
-
     /**
      * 自定义异常处理
      * @access public
@@ -11,21 +10,17 @@ class Error
      */
     static public function appException($e) {
         $error = array();
-        $error['message']   =   $e->getMessage();
-        $trace              =   $e->getTrace();
-        if('E'==$trace[0]['function']) {
+        $error['message']   = $e->getMessage();
+        $trace  =   $e->getTrace();
+        if('throw_exception'==$trace[0]['function']) {
             $error['file']  =   $trace[0]['file'];
             $error['line']  =   $trace[0]['line'];
         }else{
-            $error['file']  =   $e->getFile();
-            $error['line']  =   $e->getLine();
+            $error['file']      = $e->getFile();
+            $error['line']      = $e->getLine();
         }
-        $error['trace']     =   $e->getTraceAsString();
-        //Log::record($error['message'],Log::ERR);
-        // 发送404信息
-        header('HTTP/1.1 404 Not Found');
-        header('Status:404 Not Found');
-        self::halt($error);
+        Log::record($error['message'],Log::ERR);
+        halt($error);
     }
 
     /**
@@ -37,7 +32,8 @@ class Error
      * @param int $errline 错误行数
      * @return void
      */
-    static public function appError($errno, $errstr, $errfile, $errline) {
+    static public function appError($errno, $errstr, $errfile, $errline)
+    {
         switch ($errno) {
             case E_ERROR:
             case E_PARSE:
@@ -45,9 +41,9 @@ class Error
             case E_COMPILE_ERROR:
             case E_USER_ERROR:
                 ob_end_clean();
-                $errorStr = "$errstr ".$errfile." 第 $errline 行.";
-                if(C('debug:log_record')){
-                    //Log::write("[$errno] ".$errorStr,Log::ERR);
+                $errorStr = "$errstr " . $errfile . " 第 $errline 行.";
+                if (C('debug:log_record')) {
+                    Log::write("[$errno] ".$errorStr,Log::ERR);
                 }
                 self::halt($errorStr);
                 break;
@@ -55,18 +51,18 @@ class Error
             case E_USER_WARNING:
             case E_USER_NOTICE:
             default:
-                $errorStr = "[$errno] $errstr ".$errfile." 第 $errline 行.";
-                echo $errorStr;exit;
-                self::trace($errorStr,'','NOTIC');
+                $errorStr = "[$errno] $errstr " . $errfile . " 第 $errline 行.";
+                self::trace($errorStr, '', 'NOTIC');
                 break;
         }
     }
 
-
-
     // 致命错误捕获
-    public static function fatalError()
-    {
+    static public function fatalError() {
+        // 保存日志记录
+        if(C('debug:log_record')){
+            Log::save();
+        }
         if ($e = error_get_last()) {
             switch($e['type']){
                 case E_ERROR:
@@ -75,7 +71,7 @@ class Error
                 case E_COMPILE_ERROR:
                 case E_USER_ERROR:
                     ob_end_clean();
-                    self::halt($e);
+                    function_exists('halt')?halt($e):exit('ERROR:'.$e['message']. ' in <b>'.$e['file'].'</b> on line <b>'.$e['line'].'</b>');
                     break;
             }
         }
@@ -85,7 +81,7 @@ class Error
     public static function halt($error)
     {
         $e = array();
-        if (C('app_debug') || IS_CGI) {
+        if (APP_DEBUG || IS_CGI) {
             //调试模式下输出错误信息
             if (!is_array($error)) {
                 $trace = debug_backtrace();
@@ -121,7 +117,6 @@ class Error
         }
         include APP_TEMP_PATH . "/" . $TMPL_EXCEPTION_FILE;
         exit;
-
     }
 
     /**
@@ -132,23 +127,26 @@ class Error
      * @param boolean $record 是否记录日志
      * @return void
      */
-    static public function trace($value='[think]',$label='',$level='DEBUG',$record=false) {
-        static $_trace =  array();
-        if('[think]' === $value){ // 获取trace信息
+    static public function trace($value = '[think]', $label = '', $level = 'DEBUG', $record = false)
+    {
+        static $_trace = array();
+        if ('[think]' === $value) { // 获取trace信息
             return $_trace;
-        }else{
-            $info   =   ($label?$label.':':'').print_r($value,true);
-            if('ERR' == $level && C('TRACE_EXCEPTION')) {// 抛出异常
+        } else {
+            $info = ($label ? $label . ':' : '') . print_r($value, true);
+            if ('ERR' == $level && C('error:trace_exception')) { // 抛出异常
                 E($info);
             }
-            $level  =   strtoupper($level);
-            if(!isset($_trace[$level]) || count($_trace[$level])>C('TRACE_MAX_RECORD')) {
-                $_trace[$level] =   array();
+            $level = strtoupper($level);
+            if (!isset($_trace[$level]) || count($_trace[$level]) > C('error:trace_max_record')) {
+                $_trace[$level] = array();
             }
-            $_trace[$level][]   =   $info;
-            if((defined('IS_AJAX') && IS_AJAX) || !C('SHOW_PAGE_TRACE')  || $record) {
-                //Log::record($info,$level,$record);
+            $_trace[$level][] = $info;
+
+            if ((defined('IS_AJAX') && IS_AJAX) || !C('debug:show_page_trace') || $record) {
+                Log::record($info, $level, $record);
             }
+
         }
     }
 

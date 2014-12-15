@@ -23,12 +23,22 @@ define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('MODULE_PATH', ROOT_PATH . '/Application');
-define('LOG_PATH', ROOT_PATH . '/Data/log');
 
 define('IS_CGI',substr(PHP_SAPI, 0,3)=='cgi' ? 1 : 0 );
 define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
 define('IS_CLI',PHP_SAPI=='cli'? 1   :   0);
+// 定义当前请求的系统常量
+
+define('NOW_TIME',      $_SERVER['REQUEST_TIME']);
+define('REQUEST_METHOD',$_SERVER['REQUEST_METHOD']);
+define('IS_GET',        REQUEST_METHOD =='GET' ? true : false);
+define('IS_POST',       REQUEST_METHOD =='POST' ? true : false);
+define('IS_PUT',        REQUEST_METHOD =='PUT' ? true : false);
+define('IS_DELETE',     REQUEST_METHOD =='DELETE' ? true : false);
+define('IS_AJAX',       ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || !empty($_POST['ajax']) || !empty($_GET['ajax'])) ? true : false);
+
 define('BLOG_TOKEN', "8D053BCA4C590011BE4A6A8D8C1E7BD7");
+define('APP_DEBUG',TRUE);
 
 final class Application
 {
@@ -40,13 +50,11 @@ final class Application
      * @access      public
      * @param       array $config
      */
-    public static function run($config)
+    public static function run()
     {
-        self::$appConfig = $config;
+        self::$appConfig = require_once 'config.php';
+        //初始化
         self::init();
-        self::autoload();
-        // 设定错误和异常处理
-        self::loadError();
         //App  route start
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
@@ -56,6 +64,15 @@ final class Application
     public static function init()
     {
         self::setAutoLibs();
+        self::autoload();
+        // 设定错误和异常处理
+        self::loadError();
+        if(C('output_encode')){
+            $zlib = ini_get('zlib.output_compression');
+            if(empty($zlib)) ob_start('ob_gzhandler');
+        }
+        // 设置系统时区
+        date_default_timezone_set(C('default_timezone'));
     }
 
     /**
@@ -65,10 +82,9 @@ final class Application
     {
         error_reporting(0);
         register_shutdown_function('Error::fatalError');
-        set_error_handler('Error::appError');
         set_exception_handler('Error::appException');
+        set_error_handler('Error::appError');
     }
-
 
     /**
      * 自动加载类库
@@ -99,6 +115,7 @@ final class Application
             'controller' => SYS_CORE_PATH . '/controller.php',
             'db' => SYS_CORE_PATH . '/db.php',
             'error' => SYS_CORE_PATH . '/error.php',
+            'log' => SYS_CORE_PATH . '/log.php',
         );
     }
 

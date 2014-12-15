@@ -4,18 +4,18 @@ class DB
 {
 
     protected $db;
-    protected $res;                //结果集
-    protected $table;              //设置表
-    protected $order = "id desc";  //ordere
-    protected $fields = "*";       // fields
-    protected $limit;              //limit
-    protected $options;            //选项 SELECT INSERT UPDATE DELETE
-    protected $where;              // where 语句 string || array
-    protected $selectmodel;        //1 返回一条 2 返回全部
+    protected $res;
+    protected $table;
+    protected $order = "id desc";
+    protected $fields = "*";
+    protected $limit;
+    protected $options;
+    protected $where;
+    protected $selectmodel;
 
     public function init($config)
     {
-        require_once SYS_LIB_PATH . '/DB/pdomysql.class.php';
+        require_once SYS_LIB_PATH . '/DB/pdomysql'.EXT;
         $this->db = new pdoMysql($config['pdoMysql']);
     }
 

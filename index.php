@@ -8,5 +8,4 @@
  */
 
 require_once 'System/init.php';
-$config = require_once 'config.php';
-Application::run($config);
+Application::run();
