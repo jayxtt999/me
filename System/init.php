@@ -57,20 +57,12 @@ final class Application
         self::$appConfig = require_once 'config.php';
         //初始化
         self::init();
-
         // 项目开始拓展
         //Hook('app_begin');
-
-        echo "<h1>001</h1>";
-        Hook('trace');
-        exit;
-
-
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
         // 项目结束拓展
-
-
+        Hook('trace');
     }
 
 

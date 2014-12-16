@@ -3,34 +3,25 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2014/12/16 0016
- * Time: ÏÂÎç 1:55
+ * Time: ä¸‹åˆ 1:55
  */
 
 class traceHook {
 
-    // ĞĞÎª²ÎÊı¶¨Òå
-    protected $options   =  array(
-        'SHOW_PAGE_TRACE'   => false,   // ÏÔÊ¾Ò³ÃæTraceĞÅÏ¢
-        'TRACE_PAGE_TABS'   => array('BASE'=>'»ù±¾','FILE'=>'ÎÄ¼ş','INFO'=>'Á÷³Ì','ERR|NOTIC'=>'´íÎó','SQL'=>'SQL','DEBUG'=>'µ÷ÊÔ'), // Ò³ÃæTrace¿É¶¨ÖÆµÄÑ¡Ïî¿¨
-        'PAGE_TRACE_SAVE'   => false,
-    );
-
-
     public function run($params = null){
 
-        echo 1111;exit;
-        if(!IS_AJAX && C('SHOW_PAGE_TRACE')) {
+        if(!IS_AJAX && C('debug:show_page_trace')) {
             echo $this->showTrace();
         }
 
     }
 
     /**
-     * ÏÔÊ¾Ò³ÃæTraceĞÅÏ¢
+     * æ˜¾ç¤ºé¡µé¢Traceä¿¡æ¯
      * @access private
      */
     private function showTrace() {
-        // ÏµÍ³Ä¬ÈÏÏÔÊ¾ĞÅÏ¢
+        // ç³»ç»Ÿé»˜è®¤æ˜¾ç¤ºä¿¡æ¯
         $files  =  get_included_files();
         $info   =   array();
         foreach ($files as $key=>$file){
@@ -38,34 +29,35 @@ class traceHook {
         }
         $trace  =   array();
         $base   =   array(
-            'ÇëÇóĞÅÏ¢'  =>  date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']).' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_METHOD'].' : '.__SELF__,
-            'ÔËĞĞÊ±¼ä'  =>  $this->showTime(),
-            'ÍÌÍÂÂÊ'	=>	number_format(1/G('beginTime','viewEndTime'),2).'req/s',
-            'ÄÚ´æ¿ªÏú'  =>  MEMORY_LIMIT_ON?number_format((memory_get_usage() - $GLOBALS['_startUseMems'])/1024,2).' kb':'²»Ö§³Ö',
-            '²éÑ¯ĞÅÏ¢'  =>  N('db_query').' queries '.N('db_write').' writes ',
-            'ÎÄ¼ş¼ÓÔØ'  =>  count(get_included_files()),
-            '»º´æĞÅÏ¢'  =>  N('cache_read').' gets '.N('cache_write').' writes ',
-            'ÅäÖÃ¼ÓÔØ'  =>  count(c()),
-            '»á»°ĞÅÏ¢'  =>  'SESSION_ID='.session_id(),
+            'è¯·æ±‚ä¿¡æ¯'  =>  date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']).' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_METHOD'].' : '.__SELF__,
+            'è¿è¡Œæ—¶é—´'  =>  $this->showTime(),
+            'ååç‡'	=>	number_format(1/G('beginTime','viewEndTime'),2).'req/s',
+            'å†…å­˜å¼€é”€'  =>  MEMORY_LIMIT_ON?number_format((memory_get_usage() - $GLOBALS['_startUseMems'])/1024,2).' kb':'ä¸æ”¯æŒ',
+            'æŸ¥è¯¢ä¿¡æ¯'  =>  N('db_query').' queries '.N('db_write').' writes ',
+            'æ–‡ä»¶åŠ è½½'  =>  count(get_included_files()),
+            'ç¼“å­˜ä¿¡æ¯'  =>  N('cache_read').' gets '.N('cache_write').' writes ',
+            'é…ç½®åŠ è½½'  =>  count(c()),
+            'ä¼šè¯ä¿¡æ¯'  =>  'SESSION_ID='.session_id(),
         );
-        // ¶ÁÈ¡ÏîÄ¿¶¨ÒåµÄTraceÎÄ¼ş
-        $traceFile  =   CONF_PATH.'trace.php';
+        // è¯»å–é¡¹ç›®å®šä¹‰çš„Traceæ–‡ä»¶
+        $traceFile  =   SYSTEM_PATH.'/trace.php';
         if(is_file($traceFile)) {
             $base   =   array_merge($base,include $traceFile);
         }
-        $debug  =   trace();
-        $tabs   =   C('TRACE_PAGE_TABS');
+
+        $debug  =   Error::trace();
+        $tabs   =   C('debug:trace_page_tabs');
         foreach ($tabs as $name=>$title){
             switch(strtoupper($name)) {
-                case 'BASE':// »ù±¾ĞÅÏ¢
+                case 'BASE':// åŸºæœ¬ä¿¡æ¯
                     $trace[$title]  =   $base;
                     break;
-                case 'FILE': // ÎÄ¼şĞÅÏ¢
+                case 'FILE': // æ–‡ä»¶ä¿¡æ¯
                     $trace[$title]  =   $info;
                     break;
-                default:// µ÷ÊÔĞÅÏ¢
+                default:// è°ƒè¯•ä¿¡æ¯
                     $name       =   strtoupper($name);
-                    if(strpos($name,'|')) {// ¶à×éĞÅÏ¢
+                    if(strpos($name,'|')) {// å¤šç»„ä¿¡æ¯
                         $array  =   explode('|',$name);
                         $result =   array();
                         foreach($array as $name){
@@ -77,9 +69,9 @@ class traceHook {
                     }
             }
         }
-        if($save = C('debug:page_trace_save')) { // ±£´æÒ³ÃæTraceÈÕÖ¾
-            if(is_array($save)) {// Ñ¡ÔñÑ¡Ïî¿¨±£´æ
-                $tabs   =   C('TRACE_PAGE_TABS');
+        if($save = C('debug:page_trace_save')) { // ä¿å­˜é¡µé¢Traceæ—¥å¿—
+            if(is_array($save)) {// é€‰æ‹©é€‰é¡¹å¡ä¿å­˜
+                $tabs   =   C('debug:trace_page_tabs');
                 $array  =   array();
                 foreach ($save as $tab){
                     $array[] =   $tabs[$tab];
@@ -102,24 +94,24 @@ class traceHook {
             error_log(str_replace('<br/>',"\r\n",$content), Log::FILE,C("log:log_path").date('y_m_d').'_trace.log');
         }
         unset($files,$info,$base);
-        // µ÷ÓÃTraceÒ³ÃæÄ£°å
+        // è°ƒç”¨Traceé¡µé¢æ¨¡æ¿
         ob_start();
-        include C('debug:tmpl_trace_file')?C('debug:tmpl_trace_file'):APP_TEMP_PATH.'/trace.tpl';
+        include C('debug:tmpl_trace_file')?APP_TEMP_PATH."/".C('debug:tmpl_trace_file'):APP_TEMP_PATH.'/trace.html';
         return ob_get_clean();
     }
 
 
     /**
-     * »ñÈ¡ÔËĞĞÊ±¼ä
+     * è·å–è¿è¡Œæ—¶é—´
      */
     private function showTime() {
-        // ÏÔÊ¾ÔËĞĞÊ±¼ä
+        // æ˜¾ç¤ºè¿è¡Œæ—¶é—´
         G('beginTime',$GLOBALS['_beginTime']);
         G('viewEndTime');
-        // ÏÔÊ¾ÏêÏ¸ÔËĞĞÊ±¼ä
+        // æ˜¾ç¤ºè¯¦ç»†è¿è¡Œæ—¶é—´
         return G('beginTime','viewEndTime').'s ( Load:'.G('beginTime','loadTime').'s Init:'.G('loadTime','initTime').'s Exec:'.G('initTime','viewStartTime').'s Template:'.G('viewStartTime','viewEndTime').'s )';
     }
 
 
 
-} 
+}
