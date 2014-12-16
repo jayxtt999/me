@@ -142,8 +142,7 @@ class Error
                 $_trace[$level] = array();
             }
             $_trace[$level][] = $info;
-
-            if ((defined('IS_AJAX') && IS_AJAX) || !C('debug:show_page_trace') || $record) {
+            if ((defined('IS_AJAX') && IS_AJAX) || !SHOW_PAGE_TRACE || $record) {
                 Log::record($info, $level, $record);
             }
 

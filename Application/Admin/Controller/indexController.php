@@ -9,8 +9,6 @@
 class indexController extends abstractController{
 
     function indexAction(){
-        aaa
-        $this->View()->asasaa();
         $this->View()->display();
     }
 
