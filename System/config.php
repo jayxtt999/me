@@ -12,6 +12,7 @@ return array(
     'db' => array(
         //默认数据库配置
         'db_type' => 'pdoMysql',
+         'db_sql_log' => 'false',
         'pdoMysql' => array(
             'dsn'   => 'mysql:dbname=myframe;host=127.0.0.1;',
             'username' => 'root',
@@ -118,6 +119,9 @@ return array(
         'PATH'      =>  '/', // cookie 保存路径
         'DOMAIN'    =>  '', // cookie 有效域名
     ),
+
+    /*杂项*/
+    'default_timezone' => 'PRC',
 
 
 

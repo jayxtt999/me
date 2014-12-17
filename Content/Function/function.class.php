@@ -164,16 +164,15 @@ function Hook($tag, &$params = NULL)
         if (APP_DEBUG) {
             G('behaviorStart');
         }
-
-        $class = new $class();
-        $class->$method($params);
+        $behavior = new $class();
+        $behavior->$method($params);
         if (APP_DEBUG) { // 记录行为的执行日志
             G('behaviorEnd');
             Error::trace($tag . ' Hook ::' . $method . ' [ RunTime:' . G('behaviorStart', 'behaviorEnd', 6) . 's ]', '', 'INFO');
         }
 
-        if (APP_DEBUG) { // 记录行为的执行日志
-            Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
+        if(APP_DEBUG) { // 记录行为的执行日志
+            Error::trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
         }
     } else { // 未执行任何行为 返回false
         return false;

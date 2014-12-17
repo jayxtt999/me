@@ -11,6 +11,7 @@ class pdoMysql
     protected $pdo = null;
     protected $res = null;
     protected $sql = null;
+    protected $error = null;
 
     /**
      * 初始化
@@ -21,7 +22,7 @@ class pdoMysql
         try {
             $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
         } catch (PDOException $e) {
-            die ("Connect Error Infomation:" . $e->getMessage());
+            $this->error();
         }
     }
 
@@ -31,8 +32,13 @@ class pdoMysql
      */
     public function query($sql)
     {
+        echo $sql."XXXXX";
+        G('queryStartTime');
         $res = $this->pdo->query($sql);
-        if ($res) {
+        $this->debug();
+        if ( false === $res ) {
+            $this->error();
+        } else{
             $this->res = $res;
         }
     }
@@ -89,6 +95,34 @@ class pdoMysql
     public function getSql()
     {
         return $this->res->sql;
+    }
+
+    /**
+     * 数据库错误信息
+     * 并显示当前的SQL语句
+     * @access public
+     * @return string
+     */
+    public function error() {
+        $this->error = $this->pdo->errorCode();
+        if('' != $this->sql){
+            $this->error .= "\n [ SQL语句 ] : ".$this->sql;
+        }
+        trace($this->error,'','ERR');
+        return $this->error;
+    }
+
+
+    /**
+     * 数据库调试 记录当前SQL
+     * @access protected
+     */
+    protected function debug() {
+        // 记录操作结束时间
+        if (C('db:db_sql_log')) {
+            G('queryEndTime');
+            Error::trace($this->sql.' [ RunTime:'.G('queryStartTime','queryEndTime',6).'s ]','','SQL');
+        }
     }
 
     /**
