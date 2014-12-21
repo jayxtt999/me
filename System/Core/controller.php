@@ -13,5 +13,10 @@ class Controller {
         $view->init(Application::$appConfig['view_type']);
         return $view;
     }
+    function  fromHelp(){
+
+        echo 11111;exit;
+    }
+
 
 } 

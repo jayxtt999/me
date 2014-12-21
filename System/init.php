@@ -53,11 +53,11 @@ final class Application
      */
     public static function run()
     {
-
         self::$appConfig = require_once 'config.php';
         //初始化
         self::init();
         // 项目开始拓展
+        spl_autoload_register('loader');
         //Hook('app_begin');
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型

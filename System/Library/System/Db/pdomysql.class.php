@@ -32,7 +32,6 @@ class pdoMysql
      */
     public function query($sql)
     {
-        echo $sql."XXXXX";
         G('queryStartTime');
         $res = $this->pdo->query($sql);
         $this->debug();

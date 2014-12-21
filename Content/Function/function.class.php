@@ -368,6 +368,13 @@ function N($key, $step=0,$save=false) {
 }
 
 
+function loader($name){
+    echo $name;exit;
+
+}
+
+
+
 
 
 

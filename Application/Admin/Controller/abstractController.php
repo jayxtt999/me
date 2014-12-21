@@ -28,13 +28,18 @@ class abstractController extends Controller{
         $this->View()->assign($tplData);
     }
     /**
-     * 获取模型
+     * 获取From模型
      * @param null $name
      * @return mixed
      */
     public function loadModel($name=null){
         $name = $name?$name:Route::$routeUrl['controller'];
         return M($name);
+    }
+
+    public function getFrom(){
+        require_once SYS_LIB_PATH . '/From/From'.EXT;
+        return  new From();
     }
 
 } 

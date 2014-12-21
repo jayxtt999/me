@@ -9,6 +9,11 @@
 class indexController extends abstractController{
 
     function indexAction(){
+
+        $this->View()->display();
+    }
+
+    function index2Action(){
         $this->View()->display();
     }
 
