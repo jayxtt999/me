@@ -28,8 +28,8 @@ class menuController extends abstractController{
     }
 
     public function editAction(){
-        $from = $this->getFrom();
-
+        $from = $this->getForm();
+        $from->start();
 
 
         $this->View()->display();
