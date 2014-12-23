@@ -46,8 +46,6 @@ class menuModel extends Model
         return $this->html;
     }
 
-
-
     /**
      * 生成菜单树html
      * @param $items

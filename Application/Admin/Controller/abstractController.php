@@ -37,9 +37,4 @@ class abstractController extends Controller{
         return M($name);
     }
 
-    public function getForm(){
-        require_once SYS_LIB_PATH . '/From/From'.EXT;
-        return  new Form();
-    }
-
-} 
+}

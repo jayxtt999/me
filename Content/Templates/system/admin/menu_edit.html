@@ -174,13 +174,23 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <!--Form start-->
+                {$form->start('menuedit')}
+                栏目名：{$form->getText('name')}
+                模块名：{$form->getText('module_name')}
+                控制器名：{$form->getText('controller_name')}
+                动作名：{$form->getText('action_name')}
+                栏目对应的URL：{$form->getText('url')}
+                排序：{$form->getText('sort')}
+                栏目图标：{$form->getText('icon')}
+                描述：{$form->getText('desc')}
+                {$form->end('menuedit')}
+                <!--Form end-->
             </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->
             </div>
             </div>
-
-
 
 
 </div>

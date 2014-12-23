@@ -28,10 +28,10 @@ class menuController extends abstractController{
     }
 
     public function editAction(){
-        $from = $this->getForm();
-        $from->start();
-
-
+        $form = new Admin_Menu_Form_editForm();
+        $form = $form->getForm();
+        var_dump($form);exit;
+        $this->View()->assign(array('form'=>$form));
         $this->View()->display();
 
     }

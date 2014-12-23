@@ -369,7 +369,39 @@ function N($key, $step=0,$save=false) {
 
 
 function loader($name){
-    echo $name;exit;
+    $className = explode('_',$name);
+    $len = count($className);
+    if($className[0] == "System"){
+        $path = ROOT_PATH."/";
+        foreach($className as $k=>$v){
+            $path.=$className[$k]."/";
+        }
+        require_once $path.EXT;
+    }else{
+        if($len == 3){
+            switch($className[1]){
+                case "Controller":
+                    require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."Controller".ext;
+                    break;
+                case "Model":
+                    require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."Model".ext;
+                    break;
+                default:
+                    break;
+            }
+        }else if($len == 4){
+            require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."/".$className[3].ext;
+            var_dump(class_exists($className[3],false));exit;
+            return class_exists($className[3],false) || interface_exists($className[3],false);
+            //echo MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."/".$className[3].ext;exit;
+        }
+    }
+
+
+
+
+
+
 
 }
 

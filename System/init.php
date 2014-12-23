@@ -10,7 +10,7 @@
 const BLOG_VERSION = '1.0';
 // 类文件后缀
 const EXT = '.class.php';
-
+const ext = '.php';
 
 define('SYSTEM_PATH', dirname(__FILE__));
 define('ROOT_PATH', substr(SYSTEM_PATH, 0, -7));
@@ -72,7 +72,7 @@ final class Application
         self::setAutoLibs();
         self::autoload();
         // 设定错误和异常处理
-        self::loadError();
+        //self::loadError();
         if (C('output_encode')) {
             $zlib = ini_get('zlib.output_compression');
             if (empty($zlib)) ob_start('ob_gzhandler');

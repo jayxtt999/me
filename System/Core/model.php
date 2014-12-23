@@ -20,7 +20,7 @@ class Model {
         }
     }
 
-    final static function getFrom(){
+    final static function getForm(){
 
 
 
