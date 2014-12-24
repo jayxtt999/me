@@ -6,16 +6,21 @@
  * Time: 下午9:27
  */
 
-class editForm {
+class Admin_Menu_Form_EditForm {
     private $form;
-    public function init(){
+    public function init($formName){
         if(!is_object($this->form)){
             require_once SYS_LIB_PATH . '/Form/Form'.EXT;
             $this->form =  new Form();
         }
-        $this->form->init('menuedit');
+        $this->form->init($formName);
         $this->form->setText("name");
-        $this->form->setText("module_name");
+
+        $array = array(
+            "class"=>"form-control",
+            "placeholder"=>"MODULE NAME",
+        );
+        $this->form->setText("module_name",$array);
         $this->form->setText("controller_name");
         $this->form->setText("action_name");
         $this->form->setText("url");
@@ -23,11 +28,10 @@ class editForm {
         $this->form->setText("is_display");
         $this->form->setText("icon");
         $this->form->setText("desc");
-    }
 
-    public function getForm(){
         return $this->form;
     }
+
 
 
 } 

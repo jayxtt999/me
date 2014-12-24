@@ -391,9 +391,6 @@ function loader($name){
             }
         }else if($len == 4){
             require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."/".$className[3].ext;
-            var_dump(class_exists($className[3],false));exit;
-            return class_exists($className[3],false) || interface_exists($className[3],false);
-            //echo MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."/".$className[3].ext;exit;
         }
     }
 

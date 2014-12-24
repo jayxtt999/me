@@ -154,43 +154,68 @@
     </div>
 </div>
 <!-- END PAGE HEADER-->
-            <div class="row">
-            <div class="col-md-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet box grey-cascade">
-            <div class="portlet-title">
-                <div class="caption">
-                    <span class="glyphicon glyphicon-arrow-left"  onclick="javascript:history.go(-1);"></span>
+
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i> Default Form
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse">
+                        </a>
+                        <a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                        <a href="" class="reload">
+                        </a>
+                        <a href="" class="remove">
+                        </a>
+                    </div>
                 </div>
-                <div class="tools">
-                    <a href="javascript:;" class="collapse">
-                    </a>
-                    <a href="#portlet-config" data-toggle="modal" class="config">
-                    </a>
-                    <a href="javascript:;" class="reload">
-                    </a>
-                    <a href="javascript:;" class="remove">
-                    </a>
+                <div class="portlet-body form">
+                    <form role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="input-group">
+											<span class="input-group-addon">
+											模块名
+											</span>
+                                    {$form->getText('module_name')}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn blue">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="portlet-body">
-                <!--Form start-->
-                {$form->start('menuedit')}
-                栏目名：{$form->getText('name')}
-                模块名：{$form->getText('module_name')}
-                控制器名：{$form->getText('controller_name')}
-                动作名：{$form->getText('action_name')}
-                栏目对应的URL：{$form->getText('url')}
-                排序：{$form->getText('sort')}
-                栏目图标：{$form->getText('icon')}
-                描述：{$form->getText('desc')}
-                {$form->end('menuedit')}
-                <!--Form end-->
-            </div>
-            </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
-            </div>
-            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    控制器名：{$form->getText('controller_name')}
+    动作名：{$form->getText('action_name')}
+    栏目对应的URL：{$form->getText('url')}
+    排序：{$form->getText('sort')}
+    栏目图标：{$form->getText('icon')}
+    描述：{$form->getText('desc')}
+    {$form->end('menuedit')}
 
 
 </div>
