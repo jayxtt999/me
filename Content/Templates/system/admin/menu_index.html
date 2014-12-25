@@ -133,13 +133,12 @@
         <li>
             <i class="fa fa-home"></i>
             <a href="/index.php?m=admin&c=index&a=index">Home</a>
-            <i class="fa fa-angle-right"></i>
         </li>
 
         <foreach name="navArray" item="vo">
             <li>
-                <a href="{$vo.url}">{$vo.name}</a>
                 <i class="fa fa-angle-right"></i>
+                <a href="{$vo.url}">{$vo.name}</a>
             </li>
         </foreach>
 

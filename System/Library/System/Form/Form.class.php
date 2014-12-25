@@ -42,7 +42,7 @@ class Form {
 
     }
 
-    public function setText($name,$param=""){
+    public function setText($name,$label="",$param=""){
         if(!$name){
             trace("Text name".$name."未定义",'','ERR');
         }
@@ -52,7 +52,10 @@ class Form {
                 $paramS .= "$k=\"$v\" ";
             }
         }
-        $this->_text[$name] = "<input type='text' name='$name' ".$paramS.">";
+        if(isset($label)){
+            $label = "<span class='input-group-addon'>模块名</span>";
+        }
+        $this->_text[$name] = $label."<input type='text' name='$name' ".$paramS.">";
     }
 
     public function getText($name){

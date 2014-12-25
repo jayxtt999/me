@@ -14,13 +14,22 @@ class Admin_Menu_Form_EditForm {
             $this->form =  new Form();
         }
         $this->form->init($formName);
-        $this->form->setText("name");
+
+        $array = array(
+            "class"=>"form-control",
+            "placeholder"=>"NAME",
+        );
+        $this->form->setText("name","栏目名",$array);
+
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"MODULE NAME",
         );
-        $this->form->setText("module_name",$array);
+        $this->form->setText("module_name","模块名",$array);
+
+
+
         $this->form->setText("controller_name");
         $this->form->setText("action_name");
         $this->form->setText("url");

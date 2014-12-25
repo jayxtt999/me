@@ -53,12 +53,11 @@ class commonModel extends model
     {
         $route = $this->getRouteInfo();
         foreach ($items as $v) {
-
             $mca = "/index.php?m=" . $v['m'] . "&c=" . $v['c'] . "&a=" . $v['a'] . "";
             if($route['pid']==$v['id'] || ($route['id']==$v['id'] && $route['pid']==$v['pid'])){
                 $this->navArray[$level]['name'] = $v['name'];
                 $this->navArray[$level]['url'] = $mca;
-                $liClass = "start active open";
+                $liClass = "active open";
                 $arrow = isset($v['son']) ? "<span class='arrow open'></span>" : "";
             }else{
                 $liClass ="";
