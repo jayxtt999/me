@@ -21,7 +21,7 @@ class Form {
      * @param int $isCheck
      * @param array $param
      */
-    public function init(string $name=null,string $url=null,$model="post",array $param=null){
+    public function init(string $name=null,string $url=null,$model=null,array $param=null){
         if(!$name){
             trace("表单name未定义",'','ERR');
         }
@@ -31,7 +31,10 @@ class Form {
                 $paramS .= "$k=\"$v\" ";
             }
         }
-        $this->_form[$name] = "<form action=\"".$url."\" method='".$model."' ".$paramS.">";
+        $url = $url?$url:getUrl();
+        var_dump($url);exit;
+        echo $model;exit;
+        $this->_form[strtolower($name)] = "<form name=\"".$name."\" action=\"".$url."\" method='".$model."' ".$paramS.">";
     }
 
     public function start($name){
@@ -53,9 +56,9 @@ class Form {
             }
         }
         if(isset($label)){
-            $label = "<span class='input-group-addon'>模块名</span>";
+            $label = "<label class='col-md-3 control-label'>$label</label>";
         }
-        $this->_text[$name] = $label."<input type='text' name='$name' ".$paramS.">";
+        $this->_text[$name] = $label."<div class='col-md-9'><input type='text' name='$name' ".$paramS."></div>";
     }
 
     public function getText($name){

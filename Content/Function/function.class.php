@@ -171,8 +171,8 @@ function Hook($tag, &$params = NULL)
             Error::trace($tag . ' Hook ::' . $method . ' [ RunTime:' . G('behaviorStart', 'behaviorEnd', 6) . 's ]', '', 'INFO');
         }
 
-        if(APP_DEBUG) { // 记录行为的执行日志
-            Error::trace('[ '.$tag.' ] --END-- [ RunTime:'.G($tag.'Start',$tag.'End',6).'s ]','','INFO');
+        if (APP_DEBUG) { // 记录行为的执行日志
+            Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
         }
     } else { // 未执行任何行为 返回false
         return false;
@@ -353,54 +353,87 @@ function cookie($name, $value = '', $option = null)
     }
 }
 
-function N($key, $step=0,$save=false) {
-    static $_num    = array();
+function N($key, $step = 0, $save = false)
+{
+    static $_num = array();
     if (!isset($_num[$key])) {
-        $_num[$key] = (false !== $save)? S('N_'.$key) :  0;
+        $_num[$key] = (false !== $save) ? S('N_' . $key) : 0;
     }
     if (empty($step))
         return $_num[$key];
     else
-        $_num[$key] = $_num[$key] + (int) $step;
-    if(false !== $save){ // 保存结果
-        C('N_'.$key,$_num[$key],$save);
+        $_num[$key] = $_num[$key] + (int)$step;
+    if (false !== $save) { // 保存结果
+        C('N_' . $key, $_num[$key], $save);
     }
 }
 
 
-function loader($name){
-    $className = explode('_',$name);
+/**
+ * 自动加载
+ * @param $name
+ */
+function loader($name)
+{
+    $className = explode('_', $name);
     $len = count($className);
-    if($className[0] == "System"){
-        $path = ROOT_PATH."/";
-        foreach($className as $k=>$v){
-            $path.=$className[$k]."/";
+    if ($className[0] == "System") {
+        $path = ROOT_PATH . "/";
+        foreach ($className as $k => $v) {
+            $path .= $className[$k] . "/";
         }
-        require_once $path.EXT;
-    }else{
-        if($len == 3){
-            switch($className[1]){
+        require_once $path . EXT;
+    } else {
+        if ($len == 3) {
+            switch ($className[1]) {
                 case "Controller":
-                    require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."Controller".ext;
+                    require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Controller" . ext;
                     break;
                 case "Model":
-                    require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."Model".ext;
+                    require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Model" . ext;
                     break;
                 default:
                     break;
             }
-        }else if($len == 4){
-            require_once MODULE_PATH."/".$className[0]."/".$className[1]."/".$className[2]."/".$className[3].ext;
+        } else if ($len == 4) {
+            require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "/" . $className[3] . ext;
         }
     }
+}
 
 
 
+/**
+ * 根据理由模型返回指定路模式的url
+ * 支持2中方式
+ * 方式1 array: Array ( [module] => admin [controller] => index [action] => index )
+ * 方式2 string:admin,index,index
+ * @param string $url
+ * @return string
+ */
+function getUrl($url = "")
+{
+    $url = $url ? $url : Route::$routeUrl;
+    if(is_array($url)){
+        $urls = $url;
+    }else if(is_string($url)){
+        $urlTmp = explode(",",$url);
+        $urls=array();
+        $urls['module'] = $urlTmp[0];
+        $urls['controller'] = $urlTmp[1];
+        $urls['action'] = $urlTmp[2];
+    }
+    if (C("route:url_type") == "default") {
+        //default 模式
+        return "/index.php?m=" . $urls['module'] . "&c=" . $urls['controller'] . "&a=" . $urls['action'] . "";
+    } else {
+        //pathInfo 模式
 
-
-
+    }
 
 }
+
+
 
 
 
