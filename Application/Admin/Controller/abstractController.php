@@ -9,9 +9,12 @@
 class abstractController extends Controller{
 
     public $common;
-
+    public $model;
+    public $db;
     function __construct(){
         $this->init();
+        $this->model = $this->loadModel();
+        $this->db = Model::getDb();
     }
     public function init(){
         //获取菜单栏 && 获取当前路由相关信息
@@ -28,7 +31,6 @@ class abstractController extends Controller{
         $this->View()->assign($tplData);
     }
     /**
-     * 获取From模型
      * @param null $name
      * @return mixed
      */

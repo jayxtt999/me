@@ -12,7 +12,7 @@ class pdoMysql
     protected $res = null;
     protected $sql = null;
     protected $error = null;
-
+    protected $prefix = null;
     /**
      * 初始化
      * @param $config
@@ -21,6 +21,8 @@ class pdoMysql
     {
         try {
             $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
+            $this->pdo ->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->prefix = $config['prefix'];
         } catch (PDOException $e) {
             $this->error();
         }
@@ -70,6 +72,20 @@ class pdoMysql
         return $this->res->fetch();
     }
 
+
+    public function beginTransaction(){
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit(){
+        $this->pdo->commit();
+    }
+
+    public function rollBack(){
+        $this->pdo->rollBack();
+    }
+
+
     /**
      * @return mixed
      */
@@ -87,6 +103,7 @@ class pdoMysql
     {
         return $this->res->lastInsertId();
     }
+
 
     /**
      * @return mixed
@@ -109,6 +126,16 @@ class pdoMysql
         }
         trace($this->error,'','ERR');
         return $this->error;
+    }
+
+    /**
+     * SQL指令安全过滤
+     * @access public
+     * @param string $str  SQL字符串
+     * @return string
+     */
+    public function escapeString($str) {
+        return addslashes($str);
     }
 
 
@@ -141,30 +168,33 @@ class pdoMysql
         if (is_array($fields)) {
             $fields = implode(', ', $fields);
         }
-
-        if (is_array($where)) {
-
-            $whereData = "";
-            foreach ($where as $k => $v) {
-                $wz = strpos($k, "?");
-                $parame = $wz ? substr($k, $wz + 1) : "=";
-                $k = substr($k, 0, $wz);
-                $whereData .= " and " . $k . $parame . $v;
+        $whereData = "";
+        $whereVal = array();
+        if($where){
+            if (is_array($where)) {
+                foreach ($where as $key => $val) {
+                    $whereVal[] = $val;
+                    $wz = strpos($key, "?");
+                    $parame = $wz ? substr($key, $wz + 1) : "=";
+                    $k = substr($key, 0, $wz);
+                    $whereData .= " and " . $key . $parame . "?";
+                }
+            } else {
+               Error::halt("$where not is array()");
             }
-            //$where = ' and '.implode(' and ', $where);
-            //var_dump($whereData);exit;
-        } else {
-            $whereData = $where;
         }
-        $this->sql = "select $fields from $table where 1=1 $whereData order by $order";
+        $whereVal[]=$order;
+        $this->sql = "select $fields from ".$this->prefix."$table where 1=1 $whereData order by ?";
         if ($limit) {
-            $this->sql .= " limit $limit";
+            $this->sql .= " limit ?";
+            $whereVal[]=$limit;
         }
-        $this->query($this->sql);
+        $stmt = $this->pdo->prepare($this->sql);
+        $exeres = $stmt->execute($whereVal);
         if ($model == 1) {
-            $this->res = $this->fetch();
+            $this->res = $stmt->fetch(PDO::FETCH_ASSOC);
         } else if ($model == 2) {
-            $this->res = $this->fetchAll();
+            $this->res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         return $this->res;
     }

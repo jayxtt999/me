@@ -46,6 +46,7 @@ final class Application
 {
     public static $appLib = null;
     public static $appConfig = null;
+    public static $rqFile = array();
 
     /**
      * 创建应用

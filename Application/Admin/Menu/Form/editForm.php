@@ -8,11 +8,17 @@
 
 class Admin_Menu_Form_EditForm {
     private $form;
-    public function init($formName){
+
+    public function init(){
         if(!is_object($this->form)){
             require_once SYS_LIB_PATH . '/Form/Form'.EXT;
             $this->form =  new Form();
+            return  $this->form;
         }
+    }
+
+    public function start($formName){
+
         $array = array(
             "class"=>"form-horizontal",
             "role"=>"form",
@@ -23,7 +29,7 @@ class Admin_Menu_Form_EditForm {
             "class"=>"form-control",
             "placeholder"=>"NAME",
         );
-        $this->form->setText("name","栏目名",$array);
+        $this->form->setText("name","栏目名",$array,array('datatype'=>'*2-24',));
 
 
         $array = array(
@@ -75,7 +81,6 @@ class Admin_Menu_Form_EditForm {
         );
         $this->form->setText("desc","排序方式",$array);
 
-        return $this->form;
     }
 
 

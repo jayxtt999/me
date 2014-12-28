@@ -14,6 +14,8 @@ class Form {
     private  $_text = array();
     private  $_textarea = array();
     private  $_select = array();
+    private  $_bind = false;
+    private  $_bindDate = array();
     /**
      * @param string $name
      * @param string $url
@@ -23,7 +25,7 @@ class Form {
      */
     public function init(string $name=null,string $url=null,$model=null,array $param=null){
         if(!$name){
-            trace("表单name未定义",'','ERR');
+            Error::trace("表单name未定义",'','ERR');
         }
         if(is_array($param)){
             $paramS = "";
@@ -32,22 +34,25 @@ class Form {
             }
         }
         $url = $url?$url:getUrl();
-        var_dump($url);exit;
-        echo $model;exit;
+        $model = $model?$model:"post";
         $this->_form[strtolower($name)] = "<form name=\"".$name."\" action=\"".$url."\" method='".$model."' ".$paramS.">";
     }
+
+    public function bind($obj){
+        $this->_bindDate = $obj;
+    }
+
 
     public function start($name){
         return  $this->_form[$name];
     }
     public function end(){
         return "</form>";
-
     }
 
-    public function setText($name,$label="",$param=""){
+    public function setText($name,$label="",$param="",$valid){
         if(!$name){
-            trace("Text name".$name."未定义",'','ERR');
+            Error::trace("Text name".$name."未定义",'','ERR');
         }
         if(is_array($param)){
             $paramS = "";
@@ -58,7 +63,24 @@ class Form {
         if(isset($label)){
             $label = "<label class='col-md-3 control-label'>$label</label>";
         }
-        $this->_text[$name] = $label."<div class='col-md-9'><input type='text' name='$name' ".$paramS."></div>";
+        if($this->_bindDate){
+            $value = $this->_bindDate[$name]?"value='".$this->_bindDate[$name]."'":"";
+        }
+        if($valid){
+            $validHtml = "";
+            $additional = "";
+            if($valid['datatype']){
+                $validHtml.="datatype='".$valid['datatype']."'";
+            }
+            if($valid['errormsg']){
+                $validHtml.="errormsg='".$valid['errormsg']."'";
+            }
+            if($valid['nullmsg']){
+                $validHtml.="nullmsg='".$valid['nullmsg']."'";
+            }
+            $additional.="<div class='Validform_checktip'></div>";
+        }
+        $this->_text[$name] = $label."<div class='col-md-9'><input type='text' name='$name' ".$paramS.$value.$validHtml." >".$additional."</div>";
     }
 
     public function getText($name){
@@ -72,7 +94,7 @@ class Form {
 
     public function setTextArea($name,$param=""){
         if(!$name){
-            trace("Text name".$name."未定义",'','ERR');
+            Error::trace("Text name".$name."未定义",'','ERR');
         }
         if(is_array($param)){
             $paramS = "";
@@ -93,7 +115,7 @@ class Form {
 
     public function setSelect($name,$param="",$data=""){
         if(!$name){
-            trace("Text name".$name."未定义",'','ERR');
+            Error::trace("Text name".$name."未定义",'','ERR');
         }
         if(is_array($param)){
             $paramS = "";

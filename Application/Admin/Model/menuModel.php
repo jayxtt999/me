@@ -12,7 +12,6 @@ class menuModel extends Model
     private $html = ""; //html
     public $array = array();
 
-
     /**
      * 序列树 来自csdn的大神
      * @param $items
@@ -91,6 +90,5 @@ class menuModel extends Model
             }
         }
     }
-
 
 }

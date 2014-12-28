@@ -181,6 +181,7 @@ function Hook($tag, &$params = NULL)
 }
 
 
+
 /**
  * session
  * @param $name
@@ -215,7 +216,7 @@ function session($name, $value = '')
                 $hander->execute();
             } else {
                 // 类没有定义
-                throw_exception(L('_CLASS_NOT_EXIST_') . ': ' . $class);
+                Error::halt('_CLASS_NOT_EXIST_' . ': ' . $class);
             }
         }
         if (C('session:session_auto_start')) {
@@ -378,29 +379,38 @@ function loader($name)
     $className = explode('_', $name);
     $len = count($className);
     if ($className[0] == "System") {
-        $path = ROOT_PATH . "/";
+        $path = ROOT_PATH;
         foreach ($className as $k => $v) {
-            $path .= $className[$k] . "/";
+            $path .= "/".$className[$k];
         }
-        require_once $path . EXT;
+        $path = $path . EXT;
     } else {
         if ($len == 3) {
             switch ($className[1]) {
                 case "Controller":
-                    require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Controller" . ext;
+                    $path = MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Controller" . ext;
                     break;
                 case "Model":
-                    require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Model" . ext;
+                    $path =  MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Model" . ext;
                     break;
                 default:
                     break;
             }
         } else if ($len == 4) {
-            require_once MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "/" . $className[3] . ext;
+            $path =  MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "/" . $className[3] . ext;
         }
+    }
+    if(!Application::$rqFile[md5($path)]){
+        require_once $path;
     }
 }
 
+function cache($key,$val){
+
+
+
+
+}
 
 
 /**
@@ -433,6 +443,35 @@ function getUrl($url = "")
 
 }
 
+
+
+function get($key,$limit=''){
+
+    $var = $_GET;
+    if ($key == ''){
+        return $var;
+    }
+    if ($limit == ''){
+        $igc = isset($var[$key]) ? $var[$key] : false;
+    }else{
+        $igc = $var[$key];
+        return  System_Library_System_safeFilter::$limit($igc);
+    }
+}
+
+function post($key,$limit=''){
+
+    $var = $_POST;
+    if ($key == ''){
+        return $var;
+    }
+    if ($limit == ''){
+        $igc = isset($var[$key]) ? $var[$key] : false;
+    }else{
+        $igc = $var[$key];
+        return  System_Library_System_safeFilter::$limit($igc);
+    }
+}
 
 
 

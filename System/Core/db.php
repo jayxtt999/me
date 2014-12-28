@@ -5,14 +5,13 @@ class DB
 
     protected $db;
     protected $res;
-    protected $table;
+    protected $table = '';
     protected $order = "id desc";
     protected $fields = "*";
-    protected $limit;
-    protected $options;
-    protected $where;
+    protected $limit = '';
+    protected $options = '';
+    protected $where = null;
     protected $selectmodel;
-
     public function init($config)
     {
         require_once SYS_LIB_PATH . '/DB/pdomysql'.EXT;
@@ -74,6 +73,14 @@ class DB
     public function getSql()
     {
         return $this->res->getSql();
+    }
+
+    /**
+     * Îö¹¹·½·¨
+     * @access public
+     */
+    public function __destruct() {
+
     }
 
 

@@ -21,6 +21,7 @@ return array(
             'options' => array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ),
+            'prefix' => 'xtt_',
         )
     ),
     /*路由配置*/
