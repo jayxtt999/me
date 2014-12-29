@@ -11,7 +11,7 @@ class menuController extends abstractController{
 
 
     public function indexAction(){
-        $menuAll = parent::$model->getMenuAll();//获取全部栏目
+        $menuAll = $this->model->getMenuAll();//获取全部栏目
         $this->View()->assign(array('menuAll'=>$menuAll));
         $this->View()->display();
     }

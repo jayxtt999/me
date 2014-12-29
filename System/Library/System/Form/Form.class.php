@@ -78,10 +78,11 @@ class Form {
             if($valid['nullmsg']){
                 $validHtml.="nullmsg='".$valid['nullmsg']."'";
             }
-            $additional.="<div class='Validform_checktip'></div>";
+            $additional.="<span class='help-block help-block-error' style='display:none'></span>";
         }
         $this->_text[$name] = $label."<div class='col-md-9'><input type='text' name='$name' ".$paramS.$value.$validHtml." >".$additional."</div>";
     }
+
 
     public function getText($name){
         if($this->_text[$name]){
