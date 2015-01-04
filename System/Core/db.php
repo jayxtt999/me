@@ -1,5 +1,5 @@
 <?php
-
+namespace System\Core;
 class DB
 {
 
@@ -76,7 +76,7 @@ class DB
     }
 
     /**
-     * Îö¹¹·½·¨
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @access public
      */
     public function __destruct() {

@@ -5,7 +5,7 @@
  * Date: 14-11-29
  * Time: 下午1:38
  */
-
+namespace System\Core;
 class Model {
 
     public static  $db;

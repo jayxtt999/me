@@ -59,7 +59,7 @@ final class Application
         //初始化
         self::init();
         // 项目开始拓展
-        spl_autoload_register('loader');
+
         //Hook('app_begin');
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
@@ -104,13 +104,16 @@ final class Application
      */
     public static function autoload()
     {
-        foreach (self::$appLib as $key => $value) {
-            require(self::$appLib[$key]);
-            $lib = ucfirst($key);
-            self::$appLib[$key] = new $lib; //待解决问题  $lib 为静态
-        }
         //加载方法库
         require_once(APP_FUNCTION_PATH . '/function' . EXT);
+        //自动加载
+        spl_autoload_register('loader');
+        //Core
+        foreach (self::$appLib as $key => $value) {
+            $lib = '\\System\\Core\\'.ucfirst($value);
+            self::$appLib[$key] = new $lib; //待解决问题  $lib 为静态
+            exit;
+        }
     }
 
     /**
@@ -120,13 +123,13 @@ final class Application
     public static function setAutoLibs()
     {
         self::$appLib = array(
-            'route' => SYS_CORE_PATH . '/route.php',
-            'view' => SYS_CORE_PATH . '/view.php',
-            'model' => SYS_CORE_PATH . '/model.php',
-            'controller' => SYS_CORE_PATH . '/controller.php',
-            'db' => SYS_CORE_PATH . '/db.php',
-            'error' => SYS_CORE_PATH . '/error.php',
-            'log' => SYS_CORE_PATH . '/log.php',
+            'route',
+            'view',
+            'model',
+            'controller',
+            'db',
+            'error',
+            'log',
         );
     }
 

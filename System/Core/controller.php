@@ -6,6 +6,7 @@
  * Time: 下午1:39
  */
 
+namespace System\Core;
 class Controller {
 
     final public function View(){

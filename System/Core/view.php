@@ -5,7 +5,7 @@
  * Date: 14-11-30
  * Time: 上午11:01
  */
-
+namespace System\Core;
 class View {
 
     public static $view;

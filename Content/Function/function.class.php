@@ -374,10 +374,28 @@ function N($key, $step = 0, $save = false)
  * 自动加载
  * @param $name
  */
-function loader($name)
+function loader($class)
 {
-    $className = explode('_', $name);
-    $len = count($className);
+    //$dir = './';
+    //set_include_path(get_include_path().PATH_SEPARATOR.$ids_dir);
+    //$class = str_replace('\\', '/', $class) . '.php';
+    //require_once($class);
+    $class = str_replace('\\', '/', $class) . '.php';
+    require_once($class);
+    return 
+    echo $class;exit;
+    if ($className[0] == "System") {
+
+        set_include_path("System/Core");
+
+        require_once($class);
+    }
+
+
+    var_dump($className);exit;
+
+
+    /*$len = count($className);
     if ($className[0] == "System") {
         $path = ROOT_PATH;
         foreach ($className as $k => $v) {
@@ -402,7 +420,7 @@ function loader($name)
     }
     if(!Application::$rqFile[md5($path)]){
         require_once $path;
-    }
+    }*/
 }
 
 function cache($key,$val){

@@ -5,6 +5,7 @@
  * Date: 14-11-29
  * Time: 下午2:07
  */
+namespace System\Core;
 class Route{
     public static  $config;
     public static  $urlType;
