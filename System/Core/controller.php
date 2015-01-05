@@ -15,4 +15,5 @@ class Controller {
         return $view;
     }
 
-} 
+}
+

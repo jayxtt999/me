@@ -380,20 +380,16 @@ function loader($class)
     //set_include_path(get_include_path().PATH_SEPARATOR.$ids_dir);
     //$class = str_replace('\\', '/', $class) . '.php';
     //require_once($class);
-    $class = str_replace('\\', '/', $class) . '.php';
-    require_once($class);
-    return 
-    echo $class;exit;
-    if ($className[0] == "System") {
+    //$class = str_replace('\\', '/', $class) . '.php';
+    //require_once($class);
+    //echo $class;exit;
+    echo $class."<br/>";
+    preg_match('/(.*)\(.*\)/',$class, $matches);
+    $className = $matches?$matches[1]:$class;
 
-        set_include_path("System/Core");
-
-        require_once($class);
-    }
-
-
-    var_dump($className);exit;
-
+    $classPath = str_replace('\\', '/', $className) . '.php';
+    require_once(ROOT_PATH."/".$classPath);
+    return new $class;
 
     /*$len = count($className);
     if ($className[0] == "System") {

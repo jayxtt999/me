@@ -6,6 +6,9 @@
  * Time: 下午9:20
  */
 
+namespace Admin\Controller\abstractController;
+
+
 class abstractController extends Controller{
 
     public $common;

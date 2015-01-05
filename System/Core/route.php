@@ -50,10 +50,12 @@ class Route{
     }
 
     public static  function routeToCm(){
-        require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/abstractController.php');
-        require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/'.self::$routeUrl['controller'].'Controller.php');
+        //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/abstractController.php');
+        //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/'.self::$routeUrl['controller'].'Controller.php');
         $controller = self::$routeUrl['controller'].'Controller';
+        //Admin\Controller\abstractController
         $controller = new $controller;
+        exit;
         $action = self::$routeUrl['action'].'Action';
         try{
             $ca  = new ReflectionMethod($controller,$action);

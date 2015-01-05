@@ -59,7 +59,6 @@ final class Application
         //初始化
         self::init();
         // 项目开始拓展
-
         //Hook('app_begin');
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
@@ -73,7 +72,7 @@ final class Application
         self::setAutoLibs();
         self::autoload();
         // 设定错误和异常处理
-        self::loadError();
+        //self::loadError();
         if (C('output_encode')) {
             $zlib = ini_get('zlib.output_compression');
             if (empty($zlib)) ob_start('ob_gzhandler');
@@ -110,9 +109,8 @@ final class Application
         spl_autoload_register('loader');
         //Core
         foreach (self::$appLib as $key => $value) {
-            $lib = '\\System\\Core\\'.ucfirst($value);
-            self::$appLib[$key] = new $lib; //待解决问题  $lib 为静态
-            exit;
+            $lib = '\\System\\Core\\' . $value;
+            self::$appLib[$value] = new $lib;
         }
     }
 
