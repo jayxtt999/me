@@ -24,7 +24,7 @@ class Form {
      * @param int $isCheck
      * @param array $param
      */
-    public function init(string $name=null,string $url=null,$model=null,array $param=null){
+    public function init($name=null,$url=null,$model=null,$param=null){
         if(!$name){
             \System\Core\Error::trace("表单name未定义",'','ERR');
         }

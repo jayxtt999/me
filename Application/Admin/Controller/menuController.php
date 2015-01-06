@@ -27,10 +27,10 @@ class menuController extends abstractController{
 
         $id = get('id','int');
         $row = $this->db->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
-        $formClass = new \Admin\Menu\Form\editForm();        //获取表单
-        $form = $formClass->init();                         //初始化
+        $form = new \Admin\Menu\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
-        $formClass->start('menuEdit');                      //开始渲染
+        $form->start('menuEdit');                      //开始渲染
+        var_dump($form);exit;
         $this->View()->assign(array('form'=>$form));
         $this->View()->display();
 

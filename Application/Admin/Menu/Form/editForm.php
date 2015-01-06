@@ -9,80 +9,68 @@ namespace Admin\Menu\Form;
 use System\Library\Form\Form;
 
 class editForm extends \System\Library\Form\Form{
-    private $form;
-
-    public function init(){
-
-        if(!is_object($this->form)){
-            $this->form =  new Form();
-            return  $this->form;
-        }
-    }
-
     public function start($formName){
-
         $array = array(
             "class"=>"form-horizontal",
             "role"=>"form",
         );
-
-        $this->form->init($formName,'','',$array);
+        $this->init($formName,'','',$array);
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"NAME",
         );
-        $this->form->setText("name","栏目名",$array,array('datatype'=>'*2-24',));
+        $this->setText("name","栏目名",$array,array('datatype'=>'*2-24',));
 
 
         $array = array(
             "class"=>"form-control ",
             "placeholder"=>"MODULE_NAME",
         );
-        $this->form->setText("module_name","模块名",$array,array('datatype'=>'s2-24',));
+        $this->setText("module_name","模块名",$array,array('datatype'=>'s2-24',));
 
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"CONTROLLER_NAME",
         );
-        $this->form->setText("controller_name","控制器名",$array,array('datatype'=>'s2-24',));
+        $this->setText("controller_name","控制器名",$array,array('datatype'=>'s2-24',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"ACTION_NAME",
         );
-        $this->form->setText("action_name","方法名",$array,array('datatype'=>'s2-24',));
+        $this->setText("action_name","方法名",$array,array('datatype'=>'s2-24',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"URL",
         );
-        $this->form->setText("url","URL",$array,array('datatype'=>'url',));
+        $this->setText("url","URL",$array,array('datatype'=>'url',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"SORT",
         );
-        $this->form->setText("sort","排序",$array,array('datatype'=>'n1-4',));
+        $this->setText("sort","排序",$array,array('datatype'=>'n1-4',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"IS_DISPLAY",
         );
-        $this->form->setText("is_display","是否显示",$array,array('datatype'=>'n1-4',));
+        $this->setText("is_display","是否显示",$array,array('datatype'=>'n1-4',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"ICON",
         );
-        $this->form->setText("icon","图标",$array,array('datatype'=>'s0-24',));
+        $this->setText("icon","图标",$array,array('datatype'=>'s0-24',));
 
         $array = array(
             "class"=>"form-control",
             "placeholder"=>"DESC",
         );
-        $this->form->setText("desc","排序方式",$array,array('datatype'=>'s0-24',));
+        $this->setText("desc","排序方式",$array,array('datatype'=>'s0-24',));
 
     }
 

@@ -83,7 +83,7 @@ class menuModel extends \System\Core\Model
      */
     public function getRouteInfo()
     {
-        $ro = Application::$appLib['route'];
+        $ro = \Application::$appLib['route'];
         $routeUrl = $ro::$routeUrl;
         foreach ($this->array as $v) {
             if ($v['m'] == $routeUrl['module'] && $v['c'] == $routeUrl['controller'] && $v['a'] == $routeUrl['action']) {

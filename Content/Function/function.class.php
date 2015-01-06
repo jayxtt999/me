@@ -430,7 +430,7 @@ function cache($key,$val){
  */
 function getUrl($url = "")
 {
-    $url = $url ? $url : Route::$routeUrl;
+    $url = $url ? $url : \System\Core\Route::$routeUrl;
     if(is_array($url)){
         $urls = $url;
     }else if(is_string($url)){
