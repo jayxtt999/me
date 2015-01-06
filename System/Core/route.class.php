@@ -52,15 +52,15 @@ class Route{
     public static  function routeToCm(){
         //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/abstractController.php');
         //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/'.self::$routeUrl['controller'].'Controller.php');
-        $controller = self::$routeUrl['controller'].'Controller';
-        //Admin\Controller\abstractController
+
+        //Admin\Controller\Index;
+        $controller = "\\".ucfirst(self::$routeUrl['module'])."\\Controller\\".self::$routeUrl['controller'].'Controller';
         $controller = new $controller;
-        exit;
         $action = self::$routeUrl['action'].'Action';
         try{
-            $ca  = new ReflectionMethod($controller,$action);
+            $ca  = new \ReflectionMethod($controller,$action);
             $ca->invoke(new $controller,isset($params)?$params:null);
-        }catch (Exception $e){
+        }catch (\Exception $e){
             Show('控制器方法'.$action.'不存在');
         }
 

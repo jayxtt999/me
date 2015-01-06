@@ -1,12 +1,13 @@
 <?php
 
+namespace Admin\Model;
 /**
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2014/12/8 0008
  * Time: 24:07
  */
-class menuModel extends Model
+class menuModel extends \System\Core\Model
 {
 
     private $html = ""; //html

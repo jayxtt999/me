@@ -22,7 +22,6 @@ define('APP_LIB_PATH', SYSTEM_PATH . '/Library/Vendor');
 define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
-define('MODULE_PATH', ROOT_PATH . '/Application');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
 
 define('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
@@ -91,9 +90,9 @@ final class Application
     public static function loadError()
     {
         error_reporting(0);
-        register_shutdown_function('Error::fatalError');
-        set_exception_handler('Error::appException');
-        set_error_handler('Error::appError');
+        register_shutdown_function('\System\Core\Error::fatalError');
+        set_exception_handler('\System\Core\Error::appException');
+        set_error_handler('\System\Core\Error::appError');
     }
 
     /**
@@ -109,8 +108,8 @@ final class Application
         spl_autoload_register('loader');
         //Core
         foreach (self::$appLib as $key => $value) {
-            $lib = '\\System\\Core\\' . $value;
-            self::$appLib[$value] = new $lib;
+            //require_once SYS_CORE_PATH."/".$value.EXT;
+            self::$appLib[$key] = new $value;
         }
     }
 
@@ -121,13 +120,13 @@ final class Application
     public static function setAutoLibs()
     {
         self::$appLib = array(
-            'route',
-            'view',
-            'model',
-            'controller',
-            'db',
-            'error',
-            'log',
+            'route'=>'\\System\\Core\\Route',
+            'view'=>'\\System\\Core\\View',
+            'model'=>'\\System\\Core\\Model',
+            'controller'=>'\\System\\Core\\Controller',
+            'db'=>'\\System\\Core\\Db',
+            'error'=>'\\System\\Core\\Error',
+            'log'=>'\\System\\Core\\Log',
         );
     }
 

@@ -1,4 +1,6 @@
 <?php
+namespace System\Library\View\MyTemp;
+
 /**
  * Created by PhpStorm.
  * User: Administrator

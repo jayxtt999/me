@@ -23,20 +23,14 @@ class View {
             return self::$view;
         }
         if(!empty($type)){
-            require_once SYS_LIB_PATH.'/View/'.ucfirst($type).'/'.ucfirst($type).EXT;
-            $types = ucfirst($type);
+            $types = "\\System\\Library\\View\\".ucfirst($type)."\\".ucfirst($type);
             self::$view =  new $types;
-            self::$config = Application::$appConfig['view'][$type];
-            $ro = Application::$appLib['route'];
+            self::$config = \Application::$appConfig['view'][$type];
+            $ro = \Application::$appLib['route'];
             self::$routeUrl = $ro::$routeUrl;
             if(self::$routeUrl['module'] == "admin"){
                 self::$config['template_dir'] = APP_TEMP_PATH."/system";
             }
-            //smarty
-            /*foreach(self::$config as $key=>$value){
-                self::$view -> $key = $value;
-            }*/
-            //mytemp
             self::$view->init(self::$config);
 
         }else{

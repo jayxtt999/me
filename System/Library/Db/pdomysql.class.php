@@ -1,5 +1,5 @@
 <?php
-
+namespace System\Library\Db;
 /**
  * Created by PhpStorm.
  * User: Administrator
@@ -20,10 +20,10 @@ class pdoMysql
     function __construct($config)
     {
         try {
-            $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
-            $this->pdo ->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
+            $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
             $this->prefix = $config['prefix'];
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->error();
         }
     }
@@ -147,7 +147,7 @@ class pdoMysql
         // 记录操作结束时间
         if (C('db:db_sql_log')) {
             G('queryEndTime');
-            Error::trace($this->sql.' [ RunTime:'.G('queryStartTime','queryEndTime',6).'s ]','','SQL');
+            \System\Core\Error::trace($this->sql.' [ RunTime:'.G('queryStartTime','queryEndTime',6).'s ]','','SQL');
         }
     }
 
@@ -180,7 +180,7 @@ class pdoMysql
                     $whereData .= " and " . $key . $parame . "?";
                 }
             } else {
-               Error::halt("$where not is array()");
+               \System\Core\Error::halt("$where not is array()");
             }
         }
         $whereVal[]=$order;
@@ -192,9 +192,9 @@ class pdoMysql
         $stmt = $this->pdo->prepare($this->sql);
         $exeres = $stmt->execute($whereVal);
         if ($model == 1) {
-            $this->res = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
         } else if ($model == 2) {
-            $this->res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
         return $this->res;
     }

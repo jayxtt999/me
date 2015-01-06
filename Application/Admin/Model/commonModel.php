@@ -1,12 +1,13 @@
 <?php
 
+namespace Admin\Model;
 /**
  * Created by PhpStorm.
  * User: Administrator
  * Date: 14-11-30
  * Time: 下午9:35
  */
-class commonModel extends model
+class commonModel extends \System\Core\Model
 {
 
     private $html = ""; //html
@@ -90,7 +91,7 @@ class commonModel extends model
      */
     public function getRouteInfo()
     {
-        $ro = Application::$appLib['route'];
+        $ro = \Application::$appLib['route'];
         $routeUrl = $ro::$routeUrl;
         foreach ($this->array as $v) {
             if ($v['m'] == $routeUrl['module'] && $v['c'] == $routeUrl['controller'] && $v['a'] == $routeUrl['action']) {

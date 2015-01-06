@@ -5,13 +5,15 @@
  * Date: 14-12-23
  * Time: 下午9:27
  */
+namespace Admin\Menu\Form;
+use System\Library\Form\Form;
 
-class Admin_Menu_Form_EditForm {
+class editForm extends \System\Library\Form\Form{
     private $form;
 
     public function init(){
+
         if(!is_object($this->form)){
-            require_once SYS_LIB_PATH . '/Form/Form'.EXT;
             $this->form =  new Form();
             return  $this->form;
         }
@@ -23,6 +25,7 @@ class Admin_Menu_Form_EditForm {
             "class"=>"form-horizontal",
             "role"=>"form",
         );
+
         $this->form->init($formName,'','',$array);
 
         $array = array(

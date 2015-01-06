@@ -1,5 +1,5 @@
 <?
-
+namespace System\Library\View\TpTemplate;
 /**
  * 扒自tp 模板引擎
  * Class TpTemplate

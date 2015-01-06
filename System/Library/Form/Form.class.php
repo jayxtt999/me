@@ -6,6 +6,7 @@
  * Time: 下午9:36
  */
 
+namespace System\Library\Form;
 
 class Form {
     //>setAttribute  add  setLabel
@@ -25,7 +26,7 @@ class Form {
      */
     public function init(string $name=null,string $url=null,$model=null,array $param=null){
         if(!$name){
-            Error::trace("表单name未定义",'','ERR');
+            \System\Core\Error::trace("表单name未定义",'','ERR');
         }
         if(is_array($param)){
             $paramS = "";

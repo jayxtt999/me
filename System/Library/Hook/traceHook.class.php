@@ -5,6 +5,7 @@
  * Date: 2014/12/16 0016
  * Time: 下午 1:55
  */
+namespace System\Library\Hook;
 
 class traceHook {
 
@@ -45,7 +46,7 @@ class traceHook {
             $base   =   array_merge($base,include $traceFile);
         }
 
-        $debug  =   Error::trace();
+        $debug  =   \System\Core\Error::trace();
         $tabs   =   C('debug:trace_page_tabs');
         foreach ($tabs as $name=>$title){
             switch(strtoupper($name)) {

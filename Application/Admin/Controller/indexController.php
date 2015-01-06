@@ -6,6 +6,9 @@
  * Time: 下午8:40
  */
 
+namespace Admin\Controller;
+
+
 class indexController extends abstractController{
 
     function indexAction(){

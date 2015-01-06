@@ -14,8 +14,7 @@ class DB
     protected $selectmodel;
     public function init($config)
     {
-        require_once SYS_LIB_PATH . '/DB/pdomysql'.EXT;
-        $this->db = new pdoMysql($config['pdoMysql']);
+        $this->db = new \System\Library\Db\pdoMysql($config['pdoMysql']);
     }
 
     public function table($table)

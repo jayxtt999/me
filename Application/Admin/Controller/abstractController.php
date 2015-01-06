@@ -6,10 +6,10 @@
  * Time: 下午9:20
  */
 
-namespace Admin\Controller\abstractController;
+namespace Admin\Controller;
 
 
-class abstractController extends Controller{
+class abstractController extends \System\Core\Controller{
 
     public $common;
     public $model;
@@ -17,7 +17,7 @@ class abstractController extends Controller{
     function __construct(){
         $this->init();
         $this->model = $this->loadModel();
-        $this->db = Model::getDb();
+        $this->db = \System\Core\Model::getDb();
     }
     public function init(){
         //获取菜单栏 && 获取当前路由相关信息
@@ -38,7 +38,7 @@ class abstractController extends Controller{
      * @return mixed
      */
     public function loadModel($name=null){
-        $name = $name?$name:Route::$routeUrl['controller'];
+        $name = $name?$name:\System\Core\Route::$routeUrl['controller'];
         return M($name);
     }
 

@@ -11,7 +11,7 @@ class Controller {
 
     final public function View(){
         $view = new View;
-        $view->init(Application::$appConfig['view_type']);
+        $view->init(\Application::$appConfig['view_type']);
         return $view;
     }
 

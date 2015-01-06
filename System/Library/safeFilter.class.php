@@ -1,12 +1,12 @@
 <?php
-
+namespace System\Library;
 /**
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2014/12/28 0028
  * Time: ÉÏÎç 10:34
  */
-class System_Library_System_safeFilter
+class safeFilter
 {
 
     public static function int($val)

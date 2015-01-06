@@ -39,8 +39,7 @@ function M($model)
     if (empty($model)) {
         trigger_error('不能实例化空模型');
     }
-    require_once APP_PATH . '/' . ucfirst($routeUrl['module']) . '/Model/' . ucfirst($model) . 'Model.php';
-    $model_name = $model . 'Model';
+    $model_name = "\\".ucfirst($routeUrl['module'])."\\Model\\".$model . 'Model';
     return new $model_name;
 }
 
@@ -149,7 +148,7 @@ function Hook($tag, &$params = NULL)
     if ($tag) {
         if (APP_DEBUG) {
             G($tag . 'Start');
-            Error::trace('[ ' . $tag . ' ] --START--', '', 'INFO');
+            \System\Core\Error::trace('[ ' . $tag . ' ] --START--', '', 'INFO');
         }
         // 执行扩展
         if (strpos($tag, '/')) {
@@ -157,10 +156,8 @@ function Hook($tag, &$params = NULL)
         } else {
             $method = 'run';
         }
-        $class = $tag . 'Hook';
-        if (is_file(Hook_PATH . "/" . $class . EXT)) {
-            require_once(Hook_PATH . "/" . $class . EXT);
-        }
+        $class = "\\System\\Library\\Hook\\".$tag . 'Hook';
+
         if (APP_DEBUG) {
             G('behaviorStart');
         }
@@ -168,11 +165,11 @@ function Hook($tag, &$params = NULL)
         $behavior->$method($params);
         if (APP_DEBUG) { // 记录行为的执行日志
             G('behaviorEnd');
-            Error::trace($tag . ' Hook ::' . $method . ' [ RunTime:' . G('behaviorStart', 'behaviorEnd', 6) . 's ]', '', 'INFO');
+            \System\Core\Error::trace($tag . ' Hook ::' . $method . ' [ RunTime:' . G('behaviorStart', 'behaviorEnd', 6) . 's ]', '', 'INFO');
         }
 
         if (APP_DEBUG) { // 记录行为的执行日志
-            Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
+            \System\Core\Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
         }
     } else { // 未执行任何行为 返回false
         return false;
@@ -376,47 +373,43 @@ function N($key, $step = 0, $save = false)
  */
 function loader($class)
 {
-    //$dir = './';
-    //set_include_path(get_include_path().PATH_SEPARATOR.$ids_dir);
-    //$class = str_replace('\\', '/', $class) . '.php';
-    //require_once($class);
-    //$class = str_replace('\\', '/', $class) . '.php';
-    //require_once($class);
-    //echo $class;exit;
-    echo $class."<br/>";
-    preg_match('/(.*)\(.*\)/',$class, $matches);
-    $className = $matches?$matches[1]:$class;
-
-    $classPath = str_replace('\\', '/', $className) . '.php';
-    require_once(ROOT_PATH."/".$classPath);
-    return new $class;
-
-    /*$len = count($className);
-    if ($className[0] == "System") {
-        $path = ROOT_PATH;
-        foreach ($className as $k => $v) {
-            $path .= "/".$className[$k];
-        }
-        $path = $path . EXT;
-    } else {
-        if ($len == 3) {
-            switch ($className[1]) {
-                case "Controller":
-                    $path = MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Controller" . ext;
-                    break;
-                case "Model":
-                    $path =  MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "Model" . ext;
-                    break;
-                default:
-                    break;
-            }
-        } else if ($len == 4) {
-            $path =  MODULE_PATH . "/" . $className[0] . "/" . $className[1] . "/" . $className[2] . "/" . $className[3] . ext;
+/*
+ * elseif(is_dir(APP_PATH."/".substr($class,0,stripos($class,"\\")))){
+        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+        if (file_exists($classPath)) {
+            return include $classPath;
         }
     }
-    if(!Application::$rqFile[md5($path)]){
-        require_once $path;
-    }*/
+ * */
+
+
+    $matches = array();
+    preg_match('/(?P<namespace>.+\\\)?(?P<class>[^\\\]+$)/', $class, $matches);
+    $class     = (isset($matches['class'])) ? $matches['class'] : '';
+    $namespace = (isset($matches['namespace'])) ? $matches['namespace'] : '';
+
+    if(substr($class,-10)=="Controller" && strlen($class)!==10){
+        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+        if (file_exists($classPath)) {
+            return include $classPath;
+        }
+    }elseif(substr($class,-5)=="Model" && strlen($class)!==5){
+        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+        if (file_exists($classPath)) {
+            return include $classPath;
+        }
+    }elseif(is_file(APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext)){
+        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+        if (file_exists($classPath)) {
+            return include $classPath;
+        }
+    }else{
+        $classPath = str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).EXT;
+        if (file_exists(ROOT_PATH."/".$classPath)) {
+            return include ROOT_PATH."/".$classPath;
+        }
+    }
+
 }
 
 function cache($key,$val){
@@ -469,7 +462,7 @@ function get($key,$limit=''){
         $igc = isset($var[$key]) ? $var[$key] : false;
     }else{
         $igc = $var[$key];
-        return  System_Library_System_safeFilter::$limit($igc);
+        return  \System\Library\safeFilter::$limit($igc);
     }
 }
 
@@ -483,7 +476,7 @@ function post($key,$limit=''){
         $igc = isset($var[$key]) ? $var[$key] : false;
     }else{
         $igc = $var[$key];
-        return  System_Library_System_safeFilter::$limit($igc);
+        return  \System\Library\safeFilter::$limit($igc);
     }
 }
 

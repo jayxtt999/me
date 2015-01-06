@@ -5,7 +5,7 @@
  * Date: 14-11-29
  * Time: 下午8:40
  */
-
+namespace Admin\Controller;
 class menuController extends abstractController{
 
 
@@ -27,7 +27,7 @@ class menuController extends abstractController{
 
         $id = get('id','int');
         $row = $this->db->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
-        $formClass = new Admin_Menu_Form_EditForm();        //获取表单
+        $formClass = new \Admin\Menu\Form\editForm();        //获取表单
         $form = $formClass->init();                         //初始化
         $form->bind($row);                                  //绑定Row
         $formClass->start('menuEdit');                      //开始渲染
