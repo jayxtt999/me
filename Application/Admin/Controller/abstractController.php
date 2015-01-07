@@ -11,17 +11,14 @@ namespace Admin\Controller;
 
 class abstractController extends \System\Core\Controller{
 
-    public $common;
-    public $model;
-    public $db;
+
     function __construct(){
         $this->init();
-        $this->model = $this->loadModel();
-        $this->db = \System\Core\Model::getDb();
     }
+
     public function init(){
         //获取菜单栏 && 获取当前路由相关信息
-        $common = M('common');
+        $common = new \Admin\Model\commonModel();
         $this->common = $common;
         $menuData = $common->getMenu();
         $navArray = $common->navArray;
@@ -33,13 +30,10 @@ class abstractController extends \System\Core\Controller{
         );
         $this->View()->assign($tplData);
     }
-    /**
-     * @param null $name
-     * @return mixed
-     */
-    public function loadModel($name=null){
-        $name = $name?$name:\System\Core\Route::$routeUrl['controller'];
-        return M($name);
+
+    public function notFound(){
+        $this->View()->assign(array('url'=>curPageURL()));
+        $this->View()->display('admin:notFound:index');
     }
 
 }

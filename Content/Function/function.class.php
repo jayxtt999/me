@@ -28,21 +28,50 @@ function Show($msg)
 }
 
 /**
- * 获取当前模块下的模型
- * @param $model
- * @return mixed
+ * URL重定向
+ * @param string $url 重定向的URL地址
+ * @param integer $time 重定向的等待时间（秒）
+ * @param string $msg 重定向前的提示信息
+ * @return void
  */
-function M($model)
-{
-    $route = Application::$appLib['route'];
-    $routeUrl = $route::$routeUrl;
-    if (empty($model)) {
-        trigger_error('不能实例化空模型');
+function redirect($url, $time=0, $msg='') {
+    if (empty($msg))
+        $msg    = "系统将在{$time}秒之后自动跳转到{$url}！";
+    if (!headers_sent()) {
+        // redirect
+        if (0 === $time) {
+            header('Location: ' . $url);
+        } else {
+            header("refresh:{$time};url={$url}");
+            echo($msg);
+        }
+        exit();
+    } else {
+        $str    = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
+        if ($time != 0)
+            $str .= $msg;
+        exit($str);
     }
-    $model_name = "\\".ucfirst($routeUrl['module'])."\\Model\\".$model . 'Model';
-    return new $model_name;
 }
 
+
+// 说明：获取完整URL
+
+function curPageURL()
+{
+    $pageURL = 'http';
+    if ($_SERVER["HTTPS"] == "on"){
+        $pageURL .= "s";
+    }
+    $pageURL .= "://";
+    if ($_SERVER["SERVER_PORT"] != "80") {
+        $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+    }
+    else {
+        $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+    }
+    return $pageURL;
+}
 
 /**
  *

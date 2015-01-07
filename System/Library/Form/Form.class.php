@@ -17,6 +17,7 @@ class Form {
     private  $_select = array();
     private  $_bind = false;
     private  $_bindDate = array();
+    private  $_name = array();
     /**
      * @param string $name
      * @param string $url
@@ -44,17 +45,26 @@ class Form {
     }
 
 
-    public function start($name){
+    public function begin($name){
         return  $this->_form[$name];
     }
     public function end(){
         return "</form>";
     }
 
-    public function setText($name,$label="",$param="",$valid){
+    public function setHide($name,$param){
         if(!$name){
-            Error::trace("Text name".$name."未定义",'','ERR');
+            \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
         }
+        $this->_name[$name];
+        $this->setText($name,$label="",$param,$valid="",true);
+    }
+
+    public function setText($name,$label="",$param="",$valid="",$isHide=false){
+        if(!$name){
+            \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
+        }
+        $this->_name[$name] = $valid;
         if(is_array($param)){
             $paramS = "";
             foreach($param as $k=>$v){
@@ -81,7 +91,13 @@ class Form {
             }
             $additional.="<span class='help-block help-block-error' style='display:none'></span>";
         }
-        $this->_text[$name] = $label."<div class='col-md-9'><input type='text' name='$name' ".$paramS.$value.$validHtml." >".$additional."</div>";
+        if($isHide){
+            $type = 'hidden';
+        }else{
+            $type = 'text';
+        }
+
+        $this->_text[$name] = $label."<div class='col-md-9'><input type='".$type."' name='$name' ".$paramS.$value.$validHtml." >".$additional."</div>";
     }
 
 
@@ -96,8 +112,9 @@ class Form {
 
     public function setTextArea($name,$param=""){
         if(!$name){
-            Error::trace("Text name".$name."未定义",'','ERR');
+            \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
         }
+        $this->_name[$name];
         if(is_array($param)){
             $paramS = "";
             foreach($param as $k=>$v){
@@ -117,8 +134,9 @@ class Form {
 
     public function setSelect($name,$param="",$data=""){
         if(!$name){
-            Error::trace("Text name".$name."未定义",'','ERR');
+            \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
         }
+        $this->_name[$name];
         if(is_array($param)){
             $paramS = "";
             foreach($param as $k=>$v){

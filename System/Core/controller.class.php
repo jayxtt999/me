@@ -15,5 +15,14 @@ class Controller {
         return $view;
     }
 
+    final public function getRequest(){
+
+
+
+    }
+
+
+
+
 }
 
