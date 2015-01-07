@@ -17,7 +17,7 @@ class Form {
     private  $_select = array();
     private  $_bind = false;
     private  $_bindDate = array();
-    private  $_name = array();
+    public  $_name = array();
     /**
      * @param string $name
      * @param string $url
@@ -159,11 +159,6 @@ class Form {
             return "<select></select>";
         }
     }
-
-
-
-
-
 
 
 

@@ -7,10 +7,9 @@
  */
 namespace Admin\Controller;
 use Admin\Model\commonModel;
+use System\Library\Form\checkForm as checkForm;
 
 class menuController extends abstractController{
-
-
 
     public function indexAction(){
         $menuAll = new \Admin\Model\menuModel();
@@ -19,7 +18,6 @@ class menuController extends abstractController{
         $this->View()->display();
     }
 
-
     public function addAction(){
 
 
@@ -27,7 +25,6 @@ class menuController extends abstractController{
     }
 
     public function editAction(){
-
         $id = get('id','int');
         $db = \System\Core\Model::getDb();
         $row = $db->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
@@ -36,7 +33,6 @@ class menuController extends abstractController{
         $form->start('menuEdit');                      //开始渲染
         $this->View()->assign(array('form'=>$form));
         $this->View()->display();
-
     }
 
 
@@ -48,15 +44,10 @@ class menuController extends abstractController{
         }
         $form = new \Admin\Menu\Form\editForm();
         $form->start('menuEdit');
-
-
-
-        if(REQUEST_METHOD == "POST"){
-            echo 1111;exit;
+        if(!$this->getRequest()->getMethod()=="POST"){
+            return $this->notFound();
         }
-        var_dump($form);exit;
-
-        var_dump($_POST);exit;
+        $date = checkForm::init($_POST,$form->_name);
 
 
     }
