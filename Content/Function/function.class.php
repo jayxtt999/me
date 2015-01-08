@@ -509,6 +509,10 @@ function post($key,$limit=''){
     }
 }
 
+function exception($msg){
+    return \System\Core\Error::halt($msg);
+}
+
 
 
 

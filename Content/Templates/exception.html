@@ -40,7 +40,7 @@
                 <h3>TRACE</h3>
             </div>
             <div class="text">
-                <p><?php echo nl2br($e['trace']);?></p>
+                <p><?php echo nl2br(htmlspecialchars($e['trace']));?></p>
             </div>
         </div>
         <?php }?>

@@ -48,7 +48,7 @@ class menuController extends abstractController{
             return $this->notFound();
         }
         $date = checkForm::init($_POST,$form->_name);
-
+        var_dump($date);exit;
 
     }
 
