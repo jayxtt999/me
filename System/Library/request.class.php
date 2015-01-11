@@ -13,7 +13,7 @@ class Request
     /**是否为ajax提交
      * @return bool
      */
-    function isAjax()
+    public function isAjax()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'XMLHttpRequest';
     }
@@ -22,7 +22,7 @@ class Request
      * 获取提交方式
      * @return mixed
      */
-    function getMethod()
+    public function getMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
@@ -31,7 +31,7 @@ class Request
      * 获取ip
      * @return string
      */
-    function getIP()
+    public function getIP()
     {
         if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
             $ip = getenv("HTTP_CLIENT_IP");
@@ -51,7 +51,7 @@ class Request
      * 来源是否为手机
      * @return bool
      */
-    function is_mobile()
+    public function is_mobile()
     {
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
         $mobile_agents = Array("240x320", "acer", "acoon", "acs-", "abacho", "ahong", "airness", "alcatel", "amoi", "android", "anywhereyougo.com", "applewebkit/525", "applewebkit/532", "asus", "audio", "au-mic", "avantogo", "becker", "benq", "bilbo", "bird", "blackberry", "blazer", "bleu", "cdm-", "compal", "coolpad", "danger", "dbtel", "dopod", "elaine", "eric", "etouch", "fly ", "fly_", "fly-", "go.web", "goodaccess", "gradiente", "grundig", "haier", "hedy", "hitachi", "htc", "huawei", "hutchison", "inno", "ipad", "ipaq", "ipod", "jbrowser", "kddi", "kgt", "kwc", "lenovo", "lg ", "lg2", "lg3", "lg4", "lg5", "lg7", "lg8", "lg9", "lg-", "lge-", "lge9", "longcos", "maemo", "mercator", "meridian", "micromax", "midp", "mini", "mitsu", "mmm", "mmp", "mobi", "mot-", "moto", "nec-", "netfront", "newgen", "nexian", "nf-browser", "nintendo", "nitro", "nokia", "nook", "novarra", "obigo", "palm", "panasonic", "pantech", "philips", "phone", "pg-", "playstation", "pocket", "pt-", "qc-", "qtek", "rover", "sagem", "sama", "samu", "sanyo", "samsung", "sch-", "scooter", "sec-", "sendo", "sgh-", "sharp", "siemens", "sie-", "softbank", "sony", "spice", "sprint", "spv", "symbian", "tablet", "talkabout", "tcl-", "teleca", "telit", "tianyu", "tim-", "toshiba", "tsm", "up.browser", "utec", "utstar", "verykool", "virgin", "vk-", "voda", "voxtel", "vx", "wap", "wellco", "wig browser", "wii", "windows ce", "wireless", "xda", "xde", "zte");
@@ -69,7 +69,7 @@ class Request
      * 获取访客浏览器
      * @return string
      */
-    function Get_Browser()
+    public function Get_Browser()
     {
         if (!empty($_SERVER['HTTP_USER_AGENT'])) {
             $br = $_SERVER['HTTP_USER_AGENT'];
@@ -96,7 +96,7 @@ class Request
      * 获得访客浏览器语言
      * @return string
      */
-    function Get_Lang()
+    public function Get_Lang()
     {
         if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -118,7 +118,7 @@ class Request
      * 获取访客操作系统
      * @return string
      */
-    function Get_Os()
+    public function Get_Os()
     {
         if (!empty($_SERVER['HTTP_USER_AGENT'])) {
             $OS = $_SERVER['HTTP_USER_AGENT'];
@@ -141,5 +141,17 @@ class Request
         }
     }
 
+    public function getData(){
+        $safeFilter = new \System\Library\safeFilter();
+        foreach ($_POST as $post_key=>$post_var)
+        {
+            if (is_numeric($post_var)) {
+                $date[strtolower($post_key)] = $safeFilter::int($post_var);
+            } else {
+                $date[strtolower($post_key)] = $safeFilter::string($post_var);
+            }
+        }
+        return $date;
+    }
 
 }

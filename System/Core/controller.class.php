@@ -7,6 +7,8 @@
  */
 
 namespace System\Core;
+use \System\Library\Request;
+
 class Controller {
 
     /**
@@ -18,13 +20,20 @@ class Controller {
         $view->init(\Application::$appConfig['view_type']);
         return $view;
     }
-
     /**
      * Request
      * @return \System\Library\Request
      */
     final public function getRequest(){
         return new \System\Library\Request();
+    }
+
+    final public function request(){
+        return new Request();
+    }
+
+    final public function db(){
+        return  \System\Core\Model::getDb();
     }
 
 }

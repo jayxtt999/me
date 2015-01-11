@@ -26,8 +26,7 @@ class menuController extends abstractController{
 
     public function editAction(){
         $id = get('id','int');
-        $db = \System\Core\Model::getDb();
-        $row = $db->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
+        $row = $this->db()->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
         $form = new \Admin\Menu\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('menuEdit');                      //开始渲染
@@ -35,9 +34,7 @@ class menuController extends abstractController{
         $this->View()->display();
     }
 
-
     public function saveAction(){
-
         $id = post('id','int');
         if(!$id){
             return $this->notFound();
@@ -47,9 +44,11 @@ class menuController extends abstractController{
         if(!$this->getRequest()->getMethod()=="POST"){
             return $this->notFound();
         }
-        $date = checkForm::init($_POST,$form->_name);
-        var_dump($date);exit;
-
+        $data = $this->request()->getData();
+        $id = $data['id'];
+        unset($data['id']);
+        $data = checkForm::init($data,$form->_name);
+        $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
     }
 
     public function delAction(){

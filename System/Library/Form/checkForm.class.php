@@ -37,9 +37,6 @@ class checkForm {
                 }
             }
             foreach($date as $k=>$v){
-                if($v!=="admin"){
-                    continue;
-                }
                 if(isset($form[$k]['datatype'])){
                    $dataType = $form[$k]['datatype'];
                     if(array_key_exists($dataType,self::$type)){

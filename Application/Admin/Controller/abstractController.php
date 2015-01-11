@@ -7,8 +7,6 @@
  */
 
 namespace Admin\Controller;
-
-
 class abstractController extends \System\Core\Controller{
 
 

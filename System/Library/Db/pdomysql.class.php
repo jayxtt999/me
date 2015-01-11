@@ -177,10 +177,10 @@ class pdoMysql
                     $wz = strpos($key, "?");
                     $parame = $wz ? substr($key, $wz + 1) : "=";
                     $k = substr($key, 0, $wz);
-                    $whereData .= " and " . $key . $parame . "?";
+                    $whereData .= " and " . "`".$key."`" . $parame . "?";
                 }
             } else {
-               \System\Core\Error::halt("$where not is array()");
+               exception("$where not is array()");
             }
         }
         $whereVal[]=$order;
@@ -197,6 +197,32 @@ class pdoMysql
             $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
         return $this->res;
+    }
+
+
+    public function upDate($table,array $data,array $where){
+        if(is_array($data) && is_array($where)){
+            $setSql = $whereSql = "";
+            $len = count($data);
+            $i = 0;
+            foreach($data as $k=>$v){
+                $i++;
+                $semicolon = $len == $i?" ":",";
+                $setSql .= "`".$k."`"."=\"".$v."\"".$semicolon;
+            }
+            $sql = "UPDATE ".$this->prefix.$table." SET ". $setSql." WHERE 1=1";
+            foreach($where as $k=>$v){
+              $whereSql .= " AND "."`".$k."`"."=\"".$v."\"";
+            }
+            $sql.=$whereSql;
+            echo($sql);exit;
+            $this->sql = "UPDATE ".$this->prefix.$table." SET FirstName = 'Fred' WHERE LastName = 'Wilson'";
+
+
+        }else{
+            exception("Data update parameter error..");
+        }
+
     }
 
 

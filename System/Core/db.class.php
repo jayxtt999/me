@@ -12,6 +12,7 @@ class DB
     protected $options = '';
     protected $where = null;
     protected $selectmodel;
+    protected $data;
     public function init($config)
     {
         $this->db = new \System\Library\Db\pdoMysql($config['pdoMysql']);
@@ -66,6 +67,9 @@ class DB
             case "SELECT":
                 return $this->db->select($this->selectmodel, $this->table, $this->where, $this->fields, $this->order, $this->limit);
                 break;
+            case "UPDATE":
+                return $this->db->upDate($this->table,$this->data, $this->where);
+                break;
         }
     }
 
@@ -75,11 +79,17 @@ class DB
     }
 
     /**
-     * ��������
      * @access public
      */
     public function __destruct() {
 
+    }
+
+    public function upDate(array $data,array $where){
+        $this->options = "UPDATE";
+        $this->data = $data;
+        $this->where = $where;
+        return $this;
     }
 
 

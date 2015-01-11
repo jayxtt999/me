@@ -52,7 +52,7 @@ class Form {
         return "</form>";
     }
 
-    public function setHide($name,$param){
+    public function setHide($name,$param,$isCheck=false){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
         }
