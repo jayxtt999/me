@@ -36,5 +36,12 @@ class Controller {
         return  \System\Core\Model::getDb();
     }
 
+    final public function link(){
+        $link = new \System\Library\Link();
+        $link->init();
+        return $link;
+    }
+
+
 }
 

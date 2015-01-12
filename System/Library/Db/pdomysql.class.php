@@ -210,15 +210,13 @@ class pdoMysql
                 $semicolon = $len == $i?" ":",";
                 $setSql .= "`".$k."`"."=\"".$v."\"".$semicolon;
             }
-            $sql = "UPDATE ".$this->prefix.$table." SET ". $setSql." WHERE 1=1";
+            $this->sql = "UPDATE ".$this->prefix.$table." SET ". $setSql." WHERE 1=1";
             foreach($where as $k=>$v){
               $whereSql .= " AND "."`".$k."`"."=\"".$v."\"";
             }
-            $sql.=$whereSql;
-            echo($sql);exit;
-            $this->sql = "UPDATE ".$this->prefix.$table." SET FirstName = 'Fred' WHERE LastName = 'Wilson'";
-
-
+            $this->sql.=$whereSql;
+            $stmt = $this->pdo->prepare($this->sql);
+            return  $stmt->rowCount();
         }else{
             exception("Data update parameter error..");
         }

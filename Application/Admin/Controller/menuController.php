@@ -49,6 +49,8 @@ class menuController extends abstractController{
         unset($data['id']);
         $data = checkForm::init($data,$form->_name);
         $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
+        return $this->link()->getUrl("admin:menu:list");
+
     }
 
     public function delAction(){

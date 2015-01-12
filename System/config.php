@@ -36,7 +36,6 @@ return array(
     'view_templates' => 'default',
     /*缓存文件配置*/
     'view' => array(
-
         //smarty
         'smarty' => array(
             'left_delimiter' => '{',
