@@ -39,6 +39,7 @@ class Controller {
     final public function link(){
         $link = new \System\Library\Link();
         $link->init();
+        $link->view = $this->View();
         return $link;
     }
 

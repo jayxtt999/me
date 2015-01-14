@@ -49,7 +49,7 @@ class menuController extends abstractController{
         unset($data['id']);
         $data = checkForm::init($data,$form->_name);
         $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
-        return $this->link()->toUrl("admin:menu:index",3,"保存成功");
+        return $this->link()->toUrl("admin:menu:index",3,"修改成功");
 
     }
 

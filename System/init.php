@@ -71,7 +71,7 @@ final class Application
         self::setAutoLibs();
         self::autoload();
         // 设定错误和异常处理
-        self::loadError();
+        //self::loadError();
         if (C('output_encode')) {
             $zlib = ini_get('zlib.output_compression');
             if (empty($zlib)) ob_start('ob_gzhandler');
