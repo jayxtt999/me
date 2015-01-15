@@ -9,17 +9,15 @@
 namespace System\Library;
 
 class Link {
+    public $view;
     private $mvc = array('m','c','a');
     private $urlType;
-    private $tVar = array();
-    public  $view;
     public function init(){
-        $this->view = \System\Core\View::$view;
         $this->urlType =  C("route:url_type");
     }
 
-    public function toUrl($url,$time=0,$msg="",$status=true,$ajax=false){
-        $this->dispatchJump($this->getUrl($url),$time,$msg,$status,$ajax);
+    public function toUrl($jumpUrl,$time=0,$msg="",$status=true,$ajax=false){
+        $this->dispatchJump($this->getUrl($jumpUrl),$time,$msg,$status,$ajax);
     }
 
     public function  getUrl($url){
@@ -55,32 +53,35 @@ class Link {
      * @param integer $ajax true or false 是否为ajax
      * @return void
      */
-    function dispatchJump($url, $time=0, $msg='',$status,$ajax) {
+    function dispatchJump($jumpUrl, $time=0, $msg='',$status,$ajax) {
         if($ajax || $this->isAjax()){
             $this->ajaxReturn($ajax,$msg,$status);
         }
         if(!empty($jumpUrl)){
             $this->view->assign(array('jumpUrl'=>$jumpUrl));
         }
+
         // 提示标题
-        $this->view->assign(array('msgTitle'=>$this->get('msgTitle')));
+        $this->view->assign(array('msgTitle'=>$this->view->get('msgTitle')));
         //如果设置了关闭窗口，则提示完毕后自动关闭窗口
-        if($this->get('closeWin')){
+        if($this->view->get('closeWin')){
             $this->view->assign(array('jumpUrl'=>'javascript:window.close();'));
         }
+
         // 状态
         $this->view->assign(array('status'=>$status));
-        if($status) { //发送成功信息
+        if($status){ //发送成功信息
             $this->view->assign(array('message'=>$msg));// 提示信息
             // 成功操作后默认停留1秒
-            if(!$this->get('waitSecond')){
+            if(!$this->view->get('waitSecond')){
                 $this->view->assign(array('waitSecond'=>"1"));
             }
             // 默认操作成功自动返回操作前页面
-            if(!$this->get('jumpUrl')){
+            if(!$this->view->get('jumpUrl')){
                 $this->view->assign(array("jumpUrl"=>$_SERVER["HTTP_REFERER"]));
             }
-            $this->view->display(APP_TEMP_PATH."/dispatch_jump.tpl");
+            $this->view->display("common/dispatch_jump",true);
+            exit;
         }else{
             // 提示信息
             $this->view->assign(array('error'=>$msg));
@@ -92,38 +93,13 @@ class Link {
             if(!$this->get('jumpUrl')){
                 $this->view->assign(array('jumpUrl'=>"javascript:history.back(-1);"));
             }
-            $this->view->display(APP_TEMP_PATH."/dispatch_jump.tpl");
+            $this->view->display("common/dispatch_jump",true);
             // 中止执行  避免出错后继续执行
             exit ;
         }
 
 
     }
-
-    /**
-     * 设置模板变量的值
-     * @access public
-     * @param string $name
-     * @return mixed
-     */
-    public function set($name,$val){
-        $this->tVar[$name] = $val;
-    }
-
-
-    /**
-     * 取得模板变量的值
-     * @access public
-     * @param string $name
-     * @return mixed
-     */
-    public function get($name){
-        if(isset($this->tVar[$name]))
-            return $this->tVar[$name];
-        else
-            return false;
-    }
-
 
     /**
      * Ajax方式返回数据到客户端

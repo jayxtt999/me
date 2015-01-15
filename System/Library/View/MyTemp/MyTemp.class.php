@@ -40,7 +40,6 @@ class MyTemp {
     private $literal = array();
 
     public function init($config){
-
         $this->config = $config;
         Factory::setMyTemp($this);
         Factory::setMyTemp($this);

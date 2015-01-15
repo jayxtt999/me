@@ -7,39 +7,49 @@
  */
 
 namespace System\Core;
+
 use \System\Library\Request;
 
-class Controller {
-
+class Controller
+{
     /**
      * 视图
      * @return View
      */
-    final public function View(){
-        $view = new View;
-        $view->init(\Application::$appConfig['view_type']);
-        return $view;
+    final public function getView()
+    {
+        if(is_object($this->view)){
+            return $this->view;
+        }
+        $this->view = new View;
+        $this->view->init(\Application::$appConfig['view_type']);
+        return $this->view;
     }
+
     /**
      * Request
      * @return \System\Library\Request
      */
-    final public function getRequest(){
+    final public function getRequest()
+    {
         return new \System\Library\Request();
     }
 
-    final public function request(){
+    final public function request()
+    {
         return new Request();
     }
 
-    final public function db(){
-        return  \System\Core\Model::getDb();
+    final public function db()
+    {
+        return \System\Core\Model::getDb();
     }
 
-    final public function link(){
+    final public function link()
+    {
         $link = new \System\Library\Link();
         $link->init();
-        $link->view = $this->View();
+        $link->view = $this->getView();
         return $link;
     }
 

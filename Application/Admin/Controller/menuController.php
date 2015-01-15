@@ -14,8 +14,9 @@ class menuController extends abstractController{
     public function indexAction(){
         $menuAll = new \Admin\Model\menuModel();
         $menuAll = $menuAll->getMenuAll();//获取全部栏目
-        $this->View()->assign(array('menuAll'=>$menuAll));
-        $this->View()->display();
+        $v = $this->getView();
+        $v->assign(array('menuAll'=>$menuAll));
+        $v->display();
     }
 
     public function addAction(){
@@ -30,8 +31,8 @@ class menuController extends abstractController{
         $form = new \Admin\Menu\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('menuEdit');                      //开始渲染
-        $this->View()->assign(array('form'=>$form));
-        $this->View()->display();
+        $this->getView()->assign(array('form'=>$form));
+        $this->getView()->display();
     }
 
     public function saveAction(){
