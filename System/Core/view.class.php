@@ -48,7 +48,6 @@ class View
     public function assign($data)
     {
         self::$assignData = array_merge(self::$assignData, $data);
-        return $this;
     }
 
     /**
@@ -90,15 +89,11 @@ class View
 
     // 模板变量获取和设置
     public function get($name) {
-       return self::$view->get($name);
+        return self::$assignData[$name];
     }
 
     public function set($name,$value) {
-        var_dump($name);
-        var_dump($value);exit;
-        self::$view->set($name,$value);
-        echo self::$view->get($name);exit;
-        return self::$view->set($name,$value);
+        self::$assignData[$name] = $value;
     }
 
 }
