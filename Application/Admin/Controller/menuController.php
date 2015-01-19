@@ -49,8 +49,12 @@ class menuController extends abstractController{
         $id = $data['id'];
         unset($data['id']);
         $data = checkForm::init($data,$form->_name);
-        $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
-        return $this->link()->toUrl("admin:menu:index",3,"修改成功");
+        $res = $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
+        if($res){
+            return $this->link()->success("admin:menu:index","更新成功");
+        }else{
+            return $this->link()->error("未更新或更新失败");
+        }
 
     }
 

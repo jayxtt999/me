@@ -16,10 +16,44 @@ class Link {
         $this->urlType =  C("route:url_type");
     }
 
+    /**
+     * @param $jumpUrl
+     * @param int $time
+     * @param string $msg
+     * @param bool $status
+     * @param bool $ajax
+     */
     public function toUrl($jumpUrl,$time=0,$msg="",$status=true,$ajax=false){
         $this->dispatchJump($this->getUrl($jumpUrl),$time,$msg,$status,$ajax);
     }
 
+    /**
+     * @param $jumpUrl
+     * @param int $time
+     * @param string $msg
+     * @param bool $status
+     * @param bool $ajax
+     */
+    public function success($jumpUrl,$msg=""){
+        $this->dispatchJump($this->getUrl($jumpUrl),3,$msg,true,false);
+    }
+
+    /**
+     * @param $jumpUrl
+     * @param int $time
+     * @param string $msg
+     * @param bool $status
+     * @param bool $ajax
+     */
+    public function error($msg='',$status=false,$ajax=false){
+        $this->dispatchJump("", $time=1, $msg,$status,$ajax);
+    }
+
+
+    /**
+     * @param $url
+     * @return string
+     */
     public function  getUrl($url){
         $url = explode(":",$url);
         switch($this->urlType){
@@ -28,6 +62,11 @@ class Link {
                 break;
         }
     }
+
+    /**
+     * @param $url
+     * @return string
+     */
     public function defaultUrl($url){
 
         $urlMvc = "";
@@ -60,7 +99,6 @@ class Link {
         if(!empty($jumpUrl)){
             $this->view->assign(array('jumpUrl'=>$jumpUrl));
         }
-
         // 提示标题
         $this->view->assign(array('msgTitle'=>$this->view->get('msgTitle')));
         //如果设置了关闭窗口，则提示完毕后自动关闭窗口
@@ -86,11 +124,11 @@ class Link {
             // 提示信息
             $this->view->assign(array('error'=>$msg));
             //发生错误时候默认停留3秒
-            if(!$this->get('waitSecond')){
+            if(!$this->view->get('waitSecond')){
                 $this->view->assign(array('waitSecond'=>"3"));
             }
             // 默认发生错误的话自动返回上页
-            if(!$this->get('jumpUrl')){
+            if(!$this->view->get('jumpUrl')){
                 $this->view->assign(array('jumpUrl'=>"javascript:history.back(-1);"));
             }
             $this->view->display("common/dispatch_jump",true);

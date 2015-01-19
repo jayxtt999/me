@@ -216,6 +216,7 @@ class pdoMysql
             }
             $this->sql.=$whereSql;
             $stmt = $this->pdo->prepare($this->sql);
+            $stmt->execute();
             return  $stmt->rowCount();
         }else{
             exception("Data update parameter error..");
