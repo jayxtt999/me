@@ -13,6 +13,7 @@ class Form {
     private  $_form = array();
     private  $_start;
     private  $_text = array();
+    private  $_check = array();
     private  $_textarea = array();
     private  $_select = array();
     private  $_bind = false;
@@ -40,18 +41,33 @@ class Form {
         $this->_form[strtolower($name)] = "<form name=\"".$name."\" action=\"".$url."\" method='".$model."' ".$paramS.">";
     }
 
+    /**
+     * @param $obj
+     */
     public function bind($obj){
         $this->_bindDate = $obj;
     }
 
-
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function begin($name){
         return  $this->_form[$name];
     }
+
+    /**
+     * @return string
+     */
     public function end(){
         return "</form>";
     }
 
+    /**
+     * @param $name
+     * @param $param
+     * @param bool $isCheck
+     */
     public function setHide($name,$param,$isCheck=false){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
@@ -60,6 +76,51 @@ class Form {
         $this->setText($name,$label="",$param,$valid="",true);
     }
 
+    /**
+     * @param $name
+     * @param $param
+     * @param $value
+     */
+    public function setBsCheckBox($name,$label="",$param){
+
+        if(is_array($param)){
+            $paramS = "";
+            foreach($param as $k=>$v){
+                $paramS .= "$k=\"$v\" ";
+            }
+        }
+        if(isset($label)){
+            $label = "<label class='col-md-3 control-label'>$label</label>";
+        }
+        if($this->_bindDate){
+            $v = $this->_bindDate[$name]?"":"";
+        }
+
+        $this->_check[$name] = $label."
+             <input name='".$name."' type='checkbox' ".$v.$paramS." data-size='normal'>
+        ";
+
+    }
+
+    /**
+     * @param $name
+     * @return string
+     */
+    public function getBsCheckBox($name){
+        if($this->_check[$name]){
+            return $this->_check[$name];
+        }else{
+            return "null";
+        }
+    }
+
+    /**
+     * @param $name
+     * @param string $label
+     * @param string $param
+     * @param string $valid
+     * @param bool $isHide
+     */
     public function setText($name,$label="",$param="",$valid="",$isHide=false){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
@@ -100,7 +161,10 @@ class Form {
         $this->_text[$name] = $label."<div class='col-md-9'><input type='".$type."' name='$name' ".$paramS.$value.$validHtml." >".$additional."</div>";
     }
 
-
+    /**
+     * @param $name
+     * @return string
+     */
     public function getText($name){
         if($this->_text[$name]){
             return $this->_text[$name];
@@ -109,7 +173,10 @@ class Form {
         }
     }
 
-
+    /**
+     * @param $name
+     * @param string $param
+     */
     public function setTextArea($name,$param=""){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
@@ -124,6 +191,10 @@ class Form {
         $this->_textarea[$name] = "<textarea name='$name' ".$paramS."></textarea>";
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function getTextArea($name){
         if($this->_textarea[$name]){
             return $this->_textarea[$name];
@@ -132,6 +203,11 @@ class Form {
         }
     }
 
+    /**
+     * @param $name
+     * @param string $param
+     * @param string $data
+     */
     public function setSelect($name,$param="",$data=""){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
@@ -152,6 +228,10 @@ class Form {
         $this->_select[$name] ="</select>";
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function getSelect($name){
         if($this->_select[$name]){
             return $this->_select[$name];

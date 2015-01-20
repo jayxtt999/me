@@ -185,6 +185,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    {$form->getText('desc')}
+                                </div>
+
+
+                                <div class="form-group">
                                     {$form->getText('module_name')}
                                 </div>
 
@@ -209,9 +214,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {$form->getText('desc')}
+                                    {$form->getBsCheckBox('is_display')}
                                 </div>
-
 
                         </div>
 
@@ -934,19 +938,32 @@
 <!-- END CONTAINER -->
 
 
+
 <include file="layout@admin@foot"/>
 
+
+
+
+
+
 <script>
-    $(".form-horizontal").Validform({
-        tiptype: function(msg,o,cssctl){
-            o.type=5
-            var objtip=o.obj.parent().parent(".form-group");
-            cssctl(objtip,o.type);
-            var objtip2=o.obj.next();
-            objtip2.show();
-            objtip2.text(msg);
-            return true
-        }
-    });
+    $(function(){
+        $(".form-horizontal").Validform({
+            tiptype: function(msg,o,cssctl){
+                o.type=5
+                var objtip=o.obj.parent().parent(".form-group");
+                cssctl(objtip,o.type);
+                var objtip2=o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+    })
+
+
+
 </script>
+
+
 

@@ -65,10 +65,10 @@ class editForm extends \System\Library\Form\Form
         $this->setText("sort", "排序", $array, array('datatype' => 'n1-4',));
 
         $array = array(
-            "class" => "form-control",
+            "class" => "make-switch",
             "placeholder" => "IS_DISPLAY",
         );
-        $this->setText("is_display", "是否显示", $array, array('datatype' => 'n1-4',));
+        $this->setBsCheckBox("is_display","是否显示", $array);
 
         $array = array(
             "class" => "form-control",
@@ -80,7 +80,7 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "DESC",
         );
-        $this->setText("desc", "排序方式", $array, array('datatype' => 's0-24',));
+        $this->setText("desc", "栏目描述", $array, array('datatype' => 's0-24',));
 
     }
 
