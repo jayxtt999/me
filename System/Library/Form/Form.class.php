@@ -93,13 +93,12 @@ class Form {
             $label = "<label class='col-md-3 control-label'>$label</label>";
         }
         if($this->_bindDate){
-            $v = $this->_bindDate[$name]?"":"";
+            $check = $this->_bindDate[$name]?"checked":"";
+            $v = $this->_bindDate[$name]?1:0;
         }
-
         $this->_check[$name] = $label."
-             <input name='".$name."' type='checkbox' ".$v.$paramS." data-size='normal'>
+             <input name='".$name."' type='checkbox' ".$paramS." data-size='normal' ".$check." value=".$v.">
         ";
-
     }
 
     /**

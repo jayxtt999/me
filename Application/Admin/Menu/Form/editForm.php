@@ -67,6 +67,8 @@ class editForm extends \System\Library\Form\Form
         $array = array(
             "class" => "make-switch",
             "placeholder" => "IS_DISPLAY",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
         );
         $this->setBsCheckBox("is_display","是否显示", $array);
 

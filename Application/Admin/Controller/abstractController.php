@@ -13,7 +13,6 @@ use System\Core\View;
 class abstractController extends \System\Core\Controller
 {
 
-
     function __construct()
     {
         $this->init();
