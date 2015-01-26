@@ -12,9 +12,14 @@ use System\Library\Form\Form;
 
 class editForm extends \System\Library\Form\Form
 {
+    /**
+     * 初始化表单，这里的$attribute作为附加属性，在有时候会多个地方用到表单，这样的属性用于动态判断对应的操作
+     * 如：edit 与  add 操作，选择父栏目，edit默认为当前父栏目，add 为 当前id
+     * @param $formName
+     * @param string $attribute
+     */
     public function start($formName)
     {
-
         $array = array(
             "class" => "form-horizontal",
             "role" => "form",
@@ -42,8 +47,6 @@ class editForm extends \System\Library\Form\Form
         $menu = new \Admin\Model\menuModel();
         $data  = $menu->getMenuSelect();
         $this->setSelect("parent_id","父栏目",$array,$data);
-
-
         $array = array(
             "class" => "form-control ",
             "placeholder" => "MODULE_NAME",

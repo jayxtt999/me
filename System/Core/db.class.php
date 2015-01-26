@@ -15,7 +15,7 @@ class DB
     protected $data;
 
     /**
-     * ³õÊ¼»¯ÅäÖÃ
+     * åˆå§‹åŒ–é…ç½®
      * @param $config
      */
     public function init($config)
@@ -24,7 +24,7 @@ class DB
     }
 
     /**
-     * ÉèÖÃ±í
+     * è®¾ç½®è¡¨
      * @param $table
      * @return $this
      */
@@ -35,7 +35,7 @@ class DB
     }
 
     /**
-     * »ñÈ¡Ò»ĞĞ¼ÇÂ¼
+     * è·å–ä¸€è¡Œè®°å½•
      * @param null $where
      * @return $this
      */
@@ -50,7 +50,7 @@ class DB
     }
 
     /**
-     *»ñÈ¡È«²¿¼ÇÂ¼
+     *è·å–å…¨éƒ¨è®°å½•
      * @param null $where
      * @return $this
      */
@@ -64,7 +64,7 @@ class DB
     }
 
     /**
-     * ¶¨ÒåÅÅĞò·½Ê½
+     * å®šä¹‰æ’åºæ–¹å¼
      * @param $order
      * @return $this
      */
@@ -75,7 +75,7 @@ class DB
     }
 
     /**
-     * ¶¨Òå×Ö¶Î
+     * å®šä¹‰å­—æ®µ
      * @param $fields
      * @return $this
      */
@@ -86,7 +86,7 @@ class DB
     }
 
     /**
-     * ¶¨ÒåÏŞÖÆ
+     * å®šä¹‰é™åˆ¶
      * @param $limit
      * @return $this
      */
@@ -116,7 +116,7 @@ class DB
     }
 
     /**
-     * »ñÈ¡sql
+     * è·å–sql
      * @return mixed
      */
     public function getSql()
@@ -125,7 +125,7 @@ class DB
     }
 
     /**
-     * ¸üĞÂ
+     * æ›´æ–°
      * @param array $data
      * @param array $where
      * @return $this
@@ -138,7 +138,7 @@ class DB
     }
 
     /**
-     * ²åÈë
+     * æ’å…¥
      * @param array $data
      * @return $this
      */

@@ -22,26 +22,26 @@ class menuController extends abstractController{
     public function addAction(){
         $pid = get('id','int');
         $form = new \Admin\Menu\Form\editForm();        //获取表单
-        $form->start('menuEdit');                      //开始渲染
+        //添加时当前id即父栏目
+        $form->bind(array('parent_id'=>$pid));
+        $form->start('menuEdit','add');                      //开始渲染
         $this->getView()->assign(array('form'=>$form));
         $this->getView()->display('edit');
     }
-
-
 
     public function editAction(){
         $id = get('id','int');
         $row = $this->db()->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
         $form = new \Admin\Menu\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
-        $form->start('menuEdit');                      //开始渲染
+        $form->start('menuEdit','edit');                      //开始渲染
         $this->getView()->assign(array('form'=>$form));
         $this->getView()->display();
     }
 
     public function saveAction(){
         $form = new \Admin\Menu\Form\editForm();
-        $form->start('menuEdit');
+        $form->start('menuEdit','edit');
         $data = $this->request()->getData();//获取数据
         $id = $data['id'];
         unset($data['id']);
