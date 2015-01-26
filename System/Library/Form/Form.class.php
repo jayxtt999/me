@@ -134,7 +134,7 @@ class Form {
         if(isset($label)){
             $label = "<label class='col-md-3 control-label'>$label</label>";
         }
-        if($this->_bindDate){
+        if($this->_bindDate[$name]){
             $value = $this->_bindDate[$name]?"value='".$this->_bindDate[$name]."'":"";
         }
         if($valid){
@@ -207,9 +207,12 @@ class Form {
      * @param string $param
      * @param string $data
      */
-    public function setSelect($name,$param="",$data=""){
+    public function setSelect($name,$label,$param="",$data=""){
         if(!$name){
             \System\Core\Error::trace("Text name".$name."未定义",'','ERR');
+        }
+        if(isset($label)){
+            $label = "<label class='col-md-3 control-label'>$label</label><div class='col-md-6'>";
         }
         $this->_name[$name];
         if(is_array($param)){
@@ -218,13 +221,14 @@ class Form {
                 $paramS .= "$k=\"$v\" ";
             }
         }
-        $this->_select[$name] ="<select name='$name' ".$paramS.">";
+        $this->_select[$name] =$label."<select name='$name' ".$paramS.">";
         if(is_array($data)){
             foreach($data as $k=>$v){
-                $this->_select[$name] .="<option value='$k'>$v</option>";
+                $selected = $this->_bindDate[$name] == $k?"selected = 'selected'":"";
+                $this->_select[$name] .="<option value='$k' ".$selected.">$v</option>";
             }
         }
-        $this->_select[$name] ="</select>";
+        $this->_select[$name] .="</select></div>";
     }
 
     /**

@@ -1040,4 +1040,11 @@
 
     }();
 
+    function menuDel(id){
+
+        layer.confirm('确定删除吗？', function(){
+            window.location.href = "/index.php?m=admin&c=menu&a=del&id="+id
+        });
+
+    }
 </script>

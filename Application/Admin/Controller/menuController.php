@@ -20,10 +20,14 @@ class menuController extends abstractController{
     }
 
     public function addAction(){
-
-
-
+        $pid = get('id','int');
+        $form = new \Admin\Menu\Form\editForm();        //获取表单
+        $form->start('menuEdit');                      //开始渲染
+        $this->getView()->assign(array('form'=>$form));
+        $this->getView()->display('edit');
     }
+
+
 
     public function editAction(){
         $id = get('id','int');
@@ -36,27 +40,38 @@ class menuController extends abstractController{
     }
 
     public function saveAction(){
-        $id = post('id','int');
-        if(!$id){
-            return $this->notFound();
-        }
         $form = new \Admin\Menu\Form\editForm();
         $form->start('menuEdit');
-        if(!$this->getRequest()->getMethod()=="POST"){
-            return $this->notFound();
-        }
-        $data = $this->request()->getData();
+        $data = $this->request()->getData();//获取数据
         $id = $data['id'];
         unset($data['id']);
-        $data = checkForm::init($data,$form->_name);
-        $res = $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
-        if($res){
-            return $this->link()->success("admin:menu:index","更新成功");
+        if($id){
+            if(!$this->getRequest()->getMethod()=="POST"){
+                //是否为post方式提交
+                return $this->notFound();
+            }
+            $data = checkForm::init($data,$form->_name);
+            $res = $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
+            if($res){
+                return $this->link()->success("admin:menu:index","更新成功");
+            }else{
+                return $this->link()->error("未更新或更新失败");
+            }
         }else{
-            return $this->link()->error("未更新或更新失败");
+            if(!$this->getRequest()->getMethod()=="POST"){
+                return $this->notFound();
+            }
+            $data = checkForm::init($data,$form->_name);
+            $res = $this->db()->Table('common_menu')->insert($data,array('id'=>$id))->done();
+            if($res){
+                return $this->link()->success("admin:menu:index","添加栏目成功");
+            }else{
+                return $this->link()->error("添加栏目失败");
+            }
         }
-
     }
+
+
 
     public function delAction(){
 

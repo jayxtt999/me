@@ -7,6 +7,7 @@
  */
 namespace Admin\Menu\Form;
 
+use Admin\Model\menuModel;
 use System\Library\Form\Form;
 
 class editForm extends \System\Library\Form\Form
@@ -32,6 +33,15 @@ class editForm extends \System\Library\Form\Form
             "placeholder" => "ID",
         );
         $this->setHide("id",$array);
+
+
+        $array = array(
+            "class" => "form-control",
+
+        );
+        $menu = new \Admin\Model\menuModel();
+        $data  = $menu->getMenuSelect();
+        $this->setSelect("parent_id","父栏目",$array,$data);
 
 
         $array = array(

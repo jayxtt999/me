@@ -200,7 +200,14 @@ class pdoMysql
     }
 
 
-    public function upDate($table,array $data,array $where){
+    /**
+     * 更新记录
+     * @param $table
+     * @param array $data
+     * @param array $where
+     * @return int
+     */
+    public function update($table,array $data,array $where){
         if(is_array($data) && is_array($where)){
             $setSql = $whereSql = "";
             $len = count($data);
@@ -221,6 +228,36 @@ class pdoMysql
         }else{
             exception("Data update parameter error..");
         }
+
+    }
+
+    /**
+     * 插入记录
+     * @param $table
+     * @param array $data
+     * @return string
+     */
+    public function insert($table,array $data){
+        if(is_array($data)){
+            $column = $value = "";
+            $len = count($data);
+            $i = 0;
+            foreach($data as $k=>$v){
+                $i++;
+                $semicolon = $len == $i?" ":",";
+                $column .= "`".$k."`".$semicolon;
+                $value .= "'".$v."'".$semicolon;
+                //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
+            }
+            $this->sql = "INSERT ".$this->prefix.$table."(".$column.") VALUES (".$value.")" ;
+            $stmt = $this->pdo->prepare($this->sql);
+            $stmt->execute();
+            return  $this->pdo->lastInsertId();
+        }else{
+            exception("Data insert parameter error..");
+        }
+
+
 
     }
 

@@ -67,7 +67,7 @@ class menuModel extends \System\Core\Model
             } else {
                 $isDisplay = "<span class='label label-sm label-default'>不显示</span>";
             }
-            $this->html .= "<tr class='odd gradeX'><td><input type='checkbox'class='checkboxes'value='1'/></td><td>" . "|".str_repeat('-', $level+1) . $v['name'] . "</td><td>" . $v['desc'] . "</td><td>" . $v['create_time'] . "</td><td class='center'>" . $isDisplay . "</td><td><a href='/index.php?m=admin&c=menu&a=add&id=".$v['id']."'class='btn green'title='添加子栏目'><i class='fa fa-plus'></i></a><a href='/index.php?m=admin&c=menu&a=edit&id=".$v['id']."'class='btn red'title='修改'><i class='fa fa-edit'></i></a><a href='/index.php?m=admin&c=menu&a=del&id=".$v['id']."'class='btn purple'title='删除'><i class='fa fa-times'></i></a></td></tr>
+            $this->html .= "<tr class='odd gradeX'><td><input type='checkbox'class='checkboxes'value='1'/></td><td>" . "|".str_repeat('-', $level+1) . $v['name'] . "</td><td>" . $v['desc'] . "</td><td>" . $v['create_time'] . "</td><td class='center'>" . $isDisplay . "</td><td><a href='/index.php?m=admin&c=menu&a=add&id=".$v['id']."'class='btn green'title='添加子栏目'><i class='fa fa-plus'></i></a><a href='/index.php?m=admin&c=menu&a=edit&id=".$v['id']."'class='btn red'title='修改'><i class='fa fa-edit'></i></a><a href='javascript:menuDel(".$v['id'].");'class='btn purple'title='删除'><i class='fa fa-times'></i></a></td></tr>
             ";
             if (isset($v['son'])) {
                 $level++;
@@ -90,6 +90,17 @@ class menuModel extends \System\Core\Model
                 return $this->array[$v['id']];
             }
         }
+    }
+
+
+    public function getMenuSelect(){
+
+        $Db = parent::getDb();
+        $Menu = $Db->table('common_menu')->getAll()->order('id')->done();
+        foreach($Menu as $k=>$v){
+            $res[$v['id']]= $v['name'];
+        }
+        return ($res);
     }
 
 }
