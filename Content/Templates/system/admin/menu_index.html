@@ -173,43 +173,14 @@
                 </div>
             </div>
             <div class="portlet-body">
-            <div class="table-toolbar">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="btn-group">
-                            <button id="sample_editable_1_new" class="btn green">
-                                添加栏目 <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="btn-group pull-right">
-                            <button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i>
-                            </button>
-                            <ul class="dropdown-menu pull-right">
-                                <li>
-                                    <a href="#">
-                                        Print </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Save as PDF </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Export to Excel </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <table class="table table-striped table-bordered table-hover" id="sample_menu">
             <thead>
             <tr>
                 <th class="table-checkbox">
                     <input type="checkbox" class="group-checkable" data-set="#sample_menu .checkboxes"/>
                 </th>
+
                 <th>
                     栏目名称
                 </th>
@@ -949,15 +920,13 @@
 
 
 <script>
+
     /**
      * 表格插件
      */
     var TableManaged = function () {
-
         var initTable1 = function () {
-
             var table = $('#sample_menu');
-
             // begin first table
             table.dataTable({
                 "columns": [{
@@ -974,11 +943,11 @@
                     "orderable": false
                 }],
                 "lengthMenu": [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"] // change per page values here
+                    [10, 20, -1],
+                    [10, 20, "All"] // change per page values here
                 ],
                 // set the initial value
-                "pageLength": 5,
+                "pageLength": 10,
                 "pagingType": "bootstrap_full_number",
                 "language": {
                     "lengthMenu": "  _MENU_ records",
@@ -1003,16 +972,16 @@
 
             var tableWrapper = jQuery('#sample_menu_wrapper');
 
+
+
             table.find('.group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
                 jQuery(set).each(function () {
                     if (checked) {
                         $(this).attr("checked", true);
-                        $(this).parents('tr').addClass("active");
                     } else {
                         $(this).attr("checked", false);
-                        $(this).parents('tr').removeClass("active");
                     }
                 });
                 jQuery.uniform.update(set);
@@ -1023,11 +992,9 @@
             });
 
             tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+
         }
-
-
         return {
-
             //main function to initiate the module
             init: function () {
                 if (!jQuery().dataTable) {
@@ -1035,16 +1002,14 @@
                 }
                 initTable1();
             }
-
         };
 
     }();
+    TableManaged.init();
 
     function menuDel(id){
-
         layer.confirm('确定删除吗？', function(){
             window.location.href = "/index.php?m=admin&c=menu&a=del&id="+id
         });
-
     }
 </script>
