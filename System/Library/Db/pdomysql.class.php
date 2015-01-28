@@ -13,6 +13,7 @@ class pdoMysql
     protected $sql = null;
     protected $error = null;
     protected $prefix = null;
+
     /**
      * 初始化
      * @param $config
@@ -22,6 +23,7 @@ class pdoMysql
         try {
             $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
             $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);//Display exception
             $this->prefix = $config['prefix'];
         } catch (\PDOException $e) {
             $this->error();
@@ -37,9 +39,9 @@ class pdoMysql
         G('queryStartTime');
         $res = $this->pdo->query($sql);
         $this->debug();
-        if ( false === $res ) {
+        if (false === $res) {
             $this->error();
-        } else{
+        } else {
             $this->res = $res;
         }
     }
@@ -73,15 +75,18 @@ class pdoMysql
     }
 
 
-    public function beginTransaction(){
+    public function beginTransaction()
+    {
         $this->pdo->beginTransaction();
     }
 
-    public function commit(){
+    public function commit()
+    {
         $this->pdo->commit();
     }
 
-    public function rollBack(){
+    public function rollBack()
+    {
         $this->pdo->rollBack();
     }
 
@@ -119,22 +124,24 @@ class pdoMysql
      * @access public
      * @return string
      */
-    public function error() {
+    public function error()
+    {
         $this->error = $this->pdo->errorCode();
-        if('' != $this->sql){
-            $this->error .= "\n [ SQL语句 ] : ".$this->sql;
+        if ('' != $this->sql) {
+            $this->error .= "\n [ SQL语句 ] : " . $this->sql;
         }
-        trace($this->error,'','ERR');
+        trace($this->error, '', 'ERR');
         return $this->error;
     }
 
     /**
      * SQL指令安全过滤
      * @access public
-     * @param string $str  SQL字符串
+     * @param string $str SQL字符串
      * @return string
      */
-    public function escapeString($str) {
+    public function escapeString($str)
+    {
         return addslashes($str);
     }
 
@@ -143,11 +150,12 @@ class pdoMysql
      * 数据库调试 记录当前SQL
      * @access protected
      */
-    protected function debug() {
+    protected function debug()
+    {
         // 记录操作结束时间
         if (C('db:db_sql_log')) {
             G('queryEndTime');
-            \System\Core\Error::trace($this->sql.' [ RunTime:'.G('queryStartTime','queryEndTime',6).'s ]','','SQL');
+            \System\Core\Error::trace($this->sql . ' [ RunTime:' . G('queryStartTime', 'queryEndTime', 6) . 's ]', '', 'SQL');
         }
     }
 
@@ -170,24 +178,24 @@ class pdoMysql
         }
         $whereData = "";
         $whereVal = array();
-        if($where){
+        if ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $val) {
                     $whereVal[] = $val;
                     $wz = strpos($key, "?");
                     $parame = $wz ? substr($key, $wz + 1) : "=";
                     $k = substr($key, 0, $wz);
-                    $whereData .= " and " . "`".$key."`" . $parame . "?";
+                    $whereData .= " and " . "`" . $key . "`" . $parame . "?";
                 }
             } else {
-               exception("$where not is array()");
+                exception("$where not is array()");
             }
         }
-        $whereVal[]=$order;
-        $this->sql = "select $fields from ".$this->prefix."$table where 1=1 $whereData order by ?";
+        $whereVal[] = $order;
+        $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData order by ?";
         if ($limit) {
             $this->sql .= " limit ?";
-            $whereVal[]=$limit;
+            $whereVal[] = $limit;
         }
         $stmt = $this->pdo->prepare($this->sql);
         $exeres = $stmt->execute($whereVal);
@@ -207,26 +215,27 @@ class pdoMysql
      * @param array $where
      * @return int
      */
-    public function update($table,array $data,array $where){
-        if(is_array($data) && is_array($where)){
+    public function update($table, array $data, array $where)
+    {
+        if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
             $i = 0;
-            foreach($data as $k=>$v){
+            foreach ($data as $k => $v) {
                 $i++;
-                $semicolon = $len == $i?" ":",";
-                $setSql .= "`".$k."`"."=\"".$v."\"".$semicolon;
+                $semicolon = $len == $i ? " " : ",";
+                $setSql .= "`" . $k . "`" . "=\"" . $v . "\"" . $semicolon;
             }
-            $this->sql = "UPDATE ".$this->prefix.$table." SET ". $setSql." WHERE 1=1";
-            foreach($where as $k=>$v){
-              $whereSql .= " AND "."`".$k."`"."=\"".$v."\"";
+            $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
+            foreach ($where as $k => $v) {
+                $whereSql .= " AND " . "`" . $k . "`" . "=\"" . $v . "\"";
             }
-            $this->sql.=$whereSql;
+            $this->sql .= $whereSql;
             $stmt = $this->pdo->prepare($this->sql);
             $stmt->execute();
-            return  $stmt->rowCount();
-        }else{
-            exception("Data update parameter error..");
+            return $stmt->rowCount();
+        } else {
+            exception("ERROR:update 必须传入参数");
         }
 
     }
@@ -237,29 +246,53 @@ class pdoMysql
      * @param array $data
      * @return string
      */
-    public function insert($table,array $data){
-        if(is_array($data)){
+    public function insert($table, array $data)
+    {
+        if (is_array($data)) {
             $column = $value = "";
             $len = count($data);
             $i = 0;
-            foreach($data as $k=>$v){
+            foreach ($data as $k => $v) {
                 $i++;
-                $semicolon = $len == $i?" ":",";
-                $column .= "`".$k."`".$semicolon;
-                $value .= "'".$v."'".$semicolon;
+                $semicolon = $len == $i ? " " : ",";
+                $column .= "`" . $k . "`" . $semicolon;
+                $value .= "'" . $v . "'" . $semicolon;
                 //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
             }
-            $this->sql = "INSERT ".$this->prefix.$table."(".$column.") VALUES (".$value.")" ;
+            $this->sql = "INSERT " . $this->prefix . $table . "(" . $column . ") VALUES (" . $value . ")";
             $stmt = $this->pdo->prepare($this->sql);
             $stmt->execute();
-            return  $this->pdo->lastInsertId();
+            return $this->pdo->lastInsertId();
+        } else {
+            exception("ERROR:insert 必须传入参数");
+        }
+    }
+
+    public function delete($table, array $where){
+        if(is_array($where)){
+            $whereData = "";
+            $whereVal = array();
+            foreach ($where as $key => $val) {
+                $whereVal[] = $val;
+                $wz = strpos($key, "?");
+                $parame = $wz ? substr($key, $wz + 1) : "=";
+                $k = substr($key, 0, $wz);
+                $whereData .= " and " . "`" . $key . "`" . $parame . "?";
+            }
+            $this->sql = "DELETE FROM".$this->prefix.$table." WHERE 1=1 ".$whereData;
+            $stmt = $this->pdo->prepare($this->sql);
+            //$exeres = $stmt->execute($whereVal);
+            var_dump($stmt);exit;
+            $res = $stmt->execute();
+            return $res;
+
         }else{
-            exception("Data insert parameter error..");
+            exception("ERROR:delete必须传入参数");
         }
 
 
-
     }
+
 
 
 }

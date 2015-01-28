@@ -74,8 +74,8 @@ class menuController extends abstractController{
 
 
     public function delAction(){
-
-
+        $id = get("id","string");
+        $res = $this->db()->Table('common_menu')->delete(array('id'=>$id))->done();
 
     }
 

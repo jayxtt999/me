@@ -112,6 +112,9 @@ class DB
             case "INSERT":
                 return $this->db->insert($this->table,$this->data);
                 break;
+            case "DELETE":
+                return $this->db->delete($this->table,$this->where);
+                break;
         }
     }
 
@@ -145,6 +148,12 @@ class DB
     public function insert(array $data){
         $this->options = "INSERT";
         $this->data = $data;
+        return $this;
+    }
+
+    public function delete(array $where){
+        $this->options = "DELETE";
+        $this->where = $where;
         return $this;
     }
 
