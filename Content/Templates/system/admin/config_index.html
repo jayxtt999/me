@@ -1,0 +1,247 @@
+
+<include file="layout@admin@head"/>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+    <include file="layout@layout@menu"/>
+
+
+
+
+</div>
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+<div class="page-content">
+    <include file="layout@layout@widgets"/>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="portlet box grey-cascade">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="glyphicon glyphicon-arrow-left" onclick="javascript:history.go(-1);"></span>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse">
+                        </a>
+                        <a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tabbable-custom nav-justified">
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="active">
+                                <a href="#tab_1_1_1" data-toggle="tab">
+                                    基本设置  </a>
+                            </li>
+                            <li>
+                                <a href="#tab_1_1_2" data-toggle="tab">
+                                    模板管理  </a>
+                            </li>
+                            <li>
+                                <a href="#tab_1_1_3" data-toggle="tab">
+                                    个人资料  </a>
+                            </li>
+
+
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1_1_1">
+
+
+                                <div class="row">
+                                    <div class="col-md-6 ">
+
+                                            <div class="portlet-body form">
+                                                {$form->begin('config')}
+                                                <div class="form-body">
+
+                                                    <div class="form-group">
+                                                        {$form->getText('blogname')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('bloginfo')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('blogurl')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('index_lognum')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('timezone')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('login_code')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('site_title')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('site_key')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('site_description')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('istwitter')}
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        {$form->getText('index_twnum')}
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        {$form->getText('istreply')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('iscomment')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('ischkcomment')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_code')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('isgravatar')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_needchinese')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_interval')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_paging')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_pnum')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('comment_order')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('icp')}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        {$form->getText('footer_info')}
+                                                    </div>
+
+
+
+
+
+
+                                                </div>
+
+
+                                                {$form->end('menuedit')}
+                                            </div>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="tab-pane" id="tab_1_1_2">
+                               222
+                            </div>
+                            <div class="tab-pane" id="tab_1_1_3">
+                                333
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5 col-md-9">
+                                <button type="submit" class="btn green">Submit</button>
+                                <button type="button" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+<div class="clearfix">
+</div>
+
+</div>
+</div>
+
+
+</div>
+<!-- END CONTAINER -->
+
+
+
+
+<include file="layout@admin@foot"/>
+<script>
+    $(function () {
+        $(".form-horizontal").Validform({
+            tiptype: function (msg, o, cssctl) {
+                o.type = 5
+                var objtip = o.obj.parent().parent(".form-group");
+                cssctl(objtip, o.type);
+                var objtip2 = o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+        //checkBox使用bootstrapSwitch 必须手动添加此段代码
+        $('input[name="is_display"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            state ? $(this).val(1) : $(this).val(0);
+        });
+
+    })
+
+
+</script>

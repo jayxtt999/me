@@ -79,7 +79,7 @@ class MyTemp {
         if (empty($content)) {
             $templateFile = $this->parseTemplate($templateFile);
             if (!is_file($templateFile)){
-                die("模板文件".$templateFile."不存在");
+                exception("模板文件".$templateFile."不存在");
             }
         }
         ob_start();

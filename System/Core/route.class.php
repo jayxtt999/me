@@ -61,7 +61,7 @@ class Route{
             $ca  = new \ReflectionMethod($controller,$action);
             $ca->invoke(new $controller,isset($params)?$params:null);
         }catch (\Exception $e){
-            Show('控制器方法'.$action.'不存在');
+            exception('控制器方法'.$action.'不存在');
         }
 
     }

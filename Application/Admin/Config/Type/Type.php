@@ -5,7 +5,8 @@
  * Date: 14-12-23
  * Time: 下午9:26
  */
-namespace Admin\Menu\Type;
+namespace Admin\Config\Type;
+
 class type {
 
 } 
