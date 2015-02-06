@@ -15,6 +15,31 @@ class DB
     protected $data;
 
     /**
+     * @param $property_name
+     * @return null
+     */
+    public function __get($property_name)
+    {
+        if (isset($this->$property_name))
+        {
+            return ($this->$property_name);
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+
+    /**
+     * @param $property_name
+     * @param $value
+     */
+    public function __set($property_name, $value)
+    {
+        $this->$property_name = $value;
+    }
+
+    /**
      * 初始化配置
      * @param $config
      */

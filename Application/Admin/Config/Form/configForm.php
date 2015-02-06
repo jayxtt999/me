@@ -45,19 +45,23 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'd0-5',));
-
+        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'd0-5'),false,3,3);
 
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("timezone", "你所在时区", $array, array('datatype' => 'd0-5',));
+
+        $timeZone = new \System\Library\timeZone();
+        $data = $timeZone->getTimeZoneList();
+        $this->setSelect("timezone","你所在时区",$array,$data);
 
         $array = array(
-            "class" => "form-control",
+            "class" => "make-switch",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
         );
-        $this->setText("login_code", "登陆验证码", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("login_code","登陆验证码", $array);
 
 
         $array = array(
@@ -78,75 +82,52 @@ class configForm extends \System\Library\Form\Form
 
 
         $array = array(
-            "class" => "form-control",
+            "class" => "make-switch",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
         );
-        $this->setText("istwitter", "开启碎语", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("istwitter", "开启碎语", $array);
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'd0-5',));
+        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'd0-5',),false,3,3);
 
         $array = array(
-            "class" => "form-control",
+            "class" => "make-switch",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
         );
-        $this->setText("istreply", "开启碎语回复", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("istreply", "开启碎语回复", $array);
 
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("iscomment", "开启评论", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("iscomment", "开启评论", $array);
 
+        $this->setBsCheckBox("ischkcomment", "评论审核", $array);
 
+        $this->setBsCheckBox("comment_code", "评论验证码", $array);
 
+        $this->setBsCheckBox("isgravatar", "评论人头像", $array);
 
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("ischkcomment", "评论审核", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("comment_needchinese", "评论必须有中文", $array);
 
-
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("comment_code", "评论验证码", $array, array('datatype' => 'd0-5',));
+        $this->setBsCheckBox("comment_paging", "评论分页", $array);
 
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("isgravatar", "评论人头像", $array, array('datatype' => 'd0-5',));
+        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'd0-5'),false,3,3);
+
+        $array = array(
+            "class" => "form-control",
+        );
+        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'd0-5'),false,3,3);
 
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_needchinese", "评论必须有中文", $array, array('datatype' => 'd0-5',));
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'd0-5',));
-
-
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("comment_paging", "评论分页", $array, array('datatype' => 'd0-5',));
-
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'd0-5',));
-
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("comment_order", "评论排序规则", $array, array('datatype' => 'd0-5',));
+        $this->setSelect("comment_order", "评论排序规则", $array,array("desc"=>"降序","asc"=>"升序"),3);
 
 
         $array = array(
@@ -157,8 +138,9 @@ class configForm extends \System\Library\Form\Form
 
         $array = array(
             "class" => "form-control",
+            "style" => "height:200px"
         );
-        $this->setText("footer_info", "底部信息", $array, array('datatype' => 'd0-5',));
+        $this->setTextArea("footer_info", "底部信息", $array, array('datatype' => '*0-518'));
 
 
 

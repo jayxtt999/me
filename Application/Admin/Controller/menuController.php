@@ -19,6 +19,9 @@ class menuController extends abstractController{
         $v->display();
     }
 
+    /**
+     * 添加
+     */
     public function addAction(){
         $pid = get('id','int');
         $form = new \Admin\Menu\Form\editForm();        //获取表单
@@ -29,6 +32,9 @@ class menuController extends abstractController{
         $this->getView()->display('edit');
     }
 
+    /**
+     * 修改
+     */
     public function editAction(){
         $id = get('id','int');
         $row = $this->db()->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
@@ -39,6 +45,9 @@ class menuController extends abstractController{
         $this->getView()->display();
     }
 
+    /**
+     * 保存
+     */
     public function saveAction(){
         $form = new \Admin\Menu\Form\editForm();
         $form->start('menuEdit','edit');
@@ -71,12 +80,17 @@ class menuController extends abstractController{
         }
     }
 
-
-
+    /**
+     *删除
+     */
     public function delAction(){
         $id = get("id","string");
         $res = $this->db()->Table('common_menu')->delete(array('id'=>$id))->done();
-
+        if($res){
+            return $this->link()->success("admin:menu:index","删除成功");
+        }else{
+            return $this->link()->error("删除失败");
+        }
     }
 
 

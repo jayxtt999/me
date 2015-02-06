@@ -47,6 +47,7 @@ class editForm extends \System\Library\Form\Form
         $menu = new \Admin\Model\menuModel();
         $data  = $menu->getMenuSelect();
         $this->setSelect("parent_id","父栏目",$array,$data);
+
         $array = array(
             "class" => "form-control ",
             "placeholder" => "MODULE_NAME",
