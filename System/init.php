@@ -24,11 +24,14 @@ define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
 
+//后台模版中css js路径
+define('ADMIM_TPL_PATH','/Content/Templates/system');
+
 define('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
 define('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);
 define('IS_CLI', PHP_SAPI == 'cli' ? 1 : 0);
-// 定义当前请求的系统常量
 
+// 定义当前请求的系统常量
 define('NOW_TIME', $_SERVER['REQUEST_TIME']);
 define('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
 define('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
@@ -127,6 +130,7 @@ final class Application
             'db'=>'\\System\\Core\\Db',
             'error'=>'\\System\\Core\\Error',
             'log'=>'\\System\\Core\\Log',
+            'cache'=>'\\System\\Core\\Cache',
         );
     }
 

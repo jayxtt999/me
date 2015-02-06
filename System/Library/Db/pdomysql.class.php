@@ -181,21 +181,21 @@ class pdoMysql
         if ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $val) {
-                    $whereVal[] = $val;
                     $wz = strpos($key, "?");
                     $parame = $wz ? substr($key, $wz + 1) : "=";
-                    $k = substr($key, 0, $wz);
-                    $whereData .= " and " . "`" . $key . "`" . $parame . "?";
+                    $key = substr($key, 0, $wz);
+                    $whereVal[$key] = $val;
+                    $whereData .= " and " . "`" . $key . "` " . $parame . "(:$key)";
                 }
             } else {
                 exception("$where not is array()");
             }
         }
-        $whereVal[] = $order;
-        $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData order by ?";
+        $whereVal['order'] = $order;
+        $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData order by (:order)";
         if ($limit) {
-            $this->sql .= " limit ?";
-            $whereVal[] = $limit;
+            $this->sql .= " limit :limit";
+            $whereVal['limit'] = $limit;
         }
         $stmt = $this->pdo->prepare($this->sql);
         $exeres = $stmt->execute($whereVal);
@@ -217,22 +217,27 @@ class pdoMysql
      */
     public function update($table, array $data, array $where)
     {
+
+
         if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
             $i = 0;
+            $dataVal =array();
             foreach ($data as $k => $v) {
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
-                $setSql .= "`" . $k . "`" . "=\"" . $v . "\"" . $semicolon;
+                $dataVal[$k] = $v;
+                $setSql .= "`" . $k . "`" . "=(" . ":$k" . ")" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
-                $whereSql .= " AND " . "`" . $k . "`" . "=\"" . $v . "\"";
+                $dataVal[$k] = $v;
+                $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":$k" . ")";
             }
             $this->sql .= $whereSql;
             $stmt = $this->pdo->prepare($this->sql);
-            $stmt->execute();
+            $stmt->execute($dataVal);
             return $stmt->rowCount();
         } else {
             exception("ERROR:update 必须传入参数");
@@ -250,18 +255,21 @@ class pdoMysql
     {
         if (is_array($data)) {
             $column = $value = "";
+            $data['create_time'] = date("Y-m-d H:i:s");
             $len = count($data);
             $i = 0;
+            $dataVal = array();
             foreach ($data as $k => $v) {
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
                 $column .= "`" . $k . "`" . $semicolon;
-                $value .= "'" . $v . "'" . $semicolon;
+                $value .= "(:$k)" . $semicolon;
+                $dataVal[$k] = $v;
                 //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
             }
             $this->sql = "INSERT " . $this->prefix . $table . "(" . $column . ") VALUES (" . $value . ")";
             $stmt = $this->pdo->prepare($this->sql);
-            $stmt->execute();
+            $stmt->execute($dataVal);
             return $this->pdo->lastInsertId();
         } else {
             exception("ERROR:insert 必须传入参数");
@@ -273,19 +281,16 @@ class pdoMysql
             $whereData = "";
             $whereVal = array();
             foreach ($where as $key => $val) {
-                $whereVal[] = $val;
+                $whereVal[$key] = $val;
                 $wz = strpos($key, "?");
                 $parame = $wz ? substr($key, $wz + 1) : "=";
                 $k = substr($key, 0, $wz);
-                $whereData .= " and " . "`" . $key . "`" . $parame . "?";
+                $whereData .= " and " . "`" . $key . "`" . $parame . "(:$key)";
             }
-            $this->sql = "DELETE FROM".$this->prefix.$table." WHERE 1=1 ".$whereData;
+            $this->sql = "DELETE FROM ".$this->prefix.$table." WHERE 1=1 ".$whereData;
             $stmt = $this->pdo->prepare($this->sql);
-            //$exeres = $stmt->execute($whereVal);
-            var_dump($stmt);exit;
-            $res = $stmt->execute();
-            return $res;
-
+            $stmt->execute($whereVal);
+            return $stmt->rowCount();
         }else{
             exception("ERROR:delete必须传入参数");
         }
