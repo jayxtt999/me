@@ -124,7 +124,11 @@ return array(
     /*数据缓存设置*/
     'cache'=>array(
         "type"=>"file", //File or Memcache Radis
-        "file"=>array(),
+        "file"=>array(
+            'expire' => 86400,
+            'suffix'=>".php",
+            'path'=>"Data/Cache/"
+        ),
         "memcache"=>array(),
         "radis"=>array(),
     ),

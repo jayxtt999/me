@@ -6,12 +6,17 @@
  * Time: 下午8:40
  */
 
-class indexController extends Controller{
+namespace Home\Controller;
 
-    function indexAction(){
-        $this->V()->display('index.html');
 
+class indexController extends abstractController{
+
+    public function indexAction(){
+
+        $v = $this->getView();
+        $v->display();
     }
+
 
 
 }

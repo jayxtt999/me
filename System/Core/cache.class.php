@@ -8,15 +8,23 @@
 namespace System\Core;
 
 class Cache {
-
+    protected $cache;
+    protected $handle;
 
     /**
      * ³õÊ¼»¯ÅäÖÃ
      * @param $config
      */
-    public function init($config)
+    public function connect($type='',$options=array())
     {
-        $this->db = new \System\Library\Db\pdoMysql($config[$config['type']]);
+        if(empty($type))  $type = C('cache_type');
+        $type  = strtolower(trim($type));
+        $class = 'System\Library\Cache\Cache'.ucwords($type);
+        if(class_exists($class))
+            $this->cache = new $class($options);
+        else
+            exception('CACHE_TYPE Error:'.$type);
+        return $this->cache;
     }
 
     /**
@@ -40,7 +48,7 @@ class Cache {
      * @param $name
      */
     public function __unset($name) {
-        $this->rm($name);
+        $this->delete($name);
     }
 
     /**

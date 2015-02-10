@@ -22,6 +22,9 @@ function E($e)
     }
 }
 
+/**
+ * @param $msg
+ */
 function Show($msg)
 {
     echo "<h3>" . $msg . "</h3>";
@@ -34,11 +37,12 @@ function Show($msg)
  * @param string $msg 重定向前的提示信息
  * @return void
  */
-function redirect($url, $time=0, $msg='') {
+function redirect($url, $time = 0, $msg = '')
+{
     //多行URL地址支持
-    $url        = str_replace(array("\n", "\r"), '', $url);
+    $url = str_replace(array("\n", "\r"), '', $url);
     if (empty($msg))
-        $msg    = "系统将在{$time}秒之后自动跳转到{$url}！";
+        $msg = "系统将在{$time}秒之后自动跳转到{$url}！";
     if (!headers_sent()) {
         // redirect
         if (0 === $time) {
@@ -49,25 +53,27 @@ function redirect($url, $time=0, $msg='') {
         }
         exit();
     } else {
-        $str    = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
+        $str = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
         if ($time != 0)
             $str .= $msg;
         exit($str);
     }
 }
-// 说明：获取完整URL
 
+/**
+ * 获取完整URL
+ * @return string
+ */
 function curPageURL()
 {
     $pageURL = 'http';
-    if ($_SERVER["HTTPS"] == "on"){
+    if ($_SERVER["HTTPS"] == "on") {
         $pageURL .= "s";
     }
     $pageURL .= "://";
     if ($_SERVER["SERVER_PORT"] != "80") {
         $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-    }
-    else {
+    } else {
         $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
     }
     return $pageURL;
@@ -129,6 +135,10 @@ function C($name = null, $val = null)
 
 }
 
+/**
+ * @param $lib
+ * @return mixed
+ */
 function  load($lib)
 {
     if (empty($lib)) {
@@ -185,7 +195,7 @@ function Hook($tag, &$params = NULL)
         } else {
             $method = 'run';
         }
-        $class = "\\System\\Library\\Hook\\".$tag . 'Hook';
+        $class = "\\System\\Library\\Hook\\" . $tag . 'Hook';
 
         if (APP_DEBUG) {
             G('behaviorStart');
@@ -205,7 +215,6 @@ function Hook($tag, &$params = NULL)
     }
 
 }
-
 
 
 /**
@@ -310,7 +319,6 @@ function session($name, $value = '')
 
 }
 
-
 /**
  * Cookie 设置、获取、删除
  * @param string $name cookie名称
@@ -380,6 +388,11 @@ function cookie($name, $value = '', $option = null)
     }
 }
 
+/**
+ * @param $key
+ * @param int $step
+ * @param bool $save
+ */
 function N($key, $step = 0, $save = false)
 {
     static $_num = array();
@@ -402,49 +415,56 @@ function N($key, $step = 0, $save = false)
  */
 function loader($class)
 {
-/*
- * elseif(is_dir(APP_PATH."/".substr($class,0,stripos($class,"\\")))){
-        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
-        if (file_exists($classPath)) {
-            return include $classPath;
-        }
-    }
- * */
-
-
     $matches = array();
     preg_match('/(?P<namespace>.+\\\)?(?P<class>[^\\\]+$)/', $class, $matches);
-    $class     = (isset($matches['class'])) ? $matches['class'] : '';
+    $class = (isset($matches['class'])) ? $matches['class'] : '';
     $namespace = (isset($matches['namespace'])) ? $matches['namespace'] : '';
 
-    if(substr($class,-10)=="Controller" && strlen($class)!==10){
-        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+    if (substr($class, -10) == "Controller" && strlen($class) !== 10) {
+        $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    }elseif(substr($class,-5)=="Model" && strlen($class)!==5){
-        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+    } elseif (substr($class, -5) == "Model" && strlen($class) !== 5) {
+        $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    }elseif(is_file(APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext)){
-        $classPath = APP_PATH."/".str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).ext;
+    } elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
+        $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    }else{
-        $classPath = str_replace('\\', '/', $namespace) .str_replace('_', '/', $class).EXT;
-        if (file_exists(ROOT_PATH."/".$classPath)) {
-            return include ROOT_PATH."/".$classPath;
+    } else {
+        $classPath = str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . EXT;
+        if (file_exists(ROOT_PATH . "/" . $classPath)) {
+            return include ROOT_PATH . "/" . $classPath;
         }
     }
 
 }
 
-function cache($key,$val){
+/**
+ * 缓存
+ * @param $key
+ * @param string $val
+ */
+function cache($key, $val = "")
+{
 
-
-
+    $cache = new \System\Core\Cache();
+    $type = C("cache:type");
+    $cache = new \System\Library\Cache\cacheFile();
+    $cache->connect($type, C("cache:$type"));
+    if (!empty($key) && !empty($val)) {
+        $cache->set($key, $val);
+    } else if ($key && !$val) {
+        if ($cache->get($key)) {
+            return $cache->get($key);
+        } else {
+            $cache->delete($key);
+        }
+    }
 
 }
 
@@ -460,11 +480,11 @@ function cache($key,$val){
 function getUrl($url = "")
 {
     $url = $url ? $url : \System\Core\Route::$routeUrl;
-    if(is_array($url)){
+    if (is_array($url)) {
         $urls = $url;
-    }else if(is_string($url)){
-        $urlTmp = explode(",",$url);
-        $urls=array();
+    } else if (is_string($url)) {
+        $urlTmp = explode(",", $url);
+        $urls = array();
         $urls['module'] = $urlTmp[0];
         $urls['controller'] = $urlTmp[1];
         $urls['action'] = $urlTmp[2];
@@ -479,37 +499,54 @@ function getUrl($url = "")
 
 }
 
-
-
-function get($key,$limit=''){
+/**
+ * GET
+ * @param $key
+ * @param string $limit
+ * @return mixed
+ */
+function get($key, $limit = '')
+{
 
     $var = $_GET;
-    if ($key == ''){
+    if ($key == '') {
         return $var;
     }
-    if ($limit == ''){
+    if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
-    }else{
+    } else {
         $igc = $var[$key];
-        return  \System\Library\safeFilter::$limit($igc);
+        return \System\Library\safeFilter::$limit($igc);
     }
 }
 
-function post($key,$limit=''){
+/**
+ * POST
+ * @param $key
+ * @param string $limit
+ * @return mixed
+ */
+function post($key, $limit = '')
+{
 
     $var = $_POST;
-    if ($key == ''){
+    if ($key == '') {
         return $var;
     }
-    if ($limit == ''){
+    if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
-    }else{
+    } else {
         $igc = $var[$key];
-        return  \System\Library\safeFilter::$limit($igc);
+        return \System\Library\safeFilter::$limit($igc);
     }
 }
 
-function exception($msg){
+/**
+ * 错误抛出
+ * @param $msg
+ */
+function exception($msg)
+{
     return \System\Core\Error::halt($msg);
 }
 

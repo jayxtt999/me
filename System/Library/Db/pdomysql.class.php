@@ -23,7 +23,7 @@ class pdoMysql
         try {
             $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
             $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);//Display exception
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);//Display exception
             $this->prefix = $config['prefix'];
         } catch (\PDOException $e) {
             $this->error();
@@ -176,33 +176,56 @@ class pdoMysql
         if (is_array($fields)) {
             $fields = implode(', ', $fields);
         }
-        $whereData = "";
+        //$whereDataCache 用于缓存
+        $whereData = $whereDataCache = "";
         $whereVal = array();
+        // 循环$where
         if ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $val) {
                     $wz = strpos($key, "?");
                     $parame = $wz ? substr($key, $wz + 1) : "=";
-                    $key = substr($key, 0, $wz);
+                    if ($wz) {
+                        $key = substr($key, 0, $wz);
+                    }
                     $whereVal[$key] = $val;
                     $whereData .= " and " . "`" . $key . "` " . $parame . "(:$key)";
+                    $whereDataCache .= " and " . "`" . $key . "` " . $parame . "\"$val\"";
                 }
             } else {
                 exception("$where not is array()");
             }
         }
+        //Sql
         $whereVal['order'] = $order;
         $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData order by (:order)";
+        $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order";
+
+        //limit
         if ($limit) {
             $this->sql .= " limit :limit";
+            $sqlCache .= " limit $limit";
             $whereVal['limit'] = $limit;
         }
+
+        $type = C("cache:type") ? C("cache:type") : false;
+
+        if ($type) {
+            if (cache($sqlCache)) {
+                return cache($sqlCache);
+            }
+        }
+
         $stmt = $this->pdo->prepare($this->sql);
         $exeres = $stmt->execute($whereVal);
         if ($model == 1) {
             $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
         } else if ($model == 2) {
             $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        if ($type) {
+            cache($sqlCache, $this->res);
         }
         return $this->res;
     }
@@ -223,7 +246,7 @@ class pdoMysql
             $setSql = $whereSql = "";
             $len = count($data);
             $i = 0;
-            $dataVal =array();
+            $dataVal = array();
             foreach ($data as $k => $v) {
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
@@ -276,8 +299,9 @@ class pdoMysql
         }
     }
 
-    public function delete($table, array $where){
-        if(is_array($where)){
+    public function delete($table, array $where)
+    {
+        if (is_array($where)) {
             $whereData = "";
             $whereVal = array();
             foreach ($where as $key => $val) {
@@ -287,17 +311,16 @@ class pdoMysql
                 $k = substr($key, 0, $wz);
                 $whereData .= " and " . "`" . $key . "`" . $parame . "(:$key)";
             }
-            $this->sql = "DELETE FROM ".$this->prefix.$table." WHERE 1=1 ".$whereData;
+            $this->sql = "DELETE FROM " . $this->prefix . $table . " WHERE 1=1 " . $whereData;
             $stmt = $this->pdo->prepare($this->sql);
             $stmt->execute($whereVal);
             return $stmt->rowCount();
-        }else{
+        } else {
             exception("ERROR:delete必须传入参数");
         }
 
 
     }
-
 
 
 }
