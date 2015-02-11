@@ -448,8 +448,9 @@ function loader($class)
  * 缓存
  * @param $key
  * @param string $val
+ * @param string $model  model 默认文件名为 MD5（key ）,否则为自定义文件名模式
  */
-function cache($key, $val = "")
+function cache($key, $val = "",$model="")
 {
 
     $cache = new \System\Core\Cache();

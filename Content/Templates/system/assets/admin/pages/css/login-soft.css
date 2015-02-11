@@ -165,3 +165,14 @@ Login page
     font-size: 13px;
   }
 }
+
+
+#login_verify{
+    width: 80px;
+    height: 34px;
+    margin-left: 5px;
+}
+
+.verifycode{
+    display: none;
+}

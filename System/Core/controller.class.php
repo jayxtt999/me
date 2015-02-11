@@ -53,6 +53,5 @@ class Controller
         return $link;
     }
 
-
 }
 

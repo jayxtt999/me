@@ -6,7 +6,7 @@
  * Time: 下午9:20
  */
 
-namespace Home\Controller;
+namespace Member\Controller;
 
 use System\Core\View;
 
@@ -20,7 +20,7 @@ class abstractController extends \System\Core\Controller
 
     public function init()
     {
-       /* //获取菜单栏 && 获取当前路由相关信息
+        //获取菜单栏 && 获取当前路由相关信息
         $common = new \Admin\Model\commonModel();
         $this->common = $common;
         $menuData = $common->getMenu();
@@ -35,13 +35,13 @@ class abstractController extends \System\Core\Controller
             'navArray' => $navArray,
             'webConfig' => $webConfig,
         );
-        $this->getView()->assign($tplData);*/
+        $this->getView()->assign($tplData);
     }
 
     public function notFound()
     {
-        /*$this->getView()->assign(array('url' => curPageURL()));
-        $this->getView()->display('admin:notFound:index');*/
+        $this->getView()->assign(array('url' => curPageURL()));
+        $this->getView()->display('admin:notFound:index');
     }
 
 }

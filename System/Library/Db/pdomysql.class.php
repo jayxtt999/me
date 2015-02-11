@@ -209,10 +209,10 @@ class pdoMysql
         }
 
         $type = C("cache:type") ? C("cache:type") : false;
-
+        $type = false;
         if ($type) {
-            if (cache($sqlCache)) {
-                return cache($sqlCache);
+            if (cache("sql_".$sqlCache)) {
+                return cache("sql_".$sqlCache);
             }
         }
 
@@ -225,7 +225,7 @@ class pdoMysql
         }
 
         if ($type) {
-            cache($sqlCache, $this->res);
+            cache("sql_".$sqlCache, $this->res);
         }
         return $this->res;
     }

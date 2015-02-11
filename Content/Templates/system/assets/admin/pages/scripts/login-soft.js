@@ -19,10 +19,10 @@ var Login = function () {
 
 	            messages: {
 	                username: {
-	                    required: "Username is required."
+	                    required: "用户名不能为空."
 	                },
 	                password: {
-	                    required: "Password is required."
+	                    required: "密码不能为空."
 	                }
 	            },
 
@@ -74,7 +74,7 @@ var Login = function () {
 
 	            messages: {
 	                email: {
-	                    required: "Email is required."
+	                    required: "邮箱不能为空."
 	                }
 	            },
 
@@ -126,7 +126,7 @@ var Login = function () {
 
 		function format(state) {
             if (!state.id) return state.text; // optgroup
-            return "<img class='flag' src='../../assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
+            return "<img class='flag' src='{:ADMIM_TPL_PATH}/assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
         }
 
 
@@ -161,16 +161,6 @@ var Login = function () {
 	                    required: true,
 	                    email: true
 	                },
-	                address: {
-	                    required: true
-	                },
-	                city: {
-	                    required: true
-	                },
-	                country: {
-	                    required: true
-	                },
-
 	                username: {
 	                    required: true
 	                },
@@ -188,7 +178,7 @@ var Login = function () {
 
 	            messages: { // custom messages for radio buttons and checkboxes
 	                tnc: {
-	                    required: "Please accept TNC first."
+	                    required: "请勾选服务条款."
 	                }
 	            },
 
