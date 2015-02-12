@@ -24,6 +24,7 @@ return array(
             'prefix' => 'xtt_',
         )
     ),
+
     /*路由配置*/
     'route' => array(
         'default_controller' => 'index', //系统默认控制器
@@ -31,8 +32,10 @@ return array(
         'url_type' => 'default' /*定义URL的形式 default 为普通模式    index.php?m=module&c=controller&a=action&id=2
                                    定义URL的形式 pathinfo为PATHINFO 模式  index.php/module/controller/action/id/2(暂时不实现)*/
     ),
+
     /*视图配置*/
     'view_type' => 'myTemp',
+
     'view_templates' => 'default',
     /*视图缓存文件配置*/
     'view' => array(
@@ -120,26 +123,21 @@ return array(
         'domain' => '', // cookie 有效域名
     ),
 
-
     /*数据缓存设置*/
-    'cache'=>array(
-        "type"=>"file", //File or Memcache Radis
-        "file"=>array(
+    'cache' => array(
+        "type" => "file", //File or Memcache Radis
+        "file" => array(
             'expire' => 86400,
-            'suffix'=>".php",
-            'path'=>"Data/Cache/"
+            'suffix' => ".php",
+            'path' => "Data/Cache/"
         ),
-        "memcache"=>array(),
-        "radis"=>array(),
+        "memcache" => array(),
+        "radis" => array(),
     ),
-
-
-
-
-
 
     /*杂项*/
     'default_timezone' => 'PRC',
-
+    'user_auth_key'=>'xtt',
+    'admin_auth_key'=>false,
 
 );

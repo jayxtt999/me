@@ -319,6 +319,11 @@ function session($name, $value = '')
 
 }
 
+function db()
+{
+    return \System\Core\Model::getDb();
+}
+
 /**
  * Cookie 设置、获取、删除
  * @param string $name cookie名称

@@ -37,7 +37,7 @@ class menuController extends abstractController{
      */
     public function editAction(){
         $id = get('id','int');
-        $row = $this->db()->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
+        $row = db()->Table('common_menu')->getRow(array('id'=>$id))->done();        //getRow
         $form = new \Admin\Menu\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('menuEdit','edit');                      //开始渲染
@@ -60,7 +60,7 @@ class menuController extends abstractController{
                 return $this->notFound();
             }
             $data = checkForm::init($data,$form->_name);
-            $res = $this->db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
+            $res = db()->Table('common_menu')->upDate($data,array('id'=>$id))->done();
             if($res){
                 return $this->link()->success("admin:menu:index","更新成功");
             }else{
@@ -71,7 +71,7 @@ class menuController extends abstractController{
                 return $this->notFound();
             }
             $data = checkForm::init($data,$form->_name);
-            $res = $this->db()->Table('common_menu')->insert($data,array('id'=>$id))->done();
+            $res = db()->Table('common_menu')->insert($data,array('id'=>$id))->done();
             if($res){
                 return $this->link()->success("admin:menu:index","添加栏目成功");
             }else{
@@ -85,7 +85,7 @@ class menuController extends abstractController{
      */
     public function delAction(){
         $id = get("id","string");
-        $res = $this->db()->Table('common_menu')->delete(array('id'=>$id))->done();
+        $res = db()->Table('common_menu')->delete(array('id'=>$id))->done();
         if($res){
             return $this->link()->success("admin:menu:index","删除成功");
         }else{

@@ -7,56 +7,107 @@
  */
 
 namespace Member\Controller;
+
+use Member\Info\Table\Status;
 use System\Library\Form\checkForm as checkForm;
 
-class loginController extends abstractController{
+class loginController extends abstractController
+{
 
 
-    public function indexAction(){
+    public function indexAction()
+    {
 
         $redirect = $this->getRequest()->getRedirect();
         $view = $this->getView();
 
-        if($this->getRequest()->getMethod()=="POST"){
+        if ($this->getRequest()->getMethod() == "POST") {
             //是否为post方式提交
-            $username = post("username","string");
-            $password = post("password","string");
+            $username = post("username", "string");
+            $password = post("password", "string");
 
             $form = new \Member\Login\Form\loginForm();
             $form->start('login-form');
 
-            $data =array(
-                'username'=>$username,
-                'password'=>$password,
+            $data = array(
+                'username' => $username,
+                'password' => $password,
             );
             //验证表单
-            $data = checkForm::init($data,$form->_name);
-            if(!$data){
+            $data = checkForm::init($data, $form->_name);
+            if (!$data) {
                 return false;
             }
+
+            $LoginVerifyCode = new \Common\Security\CheckLoginSession();
+            $randVal = $LoginVerifyCode->getSession();
+
             //验证错误次数 大于5次当日禁止登陆
             $ip = $this->getRequest()->getIP();
-            $loginErrorTodayCount = (int)cache("loginErrorTodayCount".$username.$ip.date("Y-m-d"));
-            if($loginErrorTodayCount>=5){
-                $view->assign(array("msg"=>"登录失败,您今天超过5次登陆失败，为了账号安全，我们限制账号当天登陆"));
-                $view->display();
+            $loginErrorTodayCount = (int)cache("loginErrorTodayCount" . $username . $ip . date("Y-m-d"));
+            //用于密码输入错误次数
+            echo $loginErrorTodayCount;
+            if ($loginErrorTodayCount >= 5) {
+                return $this->link()->error("登录失败,您今天超过5次登陆失败，为了账号安全，我们限制账号当天登陆!");
             }
-            if($loginErrorTodayCount>=2){
-                $view->assign(array("msg"=>"登录失败,您今天超过5次登陆失败，为了账号安全，我们限制账号当天登陆"));
-                $view->display();
+            //用于验证码
+            if ($loginErrorTodayCount >= 2) {
+                $checkCode = post("verifycode", "string");
+                if (md5(strtoupper($checkCode)) !== $randVal) {
+                    return $this->link()->error("登录失败, 请输入正确的验证码!");
+                }
             }
 
-            $errorLoginCount
+            $authInfo = \System\Library\RBAC::authenticate($username);
 
-            var_dump($data);exit;
-
-
-
+            if (empty($authInfo)) {
+                return $this->link()->error("账号不存在或者被禁用");
+            } else {
+                if ($authInfo['password'] != (string)(new \Member\Login\Table\Password($password))) {
+                    cache("loginErrorTodayCount" . $username . $ip . date("Y-m-d"),++$loginErrorTodayCount);
+                    return $this->link()->error("账号密码错误!");
+                } else {
+                    $this->LoginGmc($authInfo);
+                    $url = $redirect?$redirect:"admin:index:index";
+                    return $this->link()->success($url,"登陆成功");
+                }
+            }
         }
-        $view->display();
 
+        return $this->getView()->display();
     }
 
+    /**
+     * 认证用户登录成功通用操作（本地 && 第三方）
+     * @param $manager
+     * @param $row
+     */
+    public function LoginGmc($row){
+
+        if($row['status'] !=  \Member\Info\Table\Status::STATUS_ENABLE){
+            return $this->link()->error("该账号不可用 , 登录失败!");
+        }
+        $_SESSION[C('USER_AUTH_KEY')] = $row['id'];
+        if($row['username']=='admin'){
+            $_SESSION[C('ADMIN_AUTH_KEY')] = true;
+        }
+
+        //存储用户信息cookie
+        $user['id']=  $row['id'];
+        $user['login_name']=  $row['username'];
+        $value=serialize($user);
+        $md5str=md5($value . \Member\Login\Table\Password::KEY);
+        setcookie('rememberLoginUser', $md5str . $value ,time()+60*60*24*30*3,'/'  );
+
+        //登陆日志
+        $ip = $this->getRequest()->getIP();
+        $data = array(
+            'ip'=>$ip,
+            'create_time'=>date("Y-m-d H:i:s"),
+            'member_id'=>$user['id'],
+        );
+        db()->table("member_login_log")->insert($data)->done();
+    }
 
 
 }

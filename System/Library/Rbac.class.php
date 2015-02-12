@@ -1,0 +1,29 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2015/2/12 0012
+ * Time: 上午 10:44
+ */
+
+namespace System\Library;
+
+
+use Member\Info\Table\Status;
+
+class RBAC
+{
+    private $db;
+
+
+    // 认证方法
+    static public function authenticate($username) {
+        //使用给定的$username进行认证
+        if($username){
+            return db()->table("member_info")->getRow(array('username'=>$username,'status'=>\Member\Info\Table\status::STATUS_ENABLE))->done();
+        }else{
+            return false;
+        }
+    }
+
+} 

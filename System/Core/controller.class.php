@@ -40,10 +40,7 @@ class Controller
         return new Request();
     }
 
-    final public function db()
-    {
-        return \System\Core\Model::getDb();
-    }
+
 
     final public function link()
     {

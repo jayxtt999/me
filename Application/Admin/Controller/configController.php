@@ -14,7 +14,7 @@ class configController extends abstractController{
 
         public function indexAction(){
 
-            $all = $this->db()->Table('config')->getAll()->done();        //getAll
+            $all = db()->Table('config')->getAll()->done();        //getAll
             $newData = array();
             foreach($all as $v){
 

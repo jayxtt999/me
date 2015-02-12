@@ -215,19 +215,24 @@ class pdoMysql
                 return cache("sql_".$sqlCache);
             }
         }
+        try{
+            $stmt = $this->pdo->prepare($this->sql);
+            $exeres = $stmt->execute($whereVal);
+            if ($model == 1) {
+                $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            } else if ($model == 2) {
+                $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            }
 
-        $stmt = $this->pdo->prepare($this->sql);
-        $exeres = $stmt->execute($whereVal);
-        if ($model == 1) {
-            $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
-        } else if ($model == 2) {
-            $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if ($type) {
+                cache("sql_".$sqlCache, $this->res);
+            }
+            return $this->res;
+        }catch (\Exception $ex){
+            exception($ex->getMessage());
         }
 
-        if ($type) {
-            cache("sql_".$sqlCache, $this->res);
-        }
-        return $this->res;
+
     }
 
 
@@ -259,9 +264,14 @@ class pdoMysql
                 $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":$k" . ")";
             }
             $this->sql .= $whereSql;
-            $stmt = $this->pdo->prepare($this->sql);
-            $stmt->execute($dataVal);
-            return $stmt->rowCount();
+            try{
+                $stmt = $this->pdo->prepare($this->sql);
+                $stmt->execute($dataVal);
+                return $stmt->rowCount();
+            }catch (\Exception $ex){
+                exception($ex->getMessage());
+            }
+
         } else {
             exception("ERROR:update 必须传入参数");
         }
@@ -291,9 +301,14 @@ class pdoMysql
                 //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
             }
             $this->sql = "INSERT " . $this->prefix . $table . "(" . $column . ") VALUES (" . $value . ")";
-            $stmt = $this->pdo->prepare($this->sql);
-            $stmt->execute($dataVal);
-            return $this->pdo->lastInsertId();
+            try{
+                $stmt = $this->pdo->prepare($this->sql);
+                $stmt->execute($dataVal);
+                return $this->pdo->lastInsertId();
+            }catch (\Exception $ex){
+                exception($ex->getMessage());
+            }
+
         } else {
             exception("ERROR:insert 必须传入参数");
         }
@@ -312,9 +327,14 @@ class pdoMysql
                 $whereData .= " and " . "`" . $key . "`" . $parame . "(:$key)";
             }
             $this->sql = "DELETE FROM " . $this->prefix . $table . " WHERE 1=1 " . $whereData;
-            $stmt = $this->pdo->prepare($this->sql);
-            $stmt->execute($whereVal);
-            return $stmt->rowCount();
+            try{
+                $stmt = $this->pdo->prepare($this->sql);
+                $stmt->execute($whereVal);
+                return $stmt->rowCount();
+            }catch (\Exception $ex){
+                exception($ex->getMessage());
+            }
+
         } else {
             exception("ERROR:delete必须传入参数");
         }

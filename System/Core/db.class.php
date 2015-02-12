@@ -66,7 +66,6 @@ class DB
      */
     public function getRow($where = null)
     {
-
         $this->options = "SELECT";
         $this->selectmodel = 1;
         $this->where = $where;
