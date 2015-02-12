@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-02-10 17:45:41
+Date: 2015-02-12 17:36:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,12 +39,14 @@ CREATE TABLE `xtt_common_menu` (
 -- ----------------------------
 -- Records of xtt_common_menu
 -- ----------------------------
-INSERT INTO `xtt_common_menu` VALUES ('38', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '0');
-INSERT INTO `xtt_common_menu` VALUES ('39', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '38', '0');
-INSERT INTO `xtt_common_menu` VALUES ('56', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '38', '0');
-INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '38', '0');
-INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '38', '0');
-INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '38', '0');
+INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '1');
+INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', null, '0', '1', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -85,3 +87,46 @@ INSERT INTO `xtt_config` VALUES ('24', 'comment_pnum', '8');
 INSERT INTO `xtt_config` VALUES ('26', 'timezone', '8');
 INSERT INTO `xtt_config` VALUES ('25', 'index_lognum', '10');
 INSERT INTO `xtt_config` VALUES ('27', 'login_code', '1');
+
+-- ----------------------------
+-- Table structure for xtt_member_info
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_member_info`;
+CREATE TABLE `xtt_member_info` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` char(45) DEFAULT NULL COMMENT '用户名',
+  `password` char(32) DEFAULT NULL COMMENT '密码',
+  `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
+  `avatar` int(10) DEFAULT NULL COMMENT '头像',
+  `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+  `profession` varchar(255) DEFAULT NULL COMMENT '职业',
+  `favorite` varchar(255) DEFAULT NULL COMMENT '兴趣爱好',
+  `sex` enum('男','女','其它') DEFAULT NULL COMMENT '性别',
+  `userinfo` text COMMENT '用户说明',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_member_info
+-- ----------------------------
+INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', '1', '2015-02-12 14:20:02', '1', null, null, '男', null);
+
+-- ----------------------------
+-- Table structure for xtt_member_login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_member_login_log`;
+CREATE TABLE `xtt_member_login_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` int(10) unsigned DEFAULT NULL COMMENT 'login ip',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT 'login time',
+  `member_id` int(10) unsigned DEFAULT NULL COMMENT 'login member',
+  PRIMARY KEY (`id`),
+  KEY `member_fk_idx` (`member_id`),
+  CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_member_login_log
+-- ----------------------------
+INSERT INTO `xtt_member_login_log` VALUES ('1', '1270', '2015-02-12 15:20:13', '1');
