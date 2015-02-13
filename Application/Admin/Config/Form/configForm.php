@@ -22,7 +22,7 @@ class configForm extends \System\Library\Form\Form
             "class" => "form-horizontal",
             "role" => "form",
         );
-        $this->init($formName, '/index.php?m=admin&c=menu&a=save', '', $array);
+        $this->init($formName, '/index.php?m=admin&c=config&a=save', '', $array);
 
 
         $array = array(
@@ -45,7 +45,7 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'd0-5'),false,3,3);
+        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'n1-5'),false,3,3);
 
 
         $array = array(
@@ -67,18 +67,18 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("site_title", "站点浏览器标题", $array, array('datatype' => 'd0-5',));
+        $this->setText("site_title", "站点浏览器标题", $array, array('datatype' => '*0-128',));
 
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("site_key", "站点关键字", $array, array('datatype' => 'd0-5',));
+        $this->setText("site_key", "站点关键字", $array, array('datatype' => '*0-128',));
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("site_description", "站点浏览器描述", $array, array('datatype' => 'd0-5',));
+        $this->setText("site_description", "站点浏览器描述", $array, array('datatype' => '*0-128',));
 
 
         $array = array(
@@ -91,7 +91,7 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'd0-5',),false,3,3);
+        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'n0-5',),false,3,3);
 
         $array = array(
             "class" => "make-switch",
@@ -116,12 +116,12 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'd0-5'),false,3,3);
+        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'n0-5'),false,3,3);
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'd0-5'),false,3,3);
+        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'n0-5'),false,3,3);
 
 
         $array = array(
@@ -133,14 +133,14 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("icp", "ICP", $array, array('datatype' => 'd0-5',));
+        $this->setText("icp", "ICP", $array, array('datatype' => '*0-64',));
 
 
         $array = array(
             "class" => "form-control",
             "style" => "height:200px"
         );
-        $this->setTextArea("footer_info", "底部信息", $array, array('datatype' => '*0-518'));
+        $this->setTextArea("footer_info", "底部信息", $array, array('datatype' => '*0-512'));
 
 
 

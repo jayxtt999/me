@@ -12,6 +12,7 @@ use System\Core\View;
 
 class abstractController extends \System\Core\Controller
 {
+    public  $webConfig;
 
     function __construct()
     {
@@ -31,6 +32,7 @@ class abstractController extends \System\Core\Controller
             'routeInfo' => $routeInfo,
             'webConfig' => $webConfig,
         );
+        $this->webConfig = $webConfig;
         $this->getView()->assign($tplData);
     }
 

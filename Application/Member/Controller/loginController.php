@@ -17,7 +17,6 @@ class loginController extends abstractController
 
     public function indexAction()
     {
-
         $redirect = $this->getRequest()->getRedirect();
         $view = $this->getView();
 
@@ -41,23 +40,21 @@ class loginController extends abstractController
 
             $LoginVerifyCode = new \Common\Security\CheckLoginSession();
             $randVal = $LoginVerifyCode->getSession();
-
             //验证错误次数 大于5次当日禁止登陆
             $ip = $this->getRequest()->getIP();
             $loginErrorTodayCount = (int)cache("loginErrorTodayCount" . $username . $ip . date("Y-m-d"));
             //用于密码输入错误次数
             echo $loginErrorTodayCount;
-            if ($loginErrorTodayCount >= 5) {
-                return $this->link()->error("登录失败,您今天超过5次登陆失败，为了账号安全，我们限制账号当天登陆!");
+            if ($loginErrorTodayCount >= 10) {
+                return $this->link()->error("登录失败,您今天超过10次登陆失败，为了账号安全，我们限制账号当天登陆!");
             }
             //用于验证码
-            if ($loginErrorTodayCount >= 2) {
+            if ($this->webConfig['login_code']) {
                 $checkCode = post("verifycode", "string");
                 if (md5(strtoupper($checkCode)) !== $randVal) {
                     return $this->link()->error("登录失败, 请输入正确的验证码!");
                 }
             }
-
             $authInfo = \System\Library\RBAC::authenticate($username);
 
             if (empty($authInfo)) {

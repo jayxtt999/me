@@ -98,12 +98,18 @@ License: You must have a valid license purchased only from themeforest(the above
     </div>
 
 
-    <div class="form-group verifycode">
+    <div
+    <if condition="($webConfig['login_code'])">class="form-group"
+        <else />class="form-group display-hide"
+    </if>
+            >
         <label class="control-label visible-ie8 visible-ie9">验证码</label>
         <div class="input-icon input-group input-medium">
             <i class="fa fa-warning"></i>
             <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="验证码" name="verifycode"/>
-            <span class="input-group-btn"><img id="login_verify" src="" alt=""/></span>
+            <span class="input-group-btn">
+                <img id="login_verify" src="/index.php?m=common&c=getloginver&a=index" alt=""/>
+            </span>
         </div>
     </div>
 

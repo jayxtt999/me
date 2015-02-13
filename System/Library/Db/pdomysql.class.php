@@ -188,8 +188,8 @@ class pdoMysql
                     if ($wz) {
                         $key = substr($key, 0, $wz);
                     }
-                    $whereVal[$key] = $val;
-                    $whereData .= " and " . "`" . $key . "` " . $parame . "(:$key)";
+                    $whereVal["w_".$key] = $val;
+                    $whereData .= " and " . "`" . $key . "` " . $parame . "(:w_$key)";
                     $whereDataCache .= " and " . "`" . $key . "` " . $parame . "\"$val\"";
                 }
             } else {
@@ -246,7 +246,6 @@ class pdoMysql
     public function update($table, array $data, array $where)
     {
 
-
         if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
@@ -255,15 +254,15 @@ class pdoMysql
             foreach ($data as $k => $v) {
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
-                $dataVal[$k] = $v;
-                $setSql .= "`" . $k . "`" . "=(" . ":$k" . ")" . $semicolon;
+                $dataVal["d_".$k] = $v;
+                $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
-                $dataVal[$k] = $v;
-                $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":$k" . ")";
+                $dataVal["w_".$k] = $v;
+                $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":w_$k" . ")";
             }
-            $this->sql .= $whereSql;
+            $this->sql.= $whereSql;
             try{
                 $stmt = $this->pdo->prepare($this->sql);
                 $stmt->execute($dataVal);

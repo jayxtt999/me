@@ -34,8 +34,8 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function success($jumpUrl,$msg=""){
-        $this->dispatchJump($this->getUrl($jumpUrl),3,$msg,true,false);
+    public function success($jumpUrl,$msg="",$status=false,$ajax=false,$array=array()){
+        $this->dispatchJump($this->getUrl($jumpUrl),3,$msg,$status,$ajax,$array);
     }
 
     /**
@@ -45,8 +45,8 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function error($msg='',$status=false,$ajax=false){
-        $this->dispatchJump("", $time=1, $msg,$status,$ajax);
+    public function error($msg='',$array=array(),$status=false,$ajax=false){
+        $this->dispatchJump("", $time=1, $msg,$status,$ajax,$array);
     }
 
 
@@ -92,7 +92,7 @@ class Link {
      * @param integer $ajax true or false 是否为ajax
      * @return void
      */
-    function dispatchJump($jumpUrl, $time=0, $msg='',$status,$ajax) {
+    function dispatchJump($jumpUrl, $time=0, $msg='',$status,$ajax,$array) {
         if($ajax || $this->isAjax()){
             $this->ajaxReturn($ajax,$msg,$status);
         }
@@ -105,7 +105,15 @@ class Link {
         if($this->view->get('closeWin')){
             $this->view->assign(array('jumpUrl'=>'javascript:window.close();'));
         }
-
+        //跳转参数
+        if($array){
+            $i=1;
+            foreach($array as $k=>$v){
+                $c = $i=1?"?":"&";
+                $jumpUrl.=$c.$k."=".$v;
+                $i++;
+            }
+        }
         // 状态
         $this->view->assign(array('status'=>$status));
         if($status){ //发送成功信息
