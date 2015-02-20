@@ -34,7 +34,7 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function success($jumpUrl,$msg="",$status=false,$ajax=false,$array=array()){
+    public function success($jumpUrl,$msg="",$status=true,$ajax=false,$array=array()){
         $this->dispatchJump($this->getUrl($jumpUrl),3,$msg,$status,$ajax,$array);
     }
 

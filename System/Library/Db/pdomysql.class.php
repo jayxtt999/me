@@ -23,7 +23,7 @@ class pdoMysql
         try {
             $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
             $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);//Display exception
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); //Display exception
             $this->prefix = $config['prefix'];
         } catch (\PDOException $e) {
             $this->error();
@@ -188,7 +188,7 @@ class pdoMysql
                     if ($wz) {
                         $key = substr($key, 0, $wz);
                     }
-                    $whereVal["w_".$key] = $val;
+                    $whereVal["w_" . $key] = $val;
                     $whereData .= " and " . "`" . $key . "` " . $parame . "(:w_$key)";
                     $whereDataCache .= " and " . "`" . $key . "` " . $parame . "\"$val\"";
                 }
@@ -211,11 +211,11 @@ class pdoMysql
         $type = C("cache:type") ? C("cache:type") : false;
         $type = false;
         if ($type) {
-            if (cache("sql_".$sqlCache)) {
-                return cache("sql_".$sqlCache);
+            if (cache("sql_" . $sqlCache)) {
+                return cache("sql_" . $sqlCache);
             }
         }
-        try{
+        try {
             $stmt = $this->pdo->prepare($this->sql);
             $exeres = $stmt->execute($whereVal);
             if ($model == 1) {
@@ -225,10 +225,10 @@ class pdoMysql
             }
 
             if ($type) {
-                cache("sql_".$sqlCache, $this->res);
+                cache("sql_" . $sqlCache, $this->res);
             }
             return $this->res;
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             exception($ex->getMessage());
         }
 
@@ -245,7 +245,6 @@ class pdoMysql
      */
     public function update($table, array $data, array $where)
     {
-
         if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
@@ -254,27 +253,25 @@ class pdoMysql
             foreach ($data as $k => $v) {
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
-                $dataVal["d_".$k] = $v;
+                $dataVal["d_" . $k] = $v;
                 $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
-                $dataVal["w_".$k] = $v;
+                $dataVal["w_" . $k] = $v;
                 $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":w_$k" . ")";
             }
-            $this->sql.= $whereSql;
-            try{
+            $this->sql .= $whereSql;
+            try {
                 $stmt = $this->pdo->prepare($this->sql);
                 $stmt->execute($dataVal);
                 return $stmt->rowCount();
-            }catch (\Exception $ex){
+            } catch (\Exception $ex) {
                 exception($ex->getMessage());
             }
-
         } else {
             exception("ERROR:update 必须传入参数");
         }
-
     }
 
     /**
@@ -300,11 +297,11 @@ class pdoMysql
                 //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
             }
             $this->sql = "INSERT " . $this->prefix . $table . "(" . $column . ") VALUES (" . $value . ")";
-            try{
+            try {
                 $stmt = $this->pdo->prepare($this->sql);
                 $stmt->execute($dataVal);
                 return $this->pdo->lastInsertId();
-            }catch (\Exception $ex){
+            } catch (\Exception $ex) {
                 exception($ex->getMessage());
             }
 
@@ -326,11 +323,11 @@ class pdoMysql
                 $whereData .= " and " . "`" . $key . "`" . $parame . "(:$key)";
             }
             $this->sql = "DELETE FROM " . $this->prefix . $table . " WHERE 1=1 " . $whereData;
-            try{
+            try {
                 $stmt = $this->pdo->prepare($this->sql);
                 $stmt->execute($whereVal);
                 return $stmt->rowCount();
-            }catch (\Exception $ex){
+            } catch (\Exception $ex) {
                 exception($ex->getMessage());
             }
 

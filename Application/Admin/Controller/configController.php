@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/2/5 0005
- * Time: ÏÂÎç 12:09
+ * Time: ä¸‹åˆ 12:09
  */
 
 namespace Admin\Controller;
@@ -20,8 +20,8 @@ class configController extends abstractController{
                 $newData[$v['option_name']] = $v['option_value'];
             }
             $form = new \Admin\Config\Form\configForm();
-            $form->bind($newData);                                  //°ó¶¨Row
-            $form->start('config');                      //¿ªÊ¼äÖÈ¾
+            $form->bind($newData);                                  //ç»‘å®šRow
+            $form->start('config');                      //å¼€å§‹æ¸²æŸ“
             $this->getView()->assign(array('form'=>$form));
             return $this->getView()->display();
         }
@@ -31,11 +31,11 @@ class configController extends abstractController{
 
             $form = new \Admin\Menu\Form\editForm();
             $form->start('config');
-            $data = $this->request()->getData();//»ñÈ¡Êı¾İ
+            $data = $this->request()->getData();//è·å–æ•°æ®
             foreach($data as $k=>$v){
                 db()->table("config")->upDate(array("option_name"=>$k,"option_value"=>$v),array("option_name"=>$k))->done();
             }
-            return $this->link()->success("admin:config:index","¸üĞÂ³É¹¦");
+            return $this->link()->success("admin:config:index","æ›´æ–°æˆåŠŸ");
         }
 
 
