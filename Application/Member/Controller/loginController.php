@@ -44,7 +44,6 @@ class loginController extends abstractController
             $ip = $this->getRequest()->getIP();
             $loginErrorTodayCount = (int)cache("loginErrorTodayCount" . $username . $ip . date("Y-m-d"));
             //用于密码输入错误次数
-            echo $loginErrorTodayCount;
             if ($loginErrorTodayCount >= 10) {
                 return $this->link()->error("登录失败,您今天超过10次登陆失败，为了账号安全，我们限制账号当天登陆!");
             }
@@ -70,7 +69,6 @@ class loginController extends abstractController
                 }
             }
         }
-
         return $this->getView()->display();
     }
 
@@ -80,7 +78,6 @@ class loginController extends abstractController
      * @param $row
      */
     public function LoginGmc($row){
-
         if($row['status'] !=  \Member\Info\Table\Status::STATUS_ENABLE){
             return $this->link()->error("该账号不可用 , 登录失败!");
         }
@@ -88,7 +85,6 @@ class loginController extends abstractController
         if($row['username']=='admin'){
             $_SESSION[C('ADMIN_AUTH_KEY')] = true;
         }
-
         //存储用户信息cookie
         $user['id']=  $row['id'];
         $user['login_name']=  $row['username'];

@@ -12,8 +12,8 @@ namespace Admin\Controller;
 class indexController extends abstractController{
 
     function indexAction(){
-
-        $this->View()->display();
+        $v = $this->getView();
+        $v->display();
     }
 
     function index2Action(){

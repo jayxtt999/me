@@ -7,6 +7,7 @@
  */
 
 namespace Admin\Controller;
+use System\Library\Form\checkForm as checkForm;
 
 
 class configController extends abstractController{
@@ -29,9 +30,14 @@ class configController extends abstractController{
 
         public function saveAction(){
 
-            $form = new \Admin\Menu\Form\editForm();
+            $form = new \Admin\Config\Form\configForm();
             $form->start('config');
             $data = $this->request()->getData();//获取数据
+            //没有设置的默认赋值为0
+            foreach($form->_check as $k=>$v){
+                $data[$k] = $data[$k]?$data[$k]:0;
+            }
+            $data = checkForm::init($data,$form->_name);
             foreach($data as $k=>$v){
                 db()->table("config")->upDate(array("option_name"=>$k,"option_value"=>$v),array("option_name"=>$k))->done();
             }

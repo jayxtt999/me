@@ -13,7 +13,7 @@ class Form {
     private  $_form = array();
     private  $_start;
     private  $_text = array();
-    private  $_check = array();
+    public   $_check = array();
     private  $_textarea = array();
     private  $_select = array();
     private  $_bind = false;
