@@ -106,7 +106,7 @@ class Form {
      * @return string
      */
     public function getBsCheckBox($name){
-        if($this->_check[$name]){
+        if(isset($this->_check[$name])){
             return $this->_check[$name];
         }else{
             return "null";
@@ -131,8 +131,10 @@ class Form {
                 $paramS .= "$k=\"$v\" ";
             }
         }
-        if(isset($label)){
+        if($label){
             $label = "<label class='col-md-".$lw." control-label'>$label</label>";
+        }else{
+            $label = "";
         }
         if($this->_bindDate[$name]){
             $value = $this->_bindDate[$name]?"value='".$this->_bindDate[$name]."'":"";

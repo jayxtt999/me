@@ -557,7 +557,16 @@ function exception($msg)
 }
 
 
-
+/**
+ * 获取用户信息
+ * @param $id
+ * @return mixed
+ */
+function member($id)
+{
+    $user = db()->Table('member_info')->getRow(array('id'=>$id))->done();        //getAll
+    return $user['username'];
+}
 
 
 

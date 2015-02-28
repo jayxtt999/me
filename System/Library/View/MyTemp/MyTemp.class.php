@@ -410,7 +410,6 @@ class MyTemp {
         $flag   =  substr($tagStr,0,1);
         $flag2  =  substr($tagStr,1,1);
         $name   = substr($tagStr,1);
-
         if('$' == $flag && '.' != $flag2 && '(' != $flag2){ //解析模板变量 格式 {$varName}
             return $this->parseVar($name);
         }elseif('-' == $flag || '+'== $flag){ // 输出计算

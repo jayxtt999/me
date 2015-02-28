@@ -10,10 +10,36 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-02-12 17:36:22
+Date: 2015-02-28 17:32:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for xtt_article
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_article`;
+CREATE TABLE `xtt_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `content` longtext,
+  `excerpt` longtext COMMENT '摘要',
+  `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `member_id` int(10) NOT NULL COMMENT '作者',
+  `category` int(10) NOT NULL COMMENT '分类',
+  `comment_num` tinyint(10) DEFAULT '0' COMMENT '评论数量',
+  `view_num` tinyint(10) DEFAULT '0' COMMENT '查看数量',
+  `istop` tinyint(1) DEFAULT '0' COMMENT '置顶',
+  `allow_comment` tinyint(4) DEFAULT NULL COMMENT '允许评论',
+  `status` tinyint(1) DEFAULT '1',
+  `password` varchar(32) DEFAULT NULL COMMENT '日志密码',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_article
+-- ----------------------------
+INSERT INTO `xtt_article` VALUES ('1', '测试', '测试', '测试', '2015-02-28 11:33:46', '1', '1', '100', '100', '1', '1', '1', '123');
 
 -- ----------------------------
 -- Table structure for xtt_common_menu
@@ -34,7 +60,7 @@ CREATE TABLE `xtt_common_menu` (
   `parent_id` int(10) unsigned DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -42,11 +68,14 @@ CREATE TABLE `xtt_common_menu` (
 INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '1');
 INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', null, '0', '1', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '2015-02-28 16:06:42', 'admin', 'article', 'add', '', '1', '0', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -70,9 +99,9 @@ INSERT INTO `xtt_config` VALUES ('4', 'site_description', '谢滔滔_、博客_�
 INSERT INTO `xtt_config` VALUES ('5', 'site_key', '谢滔滔_、博客_、435024179');
 INSERT INTO `xtt_config` VALUES ('6', 'blogurl', 'http://www.me.me');
 INSERT INTO `xtt_config` VALUES ('7', 'icp', '');
-INSERT INTO `xtt_config` VALUES ('8', 'footer_info', '2014 &copy; Metronic by keenthemes.<a href=\"http://user.qzone.qq.com/435024179/infocenter \"target=\"_blank\" >访问我的QQ空间</a>\r\n<script type=\"text/javascript\" src=\"http://tajs.qq.com/stats?sId=16270255\" charset=\"UTF-8\"></script>\r\n');
+INSERT INTO `xtt_config` VALUES ('8', 'footer_info', '2014 © Metronic by keenthemes.<a href=\\\"http://user.qzone.qq.com/435024179/infocenter \\\"target=\\\"_blank\\\" >访问我的QQ空间</a>\r\n<script type=\\\"text/javascript\\\" src=\\\"http://tajs.qq.com/stats?sId=16270255\\\" charset=\\\"UTF-8\\\"></script>\r\n');
 INSERT INTO `xtt_config` VALUES ('9', 'show_log_num', '10');
-INSERT INTO `xtt_config` VALUES ('10', 'timezone', '1');
+INSERT INTO `xtt_config` VALUES ('10', 'timezone', '8');
 INSERT INTO `xtt_config` VALUES ('13', 'istwitter', '1');
 INSERT INTO `xtt_config` VALUES ('14', 'istreply', '1');
 INSERT INTO `xtt_config` VALUES ('16', 'iscomment', '1');
@@ -124,9 +153,11 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
 -- ----------------------------
 INSERT INTO `xtt_member_login_log` VALUES ('1', '1270', '2015-02-12 15:20:13', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('2', '1270', '2015-02-13 09:45:29', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('3', '1270', '2015-02-28 08:55:05', '1');
