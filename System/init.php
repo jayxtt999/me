@@ -14,12 +14,12 @@ const ext = '.php';
 
 define('SYSTEM_PATH', dirname(__FILE__));
 define('ROOT_PATH', substr(SYSTEM_PATH, 0, -7));
-define('SYS_LIB_PATH', SYSTEM_PATH . '/Library/System');
-define('EXTEND_PATH', SYSTEM_PATH . '/Library/Extends');
-define('Hook_PATH', EXTEND_PATH . '/Hook');
+define('SYS_LIB_PATH', '/System/Library');
+define('Hook_PATH', SYS_LIB_PATH . '/Hook');
+
 define('APP_PATH', ROOT_PATH . '/Application');
-define('APP_LIB_PATH', SYSTEM_PATH . '/Library/Vendor');
 define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
+
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');

@@ -32,6 +32,10 @@ class articleController extends abstractController{
         $form->bind($row);                                  //绑定Row
         $form->start('articleEdit');                      //开始渲染
         $this->getView()->assign(array('form'=>$form));
+        $tag = new \Admin\Model\articleModel();
+        $tags = $tag->getTags();
+        $this->getView()->assign(array('tags'=>$tags));
+
         $this->getView()->display();
     }
 

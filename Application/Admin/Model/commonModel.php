@@ -2,6 +2,7 @@
 
 namespace Admin\Model;
 /**
+ * 通用
  * Created by PhpStorm.
  * User: Administrator
  * Date: 14-11-30
