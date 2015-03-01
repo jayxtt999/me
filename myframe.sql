@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-02-28 17:32:27
+Date: 2015-03-01 17:36:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,6 +40,49 @@ CREATE TABLE `xtt_article` (
 -- Records of xtt_article
 -- ----------------------------
 INSERT INTO `xtt_article` VALUES ('1', '测试', '测试', '测试', '2015-02-28 11:33:46', '1', '1', '100', '100', '1', '1', '1', '123');
+
+-- ----------------------------
+-- Table structure for xtt_article_category
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_article_category`;
+CREATE TABLE `xtt_article_category` (
+  `id` int(10) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '分类名',
+  `alias` varchar(255) DEFAULT NULL COMMENT '别名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_article_category
+-- ----------------------------
+INSERT INTO `xtt_article_category` VALUES ('1', '测试111', 'cs1');
+INSERT INTO `xtt_article_category` VALUES ('2', '测试222', 'cs2');
+INSERT INTO `xtt_article_category` VALUES ('3', '测试333', 'cs3');
+
+-- ----------------------------
+-- Table structure for xtt_article_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_article_tag`;
+CREATE TABLE `xtt_article_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tagname` varchar(256) DEFAULT NULL COMMENT '标签名',
+  `gid` varchar(256) DEFAULT NULL COMMENT '日志id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_article_tag
+-- ----------------------------
+INSERT INTO `xtt_article_tag` VALUES ('1', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('2', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('3', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('4', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('5', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('6', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('7', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('8', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('9', '测试', '1');
+INSERT INTO `xtt_article_tag` VALUES ('10', '测试', '1');
 
 -- ----------------------------
 -- Table structure for xtt_common_menu
@@ -153,7 +196,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -161,3 +204,5 @@ CREATE TABLE `xtt_member_login_log` (
 INSERT INTO `xtt_member_login_log` VALUES ('1', '1270', '2015-02-12 15:20:13', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('2', '1270', '2015-02-13 09:45:29', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('3', '1270', '2015-02-28 08:55:05', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('4', '1270', '2015-03-01 09:22:28', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('5', '1270', '2015-03-01 10:13:39', '1');
