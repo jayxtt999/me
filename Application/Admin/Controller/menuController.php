@@ -72,7 +72,7 @@ class menuController extends abstractController{
                 return $this->notFound();
             }
             $data = checkForm::init($data,$form->_name);
-            $res = db()->Table('common_menu')->insert($data,array('id'=>$id))->done();
+            $res = db()->Table('common_menu')->insert($data)->done();
             if($res){
                 return $this->link()->success("admin:menu:index","添加栏目成功");
             }else{

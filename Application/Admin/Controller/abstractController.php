@@ -45,6 +45,17 @@ class abstractController extends \System\Core\Controller
     }
 
     /**
+     * 获取当前登陆用户
+     * @return mixed
+     */
+    public function getMember(){
+
+        $id = $_SESSION[C('USER_AUTH_KEY')];
+        return db()->table("member_info")->getRow(array('id'=>$id))->done();
+
+    }
+
+    /**
      * 验证登陆
      */
     public function checkLogin()

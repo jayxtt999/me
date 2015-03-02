@@ -284,7 +284,6 @@ class pdoMysql
     {
         if (is_array($data)) {
             $column = $value = "";
-            $data['create_time'] = date("Y-m-d H:i:s");
             $len = count($data);
             $i = 0;
             $dataVal = array();

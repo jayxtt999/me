@@ -25,10 +25,20 @@ class EditForm extends \System\Library\Form\Form
         );
         $this->setText("title", "", $array, array('datatype' => '*2-24',));
 
+        $this->setText("id", "", $array, array('datatype' => 'n1-8'),true);
+
+
+        $array = array(
+            "class" => "form-control",
+            "placeholder" => "TIME",
+            "disabled"=>"disabled"
+        );
+        $this->setText("time", "", $array, array('datatype' => '*'),"",false,3);
 
         $array = array(
             "class" => "form-control",
         );
+
         $this->setUeditor("content","",$array);
 
 
@@ -59,9 +69,18 @@ class EditForm extends \System\Library\Form\Form
 
         $array = array(
             "class" => "form-control",
-
         );
-        $this->setText("password", "日志访问密码", $array, array('datatype' => '*2-24',false,3,3));
+        $this->setText("password", "访问密码", $array, array('datatype' => '*2-24'),false,1,3);
+
+        $array = array(
+            "class" => "make-switch",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
+        );
+        $this->setBsCheckBox("istop", "是否置顶", $array);
+
+        $this->setBsCheckBox("allow_comment", "允许评论", $array);
+
 
 
     }

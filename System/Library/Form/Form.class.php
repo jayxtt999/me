@@ -266,10 +266,9 @@ class Form
      * @param $name
      * @return string
      */
-    public function setUeditor($name, $label = "", $param = "", $valid = "", $isHide = false, $lw = 3, $dw = 12)
+    public function setUeditor($name, $label = "", $param = "",$config="", $lw = 3, $dw = 12)
     {
-
-
+        $name = strtolower($name);
         if (!$name) {
             \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
         }
@@ -286,23 +285,22 @@ class Form
         }
         //如果加载过 就无需重复加载js文件
         if (!$this->_ueditor) {
-            $this->_ueditor[strtolower($name)] = "
+            $this->_ueditor[$name] = "
              <script type='text/javascript' charset='utf-8' src='" . SYS_LIB_PATH . "/Ueditor/ueditor.config.js'></script>
              <script type='text/javascript' charset='utf-8' src='" . SYS_LIB_PATH . "/Ueditor/ueditor.all.min.js'> </script>
              <script type='text/javascript' charset='utf-8' src='" . SYS_LIB_PATH . "/Ueditor/lang/zh-cn/zh-cn.js'></script>";
         }
-        $this->_ueditor[strtolower($name)] .= $label .
+        $this->_ueditor[$name] .= $label .
             "
         <div class='col-md-" . $dw . "'>
-             <script id='" . $name . "' type='text/plain'></script>
+             <script id='" . $name . "'  type='text/plain'></script>
              <script type='text/javascript'>
-               var ue = UE.getEditor('" . $name . "');
-                ue.ready(function(){
-                        ue.setContent('" . $value . "');
+               var ue".$name." = UE.getEditor('" . $name . "',{textarea:\"".$name."\",".$config."});
+                ue".$name.".ready(function(){
+                        ue".$name.".setContent('" . $value . "');
                     })
              </script>
         </div>";
-
     }
 
 
@@ -312,8 +310,8 @@ class Form
      */
     public function getUeditor($name)
     {
-        if ($this->_ueditor[strtolower($name)]) {
-            return $this->_ueditor[strtolower($name)];
+        if ($this->_ueditor[$name]) {
+            return $this->_ueditor[$name];
         } else {
             return "<span style='color: red'>Uedit插件加载失败</span>";
         }

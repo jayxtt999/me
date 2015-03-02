@@ -28,17 +28,23 @@ class articleModel extends \System\Core\Model{
 
     /**
      * 获取标签
+     * @param $tid
      * @return string
      */
-    public function getTags(){
+    public function getTags($tid=""){
 
         $Db = parent::getDb();
-        $tagAll = $Db->table('article_tag')->getAll()->order('id')->done();
-        $tags = "<ul class='nav nav-pills'>";
-        foreach($tagAll as $k=>$v){
-            $tags.="<li><a class='article_tag' href='javascript:;'>".$v['tagname']."</a></li>";
+        if($tid){
+            $tagAll = $Db->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
+
+        }else{
+            $tagAll = $Db->table('article_tag')->getAll()->order('id')->done();
+            $tags = "<ul class='nav nav-pills'>";
+            foreach($tagAll as $k=>$v){
+                $tags.="<li><a class='article_tag' href='javascript:;'>".$v['tagname']."</a></li>";
+            }
+            $tags .= "</ul>";
         }
-        $tags .= "</ul>";
         return $tags;
     }
 
