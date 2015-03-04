@@ -48,7 +48,7 @@ class EditForm extends \System\Library\Form\Form
             "id" => "tags",
             "placeholder" => "日志标签，逗号或空格分隔",
         );
-        $this->setText("tag", "", $array, array('datatype' => '*0-256',),"",false,6);
+        $this->setText("tag", "", $array, array('datatype' => '*0-256',),"",0,6);
 
 
         $array = array(

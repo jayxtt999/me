@@ -46,4 +46,48 @@ class configController extends abstractController{
 
 
 
+        public function avatarUploadAction(){
+
+            echo 1111;exit;
+            return new JsonModel(array('success'=>false,'msg'=>'111'));
+            $targetFolder = '/Data/upload/avatar'; // Relative to the root
+
+            //验证来路
+            $verifyToken = md5('unique_salt_xtt' . $_POST['timestamp']);
+            if(empty($_FILES) || ($_POST['token'] != $verifyToken)){
+                return new JsonModel(array('success'=>false,'msg'=>'未知的上传来源,上传失败!'));
+            }
+            //验证合法性
+            /*
+             * 'name' => string 'QQ图片20150301090011.jpg' (length=26)
+      'type' => string 'application/octet-stream' (length=24)
+      'tmp_name' => string 'D:\wamp\tmp\phpA792.tmp' (length=23)
+      'error' => int 0
+      'size' => int 41198
+            round($fstat["size"]/1024,2)
+             *
+             */
+
+            $fstat = $_FILES[\Admin\Config\Type\Avatar::FILE_OBJ_NAME];
+            $fileParts = pathinfo($fstat['name']);
+            var_dump(explode(",",\Admin\Config\Type\Avatar::FILE_TYPE_EXTS));exit;
+            if(!in_array($fileParts['extension'], explode(",",\Admin\Config\Type\Avatar::FILE_TYPE_EXTS))){
+                return json_encode(array('success'=>false,'msg'=>'类型错误!'));
+            }
+
+            if(round($fstat["size"]/1024,2) > \Admin\Config\Type\Avatar::QUEUE_SIZE_LIMIT){
+                return json_encode(array('success'=>false,'msg'=>'超出文件大小!'));
+            }
+
+            $tempFile = $fstat['tmp_name'];
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+            $member = $this->getMember();
+
+            $targetFile = rtrim($targetPath,'/') . '/' . "xtt_".$member['id'].'/'.time();
+            move_uploaded_file($tempFile,$targetFile);
+            return json_encode(array('success'=>true,'msg'=>'success'));
+        }
+
+
+
 } 

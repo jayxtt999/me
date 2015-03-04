@@ -1,6 +1,7 @@
-
 <include file="layout@admin@head"/>
-
+<link href="{:ADMIM_TPL_PATH}/plugins/jcrop/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css"/>
+<link href="{:ADMIM_TPL_PATH}/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css"/>
+<link href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 <!-- BEGIN SIDEBAR -->
@@ -11,200 +12,218 @@
     <include file="layout@layout@menu"/>
 
 
-
-
 </div>
 <!-- END SIDEBAR -->
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 <div class="page-content">
-    <include file="layout@layout@widgets"/>
+<include file="layout@layout@widgets"/>
 
-    <div class="row">
+<div class="row">
 
-        <div class="col-md-12">
+<div class="col-md-12">
 
-            <div class="portlet box grey-cascade">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <span class="glyphicon glyphicon-arrow-left" onclick="javascript:history.go(-1);"></span>
+<div class="portlet box grey-cascade">
+<div class="portlet-title">
+    <div class="caption">
+        <span class="glyphicon glyphicon-arrow-left" onclick="javascript:history.go(-1);"></span>
+    </div>
+    <div class="tools">
+        <a href="javascript:;" class="collapse">
+        </a>
+        <a href="#portlet-config" data-toggle="modal" class="config">
+        </a>
+    </div>
+</div>
+<div class="portlet-body">
+<div class="tabbable-custom nav-justified">
+<ul class="nav nav-tabs nav-justified">
+    <li class="active">
+        <a href="#tab_1_1_1" data-toggle="tab">
+            基本设置 </a>
+    </li>
+    <li>
+        <a href="#tab_1_1_2" data-toggle="tab">
+            模板管理 </a>
+    </li>
+    <li>
+        <a href="#tab_1_1_3" data-toggle="tab">
+            个人资料 </a>
+    </li>
+
+
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab_1_1_1">
+
+
+        <div class="row">
+            <div class="col-md-6 ">
+
+                <div class="portlet-body form">
+                    {$form->begin('config')}
+                    <div class="form-body">
+
+                        <div class="form-group">
+                            {$form->getText('blogname')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('bloginfo')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('blogurl')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('index_lognum')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getSelect('timezone')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('login_code')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('site_title')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('site_key')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('site_description')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('istwitter')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('index_twnum')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('istreply')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('iscomment')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('ischkcomment')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('comment_code')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('isgravatar')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('comment_needchinese')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getBsCheckBox('comment_paging')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('comment_interval')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('comment_pnum')}
+                        </div>
+
+
+                        <div class="form-group">
+                            {$form->getSelect('comment_order')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getText('icp')}
+                        </div>
+
+                        <div class="form-group">
+                            {$form->getTextArea('footer_info')}
+                        </div>
+
+
                     </div>
-                    <div class="tools">
-                        <a href="javascript:;" class="collapse">
-                        </a>
-                        <a href="#portlet-config" data-toggle="modal" class="config">
-                        </a>
-                    </div>
-                </div>
-                <div class="portlet-body">
-                    <div class="tabbable-custom nav-justified">
-                        <ul class="nav nav-tabs nav-justified">
-                            <li class="active">
-                                <a href="#tab_1_1_1" data-toggle="tab">
-                                    基本设置  </a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_1_2" data-toggle="tab">
-                                    模板管理  </a>
-                            </li>
-                            <li>
-                                <a href="#tab_1_1_3" data-toggle="tab">
-                                    个人资料  </a>
-                            </li>
 
-
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tab_1_1_1">
-
-
-                                <div class="row">
-                                    <div class="col-md-6 ">
-
-                                            <div class="portlet-body form">
-                                                {$form->begin('config')}
-                                                <div class="form-body">
-
-                                                    <div class="form-group">
-                                                        {$form->getText('blogname')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('bloginfo')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('blogurl')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('index_lognum')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getSelect('timezone')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('login_code')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('site_title')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('site_key')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('site_description')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('istwitter')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                    {$form->getText('index_twnum')}
-                                                     </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('istreply')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('iscomment')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('ischkcomment')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('comment_code')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('isgravatar')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('comment_needchinese')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getBsCheckBox('comment_paging')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('comment_interval')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('comment_pnum')}
-                                                    </div>
-
-
-                                                    <div class="form-group">
-                                                        {$form->getSelect('comment_order')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getText('icp')}
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        {$form->getTextArea('footer_info')}
-                                                    </div>
-
-
-                                                </div>
-
-                                                <div class="form-actions">
-                                                    <div class="row">
-                                                        <div class="col-md-offset-5 col-md-9">
-                                                            <button type="submit" class="btn green">Submit</button>
-                                                            <button type="button" class="btn default">Cancel</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {$form->end('menuedit')}
-
-                                            </div>
-
-                                    </div>
-                                </div>
-
-
-
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-5 col-md-9">
+                                <button type="submit" class="btn green">Submit</button>
+                                <button type="button" class="btn default">Cancel</button>
                             </div>
-                            <div class="tab-pane" id="tab_1_1_2">
-                               222
-                            </div>
-                            <div class="tab-pane" id="tab_1_1_3">
-                                333
-                            </div>
-
-
                         </div>
                     </div>
 
-
-
-
+                    {$form->end('menuedit')}
 
                 </div>
 
             </div>
+        </div>
 
+
+    </div>
+    <div class="tab-pane" id="tab_1_1_2">
+        222
+    </div>
+    <div class="tab-pane" id="tab_1_1_3">
+
+        <div class="form-group">
+            <div class="col-md-6">
+
+
+                <input type="file" name="avatar_upload" id="avatar_upload" multiple="">
+
+                <h6 class="block">仅支持JPG、GIF、PNG、JPEG，文件小于4M</h6>
+
+
+                <img src="http://www.baidu.com/img/bd_logo1.png" id="target" alt="[Jcrop Example]"/>
+
+
+            </div>
+
+            <div class="col-md-6">
+
+
+            </div>
+
+            <div class="clearfix">
+            </div>
 
         </div>
 
 
-
     </div>
+
+
+</div>
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
 
 <div class="clearfix">
 </div>
@@ -217,11 +236,75 @@
 <!-- END CONTAINER -->
 
 
-
-
 <include file="layout@admin@foot"/>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/jcrop/js/jquery.Jcrop.min.js"></script>
+<script src="{:ADMIM_TPL_PATH}/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <script>
     $(function () {
+
+        // How easy is this??
+        $('#target').Jcrop();
+        $("#avatar_upload").uploadify({
+            'formData'     : {
+                'timestamp' : '{:time()}',
+                'token'     : '{:md5("unique_salt_xtt".time())}'
+            },
+            height: 36,
+            swf: '{:ADMIM_TPL_PATH}/plugins/uploadify/uploadify.swf',
+            uploader: '/index.php?m=admin&c=config&a=avatarUpload',
+            width: 110,
+            'buttonText' : "<i class='fa fa-plus'></i>添加文件",
+            'removeTimeout':"<php>echo \\Admin\\Config\\Type\\Avatar::REMOVE_TIMEOUT;</php>",
+            'uploadLimit':"<php>echo \\Admin\\Config\\Type\\Avatar::UPLOAD_LIMIT;</php>",
+            'queueSizeLimit':"<php>echo \\Admin\\Config\\Type\\Avatar::QUEUE_SIZE_LIMIT;</php>",
+            'multi':"<php>echo \\Admin\\Config\\Type\\Avatar::MULTI;</php>",
+            'auto':"<php>echo \\Admin\\Config\\Type\\Avatar::AUTO;</php>",
+            'fileObjName':"<php>echo \\Admin\\Config\\Type\\Avatar::FILE_OBJ_NAME;</php>",
+            'fileSizeLimit' : "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_SIZE_LIMIT;</php>KB",
+            'fileTypeDesc':'选择图片',
+            'fileTypeExts' : "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_TYPE_EXTS;</php>",
+            //选择文件出错
+            'onSelectError':function(file){
+                layer.msg('选择文件出错了');
+                return false;
+            },
+
+            //上传出错
+            'onUploadError':function(file){
+                layer.msg('网络错误,上传失败!');
+                return false;
+            },
+
+            //上传成功回调函数
+            'onUploadSuccess' : function(file, data, response) {
+                try{
+                    document.write(data);
+                    var obj=eval("("+data+")");  //var obj=({res:true,msg:''})
+                    if(typeof(obj)!=='object'){
+                        layer.msg('系统错误,上传失败!',2,8);
+                    }
+                    if(obj.success===true){
+
+                    }else if(obj.success===false){
+                        layer.msg(obj.msg,2,8);
+                    }
+                }catch (e){
+                    layer.msg('系统错误,上传失败!',2,8);
+                }
+            },
+
+            //上传完成 会先调用onUploadSuccess然后才调用onUploadComplete
+            'onUploadComplete' : function(file) {
+                //alert(file.name + '上传完成');
+            }
+
+
+
+
+        });
+
+
+
         $(".form-horizontal").Validform({
             tiptype: function (msg, o, cssctl) {
                 o.type = 5

@@ -224,6 +224,7 @@ function Hook($tag, &$params = NULL)
  */
 function session($name, $value = '')
 {
+    session_start();
     $prefix = C('session:session_prefix');
     if (is_array($name)) {
         if (isset($name['prefix'])) C('session:session_prefix', $name['prefix']);
@@ -232,8 +233,6 @@ function session($name, $value = '')
         } elseif (isset($name['id'])) {
             session_id($name['id']);
         }
-        ini_set('session.auto_start', 0);
-
         if (isset($name['name'])) session_name($name['name']);
         if (isset($name['path'])) session_save_path($name['path']);
         if (isset($name['domain'])) ini_set('session.cookie_domain', $name['domain']);
@@ -255,7 +254,7 @@ function session($name, $value = '')
             }
         }
         if (C('session:session_auto_start')) {
-            session_start();
+            ini_set('session.auto_start', 0);
         }
     } elseif ('' === $value) {
         if (0 === strpos($name, '[')) { // session 操作

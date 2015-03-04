@@ -60,10 +60,10 @@ class abstractController extends \System\Core\Controller
      */
     public function checkLogin()
     {
-        session_start();
-        if(!$_SESSION[C('USER_AUTH_KEY')]){
+        var_dump(session(C('USER_AUTH_KEY')));exit;
+        if(!session(C('USER_AUTH_KEY'))){
             return $this->link()->dispatchJump("/index.php?m=member&c=login&a=index",1,"请先登陆!",0);
-        }elseif(!$_SESSION[C('ADMIN_AUTH_KEY')]){
+        }elseif(!session(C('ADMIN_AUTH_KEY'))){
             return $this->link()->dispatchJump("/index.php?m=member&c=login&a=index",1,"该用户没有操作权限!",0);
         }
     }

@@ -36,7 +36,10 @@ class articleModel extends \System\Core\Model{
         $Db = parent::getDb();
         if($tid){
             $tagAll = $Db->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
-
+            foreach($tagAll as $k=>$v){
+                $tagFull[$k] = $v['tagname'];
+            }
+            $tags = implode(",",$tagFull);
         }else{
             $tagAll = $Db->table('article_tag')->getAll()->order('id')->done();
             $tags = "<ul class='nav nav-pills'>";
