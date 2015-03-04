@@ -233,7 +233,6 @@ function session($name, $value = '')
             session_id($name['id']);
         }
         ini_set('session.auto_start', 0);
-
         if (isset($name['name'])) session_name($name['name']);
         if (isset($name['path'])) session_save_path($name['path']);
         if (isset($name['domain'])) ini_set('session.cookie_domain', $name['domain']);
@@ -254,7 +253,8 @@ function session($name, $value = '')
                 Error::halt('_CLASS_NOT_EXIST_' . ': ' . $class);
             }
         }
-        if (C('session:session_auto_start')) {
+        // 启动session
+        if(C('session:session_auto_start')){
             session_start();
         }
     } elseif ('' === $value) {

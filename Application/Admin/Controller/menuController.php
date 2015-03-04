@@ -85,7 +85,7 @@ class menuController extends abstractController{
      *删除
      */
     public function delAction(){
-        $id = get("id","string");
+        $id = get("id","int");
         $res = db()->Table('common_menu')->delete(array('id'=>$id))->done();
         if($res){
             return $this->link()->success("admin:menu:index","删除成功");

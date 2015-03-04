@@ -127,7 +127,7 @@ class Form
      * @param string $valid
      * @param bool $isHide
      */
-    public function setText($name, $label = "", $param = "", $valid = "", $isHide = false, $lw = 3, $dw = 9)
+    public function setText($name, $label = "", $param = "", $valid = array(), $isHide = false, $lw = 3, $dw = 9,$val="")
     {
         if (!$name) {
             \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
@@ -145,7 +145,7 @@ class Form
             $label = "";
         }
         if ($this->_bindDate[$name]) {
-            $value = $this->_bindDate[$name] ? "value='" . $this->_bindDate[$name] . "'" : "";
+            $value = $val ? "value='" . $val . "'": $this->_bindDate[$name] ? "value='" . $this->_bindDate[$name] . "'" : "";
         }
         if ($valid) {
             $validHtml = "";

@@ -35,7 +35,7 @@ class Route{
             $arr = explode("=",$v);
             $q[$arr[0]] = $arr[1];
         }
-        self::$routeUrl['module'] = $q['m']?$q['m']:null;
+        self::$routeUrl['module'] = $q['m']?$q['m']:"home";
         self::$routeUrl['controller'] = $q['c']?$q['c']:self::$config['default_controller'];
         self::$routeUrl['action'] = $q['a']?$q['a']:self::$config['default_action'];
         unset($q['m'],$q['c'],$q['a']);

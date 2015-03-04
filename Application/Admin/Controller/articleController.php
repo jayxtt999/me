@@ -17,7 +17,7 @@ class articleController extends abstractController{
      */
     public function listAction(){
 
-        $all = db()->Table('article')->getAll()->done();        //getAll
+        $all = db()->Table('article')->getAll(array('status'=>\Admin\Article\Type\Status::STATUS_ENABLE))->done();        //getAll
         $this->getView()->assign(array('articleAll'=>$all));
         return $this->getView()->display();
 
@@ -35,11 +35,10 @@ class articleController extends abstractController{
         $this->getView()->assign(array('form'=>$form));
         $tag = new \Admin\Model\articleModel();
         //获取该文章标签
-
-
+        $tTags = $tag->getTags($id);
         //获取已有全部标签
         $tags = $tag->getTags();
-        $this->getView()->assign(array('tags'=>$tags));
+        $this->getView()->assign(array('tags'=>$tags,'tTags'=>$tTags));
         $this->getView()->display();
     }
 
@@ -57,7 +56,7 @@ class articleController extends abstractController{
         $data['member_id'] = $member['id'];
 
         // 处理标签
-        $tags = !empty($data['tag']) ? preg_split ("/[,\s]|(，)/", $data['tag']) : array();
+        $tags = !empty($data['tag'])?preg_split ("/[,\s]|(，)/", $data['tag']) : array();
         $tags = array_filter(array_unique($tags));
         foreach ($tags as $tagName) {
             $result = db()->table("article_tag")->getRow(array("tagname"=>$tagName))->done();
@@ -77,6 +76,17 @@ class articleController extends abstractController{
             return $this->link()->success("admin:article:list","更新成功");
         }else{
             return $this->link()->error("未更新或更新失败");
+        }
+
+    }
+
+    public function delAction(){
+        $id = get("id","int");
+        $res = db()->Table('article')->upDate(array('status'=>\Admin\Article\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();
+        if($res){
+            return $this->link()->success("admin:article:index","删除成功");
+        }else{
+            return $this->link()->error("删除失败");
         }
 
     }

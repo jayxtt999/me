@@ -86,7 +86,7 @@
                                         <td>
                                             <a href='/index.php?m=admin&c=article&a=edit&id={$vo.id}'class='btn red'title='修改'><i class='fa fa-edit'></i></a>
 
-                                            <a href="javascript:menuDel('{$vo.id}');"class='btn
+                                            <a href="javascript:articleDel('{$vo.id}');"class='btn
                                                 purple'title='删除'><i class='fa fa-times'></i></a></td>
                                     </tr>
 
@@ -211,9 +211,9 @@
     }();
     TableManaged.init();
 
-    function menuDel(id) {
+    function articleDel(id) {
         layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=menu&a=del&id=" + id
+            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
         });
     }
 </script>

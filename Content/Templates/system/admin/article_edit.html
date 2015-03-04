@@ -150,12 +150,16 @@
         $('input[name="istop"]，input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
             state ? $(this).val(1) : $(this).val(2);
         });
-        var val = "";
         $(".article_tag").click(function () {
-            val += $(this).text() + ","
+            var val = $("#tags").val();
+            if(val){
+                val +=  ","+$(this).text()
+            }else{
+                val = $(this).text();
+            }
             $("#tags").val(val);
         })
-
+        $("#tags").val("{$tTags}")
     })
 
 

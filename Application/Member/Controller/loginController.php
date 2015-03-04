@@ -81,9 +81,9 @@ class loginController extends abstractController
         if($row['status'] !=  \Member\Info\Table\Status::STATUS_ENABLE){
             return $this->link()->error("该账号不可用 , 登录失败!");
         }
-        $_SESSION[C('USER_AUTH_KEY')] = $row['id'];
+        session(C('USER_AUTH_KEY'), $row['id']);
         if($row['username']=='admin'){
-            $_SESSION[C('ADMIN_AUTH_KEY')] = true;
+            session(C('ADMIN_AUTH_KEY'),true);
         }
         //存储用户信息cookie
         $user['id']=  $row['id'];
