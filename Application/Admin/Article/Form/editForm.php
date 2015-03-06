@@ -25,7 +25,7 @@ class EditForm extends \System\Library\Form\Form
         );
         $this->setText("title", "", $array, array('datatype' => '*2-24',));
 
-        $this->setText("id", "", $array, array('datatype' => 'n1-8'),true);
+        $this->setText("id", "", $array, array('datatype' => 'n1-8'),"hidden");
 
 
         $array = array(
@@ -33,7 +33,7 @@ class EditForm extends \System\Library\Form\Form
             "placeholder" => "TIME",
             "disabled"=>"disabled"
         );
-        $this->setText("time", "", $array, array('datatype' => '*'),"",false,3);
+        $this->setText("time", "", $array, array('datatype' => '*'),"text",0,3);
 
         $array = array(
             "class" => "form-control",
@@ -48,7 +48,7 @@ class EditForm extends \System\Library\Form\Form
             "id" => "tags",
             "placeholder" => "日志标签，逗号或空格分隔",
         );
-        $this->setText("tag", "", $array, array('datatype' => '*0-256',),"",0,6);
+        $this->setText("tag", "", $array, array('datatype' => '*0-256',),"text",0,6);
 
 
         $array = array(
@@ -70,7 +70,7 @@ class EditForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("password", "访问密码", $array, array('datatype' => '*2-24'),false,1,3);
+        $this->setText("password", "访问密码", $array, array('datatype' => '*2-24'),"text",1,3);
 
         $array = array(
             "class" => "make-switch",

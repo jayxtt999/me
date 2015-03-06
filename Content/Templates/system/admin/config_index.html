@@ -1,7 +1,8 @@
 <include file="layout@admin@head"/>
 <link href="{:ADMIM_TPL_PATH}/plugins/jcrop/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css"/>
 <link href="{:ADMIM_TPL_PATH}/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css"/>
-<link href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
+<link href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"
+      type="text/css"/>
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 <!-- BEGIN SIDEBAR -->
@@ -53,162 +54,250 @@
 
 
 </ul>
+<style type="text/css">
+
+
+    .jcrop-holder #preview-pane {
+        display: block;
+        position: relative;
+        z-index: 2000;
+        margin-left: 500px;
+    }
+
+    #preview-pane .preview-container {
+        margin-top: 10px;
+        overflow: hidden;
+        border: 1px rgba(0, 0, 0, .4) solid;
+        background-color: white;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+    }
+
+</style>
 <div class="tab-content">
-    <div class="tab-pane active" id="tab_1_1_1">
+<div class="tab-pane active" id="tab_1_1_1">
 
 
-        <div class="row">
-            <div class="col-md-6 ">
+    <div class="row">
+        <div class="col-md-6 ">
 
-                <div class="portlet-body form">
-                    {$form->begin('config')}
-                    <div class="form-body">
+            <div class="portlet-body form">
+                {$form->begin('config')}
+                <div class="form-body">
 
-                        <div class="form-group">
-                            {$form->getText('blogname')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('bloginfo')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('blogurl')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('index_lognum')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getSelect('timezone')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('login_code')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('site_title')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('site_key')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('site_description')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('istwitter')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('index_twnum')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('istreply')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('iscomment')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('ischkcomment')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('comment_code')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('isgravatar')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('comment_needchinese')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getBsCheckBox('comment_paging')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('comment_interval')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('comment_pnum')}
-                        </div>
-
-
-                        <div class="form-group">
-                            {$form->getSelect('comment_order')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getText('icp')}
-                        </div>
-
-                        <div class="form-group">
-                            {$form->getTextArea('footer_info')}
-                        </div>
-
-
+                    <div class="form-group">
+                        {$form->getText('blogname')}
                     </div>
 
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-5 col-md-9">
-                                <button type="submit" class="btn green">Submit</button>
-                                <button type="button" class="btn default">Cancel</button>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        {$form->getText('bloginfo')}
                     </div>
 
-                    {$form->end('menuedit')}
+                    <div class="form-group">
+                        {$form->getText('blogurl')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('index_lognum')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getSelect('timezone')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('login_code')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('site_title')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('site_key')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('site_description')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('istwitter')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('index_twnum')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('istreply')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('iscomment')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('ischkcomment')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('comment_code')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('isgravatar')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('comment_needchinese')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getBsCheckBox('comment_paging')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('comment_interval')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('comment_pnum')}
+                    </div>
+
+
+                    <div class="form-group">
+                        {$form->getSelect('comment_order')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getText('icp')}
+                    </div>
+
+                    <div class="form-group">
+                        {$form->getTextArea('footer_info')}
+                    </div>
+
 
                 </div>
 
-            </div>
-        </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-5 col-md-9">
+                            <button type="submit" class="btn green">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
 
+                {$form->end('menuedit')}
 
-    </div>
-    <div class="tab-pane" id="tab_1_1_2">
-        222
-    </div>
-    <div class="tab-pane" id="tab_1_1_3">
-
-        <div class="form-group">
-            <div class="col-md-6">
-
-
-                <input type="file" name="avatar_upload" id="avatar_upload" multiple="">
-
-                <h6 class="block">仅支持JPG、GIF、PNG、JPEG，文件小于4M</h6>
-
-
-                <img src="http://www.baidu.com/img/bd_logo1.png" id="target" alt="[Jcrop Example]"/>
-
-
-            </div>
-
-            <div class="col-md-6">
-
-
-            </div>
-
-            <div class="clearfix">
             </div>
 
         </div>
-
-
     </div>
+
+
+</div>
+<div class="tab-pane" id="tab_1_1_2">
+    222
+</div>
+<div class="tab-pane" id="tab_1_1_3">
+
+
+    <div class="row">
+        <div class="col-md-6 ">
+            <div class="portlet-body form">
+                {$memberform->begin('info')}
+                <div class="form-body">
+
+                    <div class="form-group" style="min-height: 450px;min-width:450px ">
+                        <div class="col-md-12">
+
+                            <input type="file" name="avatar_upload" id="avatar_upload" multiple="">
+                            <h6 class="block">仅支持JPG、GIF、PNG、JPEG，文件小于4M</h6>
+
+                                <img src="{$avatar}"
+                                     id="target" alt="[Jcrop Example]" name="target"/>
+
+                            <div id="preview-pane">
+                                <div class="preview-container" style="width: 150px; height: 150px;">
+                                    <img data-src="{$memberinfo['avatar']}"
+                                         class="jcrop-preview" alt="200x200" style="width: 150px; height: 150px;"
+                                         src="{$avatar}">
+                                </div>
+                                150*150
+
+                                <div class="preview-container" style="width: 100px; height: 100px;">
+                                    <img data-src="{$memberinfo['avatar']}"
+                                         class="jcrop-preview" alt="200x200" style="width: 100px; height: 100px;"
+                                         src="{$avatar}">
+                                </div>
+                                100*100
+                                <div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix">
+                        </div>
+
+                    </div>
+                    <div class="form-group" style="margin-top: 50px"></div>
+
+                    <input type="hidden" class="coordinates" name="coordinates">
+
+                    <div class="form-group">
+                        {$memberform->getText('avatar')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getText('nickname')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getSelect('sex')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getText('email')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getText('profession')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getText('favorite')}
+                    </div>
+
+                    <div class="form-group">
+                        {$memberform->getText('userinfo')}
+                    </div>
+
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-5 col-md-9">
+                            <button type="submit" class="btn green">Submit</button>
+                            <button type="button" class="btn default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                {$form->end('info')}
+            </div>
+        </div>
+    </div>
+
+
+</div>
 
 
 </div>
@@ -237,74 +326,119 @@
 
 
 <include file="layout@admin@foot"/>
-<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/jcrop/js/jquery.Jcrop.min.js"></script>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/jcrop/js/jquery.Jcrop.js"></script>
 <script src="{:ADMIM_TPL_PATH}/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <script>
     $(function () {
+        var jcrop_api,
+                boundx,
+                boundy,
+                $pcnt = $('#preview-pane .preview-container'),
+                $pimg = $('#preview-pane .preview-container img'),
+                xsize = $pcnt.width(),
+                ysize = $pcnt.height();
 
-        // How easy is this??
-        $('#target').Jcrop();
+        $('#target').Jcrop({
+            onChange: updatePreview,
+            onSelect: updatePreview,
+            aspectRatio: xsize / ysize,
+            minSize: [20, 20]
+        }, function () {
+            jcrop_api = this;
+            var bounds = this.getBounds();
+            boundx = bounds[0];
+            boundy = bounds[1];
+            x2 = boundx > boundy ? boundy : boundx;
+            jcrop_api.animateTo([0, 0, x2, x2]);
+            $preview = $('#preview-pane')
+            $preview.appendTo(jcrop_api.ui.holder);
+        });
+
+
+        function updatePreview(c) {
+            if (parseInt(c.w) > 0) {
+                var rx = xsize / c.w;
+                var ry = ysize / c.h;
+                $pimg.css({
+                    width: Math.round(rx * boundx) + 'px',
+                    height: Math.round(ry * boundy) + 'px',
+                    marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                    marginTop: '-' + Math.round(ry * c.y) + 'px'
+                });
+            }
+            $(".coordinates").val(c.x + "," + c.x2 + "," + c.y + "," + c.y2)
+
+        };
+
+        //文件上传
         $("#avatar_upload").uploadify({
-            'formData'     : {
-                'timestamp' : '{:time()}',
-                'token'     : '{:md5("unique_salt_xtt".time())}'
+            'formData': {
+                'timestamp': '{:time()}',
+                'token': '{:md5("unique_salt_xtt".time())}'
             },
             height: 36,
             swf: '{:ADMIM_TPL_PATH}/plugins/uploadify/uploadify.swf',
             uploader: '/index.php?m=admin&c=config&a=avatarUpload',
             width: 110,
-            'buttonText' : "<i class='fa fa-plus'></i>添加文件",
-            'removeTimeout':"<php>echo \\Admin\\Config\\Type\\Avatar::REMOVE_TIMEOUT;</php>",
-            'uploadLimit':"<php>echo \\Admin\\Config\\Type\\Avatar::UPLOAD_LIMIT;</php>",
-            'queueSizeLimit':"<php>echo \\Admin\\Config\\Type\\Avatar::QUEUE_SIZE_LIMIT;</php>",
-            'multi':"<php>echo \\Admin\\Config\\Type\\Avatar::MULTI;</php>",
-            'auto':"<php>echo \\Admin\\Config\\Type\\Avatar::AUTO;</php>",
-            'fileObjName':"<php>echo \\Admin\\Config\\Type\\Avatar::FILE_OBJ_NAME;</php>",
-            'fileSizeLimit' : "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_SIZE_LIMIT;</php>KB",
-            'fileTypeDesc':'选择图片',
-            'fileTypeExts' : "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_TYPE_EXTS;</php>",
+            'buttonText': "<i class='fa fa-plus'></i>添加文件",
+            'removeTimeout': "<php>echo \\Admin\\Config\\Type\\Avatar::REMOVE_TIMEOUT;</php>",
+            'uploadLimit': "<php>echo \\Admin\\Config\\Type\\Avatar::UPLOAD_LIMIT;</php>",
+            'queueSizeLimit': "<php>echo \\Admin\\Config\\Type\\Avatar::QUEUE_SIZE_LIMIT;</php>",
+            'multi': "<php>echo \\Admin\\Config\\Type\\Avatar::MULTI;</php>",
+            'auto': "<php>echo \\Admin\\Config\\Type\\Avatar::AUTO;</php>",
+            'fileObjName': "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_OBJ_NAME;</php>",
+            'fileSizeLimit': "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_SIZE_LIMIT;</php>KB",
+            'fileTypeDesc': '选择图片',
+            'fileTypeExts': "<php>echo \\Admin\\Config\\Type\\Avatar::FILE_TYPE_EXTS;</php>",
             //选择文件出错
-            'onSelectError':function(file){
+            'onSelectError': function (file) {
                 layer.msg('选择文件出错了');
                 return false;
             },
 
             //上传出错
-            'onUploadError':function(file){
+            'onUploadError': function (file) {
                 layer.msg('网络错误,上传失败!');
                 return false;
             },
 
             //上传成功回调函数
-            'onUploadSuccess' : function(file, data, response) {
-                try{
-                    alert(data)
-                    var obj=eval("("+data+")");  //var obj=({res:true,msg:''})
-                    if(typeof(obj)!=='object'){
-                        layer.msg('系统错误,上传失败!',2,8);
+            'onUploadSuccess': function (file, data, response) {
+                try {
+                    var obj = eval("(" + data + ")");  //var obj=({res:true,msg:''})
+                    if (typeof(obj) !== 'object') {
+                        layer.msg('系统错误,上传失败!', 2, 8);
                     }
-                    if(obj.success===true){
-
-                    }else if(obj.success===false){
-                        layer.msg(obj.msg,2,8);
+                    if (obj.success === true) {
+                        var img = jcrop_api.setImage(obj.file)
+                        //$(".avatar").val(obj.file)
+                        /* s= $(".jcrop-holder img").width();
+                         alert(s)
+                         w = s[0]/2;
+                         h = s[1]/2
+                         m = w>h?h/2:w/2;
+                         alert(w)
+                         alert(h)
+                         alert(m)
+                         jcrop_api.animateTo([w-m,h-m,w+m,h+m]);*/
+                        $(".preview-container img").attr("data-src", obj.file)
+                        $(".preview-container img").attr("src", obj.file)
+                    } else if (obj.success === false) {
+                        layer.msg(obj.msg, 2, 8);
                     }
-                }catch (e){
-                    layer.msg('系统错误,上传失败!',2,8);
+                } catch (e) {
+                    layer.msg('系统错误,上传失败!', 2, 8);
                 }
             },
 
             //上传完成 会先调用onUploadSuccess然后才调用onUploadComplete
-            'onUploadComplete' : function(file) {
+            'onUploadComplete': function (file) {
                 //alert(file.name + '上传完成');
             }
 
-
-
-
         });
 
-
-
+        //表单验证
         $(".form-horizontal").Validform({
             tiptype: function (msg, o, cssctl) {
                 o.type = 5
@@ -320,6 +454,9 @@
         $('input[name="login_code"],input[name="istwitter"],input[name="istreply"],input[name="iscomment"],input[name="ischkcomment"],input[name="comment_code"],input[name="isgravatar"],input[name="comment_needchinese"],input[name="comment_paging"]').on('switchChange.bootstrapSwitch', function (event, state) {
             state ? $(this).val(1) : $(this).val(0);
         });
+
+
+
 
     })
 

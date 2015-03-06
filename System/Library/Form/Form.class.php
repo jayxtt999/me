@@ -127,7 +127,7 @@ class Form
      * @param string $valid
      * @param bool $isHide
      */
-    public function setText($name, $label = "", $param = "", $valid = array(), $isHide = false, $lw = 3, $dw = 9,$val="")
+    public function setText($name, $label = "", $param = "", $valid = array(), $type = "text", $lw = 3, $dw = 9,$val="")
     {
         if (!$name) {
             \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
@@ -160,11 +160,6 @@ class Form
                 $validHtml .= "nullmsg='" . $valid['nullmsg'] . "'";
             }
             $additional .= "<span class='help-block help-block-error' style='display:none'></span>";
-        }
-        if ($isHide) {
-            $type = 'hidden';
-        } else {
-            $type = 'text';
         }
 
         $this->_text[$name] = $label . "<div class='col-md-" . $dw . "'><input type='" . $type . "' name='$name' " . $paramS . $value . $validHtml . " >" . $additional . "</div>";

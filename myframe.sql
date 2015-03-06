@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-02 17:50:32
+Date: 2015-03-06 17:35:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,7 +39,7 @@ CREATE TABLE `xtt_article` (
 -- ----------------------------
 -- Records of xtt_article
 -- ----------------------------
-INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>测试1111</p>', '<p>测试222</p>', '2015-03-02 17:10:24', '1', '1', '100', '100', '1', '1', '1', '123');
+INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>测试1111</p>', '<p>测试222</p>', '2015-03-03 10:52:10', '1', '1', '100', '100', '1', '1', '1', '123');
 
 -- ----------------------------
 -- Table structure for xtt_article_category
@@ -162,20 +162,22 @@ CREATE TABLE `xtt_member_info` (
   `username` char(45) DEFAULT NULL COMMENT '用户名',
   `password` char(32) DEFAULT NULL COMMENT '密码',
   `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
-  `avatar` int(10) DEFAULT NULL COMMENT '头像',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `profession` varchar(255) DEFAULT NULL COMMENT '职业',
   `favorite` varchar(255) DEFAULT NULL COMMENT '兴趣爱好',
   `sex` enum('男','女','其它') DEFAULT NULL COMMENT '性别',
   `userinfo` text COMMENT '用户说明',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
+  `role` tinyint(255) NOT NULL DEFAULT '2' COMMENT '用户组（1 管理员 2 普通 ）',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_info
 -- ----------------------------
-INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', '1', '2015-02-12 14:20:02', '1', null, null, '男', null);
+INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'c4ca4238a0b923820dcc509a6f75849b.jpg', '2015-03-06 17:08:44', '1', '职业', '兴趣爱好', '男', '用户说明', '昵称', '1');
 
 -- ----------------------------
 -- Table structure for xtt_member_login_log
@@ -189,7 +191,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -201,3 +203,15 @@ INSERT INTO `xtt_member_login_log` VALUES ('4', '1270', '2015-03-01 09:22:28', '
 INSERT INTO `xtt_member_login_log` VALUES ('5', '1270', '2015-03-01 10:13:39', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('6', '1270', '2015-03-02 09:14:17', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('7', '1270', '2015-03-02 11:58:27', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('8', '1270', '2015-03-03 14:33:23', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('9', '1270', '2015-03-04 17:00:06', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('10', '1270', '2015-03-04 17:50:00', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('11', '1270', '2015-03-05 09:32:31', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('12', '1270', '2015-03-05 14:10:42', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('13', '1270', '2015-03-05 14:15:47', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('14', '1270', '2015-03-05 14:31:13', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('15', '1270', '2015-03-06 08:53:34', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('16', '1270', '2015-03-06 09:45:49', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('17', '1270', '2015-03-06 09:50:29', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('18', '1270', '2015-03-06 13:08:42', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('19', '1270', '2015-03-06 13:11:03', '1');

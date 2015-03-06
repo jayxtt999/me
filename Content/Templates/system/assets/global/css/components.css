@@ -71,28 +71,7 @@ body {
   border: 0;
 }
 
-/* Reset round corners */
-div,
-input,
-select,
-textarea,
-span,
-img,
-table,
-label,
-td,
-th,
-p,
-a,
-button,
-ul,
-code,
-pre,
-li {
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  border-radius: 0 !important;
-}
+
 
 .img-circle {
   border-radius: 50% !important;

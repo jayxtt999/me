@@ -45,7 +45,7 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'n1-5'),false,3,3);
+        $this->setText("index_lognum", "每页显示日志数", $array, array('datatype' => 'n1-5'),"text",3,3);
 
 
         $array = array(
@@ -91,7 +91,7 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'n0-5',),false,3,3);
+        $this->setText("index_twnum", "每页显示碎语", $array, array('datatype' => 'n0-5',),"text",3,3);
 
         $array = array(
             "class" => "make-switch",
@@ -116,12 +116,12 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'n0-5'),false,3,3);
+        $this->setText("comment_interval", "评论间隔时间", $array, array('datatype' => 'n0-5'),"text",3,3);
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'n0-5'),false,3,3);
+        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'n0-5'),"text",3,3);
 
 
         $array = array(
