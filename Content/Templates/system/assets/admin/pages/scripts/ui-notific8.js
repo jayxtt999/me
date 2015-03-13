@@ -1,4 +1,4 @@
-var UINotific8 = function () {
+﻿var UINotific8 = function () {
 
     return {
         //main function to initiate the module

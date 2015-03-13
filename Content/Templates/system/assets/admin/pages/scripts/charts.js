@@ -1,4 +1,4 @@
-var Charts = function () {
+﻿var Charts = function () {
 
     return {
         //main function to initiate the module

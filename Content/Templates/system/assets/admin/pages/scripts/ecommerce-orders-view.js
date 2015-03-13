@@ -1,4 +1,4 @@
-var EcommerceOrdersView = function () {
+﻿var EcommerceOrdersView = function () {
 
 
     var handleInvoices = function () {

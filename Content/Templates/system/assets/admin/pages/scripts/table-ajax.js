@@ -1,4 +1,4 @@
-var TableAjax = function () {
+﻿var TableAjax = function () {
 
     var initPickers = function () {
         //init date pickers

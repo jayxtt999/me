@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery File Upload User Interface Plugin 9.5.2
  * https://github.com/blueimp/jQuery-File-Upload
  *

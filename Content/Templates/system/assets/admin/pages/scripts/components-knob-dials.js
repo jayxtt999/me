@@ -1,4 +1,4 @@
-var ComponentsKnobDials = function () {
+﻿var ComponentsKnobDials = function () {
 
     return {
         //main function to initiate the module

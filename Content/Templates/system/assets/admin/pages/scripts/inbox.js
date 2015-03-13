@@ -1,4 +1,4 @@
-var Inbox = function () {
+﻿var Inbox = function () {
 
     var content = $('.inbox-content');
     var loading = $('.inbox-loading');

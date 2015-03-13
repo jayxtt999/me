@@ -1,4 +1,4 @@
-var PortletDraggable = function () {
+﻿var PortletDraggable = function () {
 
     return {
         //main function to initiate the module

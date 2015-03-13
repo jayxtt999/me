@@ -28,14 +28,13 @@ class configController extends abstractController
         $form->bind($newData); //绑定Row
         $form->start('config'); //开始渲染
         //管理员资料
-        $memberRow = db()->Table('member_info')->getRow(array('role' => \Member\Info\Table\Role::LEVEL_ADMIN))->done();        //getRow
+        $member = $this->getMember();
+        $memberRow = db()->Table('member_info')->getRow(array('role' => \Member\Info\Table\Role::LEVEL_ADMIN,'id'=>$member['id']))->done();        //getRow
         $memberForm = new \Member\Login\Form\infoForm();
         $memberForm->bind($memberRow); //绑定Row
         $memberForm->start('info'); //开始渲染
         //获取头像
-        $member = $this->getMember();
-        $avatar = 'http://' . $_SERVER['HTTP_HOST']."/Data/upload/image/avatar/".$member['id']."/yt_".$memberRow['avatar'];
-        $this->getView()->assign(array('form' => $form,'memberform' => $memberForm,'avatar'=>$avatar));
+        $this->getView()->assign(array('form' => $form,'memberform' => $memberForm,'avatar'=>$member['avatar']));
         return $this->getView()->display();
     }
 
@@ -68,7 +67,7 @@ class configController extends abstractController
     public function avatarUploadAction()
     {
 
-        $targetFolder$targetFolder = '/Data/upload/image/avatar'; // Relative to the root
+        $targetFolder = 'Data/upload/image/avatar'; // Relative to the root
         //验证来路合法性
         $verifyToken = md5('unique_salt_xtt' . $_POST['timestamp']);
         if (empty($_FILES) || ($_POST['token'] != $verifyToken)) {
@@ -100,10 +99,14 @@ class configController extends abstractController
             mkdir($targetDir,0777,true);
         }
         //move_uploaded_file
-        $targetFile = $targetDir . '/yt_' . md5($member['id']) . "." . $fileParts['extension'];
+        $code = time().rand(0,9999);
+        $targetFile = $targetDir . '/yt_' . md5($member['id'].$code) . "." . $fileParts['extension'];
         move_uploaded_file($tempFile, $targetFile);
+
         //返回物绝对路径
-        $webFile = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'], $targetFile)."?".mt_rand(1,999999);
+        $webFile = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST']."/", $targetFile);
+        //更新头像数据路径
+        $res = db()->table('member_info')->upDate(array('avatar'=>$webFile),array('id'=>$member['id']))->done();
         exit (json_encode(array('success' => true, 'file' => $webFile)));
     }
 

@@ -1,4 +1,4 @@
-var UIDatepaginator = function () {
+﻿var UIDatepaginator = function () {
 
     return {
 

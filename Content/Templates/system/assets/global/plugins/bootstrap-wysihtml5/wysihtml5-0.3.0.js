@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license wysihtml5 v0.3.0
  * https://github.com/xing/wysihtml5
  *

@@ -1,4 +1,4 @@
-var MapsGoogle = function () {
+﻿var MapsGoogle = function () {
 
     var mapBasic = function () {
         new GMaps({

@@ -3,6 +3,29 @@
 <link href="{:ADMIM_TPL_PATH}/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css"/>
 <link href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"
       type="text/css"/>
+<style>
+
+    .jcrop-holder #preview-pane {
+        display: block;
+        position: absolute;
+        z-index: 2000;
+        top: 0;
+        right: -280px;
+        padding: 6px;
+        border: 1px rgba(0, 0, 0, .4) solid;
+        border-radius: 6px;
+        background-color: white;
+        box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    #preview-pane .preview-container {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+    }
+
+
+</style>
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
 <!-- BEGIN SIDEBAR -->
@@ -54,30 +77,6 @@
 
 
 </ul>
-<style type="text/css">
-
-
-    .jcrop-holder #preview-pane {
-        display: block;
-        position: relative;
-        z-index: 2000;
-        margin-left: 500px;
-    }
-
-    #preview-pane .preview-container {
-        margin-top: 10px;
-        overflow: hidden;
-        border: 1px rgba(0, 0, 0, .4) solid;
-        background-color: white;
-        -webkit-border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-radius: 6px;
-        -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-        -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-        box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-    }
-
-</style>
 <div class="tab-content">
 <div class="tab-pane active" id="tab_1_1_1">
 
@@ -221,36 +220,30 @@
                             <input type="file" name="avatar_upload" id="avatar_upload" multiple="">
                             <h6 class="block">仅支持JPG、GIF、PNG、JPEG，文件小于4M</h6>
 
-                                <img src="{$avatar}"
-                                     id="target" alt="[Jcrop Example]" name="target"/>
 
-                            <div id="preview-pane">
-                                <div class="preview-container" style="width: 150px; height: 150px;">
-                                    <img data-src="{$memberinfo['avatar']}"
-                                         class="jcrop-preview" alt="200x200" style="width: 150px; height: 150px;"
-                                         src="{$avatar}">
-                                </div>
-                                150*150
+                        </div>
 
-                                <div class="preview-container" style="width: 100px; height: 100px;">
-                                    <img data-src="{$memberinfo['avatar']}"
-                                         class="jcrop-preview" alt="200x200" style="width: 100px; height: 100px;"
-                                         src="{$avatar}">
-                                </div>
-                                100*100
-                                <div>
-                                </div>
 
+                        <div class="col-md-12">
+
+                            <div class="example">
+                                <img src="{$avatar}" id="target" alt="[Jcrop Example]">
+
+                                <div id="preview-pane">
+                                    <div class="preview-container">
+                                        <img src="{$avatar}" class="jcrop-preview" alt="Preview">
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
+
 
                         <div class="clearfix">
                         </div>
 
                     </div>
                     <div class="form-group" style="margin-top: 50px"></div>
-
                     <input type="hidden" class="coordinates" name="coordinates">
 
                     <div class="form-group">
@@ -329,36 +322,42 @@
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/jcrop/js/jquery.Jcrop.js"></script>
 <script src="{:ADMIM_TPL_PATH}/plugins/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <script>
+
+
     $(function () {
-        var jcrop_api,
-                boundx,
-                boundy,
-                $pcnt = $('#preview-pane .preview-container'),
-                $pimg = $('#preview-pane .preview-container img'),
-                xsize = $pcnt.width(),
-                ysize = $pcnt.height();
 
-        $('#target').Jcrop({
-            onChange: updatePreview,
-            onSelect: updatePreview,
-            aspectRatio: xsize / ysize,
-            minSize: [20, 20]
-        }, function () {
-            jcrop_api = this;
-            var bounds = this.getBounds();
-            boundx = bounds[0];
-            boundy = bounds[1];
-            x2 = boundx > boundy ? boundy : boundx;
-            jcrop_api.animateTo([0, 0, x2, x2]);
-            $preview = $('#preview-pane')
-            $preview.appendTo(jcrop_api.ui.holder);
-        });
+        var jcrop_api;
+        var $preview = $('#preview-pane')
 
+        initJcrop();
+        function initJcrop()//{{{
+        {
+            $('#target').Jcrop({
+                onChange: updatePreview,
+                onSelect: updatePreview,
+                aspectRatio: 1
+            },function(){
+                jcrop_api = this;
+                var bounds = jcrop_api.getBounds();
+                boundx = bounds[0];
+                boundy = bounds[1];
+                $preview.appendTo(jcrop_api.ui.holder);
+            });
 
-        function updatePreview(c) {
+        };
+
+        function updatePreview(c){
             if (parseInt(c.w) > 0) {
+                var $preview = $('#preview-pane')
+                var $pcnt = $('#preview-pane .preview-container')
+                var $pimg = $('#preview-pane .preview-container img')
+                var xsize = $pcnt.width()
+                var ysize = $pcnt.height()
                 var rx = xsize / c.w;
                 var ry = ysize / c.h;
+                var bounds = jcrop_api.getBounds();
+                boundx = bounds[0];
+                boundy = bounds[1];
                 $pimg.css({
                     width: Math.round(rx * boundx) + 'px',
                     height: Math.round(ry * boundy) + 'px',
@@ -368,7 +367,8 @@
             }
             $(".coordinates").val(c.x + "," + c.x2 + "," + c.y + "," + c.y2)
 
-        };
+        }
+
 
         //文件上传
         $("#avatar_upload").uploadify({
@@ -410,24 +410,18 @@
                         layer.msg('系统错误,上传失败!', 2, 8);
                     }
                     if (obj.success === true) {
-                        var img = jcrop_api.setImage(obj.file)
-                        //$(".avatar").val(obj.file)
-                        /* s= $(".jcrop-holder img").width();
-                         alert(s)
-                         w = s[0]/2;
-                         h = s[1]/2
-                         m = w>h?h/2:w/2;
-                         alert(w)
-                         alert(h)
-                         alert(m)
-                         jcrop_api.animateTo([w-m,h-m,w+m,h+m]);*/
-                        $(".preview-container img").attr("data-src", obj.file)
-                        $(".preview-container img").attr("src", obj.file)
+                        $(".preview-container img").attr("data-src", obj.file+"?"+Math.random())
+                        $(".preview-container img").attr("src", obj.file+"?"+Math.random())
+                        $(":input[name='avatar']").val(obj.file)
+                        $('#target').attr("src", obj.file+"?"+Math.random())
+                        $('.jcrop-holder img').attr("src", obj.file+"?"+Math.random())
+                        jcrop_api.setImage(obj.file+"?"+Math.random())
+
                     } else if (obj.success === false) {
                         layer.msg(obj.msg, 2, 8);
                     }
                 } catch (e) {
-                    layer.msg('系统错误,上传失败!', 2, 8);
+                    layer.msg('服务器内部错误!', 2, 8);
                 }
             },
 
@@ -456,9 +450,9 @@
         });
 
 
-
-
     })
 
 
 </script>
+
+

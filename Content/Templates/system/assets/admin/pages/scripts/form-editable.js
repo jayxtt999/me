@@ -1,4 +1,4 @@
-var FormEditable = function () {
+﻿var FormEditable = function () {
 
     $.mockjaxSettings.responseTime = 500;
 

@@ -1,4 +1,4 @@
-var Tasks = function () {
+﻿var Tasks = function () {
 
 
     return {

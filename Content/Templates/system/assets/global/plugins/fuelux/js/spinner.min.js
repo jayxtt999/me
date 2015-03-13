@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Fuel UX Spinner
  * https://github.com/ExactTarget/fuelux
  *

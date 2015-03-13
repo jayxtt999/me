@@ -73,6 +73,13 @@ class DB
         return $this;
     }
 
+    public function getNewRow(){
+
+        $this->options = "GETNEWROW";
+        return $this;
+    }
+
+
     /**
      *获取全部记录
      * @param null $where
@@ -138,6 +145,9 @@ class DB
                 break;
             case "DELETE":
                 return $this->db->delete($this->table,$this->where);
+                break;
+            case "GETNEWROW":
+                return $this->db->getnewrow($this->table);
                 break;
         }
     }

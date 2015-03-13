@@ -1,4 +1,4 @@
-var UIIdleTimeout = function () {
+﻿var UIIdleTimeout = function () {
 
     return {
 

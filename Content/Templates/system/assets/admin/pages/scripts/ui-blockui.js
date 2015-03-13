@@ -1,4 +1,4 @@
-var UIBlockUI = function () {
+﻿var UIBlockUI = function () {
 
     var handleSample1 = function () {
 

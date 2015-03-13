@@ -1,4 +1,4 @@
-/*jshint undef: true, unused:true */
+﻿/*jshint undef: true, unused:true */
 /*global jQuery: true */
 
 /*!=========================================================================
@@ -10,7 +10,7 @@
  *      https://github.com/istvan-meszaros/bootstrap-touchspin
  *      http://www.virtuosoft.eu/code/bootstrap-touchspin/
  *
- *  Copyright 2013 István Ujj-Mészáros
+ *  Copyright 2013 Istv谩n Ujj-M茅sz谩ros
  *
  *  Thanks for the contributors:
  *      Stefan Bauer - https://github.com/sba

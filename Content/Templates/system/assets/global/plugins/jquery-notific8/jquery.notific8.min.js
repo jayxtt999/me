@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @author Will Steinmetz
  * 
  * jQuery notification plug-in inspired by the notification style of Windows 8

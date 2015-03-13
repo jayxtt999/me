@@ -1,4 +1,4 @@
-var TableAdvanced = function () {
+﻿var TableAdvanced = function () {
 
     var initTable1 = function () {
         var table = $('#sample_1');

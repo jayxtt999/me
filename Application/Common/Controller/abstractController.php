@@ -14,11 +14,9 @@ class abstractController extends \System\Core\Controller
 {
 
 
-
     public function init()
     {
-        //验证登陆
-        $this->checkLogin();
+
         //获取菜单栏 && 获取当前路由相关信息
         $common = new \Admin\Model\commonModel();
         $this->common = $common;

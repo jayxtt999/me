@@ -1,4 +1,4 @@
-var ComponentsEditors = function () {
+﻿var ComponentsEditors = function () {
     
     var handleWysihtml5 = function () {
         if (!jQuery().wysihtml5) {

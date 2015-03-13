@@ -1,4 +1,4 @@
-var EcommerceProductsEdit = function () {
+﻿var EcommerceProductsEdit = function () {
 
     var handleImages = function() {
 

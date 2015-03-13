@@ -1,4 +1,4 @@
-var UIToastr = function () {
+﻿var UIToastr = function () {
 
     return {
         //main function to initiate the module

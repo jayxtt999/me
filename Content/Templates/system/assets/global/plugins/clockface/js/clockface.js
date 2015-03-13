@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Clockface - v1.0.1
 * Clockface timepicker for Twitter Bootstrap
 *

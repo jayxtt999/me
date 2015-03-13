@@ -27,26 +27,22 @@ class infoController extends abstractController
 
         //生成头像
         $zb = explode(",",$coordinates);
-        $targ_w = $targ_h = 100;
-
-        $targetFolder = 'Data/upload/image/avatar'; // Relative to the root
-        $targetPath = $_SERVER['DOCUMENT_ROOT'] .$targetFolder;
-        $targetDir = rtrim($targetPath, '/') . '/' . $member['id'];
-        $targetFile = $targetDir . '/'."yt_".$data['avatar'];
+        $targ_w = $targ_h = 150;
+        $targetFile = str_replace("http://".$_SERVER['SERVER_NAME']."/","", $data['avatar']);
         $img_r = imagecreatefromjpeg($targetFile);
-        $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
-        echo $targetFile;exit;
-        imagecopyresampled($dst_r,$img_r,0,0,$zb[0],$zb[1],
-            $targ_w,$targ_h,$zb[2],$zb[3]);
+        $dst_r = ImageCreateTrueColor($targ_w,$targ_h);
+        imagecopyresampled($dst_r,$img_r,0,0,$zb[0],$zb[2],$targ_w,$targ_h,$zb[1],$zb[3]);
+        //imagecopyresampled($dst_r,$img_r,0,0,0,0,100,100,100,100);
+
+        imagejpeg($dst_r,$targetFile);
+        imagedestroy($dst_r);
 
 
 
 
-        db()->upDate($data,array('id'=>$member['id']))->done();
+        //db()->upDate($data,array('id'=>$member['id']))->done();
 
         var_dump($data);exit;
-
-
 
 
 

@@ -338,4 +338,11 @@ class pdoMysql
     }
 
 
+    public function getnewrow($table){
+
+        $data = array();
+        return $this->insert($table,$data);
+
+    }
+
 }

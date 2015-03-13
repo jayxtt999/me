@@ -31,22 +31,26 @@ class articleModel extends \System\Core\Model{
      * @param $tid
      * @return string
      */
-    public function getTags($tid=""){
+    public function getTags($tid="",$isHtml=false){
 
         $Db = parent::getDb();
         if($tid){
-            $tagAll = $Db->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
-            foreach($tagAll as $k=>$v){
-                $tagFull[$k] = $v['tagname'];
+            $tags = $Db->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
+            if($isHtml){
+                foreach($tags as $k=>$v){
+                    $tags[$k] = $v['tagname'];
+                }
+                $tags =  implode(",",$tags);
             }
-            $tags = implode(",",$tagFull);
         }else{
-            $tagAll = $Db->table('article_tag')->getAll()->order('id')->done();
-            $tags = "<ul class='nav nav-pills'>";
-            foreach($tagAll as $k=>$v){
-                $tags.="<li><a class='article_tag' href='javascript:;'>".$v['tagname']."</a></li>";
+            $tags = $Db->table('article_tag')->getAll()->order('id')->done();
+            if($isHtml){
+                $tags = "<ul class='nav nav-pills'>";
+                foreach($tags as $k=>$v){
+                    $tags.="<li><a class='article_tag' href='javascript:;'>".$v['tagname']."</a></li>";
+                }
+                $tags .= "</ul>";
             }
-            $tags .= "</ul>";
         }
         return $tags;
     }

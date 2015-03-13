@@ -1,4 +1,4 @@
-var UIExtendedModals = function () {
+﻿var UIExtendedModals = function () {
 
     
     return {
@@ -21,7 +21,7 @@ var UIExtendedModals = function () {
                 // tabindex is required for focus
                 '<div class="modal hide fade" tabindex="-1">',
                   '<div class="modal-header">',
-                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>',
+                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">脳</button>',
                     '<h4 class="modal-title">Modal header</h4>', 
                   '</div>',
                   '<div class="modal-body">',

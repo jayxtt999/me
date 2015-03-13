@@ -1,4 +1,4 @@
-var FormDropzone = function () {
+﻿var FormDropzone = function () {
 
 
     return {

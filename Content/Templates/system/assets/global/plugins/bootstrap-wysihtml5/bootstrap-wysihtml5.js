@@ -1,4 +1,4 @@
-!function($, wysi) {
+﻿!function($, wysi) {
     "use strict";
 
     var tpl = {

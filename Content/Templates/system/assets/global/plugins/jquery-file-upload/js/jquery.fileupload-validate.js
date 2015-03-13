@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery File Upload Validation Plugin 1.1.2
  * https://github.com/blueimp/jQuery-File-Upload
  *

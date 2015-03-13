@@ -15,6 +15,7 @@ class abstractController extends \Common\Controller\abstractController
     function __construct()
     {
         $this->init();
+
     }
 
 }

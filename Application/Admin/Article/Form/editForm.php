@@ -30,10 +30,10 @@ class EditForm extends \System\Library\Form\Form
 
         $array = array(
             "class" => "form-control",
-            "placeholder" => "TIME",
+            "placeholder" => date("Y-m-d H:i:s"),
             "disabled"=>"disabled"
         );
-        $this->setText("time", "", $array, array('datatype' => '*'),"text",0,3);
+        $this->setText("time", "", $array, array(),"text",0,3);
 
         $array = array(
             "class" => "form-control",
@@ -70,7 +70,7 @@ class EditForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("password", "访问密码", $array, array('datatype' => '*2-24'),"text",1,3);
+        $this->setText("password", "访问密码", $array, array('datatype' => '*0-24'),"text",1,3);
 
         $array = array(
             "class" => "make-switch",

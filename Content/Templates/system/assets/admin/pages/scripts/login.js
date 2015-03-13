@@ -1,4 +1,4 @@
-var Login = function () {
+﻿var Login = function () {
 
 	var handleLogin = function() {
 

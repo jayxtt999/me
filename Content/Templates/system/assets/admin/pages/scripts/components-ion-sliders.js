@@ -1,4 +1,4 @@
-var ComponentsIonSliders = function () {
+﻿var ComponentsIonSliders = function () {
 
     return {
         //main function to initiate the module
@@ -34,7 +34,7 @@ var ComponentsIonSliders = function () {
                 from: 0,
                 type: 'single',
                 step: 1,
-                postfix: "°",
+                postfix: "掳",
                 prettify: false,
                 hasGrid: true
             });

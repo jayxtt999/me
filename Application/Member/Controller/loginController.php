@@ -48,6 +48,8 @@ class loginController extends abstractController
                 return $this->link()->error("登录失败,您今天超过10次登陆失败，为了账号安全，我们限制账号当天登陆!");
             }
             //用于验证码
+            $webConfig = new \Admin\Model\webConfigModel();
+            $webConfig = $webConfig->getConfig();
             if ($this->webConfig['login_code']) {
                 $checkCode = post("verifycode", "string");
                 if (md5(strtoupper($checkCode)) !== $randVal) {

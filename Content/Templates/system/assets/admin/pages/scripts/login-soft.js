@@ -1,4 +1,4 @@
-var Login = function () {
+﻿var Login = function () {
 
 	var handleLogin = function() {
 		$('.login-form').validate({
@@ -19,10 +19,10 @@ var Login = function () {
 
 	            messages: {
 	                username: {
-	                    required: "用户名不能为空."
+	                    required: "鐢ㄦ埛鍚崭笉鑳戒负绌?"
 	                },
 	                password: {
-	                    required: "密码不能为空."
+	                    required: "瀵嗙爜涓嶈兘涓虹┖."
 	                }
 	            },
 
@@ -74,7 +74,7 @@ var Login = function () {
 
 	            messages: {
 	                email: {
-	                    required: "邮箱不能为空."
+	                    required: "闾涓嶈兘涓虹┖."
 	                }
 	            },
 
@@ -178,7 +178,7 @@ var Login = function () {
 
 	            messages: { // custom messages for radio buttons and checkboxes
 	                tnc: {
-	                    required: "请勾选服务条款."
+	                    required: "璇峰嬀阃夋湇锷℃浔娆?"
 	                }
 	            },
 

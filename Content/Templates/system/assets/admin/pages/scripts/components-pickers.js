@@ -1,4 +1,4 @@
-var ComponentsPickers = function () {
+﻿var ComponentsPickers = function () {
 
     var handleDatePickers = function () {
 

@@ -1,4 +1,4 @@
-var UIAlertDialogApi = function () {
+﻿var UIAlertDialogApi = function () {
 
     var handleDialogs = function() {
 

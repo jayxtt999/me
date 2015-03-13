@@ -1,4 +1,4 @@
-var ComingSoon = function () {
+﻿var ComingSoon = function () {
 
     return {
         //main function to initiate the module

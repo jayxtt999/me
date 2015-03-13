@@ -33,7 +33,7 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("bloginfo", "站点副标题", $array, array('datatype' => '*2-24',));
+        $this->setText("bloginfo", "站点副标题", $array, array('datatype' => '*2-128',));
 
 
         $array = array(

@@ -1,4 +1,4 @@
-var Search = function () {
+﻿var Search = function () {
 
     return {
         //main function to initiate the module

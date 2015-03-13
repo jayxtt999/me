@@ -1,4 +1,4 @@
-var UIGeneral = function () {
+﻿var UIGeneral = function () {
 
     var handlePulsate = function () {
         if (!jQuery().pulsate) {

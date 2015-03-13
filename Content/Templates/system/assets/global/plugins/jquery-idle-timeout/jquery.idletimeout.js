@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery Idle Timeout 1.2
  * Copyright (c) 2011 Eric Hynds
  *

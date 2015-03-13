@@ -1,4 +1,4 @@
-var ComponentsDropdowns = function () {
+﻿var ComponentsDropdowns = function () {
 
     var handleSelect2 = function () {
 

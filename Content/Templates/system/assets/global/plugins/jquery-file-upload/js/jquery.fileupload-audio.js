@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery File Upload Audio Preview Plugin 1.0.3
  * https://github.com/blueimp/jQuery-File-Upload
  *

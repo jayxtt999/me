@@ -1,4 +1,4 @@
-var MapsVector = function () {
+﻿var MapsVector = function () {
 
     var setMap = function (name) {
         var data = {

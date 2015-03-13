@@ -1,4 +1,4 @@
-/**
+﻿/**
  * mOxie - multi-runtime File API & XMLHttpRequest L2 Polyfill
  * v1.2.1
  *

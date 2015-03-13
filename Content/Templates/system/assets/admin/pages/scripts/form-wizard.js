@@ -1,4 +1,4 @@
-var FormWizard = function () {
+﻿var FormWizard = function () {
 
 
     return {

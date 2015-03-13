@@ -1,4 +1,4 @@
-var ComponentsNoUiSliders = function () {
+﻿var ComponentsNoUiSliders = function () {
 
     return {
         //main function to initiate the module

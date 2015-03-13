@@ -1,4 +1,4 @@
-/*
+﻿/*
 * MultiSelect v0.9.11
 * Copyright (c) 2012 Louis Cuny
 *

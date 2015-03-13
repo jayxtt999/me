@@ -1,4 +1,4 @@
-var TableManaged = function () {
+﻿var TableManaged = function () {
 
     var initTable1 = function () {
 

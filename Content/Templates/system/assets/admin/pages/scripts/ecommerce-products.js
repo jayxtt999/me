@@ -1,4 +1,4 @@
-var EcommerceProducts = function () {
+﻿var EcommerceProducts = function () {
 
     var initPickers = function () {
         //init date pickers

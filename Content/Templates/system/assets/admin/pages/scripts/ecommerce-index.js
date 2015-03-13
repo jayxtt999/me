@@ -1,4 +1,4 @@
-var EcommerceIndex = function () {
+﻿var EcommerceIndex = function () {
 
     function showTooltip(x, y, labelX, labelY) {
         $('<div id="tooltip" class="chart-tooltip">' + (labelY.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')) + 'USD<\/div>').css({

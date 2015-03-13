@@ -1,4 +1,4 @@
-var FormImageCrop = function () {
+﻿var FormImageCrop = function () {
 
     var demo1 = function() {
         $('#demo1').Jcrop();

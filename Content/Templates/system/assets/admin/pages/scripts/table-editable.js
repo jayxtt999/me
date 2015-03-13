@@ -1,4 +1,4 @@
-var TableEditable = function () {
+﻿var TableEditable = function () {
 
     var handleTable = function () {
 
