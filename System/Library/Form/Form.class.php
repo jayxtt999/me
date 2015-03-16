@@ -199,7 +199,7 @@ class Form
             }
         }
 
-        $this->_textarea[strtolower($name)] = $label . "<div class='col-md-" . $dw . "'><textarea name='$name' " . $paramS . ">$value</textarea></div>";
+        $this->_textarea[strtolower($name)] = $label . "<div class='col-md-" . $dw . "'><textarea name='$name' " . $paramS . ">".stripslashes($value)."</textarea></div>";
     }
 
     /**

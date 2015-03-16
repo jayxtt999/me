@@ -48,6 +48,24 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <php>
+                                        if($data['thumbnail']){
+                                    </php>
+                                    <label class="col-md-1 control-label">文章缩略图</label>
+                                    <img src="{$data['thumbnail']}" style="width: 260px;height:210px;cursor: pointer" onclick="removeImg(this)" >
+                                    <div style="display: none">
+                                        {$form->getText('thumbnail')}
+                                    </div>
+                                    <php>
+                                        }else{
+                                    </php>
+                                    {$form->getText('thumbnail')}
+                                    <php>
+                                        }
+                                    </php>
+                                </div>
+
+                                <div class="form-group">
                                     {$form->getUeditor('content')}
                                 </div>
 
@@ -161,6 +179,16 @@
         })
         $("#tags").val("{$tTags}")
     })
+
+    //更换图片
+
+    function removeImg(z){
+        if(!confirm("确定更换？")){
+            return false;
+        }
+        $(z).next().css("display","block");
+        $(z).remove();
+    }
 
 
 </script>

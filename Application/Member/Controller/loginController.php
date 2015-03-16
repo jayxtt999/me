@@ -17,6 +17,10 @@ class loginController extends abstractController
 
     public function indexAction()
     {
+
+        if(C('USER_AUTH_KEY') && C('ADMIN_AUTH_KEY')){
+            return $this->link()->success("admin:index:index","跳转中");
+        }
         $redirect = $this->getRequest()->getRedirect();
         $view = $this->getView();
 
@@ -50,7 +54,7 @@ class loginController extends abstractController
             //用于验证码
             $webConfig = new \Admin\Model\webConfigModel();
             $webConfig = $webConfig->getConfig();
-            if ($this->webConfig['login_code']) {
+            if ($webConfig['login_code']) {
                 $checkCode = post("verifycode", "string");
                 if (md5(strtoupper($checkCode)) !== $randVal) {
                     return $this->link()->error("登录失败, 请输入正确的验证码!");

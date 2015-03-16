@@ -37,7 +37,7 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "ID",
         );
-        $this->setHide("id",$array);
+        $this->setText("id","",$array,array(),"hidden");
 
 
         $array = array(

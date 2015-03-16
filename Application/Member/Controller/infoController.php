@@ -7,6 +7,7 @@
  */
 
 namespace Member\Controller;
+use System\Core\Error;
 use System\Library\Form\checkForm as checkForm;
 
 
@@ -26,24 +27,26 @@ class infoController extends abstractController
         $member = $this->getMember();
 
         //生成头像
-        $zb = explode(",",$coordinates);
-        $targ_w = $targ_h = 150;
-        $targetFile = str_replace("http://".$_SERVER['SERVER_NAME']."/","", $data['avatar']);
-        $img_r = imagecreatefromjpeg($targetFile);
-        $dst_r = ImageCreateTrueColor($targ_w,$targ_h);
-        imagecopyresampled($dst_r,$img_r,0,0,$zb[0],$zb[2],$targ_w,$targ_h,$zb[1],$zb[3]);
-        //imagecopyresampled($dst_r,$img_r,0,0,0,0,100,100,100,100);
+        if(!function_exists('imagecreate')){
+            Error::halt("请先开启GD库");exit;
+        }
+        try{
+            $zb = explode(",",$coordinates);
+            $targ_w = $targ_h = 150;
+            $targetFile = str_replace("http://".$_SERVER['SERVER_NAME']."/","", $data['avatar']);
+            $img_r = imagecreatefromjpeg($targetFile);
+            $dst_r = ImageCreateTrueColor($targ_w,$targ_h);
+            imagecopyresampled($dst_r,$img_r,0,0,$zb[0],$zb[2],$targ_w,$targ_h,$zb[1],$zb[3]);
+            //imagecopyresampled($dst_r,$img_r,0,0,0,0,100,100,100,100);
+            imagejpeg($dst_r,$targetFile);
+            imagedestroy($dst_r);
+            db()->upDate($data,array('id'=>$member['id']))->done();
+            return $this->link()->success("admin:config:index", "保存成功");
+        }catch (\Exception $e){
 
-        imagejpeg($dst_r,$targetFile);
-        imagedestroy($dst_r);
+            Error::halt($e->getMessage());exit;
 
-
-
-
-        //db()->upDate($data,array('id'=>$member['id']))->done();
-
-        var_dump($data);exit;
-
+        }
 
 
     }

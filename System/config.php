@@ -112,7 +112,7 @@ return array(
         'name' => 'session_name',
         'prefix' => 'blog',
         'expire' => '3600',
-        'session_auto_start' => false,
+        'session_auto_start' => true,
     ),
 
     /*cookie*/

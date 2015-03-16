@@ -13,9 +13,11 @@ class EditForm extends \System\Library\Form\Form
 {
     public function start($formName)
     {
+
         $array = array(
             "class" => "form-horizontal",
             "role" => "form",
+            "enctype"=>"multipart/form-data"
         );
         $this->init($formName, '/index.php?m=admin&c=article&a=save', '', $array);
 
@@ -25,22 +27,21 @@ class EditForm extends \System\Library\Form\Form
         );
         $this->setText("title", "", $array, array('datatype' => '*2-24',));
 
-        $this->setText("id", "", $array, array('datatype' => 'n1-8'),"hidden");
+        $this->setText("id", "", $array, array('datatype' => 'n1-8'), "hidden");
 
 
         $array = array(
             "class" => "form-control",
             "placeholder" => date("Y-m-d H:i:s"),
-            "disabled"=>"disabled"
+            "disabled" => "disabled"
         );
-        $this->setText("time", "", $array, array(),"text",0,3);
+        $this->setText("time", "", $array, array(), "text", 0, 3);
 
         $array = array(
             "class" => "form-control",
         );
 
-        $this->setUeditor("content","",$array);
-
+        $this->setUeditor("content", "", $array);
 
 
         $array = array(
@@ -48,7 +49,7 @@ class EditForm extends \System\Library\Form\Form
             "id" => "tags",
             "placeholder" => "日志标签，逗号或空格分隔",
         );
-        $this->setText("tag", "", $array, array('datatype' => '*0-256',),"text",0,6);
+        $this->setText("tag", "", $array, array('datatype' => '*0-256',), "text", 0, 6);
 
 
         $array = array(
@@ -56,35 +57,39 @@ class EditForm extends \System\Library\Form\Form
 
         );
         $menu = new \Admin\Model\articleModel();
-        $data  = $menu->getCategory();
-        $this->setSelect("category","",$array,$data,3,3);
+        $data = $menu->getCategory();
+        $this->setSelect("category", "", $array, $data, 3, 3);
 
         $array = array(
             "class" => "form-control",
             "style" => "height:200px"
 
         );
-        $this->setUeditor("excerpt","",$array);
+        $this->setUeditor("excerpt", "", $array);
 
 
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("password", "访问密码", $array, array('datatype' => '*0-24'),"text",1,3);
+        $this->setText("password", "访问密码", $array, array('datatype' => '*0-24'), "text", 1, 3);
+
+        $array = array(
+            "class" => "form-control",
+        );
+        $this->setText("thumbnail", "文章缩略图", $array, array('datatype' => '*0-24'), "file", 1, 3);
+
 
         $array = array(
             "class" => "make-switch",
-            "data-on-color"=>"primary",
-            "data-off-color"=>"info",
+            "data-on-color" => "primary",
+            "data-off-color" => "info",
         );
         $this->setBsCheckBox("istop", "是否置顶", $array);
 
         $this->setBsCheckBox("allow_comment", "允许评论", $array);
 
 
-
     }
-
 
 
 }

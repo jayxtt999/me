@@ -30,11 +30,11 @@ class checkForm {
             //初步转换
             foreach ($date as $post_key=>$post_var)
             {
-                if (is_numeric($post_var)) {
+               /* if (is_numeric($post_var)) {
                     $date[strtolower($post_key)] = $safeFilter::int($post_var);
                 } else {
                     $date[strtolower($post_key)] = $safeFilter::string($post_var);
-                }
+                }*/
             }
             foreach($date as $k=>$v){
                 if(isset($form[$k]['datatype'])){

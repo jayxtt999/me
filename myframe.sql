@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-06 17:35:38
+Date: 2015-03-16 17:56:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,16 +21,17 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `xtt_article`;
 CREATE TABLE `xtt_article` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL,
-  `content` longtext,
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `content` longtext COMMENT '内容',
   `excerpt` longtext COMMENT '摘要',
+  `thumbnail` varchar(255) DEFAULT NULL,
   `time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `member_id` int(10) NOT NULL COMMENT '作者',
   `category` int(10) NOT NULL COMMENT '分类',
   `comment_num` tinyint(10) DEFAULT '0' COMMENT '评论数量',
   `view_num` tinyint(10) DEFAULT '0' COMMENT '查看数量',
   `istop` tinyint(1) DEFAULT '0' COMMENT '置顶',
-  `allow_comment` tinyint(4) DEFAULT NULL COMMENT '允许评论',
+  `allow_comment` tinyint(4) DEFAULT '0' COMMENT '允许评论',
   `status` tinyint(1) DEFAULT '1',
   `password` varchar(32) DEFAULT NULL COMMENT '日志密码',
   PRIMARY KEY (`id`)
@@ -39,7 +40,7 @@ CREATE TABLE `xtt_article` (
 -- ----------------------------
 -- Records of xtt_article
 -- ----------------------------
-INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>测试1111</p>', '<p>测试222</p>', '2015-03-03 10:52:10', '1', '1', '100', '100', '1', '1', '1', '123');
+INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>测试1111</p>', '<p>测试222</p>', 'http://www.me.me/Data/upload/image/article/1/yt_3165799a056f7b453ed86904513ca977.jpg', '2015-03-16 17:29:18', '1', '1', '100', '100', '1', '1', '1', '123');
 
 -- ----------------------------
 -- Table structure for xtt_article_category
@@ -73,9 +74,9 @@ CREATE TABLE `xtt_article_tag` (
 -- ----------------------------
 -- Records of xtt_article_tag
 -- ----------------------------
-INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1');
-INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1');
-INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1');
+INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1');
 
 -- ----------------------------
 -- Table structure for xtt_common_menu
@@ -135,7 +136,7 @@ INSERT INTO `xtt_config` VALUES ('4', 'site_description', '谢滔滔_、博客_�
 INSERT INTO `xtt_config` VALUES ('5', 'site_key', '谢滔滔_、博客_、435024179');
 INSERT INTO `xtt_config` VALUES ('6', 'blogurl', 'http://www.me.me');
 INSERT INTO `xtt_config` VALUES ('7', 'icp', '');
-INSERT INTO `xtt_config` VALUES ('8', 'footer_info', '2014 © Metronic by keenthemes.<a href=\\\"http://user.qzone.qq.com/435024179/infocenter \\\"target=\\\"_blank\\\" >访问我的QQ空间</a>\r\n<script type=\\\"text/javascript\\\" src=\\\"http://tajs.qq.com/stats?sId=16270255\\\" charset=\\\"UTF-8\\\"></script>\r\n');
+INSERT INTO `xtt_config` VALUES ('8', 'footer_info', '2014 © Metronic by keenthemes.<a href=\\\"http://user.qzone.qq.com/435024179/infocenter\\\"target=\\\"_blank\\\" >访问我的QQ空间</a>\r\n<script type=\\\"text/javascript\\\" src=\\\"http://tajs.qq.com/stats?sId=16270255\\\" charset=\\\"UTF-8\\\"></script>\r\n');
 INSERT INTO `xtt_config` VALUES ('9', 'show_log_num', '10');
 INSERT INTO `xtt_config` VALUES ('10', 'timezone', '8');
 INSERT INTO `xtt_config` VALUES ('13', 'istwitter', '1');
@@ -177,7 +178,7 @@ CREATE TABLE `xtt_member_info` (
 -- ----------------------------
 -- Records of xtt_member_info
 -- ----------------------------
-INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'c4ca4238a0b923820dcc509a6f75849b.jpg', '2015-03-06 17:08:44', '1', '职业', '兴趣爱好', '男', '用户说明', '昵称', '1');
+INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'http://www.me.me/Data/upload/image/avatar/1/yt_2f90e65580f021c16c1c17f106402f45.jpg', '2015-03-16 11:40:39', '1', '职业', '兴趣爱好', '男', '用户说明', '昵称', '1');
 
 -- ----------------------------
 -- Table structure for xtt_member_login_log
@@ -191,7 +192,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -215,3 +216,14 @@ INSERT INTO `xtt_member_login_log` VALUES ('16', '1270', '2015-03-06 09:45:49', 
 INSERT INTO `xtt_member_login_log` VALUES ('17', '1270', '2015-03-06 09:50:29', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('18', '1270', '2015-03-06 13:08:42', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('19', '1270', '2015-03-06 13:11:03', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('20', '1270', '2015-03-10 09:41:33', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('21', '1270', '2015-03-10 09:41:46', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('22', '1270', '2015-03-10 10:26:09', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('23', '1270', '2015-03-11 09:24:47', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('24', '1270', '2015-03-11 09:33:45', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('25', '1270', '2015-03-12 10:00:45', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('26', '1270', '2015-03-12 10:22:56', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('27', '1270', '2015-03-13 10:44:50', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('28', '1270', '2015-03-16 10:41:22', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('29', '1270', '2015-03-16 10:43:48', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('30', '1270', '2015-03-16 11:03:02', '1');

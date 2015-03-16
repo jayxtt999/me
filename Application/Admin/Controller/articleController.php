@@ -17,6 +17,7 @@ class articleController extends abstractController{
      */
     public function listAction(){
 
+        //检测标签 组合where
         $class = get("class","int");
         $tags = get("tags","txt");
         $member = get("member","int");
@@ -30,6 +31,7 @@ class articleController extends abstractController{
         if($tags){
             $tags = db()->table('article_tag')->getAll(array("tagname?LIKE"=>"%$tags%"))->order('id')->done();
             $tid = array();
+            //获取文章id
             foreach($tags as $v){
                 $arr = explode(",",$v['gid']);
                 $tid = array_unique(array_merge($tid,$arr));
@@ -38,9 +40,7 @@ class articleController extends abstractController{
             $where['id?in'] =$tid;
         }
         $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
-
         $all = db()->Table('article')->getAll($where)->done();        //getAll
-
         $this->getView()->assign(array('articleAll'=>$all));
         //获取分类
         $menu = new \Admin\Model\articleModel();
@@ -93,7 +93,7 @@ class articleController extends abstractController{
         $tTags = $tag->getTags($id,true);
         //获取已有全部标签
         $tags = $tag->getTags("",true);
-        $this->getView()->assign(array('tags'=>$tags,'tTags'=>$tTags));
+        $this->getView()->assign(array('tags'=>$tags,'tTags'=>$tTags,'data'=>$row));
         $this->getView()->display();
     }
 
@@ -109,6 +109,47 @@ class articleController extends abstractController{
         $data['time'] = date("Y-m-d H:i:s");
         $member = $this->getMember();
         $data['member_id'] = $member['id'];
+
+        //处理日志缩略图（空则取文章第一张,文章没有则取默认图片）
+        if($_FILES['thumbnail']){
+            //thumbnail不为空
+            $targetFolder = 'Data/upload/image/article'; // Relative to the root
+            //验证来路合法性
+            //验证图片合法性
+            $fstat = $_FILES[\Admin\Config\Type\Images::FILE_OBJ_NAME];
+            $fileParts = pathinfo($fstat['name']);
+            $type = explode(";", \Admin\Config\Type\Images::FILE_TYPE_EXTS);
+            $types = array();
+            foreach ($type as $v) {
+                $types[] = str_replace("*.", "", $v);
+            }
+            if (!in_array($fileParts['extension'], $types)) {
+                return $this->link()->error("文章缩略图类型错误!");
+            }
+            if (round($fstat["size"] / 1024, 2) > \Admin\Config\Type\Images::FILE_SIZE_LIMIT) {
+                return $this->link()->error("文章缩略图超出文件大小!");
+            }
+            $tempFile = $fstat['tmp_name'];
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] .$targetFolder;
+            $member = $this->getMember();
+            //检验目录
+            $targetDir = rtrim($targetPath, '/') . '/' . $member['id'];
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir,0777,true);
+            }
+            //move_uploaded_file
+            $code = time().rand(0,9999);
+            $targetFile = $targetDir . '/yt_' . md5($member['id'].$code) . "." . $fileParts['extension'];
+            move_uploaded_file($tempFile, $targetFile);
+            //保存
+            $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST']."/", $targetFile);
+        }elseif($data['content']){
+            //thumbnail为空
+            preg_match ("<img.*src=[\"](.*?)[\"].*?>",$data['content'],$match);
+            $data['thumbnail'] =  "$match[1]";
+        }else{
+            $data['thumbnail'] =  "";
+        }
 
         // 处理标签
         $tags = !empty($data['tag'])?preg_split ("/[,\s]|(，)/", $data['tag']) : array();
