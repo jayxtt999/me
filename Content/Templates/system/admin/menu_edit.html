@@ -86,6 +86,13 @@
                                     <input type="hidden" name="is_display">
                                     {$form->getBsCheckBox('is_display')}
                                 </div>
+
+
+                                <div class="form-group">
+                                    <input type="hidden" name="is_admin">
+                                    {$form->getBsCheckBox('is_admin')}
+                                    <span class="text-success">如果为否且为显示状态，则默认作为前台导航</span>
+                                </div>
                             </div>
 
                             <div class="form-actions">

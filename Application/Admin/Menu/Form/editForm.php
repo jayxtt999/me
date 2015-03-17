@@ -70,7 +70,7 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "URL",
         );
-        $this->setText("url", "URL", $array, array('datatype' => 's0-24',));
+        $this->setText("url", "URL", $array, array('datatype' => 's0-124',));
 
         $array = array(
             "class" => "form-control",
@@ -85,6 +85,17 @@ class editForm extends \System\Library\Form\Form
             "data-off-color"=>"info",
         );
         $this->setBsCheckBox("is_display","是否显示", $array);
+
+
+        $array = array(
+            "class" => "make-switch",
+            "placeholder" => "IS_ADMIN",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
+        );
+        $this->setBsCheckBox("is_admin","是否只能管理员查看", $array);
+
+
 
         $array = array(
             "class" => "form-control",

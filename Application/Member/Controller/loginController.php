@@ -18,9 +18,10 @@ class loginController extends abstractController
     public function indexAction()
     {
 
-        if(C('USER_AUTH_KEY') && C('ADMIN_AUTH_KEY')){
+        if(session(C('USER_AUTH_KEY')) && session(C('ADMIN_AUTH_KEY'))){
             return $this->link()->success("admin:index:index","跳转中");
         }
+
         $redirect = $this->getRequest()->getRedirect();
         $view = $this->getView();
 
