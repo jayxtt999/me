@@ -19,6 +19,7 @@ define('Hook_PATH', SYS_LIB_PATH . '/Hook');
 
 define('APP_PATH', ROOT_PATH . '/Application');
 define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
+define('WEB_TEMP_PATH', '/Content/Templates');
 
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');

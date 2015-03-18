@@ -138,7 +138,7 @@
             }
         });
         //checkBox使用bootstrapSwitch 必须手动添加此段代码
-        $('input[name="is_display"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        $('input[name="is_display"],input[name="is_admin"]').on('switchChange.bootstrapSwitch', function (event, state) {
             state ? $(this).val(1) : $(this).val(2);
         });
 

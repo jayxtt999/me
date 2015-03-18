@@ -168,8 +168,9 @@ class pdoMysql
      * @param string $limit 限制
      * @return null
      */
-    public function select($model = 2, $table, $where = "", $fields = "*", $order = "id desc", $limit = "")
+    public function select($model = 2, $table, $where = "", $fields = "*", $order = "", $limit = "")
     {
+
         if (is_array($table)) {
             $table = implode(', ', $table);
         }
@@ -197,16 +198,18 @@ class pdoMysql
             }
         }
         //Sql
-        $whereVal['order'] = $order;
-        $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData order by (:order)";
-        $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order";
+        $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData ";
+        $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache ";
 
-        //limit
-        if ($limit) {
-            $this->sql .= " limit :limit";
-            $sqlCache .= " limit $limit";
-            $whereVal['limit'] = $limit;
+
+        //处理不支持预处理的 order by limit
+        if($order || $limit){
+            $order = $order?$order:"id desc";
+            $limit = $limit?"LIMIT ".$limit:"";
+            $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
+            $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
         }
+
 
         $type = C("cache:type") ? C("cache:type") : false;
         $type = false;
@@ -217,7 +220,11 @@ class pdoMysql
         }
         try {
             $stmt = $this->pdo->prepare($this->sql);
-            $exeres = $stmt->execute($whereVal);
+            if($order || $limit){
+                $exeres = $stmt->execute();
+            }else{
+                $exeres = $stmt->execute($whereVal);
+            }
             if ($model == 1) {
                 $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
             } else if ($model == 2) {

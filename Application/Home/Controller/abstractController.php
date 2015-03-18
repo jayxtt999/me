@@ -21,16 +21,16 @@ class abstractController extends \System\Core\Controller
         $common = new \Home\Model\menuModel();
         $this->common = $common;
         $menuData = $common->getNav();
-        $navArray = $common->navArray;
         $routeInfo = $common->getRouteInfo();
         //获取网站填写的前台设置
         $config = new \Admin\Model\webConfigModel();
         $webConfig = $config->getConfig();
+        $templatesPath = WEB_TEMP_PATH."/".C("view_templates");
         $tplData = array(
             'menuData' => $menuData,
             'routeInfo' => $routeInfo,
-            'navArray' => $navArray,
             'webConfig' => $webConfig,
+            'templatesPath' => $templatesPath,
         );
         $this->getView()->assign($tplData);
 

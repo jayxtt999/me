@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en" class="no-js">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+<!DOCTYPE HTML>
+<html>
 <head>
     <meta http－equiv="Content－Type" content="text/html; charset=utf-8">
     <title>{$routeInfo['name']} | {$webConfig['site_title']}</title>
@@ -15,3 +10,87 @@
     <meta name="description" content="{$webConfig['site_description']}"/>
     <meta name="blogname" content="{$webConfig['blogname']}">
     <meta name="bloginfo" content="{$webConfig['bloginfo']}">
+
+    <link href="{$templatesPath}/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link href="{$templatesPath}/css/style.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Blogname Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design"
+            />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!----webfonts---->
+    <link href='http://fonts.useso.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Source+Sans+Pro:200,300,400,600,700,300italic,400italic,600italic' rel='stylesheet' type='text/css'>
+    <!----//webfonts---->
+    <script src="http://ajax.useso.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!--end slider -->
+    <!--script-->
+    <script type="text/javascript" src="{$templatesPath}/js/move-top.js"></script>
+    <script type="text/javascript" src="{$templatesPath}/js/easing.js"></script>
+    <!--/script-->
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                $('html,body').animate({scrollTop:$(this.hash).offset().top},900);
+            });
+        });
+    </script>
+    <!---->
+
+</head>
+<body>
+<!---strat-banner---->
+<div class="banner">
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"> <img src="{$templatesPath}/images/logo.png" title="soup" /></a>
+            </div>
+            <!---start-top-nav---->
+            <div class="top-menu">
+                <span class="menu"> </span>
+                <ul>
+                    <li class="active"><a href="index.html">HOME</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="terms.html">TERMS</a></li>
+                    <div class="clearfix"> </div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+            <!---//End-top-nav---->
+        </div>
+    </div>
+    <div class="container">
+        <div class="banner-head">
+            <h1>Lorem ipsum dolor sit amet</h1>
+            <h2>cliquam tincidunt mauris</h2>
+        </div>
+        <div class="banner-links">
+            <ul>
+
+
+                <volist name="menuData" id="vo">
+
+
+                    <li
+                    <if condition="$key ==0 ">
+                        class="active"
+                    </if>
+                            ><a href="/index.php?m={$vo.module_name}&c={$vo.controller_name}&a={$vo.action_name}">{$vo.name}</a></li>
+                </volist>
+
+
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+    </div>
+</div>
+<!---//End-banner---->

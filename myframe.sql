@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-17 17:45:51
+Date: 2015-03-18 17:45:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -108,14 +108,14 @@ INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014
 INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1');
+INSERT INTO `xtt_common_menu` VALUES ('200', '主页', '主页', '2015-03-18 16:42:17', 'home', 'index', 'index', '', '2', '1', '', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '1');
 INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '2015-02-28 16:06:42', 'admin', 'article', 'add', '', '1', '0', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', null, 'home', 'blog', 'index', '', '1', '1', '', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('217', '主页', '主页', '0000-00-00 00:00:00', 'home', 'index', 'index', '', '1', '1', '', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', '2015-03-18 16:42:17', 'home', 'blog', 'index', '', '1', '1', '', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -195,7 +195,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -231,3 +231,4 @@ INSERT INTO `xtt_member_login_log` VALUES ('28', '1270', '2015-03-16 10:41:22', 
 INSERT INTO `xtt_member_login_log` VALUES ('29', '1270', '2015-03-16 10:43:48', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('30', '1270', '2015-03-16 11:03:02', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('31', '1270', '2015-03-17 09:07:31', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('32', '1270', '2015-03-18 16:24:11', '1');

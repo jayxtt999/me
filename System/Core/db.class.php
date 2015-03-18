@@ -64,11 +64,12 @@ class DB
      * @param null $where
      * @return $this
      */
-    public function getRow($where = null)
+    public function getRow($where = null,$order = null)
     {
         $this->options = "SELECT";
         $this->selectmodel = 1;
         $this->where = $where;
+        $this->order = $order;
         $this->limit = 1;
         return $this;
     }
@@ -85,10 +86,11 @@ class DB
      * @param null $where
      * @return $this
      */
-    public function getAll($where = null)
+    public function getAll($where = null,$order = null)
     {
         $this->options = "SELECT";
         $this->selectmodel = 2;
+        $this->order = $order;
         $this->where = $where;
         $this->limit = "";
         return $this;

@@ -18,8 +18,8 @@ class menuModel  extends \System\Core\Model{
     public function getNav(){
 
         $db = parent::getDb();
-        return $db->table('common_menu')->getAll(array('is_admin'=>0,'is_display'=>1))->order('parent_id')->done();
-
+        $res = $db->table('common_menu')->getAll(array('is_admin'=>0,'is_display'=>1))->order('sort desc')->done();
+        return $res;
     }
 
 
