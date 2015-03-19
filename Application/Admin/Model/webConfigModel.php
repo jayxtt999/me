@@ -18,8 +18,8 @@ class webConfigModel extends \System\Core\Model{
      */
     public function getConfig(){
 
-        $Db = parent::getDb();
-        $config =  $Db->table('config')->getAll()->done();
+        $db = parent::getDb();
+        $config =  $db->table('config')->getAll()->done();
         $array = array();
         foreach($config as  $v){
             $array[$v['option_name']] =  $v['option_value'];

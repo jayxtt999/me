@@ -1,0 +1,119 @@
+<include file="home@index@head"/>
+
+
+<div class="content">
+    <div class="container">
+        <div class="content-grids">
+            <div class="col-md-8 content-main">
+
+
+                <volist name="articleAll" id="vo">
+
+
+                    <div class="content-grid-sec">
+                        <div class="content-sec-info">
+                            <h3><a href="single.html">
+
+                                {$vo.title}
+
+                            </a></h3>
+                            <h4>
+                                {$vo.time}
+                                , Posted by : <a href="javascript:;">
+                                {$vo.author}
+                            </a></h4>
+
+                            <p>
+                                {$vo.excerpt}
+                            </p>
+<!--
+                            <img src="{$vo.thumbnail}" alt=""/>
+-->
+
+                            <div class="conten-sec-data">
+
+                                <div class="conten-sec-left">
+
+
+                                    <ul class="list-inline">
+                                        <li>
+                                            <i class="fa fa-eye"></i>
+                                            <a href="#">
+                                                {$vo.view_num} View </a>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-comments"></i>
+                                            <a href="#">
+                                                 {$vo.comment_num} Comment </a>
+                                        </li>
+                                    </ul>
+
+                                    <if condition="$vo.tags">
+
+                                        <ul class="list-inline blog-tags">
+                                            <li>
+                                                <i class="fa fa-tags"></i>
+                                                <volist name="vo.tags" id="ro">
+                                                    <a href="#">
+                                                        {$ro} </a>
+                                                </volist>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </if>
+
+
+                                </div>
+
+                                <div class="conten-sec-right">
+
+                                    <a class="bttn" href="single.html">MORE</a>
+
+                                </div>
+
+                                <div style="clear: both"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </volist>
+
+
+
+
+
+
+            </div>
+
+            <div class="col-md-4 content-main-right">
+                <div class="search">
+                    <h3>SEARCH HERE</h3>
+
+                    <form>
+                        <input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
+                        <input type="submit" value="">
+                    </form>
+                </div>
+                <div class="categories">
+                    <h3>CATEGORIES</h3>
+                    <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>
+                    <li><a href="#">Vestibulum commodo felis quis tort</a></li>
+                    <li><a href="#">Fusce pellentesque suscipit</a></li>
+                </div>
+                <div class="archives">
+                    <h3>ARCHIVES</h3>
+                    <li class="active"><a href="#">July 2014</a></li>
+                    <li><a href="#">June 2014</a></li>
+                    <li><a href="#">May 2014</a></li>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<include file="home@index@foot"/>

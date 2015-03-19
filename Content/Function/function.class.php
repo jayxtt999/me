@@ -570,5 +570,45 @@ function member($id)
 
 
 
+/**
+ * 日志分割
+ *
+ * @param string $content 日志内容
+ * @param int $lid 日志id
+ */
+function breakLog($content, $lid) {
+    $a = explode('[break]', $content, 2);
+    if (!empty($a[1])) {
+        $a[0].='<p class="readmore"><a href="' . Url::log($lid) . '">阅读全文&gt;&gt;</a></p>';
+    }
+    return $a[0];
+}
+
+/**
+ * 删除[break]标签
+ *
+ * @param string $content 日志内容
+ */
+function rmBreak($content) {
+    $content = str_replace('[break]', '', $content);
+    return $content;
+}
+
+
+/**
+ * 执行挂在钩子上的函数,支持多参数 eg:doAction('post_comment', $author, $email, $url, $comment);
+ *
+ * @param string $hook
+ */
+/*function doAction($hook) {
+    global $emHooks;
+    $args = array_slice(func_get_args(), 1);
+    if (isset($emHooks[$hook])) {
+        foreach ($emHooks[$hook] as $function) {
+            $string = call_user_func_array($function, $args);
+        }
+    }
+}*/
+
 
 

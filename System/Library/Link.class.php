@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * 跳转 路由 url 类
  * User: Administrator
  * Date: 15-1-12
  * Time: 下午10:15
@@ -17,6 +17,7 @@ class Link {
     }
 
     /**
+     * 指定url
      * @param $jumpUrl
      * @param int $time
      * @param string $msg
@@ -28,6 +29,7 @@ class Link {
     }
 
     /**
+     * 成功
      * @param $jumpUrl
      * @param int $time
      * @param string $msg
@@ -39,6 +41,7 @@ class Link {
     }
 
     /**
+     * 错误
      * @param $jumpUrl
      * @param int $time
      * @param string $msg
@@ -51,6 +54,7 @@ class Link {
 
 
     /**
+     * 根据 ： 模式获取url
      * @param $url
      * @return string
      */
@@ -64,6 +68,7 @@ class Link {
     }
 
     /**
+     * 根据数组获取url
      * @param $url
      * @return string
      */

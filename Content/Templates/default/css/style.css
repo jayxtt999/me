@@ -174,7 +174,6 @@ padding:0.7em 0.9em;
 text-decoration:none;
 font-size:1em;
 display:inline-block;
-margin-top:1em;
 }
 a.bttn:hover{
 color:#EB5A41;
@@ -504,6 +503,35 @@ margin:5px 0;
 font-size:0.9em;
 display:block;
 }
+.conten-sec-left{
+    float: left;
+}
+.conten-sec-right{
+    float: right;
+}
+
+.list-inline li i{
+    color: #78cff8;
+}
+.list-inline li a{
+    padding: 0;
+    color: #555;
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.blog-tags li a {
+    background: #eee;
+    padding: 1px 4px;
+    margin: 0 4px 4px 0;
+    display: inline-block;
+}
+.blog-tags li a:hover{
+    background: #ddd;
+    text-decoration: none
+}
+
+
 /*--terms--*/
 .terms-sec-head{
 padding-bottom:1em;

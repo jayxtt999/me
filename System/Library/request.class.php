@@ -28,13 +28,16 @@ class Request
     }
 
 
+    /**
+     * 获取网站根目录
+     */
     public function getRedirect(){
 
         $url = $_SERVER["HTTP_REFERER"];   //获取完整的来路URL
         $str = str_replace("http://","",$url);  //去掉http://
         $strdomain = explode("/",$str);               // 以“/”分开成数组
         $domain    = $strdomain[0];              //取第一个“/”以前的字符
-
+        return $domain;
     }
 
     /**
@@ -151,6 +154,10 @@ class Request
         }
     }
 
+    /**
+     * 获取提交数据
+     * @return mixed
+     */
     public function getData(){
         $safeFilter = new \System\Library\safeFilter();
         foreach ($_POST as $post_key=>$post_var)

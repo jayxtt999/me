@@ -168,9 +168,8 @@ class pdoMysql
      * @param string $limit 限制
      * @return null
      */
-    public function select($model = 2, $table, $where = "", $fields = "*", $order = "", $limit = "")
+    public function select($model = 2, $table, $where = "", $fields = "*", $order = "", $limit = "", $count = false)
     {
-
         if (is_array($table)) {
             $table = implode(', ', $table);
         }
@@ -200,8 +199,6 @@ class pdoMysql
         //Sql
         $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData ";
         $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache ";
-
-
         //处理不支持预处理的 order by limit
         if($order || $limit){
             $order = $order?$order:"id desc";
@@ -209,7 +206,6 @@ class pdoMysql
             $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
             $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
         }
-
 
         $type = C("cache:type") ? C("cache:type") : false;
         $type = false;
@@ -228,7 +224,12 @@ class pdoMysql
             if ($model == 1) {
                 $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
             } else if ($model == 2) {
-                $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+                if($count){
+                    $this->res = $stmt->rowCount();
+                }else{
+                    $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                }
             }
 
             if ($type) {

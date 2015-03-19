@@ -96,4 +96,9 @@ class View
         self::$assignData[$name] = $value;
     }
 
+    public function log($id){
+
+        return "/index.php?m=home&c=blog&a=show&id=".$id;
+    }
+
 }

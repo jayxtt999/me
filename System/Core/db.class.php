@@ -9,6 +9,7 @@ class DB
     protected $order = "id desc";
     protected $fields = "*";
     protected $limit = '';
+    protected $count = false;
     protected $options = '';
     protected $where = null;
     protected $selectmodel;
@@ -20,12 +21,9 @@ class DB
      */
     public function __get($property_name)
     {
-        if (isset($this->$property_name))
-        {
+        if (isset($this->$property_name)) {
             return ($this->$property_name);
-        }
-        else
-        {
+        } else {
             return NULL;
         }
     }
@@ -64,17 +62,19 @@ class DB
      * @param null $where
      * @return $this
      */
-    public function getRow($where = null,$order = null)
+    public function getRow($where = null)
     {
         $this->options = "SELECT";
         $this->selectmodel = 1;
         $this->where = $where;
-        $this->order = $order;
-        $this->limit = 1;
+        $this->order = "";
+        $this->limit = "";
+        $this->count = false;
         return $this;
     }
 
-    public function getNewRow(){
+    public function getNewRow()
+    {
 
         $this->options = "GETNEWROW";
         return $this;
@@ -86,15 +86,30 @@ class DB
      * @param null $where
      * @return $this
      */
-    public function getAll($where = null,$order = null)
+    public function getAll($where = null)
     {
         $this->options = "SELECT";
         $this->selectmodel = 2;
-        $this->order = $order;
         $this->where = $where;
+        $this->order = "";
         $this->limit = "";
+        $this->count = false;
         return $this;
     }
+
+
+    /**
+     * 统计
+     * @return $this
+     */
+    public function count()
+    {
+
+        $this->count = true;
+        return $this;
+
+    }
+
 
     /**
      * 定义排序方式
@@ -137,16 +152,16 @@ class DB
     {
         switch ($this->options) {
             case "SELECT":
-                return $this->db->select($this->selectmodel, $this->table, $this->where, $this->fields, $this->order, $this->limit);
+                return $this->db->select($this->selectmodel, $this->table, $this->where, $this->fields, $this->order, $this->limit, $this->count);
                 break;
             case "UPDATE":
-                return $this->db->update($this->table,$this->data, $this->where);
+                return $this->db->update($this->table, $this->data, $this->where);
                 break;
             case "INSERT":
-                return $this->db->insert($this->table,$this->data);
+                return $this->db->insert($this->table, $this->data);
                 break;
             case "DELETE":
-                return $this->db->delete($this->table,$this->where);
+                return $this->db->delete($this->table, $this->where);
                 break;
             case "GETNEWROW":
                 return $this->db->getnewrow($this->table);
@@ -169,7 +184,8 @@ class DB
      * @param array $where
      * @return $this
      */
-    public function upDate(array $data,array $where){
+    public function upDate(array $data, array $where)
+    {
         $this->options = "UPDATE";
         $this->data = $data;
         $this->where = $where;
@@ -181,13 +197,15 @@ class DB
      * @param array $data
      * @return $this
      */
-    public function insert(array $data){
+    public function insert(array $data)
+    {
         $this->options = "INSERT";
         $this->data = $data;
         return $this;
     }
 
-    public function delete(array $where){
+    public function delete(array $where)
+    {
         $this->options = "DELETE";
         $this->where = $where;
         return $this;
@@ -197,7 +215,8 @@ class DB
     /**
      * @access public
      */
-    public function __destruct() {
+    public function __destruct()
+    {
 
     }
 
