@@ -53,7 +53,7 @@ class commonModel extends \System\Core\Model
         $Menu = $Db->table('common_menu')->getAll()->order('parent_id')->done();
         //排序
         foreach ($Menu as $k => $v) {
-            $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'],'is_display' => $v['is_display'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
+            $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'],'is_display' => $v['is_display'],'is_nav' => $v['is_nav'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
         }
         $items = $this->tree($this->array);
         //生成html
@@ -81,7 +81,7 @@ class commonModel extends \System\Core\Model
                 $liClass ="";
                 $arrow = isset($v['son']) ? "<span class='arrow '></span>" : "";
             }
-            if(!$v['is_display']){
+            if(!$v['is_display'] || $v['is_nav']){
                 continue;
             }
             $this->html .= "

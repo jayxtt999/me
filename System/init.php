@@ -61,12 +61,13 @@ final class Application
         self::$appConfig = require_once 'config.php';
         //初始化
         self::init();
-        // 项目开始拓展
-        //Hook('app_begin');
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
+        // 项目开始拓展  钩子系统有2种，后端与前端
+        // 后端用于一些功能性增加，如记录日志,权限控制,日志拓展等等   D:\wamp\www\me\System\Library\Hook   以单个class
+        // 前端用于一些显示上的数据改变，如加个天气 音乐播放器 图片插件等等    D:\wamp\www\me\Content\plugin        以文件夹
+        Hook('trace');// 异常追踪
         // 项目结束拓展
-        Hook('trace');
     }
 
 

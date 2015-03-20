@@ -8,12 +8,15 @@
 
 namespace System\Library;
 
-class Link {
+class Link
+{
     public $view;
-    private $mvc = array('m','c','a');
+    private $mvc = array('m', 'c', 'a');
     private $urlType;
-    public function init(){
-        $this->urlType =  C("route:url_type");
+
+    public function init()
+    {
+        $this->urlType = C("route:url_type");
     }
 
     /**
@@ -24,8 +27,9 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function toUrl($jumpUrl,$time=0,$msg="",$status=true,$ajax=false){
-        $this->dispatchJump($this->getUrl($jumpUrl),$time,$msg,$status,$ajax);
+    public function toUrl($jumpUrl, $time = 0, $msg = "", $status = true, $ajax = false)
+    {
+        $this->dispatchJump($this->getUrl($jumpUrl), $time, $msg, $status, $ajax);
     }
 
     /**
@@ -36,8 +40,9 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function success($jumpUrl,$msg="",$status=true,$ajax=false,$array=array()){
-        $this->dispatchJump($this->getUrl($jumpUrl),3,$msg,$status,$ajax,$array);
+    public function success($jumpUrl, $msg = "", $status = true, $ajax = false, $array = array())
+    {
+        $this->dispatchJump($this->getUrl($jumpUrl), 3, $msg, $status, $ajax, $array);
     }
 
     /**
@@ -48,19 +53,21 @@ class Link {
      * @param bool $status
      * @param bool $ajax
      */
-    public function error($msg='',$array=array(),$status=false,$ajax=false){
-        $this->dispatchJump("", $time=1, $msg,$status,$ajax,$array);
+    public function error($msg = '', $array = array(), $status = false, $ajax = false)
+    {
+        $this->dispatchJump("", $time = 1, $msg, $status, $ajax, $array);
     }
 
 
     /**
-     * 根据 ： 模式获取url
+     * 根据 ： 路由模式获取url  exp:home:index:index:param-hello world
      * @param $url
      * @return string
      */
-    public function  getUrl($url){
-        $url = explode(":",$url);
-        switch($this->urlType){
+    public function  getUrl($url)
+    {
+        $url = explode(":", $url);
+        switch ($this->urlType) {
             case "default":
                 return $this->defaultUrl($url);
                 break;
@@ -68,24 +75,51 @@ class Link {
     }
 
     /**
-     * 根据数组获取url
+     * 根据数组获取url exp :array(0=>home,1=>index,2=>index,3=>param-hello world)
      * @param $url
      * @return string
      */
-    public function defaultUrl($url){
+    public function defaultUrl($url)
+    {
 
         $urlMvc = "";
-        foreach($url as $k=>$v){
+        foreach ($url as $k => $v) {
             //m=admin&c=menu&a=save
-            $first = $k?"&":"/index.php?";
-            if(strpos($v,"-")){
-                $param = explode("-",$v);
-                $urlMvc.=  $first.$param[0]."=".$param[1];
-            }else{
-                $urlMvc.= $first.$this->mvc[$k]."=".$v;
+            $first = $k ? "&" : "/index.php?";
+
+            if (strpos($v, "-")) {
+                $param = explode("-", $v);
+                $urlMvc .= $first . $param[0] . "=" . $param[1];
+            } else {
+                $urlMvc .= $first . $this->mvc[$k] . "=" . $v;
             }
         }
         return $urlMvc;
+    }
+
+
+    /**
+     * 根据 ： 普通模式获取url exp  array(m=>home,c=>index,a=>index,param=>hello world)
+     *                            return   /index.php?m=home&c=index&a=index&param=hello world
+     * @param array $array
+     * @return string
+     */
+    public function getOrdinaryUrl(array $url)
+    {
+
+        $i = 0;
+        $urlMvc = "/index.php";
+        foreach ($url as $k => $v) {
+
+            if ($i) {
+                $urlMvc .= "&" . $k . "=" . $v;
+            } else {
+                $urlMvc .= "?";
+            }
+            $i++;
+        }
+        return $urlMvc;
+
     }
 
     /**
@@ -97,56 +131,57 @@ class Link {
      * @param integer $ajax true or false 是否为ajax
      * @return void
      */
-    function dispatchJump($jumpUrl, $time=0, $msg='',$status,$ajax,$array) {
-        if($ajax || $this->isAjax()){
-            $this->ajaxReturn($ajax,$msg,$status);
+    function dispatchJump($jumpUrl, $time = 0, $msg = '', $status, $ajax, $array)
+    {
+        if ($ajax || $this->isAjax()) {
+            $this->ajaxReturn($ajax, $msg, $status);
         }
-        if(!empty($jumpUrl)){
-            $this->view->assign(array('jumpUrl'=>$jumpUrl));
+        if (!empty($jumpUrl)) {
+            $this->view->assign(array('jumpUrl' => $jumpUrl));
         }
         // 提示标题
-        $this->view->assign(array('msgTitle'=>$this->view->get('msgTitle')));
+        $this->view->assign(array('msgTitle' => $this->view->get('msgTitle')));
         //如果设置了关闭窗口，则提示完毕后自动关闭窗口
-        if($this->view->get('closeWin')){
-            $this->view->assign(array('jumpUrl'=>'javascript:window.close();'));
+        if ($this->view->get('closeWin')) {
+            $this->view->assign(array('jumpUrl' => 'javascript:window.close();'));
         }
         //跳转参数
-        if($array){
-            $i=1;
-            foreach($array as $k=>$v){
-                $c = $i=1?"?":"&";
-                $jumpUrl.=$c.$k."=".$v;
+        if ($array) {
+            $i = 1;
+            foreach ($array as $k => $v) {
+                $c = $i = 1 ? "?" : "&";
+                $jumpUrl .= $c . $k . "=" . $v;
                 $i++;
             }
         }
         // 状态
-        $this->view->assign(array('status'=>$status));
-        if($status){ //发送成功信息
-            $this->view->assign(array('message'=>$msg));// 提示信息
+        $this->view->assign(array('status' => $status));
+        if ($status) { //发送成功信息
+            $this->view->assign(array('message' => $msg));// 提示信息
             // 成功操作后默认停留1秒
-            if(!$this->view->get('waitSecond')){
-                $this->view->assign(array('waitSecond'=>"1"));
+            if (!$this->view->get('waitSecond')) {
+                $this->view->assign(array('waitSecond' => "1"));
             }
             // 默认操作成功自动返回操作前页面
-            if(!$this->view->get('jumpUrl')){
-                $this->view->assign(array("jumpUrl"=>$_SERVER["HTTP_REFERER"]));
+            if (!$this->view->get('jumpUrl')) {
+                $this->view->assign(array("jumpUrl" => $_SERVER["HTTP_REFERER"]));
             }
-            $this->view->display("common/dispatch_jump",true);
+            $this->view->display("common/dispatch_jump", true);
             exit;
-        }else{
+        } else {
             // 提示信息
-            $this->view->assign(array('error'=>$msg));
+            $this->view->assign(array('error' => $msg));
             //发生错误时候默认停留3秒
-            if(!$this->view->get('waitSecond')){
-                $this->view->assign(array('waitSecond'=>"3"));
+            if (!$this->view->get('waitSecond')) {
+                $this->view->assign(array('waitSecond' => "3"));
             }
             // 默认发生错误的话自动返回上页
-            if(!$this->view->get('jumpUrl')){
-                $this->view->assign(array('jumpUrl'=>"javascript:history.back(-1);"));
+            if (!$this->view->get('jumpUrl')) {
+                $this->view->assign(array('jumpUrl' => "javascript:history.back(-1);"));
             }
-            $this->view->display("common/dispatch_jump",true);
+            $this->view->display("common/dispatch_jump", true);
             // 中止执行  避免出错后继续执行
-            exit ;
+            exit;
         }
 
 
@@ -161,20 +196,21 @@ class Link {
      * @param String $status ajax返回类型 JSON XML
      * @return void
      */
-    protected function ajaxReturn($data,$info='',$status=1,$type='') {
-        $result  =  array();
-        $result['status']  =  $status;
-        $result['info'] =  $info;
+    protected function ajaxReturn($data, $info = '', $status = 1, $type = '')
+    {
+        $result = array();
+        $result['status'] = $status;
+        $result['info'] = $info;
         $result['data'] = $data;
         //扩展ajax返回数据, 在Action中定义function ajaxAssign(&$result){} 方法 扩展ajax返回数据。
-        if(method_exists($this,"ajaxAssign"))
+        if (method_exists($this, "ajaxAssign"))
             $this->ajaxAssign($result);
-        if(empty($type)) $type  =   C('DEFAULT_AJAX_RETURN');
-        if(strtoupper($type)=='JSON') {
+        if (empty($type)) $type = C('DEFAULT_AJAX_RETURN');
+        if (strtoupper($type) == 'JSON') {
             // 返回JSON数据格式到客户端 包含状态信息
             header("Content-Type:text/html; charset=utf-8");
             exit(json_encode($result));
-        }elseif(strtoupper($type)=='XML'){
+        } elseif (strtoupper($type) == 'XML') {
             // 返回xml格式数据
             header("Content-Type:text/xml; charset=utf-8");
             exit(xml_encode($result));
@@ -187,20 +223,14 @@ class Link {
      * @access protected
      * @return bool
      */
-    protected function isAjax() {
-        if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) ) {
-            if('xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH']))
+    protected function isAjax()
+    {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            if ('xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH']))
                 return true;
         }
         return false;
     }
 
 
-
-
-
-
-
-
-
-} 
+}

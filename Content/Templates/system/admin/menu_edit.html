@@ -91,7 +91,11 @@
                                 <div class="form-group">
                                     <input type="hidden" name="is_admin">
                                     {$form->getBsCheckBox('is_admin')}
-                                    <span class="text-success">如果为否且为显示状态，则默认作为前台导航</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="hidden" name="is_nav">
+                                    {$form->getBsCheckBox('is_nav')}
                                 </div>
                             </div>
 
@@ -138,7 +142,7 @@
             }
         });
         //checkBox使用bootstrapSwitch 必须手动添加此段代码
-        $('input[name="is_display"],input[name="is_admin"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        $('input[name="is_display"],input[name="is_admin"],input[name="is_nav"]').on('switchChange.bootstrapSwitch', function (event, state) {
             state ? $(this).val(1) : $(this).val(2);
         });
 

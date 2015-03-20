@@ -17,5 +17,4 @@ class Status extends \System\Library\statusGateway
         $this->set(self::STATUS_UNABLE, 'unable', '½ûÓÃ');
     }
 
-
 }

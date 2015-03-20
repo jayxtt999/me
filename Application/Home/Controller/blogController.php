@@ -52,11 +52,14 @@ class blogController extends abstractController{
 
             $tag = new \Admin\Model\articleModel();
             //获取该文章标签
-            $logList[$k]['tags'] =explode(",",$tag->getTags($v['id'],true));
+            $tags = $tag->getTags($v['id'],true);
+            if($tags){
+                $logList[$k]['tags'] =explode(",",$tags);
+            }
             $logList[$k]['password'] = $v['password'];
 
         }
-        $this->getView()->assign(array('articleAll'=>$logList,'show',$show));
+        $this->getView()->assign(array('articleAll'=>$logList,'show'=>$show));
 
 
 

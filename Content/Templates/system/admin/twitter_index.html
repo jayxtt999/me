@@ -1,0 +1,234 @@
+<include file="layout@admin@head"/>
+<link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/timeline.css" rel="stylesheet" type="text/css"/>
+
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <include file="layout@layout@widgets"/>
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+                    <ul class="timeline">
+
+
+                        <php>
+                            foreach($list as $k=>$vo){
+                        </php>
+
+
+                        <li class="timeline-{$color[$k%5]}
+                    <php>
+                    if($k+1==count($list))
+                    {
+                    echo 'timeline-noline';
+                    }
+                    </php>
+                    ">
+                            <div class="timeline-time">
+								<span class="date">
+                    <php>echo substr($vo['crate_time'],0,10);</php>
+
+                                </span>
+								<span class="time">
+								 <php>echo substr($vo['crate_time'],11,5);</php></span>
+                            </div>
+                            <div class="timeline-icon">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                            <div class="timeline-body">
+                                <h2>#_
+                                    <php>echo $vo['id'];</php>
+                                </h2>
+                                <div class="timeline-content">
+
+                                    <if condition="$vo.img == true">
+                                        <img class="timeline-img pull-left" src="<php>echo $vo['img'];</php>" alt="">
+                                    </if>
+
+                                    <php>echo $vo['content'];</php>
+
+                                </div>
+                                <div class="timeline-footer">
+
+                                    <php>
+                                        if($vo['replynum']){
+                                    </php>
+
+                                    <a href="javascript:showreply({$vo['id']})" class="nav-link">
+                                        Read more <i class="m-icon-swapright m-icon-white"></i>
+                                    </a>
+
+                                    <php>
+                                        }
+                                    </php>
+
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <php>
+                            }
+                        </php>
+
+                    </ul>
+
+
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+
+
+                <div class="col-md-12">
+                    <p>
+                        <a href="javascript:;" data-page="1" class=" btn blue  default btn-block" id="showMore">
+                            Load More </a>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+
+<include file="layout@admin@foot"/>
+
+
+<script>
+
+    /**
+     * 表格插件
+     */
+    var TableManaged = function () {
+        var initTable1 = function () {
+            var table = $('#sample_menu');
+            // begin first table
+            table.dataTable({
+                "columns": [{
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }
+                ],
+                "lengthMenu": [
+                    [10, 20, -1],
+                    [10, 20, "All"] // change per page values here
+                ],
+                // set the initial value
+                "pageLength": 10,
+                "pagingType": "bootstrap_full_number",
+                "language": {
+                    "lengthMenu": "  _MENU_ 条",
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+                "columnDefs": [{  // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                }, {
+                    "searchable": false,
+                    "targets": [0]
+                }],
+                "order": [
+                    //[1, "asc"]
+                ] // set first column as a default sort by asc
+            });
+
+            var tableWrapper = jQuery('#sample_menu_wrapper');
+
+
+            table.find('.group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            table.on('change', 'tbody tr .checkboxes', function () {
+                $(this).parents('tr').toggleClass("active");
+            });
+
+            tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+
+        }
+        return {
+            //main function to initiate the module
+            init: function () {
+                if (!jQuery().dataTable) {
+                    return;
+                }
+                initTable1();
+            }
+        };
+
+    }();
+    TableManaged.init();
+
+
+    $('#showMore').click(function () {
+
+        Metronic.blockUI();
+        $.ajax({
+
+
+
+        })
+
+
+        window.setTimeout(function () {
+            Metronic.unblockUI();
+        }, 2000);
+
+    });
+
+
+    function articleDel(id) {
+        layer.confirm('确定删除吗？', function () {
+            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
+        });
+    }
+</script>

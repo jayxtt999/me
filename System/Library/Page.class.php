@@ -94,6 +94,7 @@ class Page
      */
     public function show()
     {
+
         if (0 == $this->totalRows) return '';
         $p = $this->varPage;
 
@@ -109,10 +110,10 @@ class Page
                 $parameter  =   $var;
             }
         }
-
         $parameter[$p]  =   '__PAGE__';
         $link = new \System\Library\Link();
-        $url =   $link->defaultUrl($parameter);
+        $url =   $link->getOrdinaryUrl($parameter);
+
         $nowCoolPage = ceil($this->nowPage / $this->rollPage);
 
         //上下翻页字符串
@@ -147,12 +148,14 @@ class Page
             $theEnd = "<a href='" . str_replace('__PAGE__', $theEndRow, $url) . "' >" . $this->config['last'] . "</a>";
         }
         // 1 2 3 4 5
+
         $linkPage = "";
+
         for ($i = 1; $i <= $this->rollPage; $i++) {
             $page = ($nowCoolPage - 1) * $this->rollPage + $i;
             if ($page != $this->nowPage) {
                 if ($page <= $this->totalPages) {
-                    $i=1?$calss="active":$calss="";
+                    $calss = $i==1?"active":"";
                     $linkPage .= "<li class='$calss'><a href='" . str_replace('__PAGE__', $page, $url) . "'>" . $page . "</a></li>";
                 } else {
                     break;
@@ -163,7 +166,6 @@ class Page
                 }
             }
         }
-
         //暂时固定
 
         $this->tmp = file_get_contents(WEB_TEMP_PATH."/default/home"."/blog_page.html",true);
@@ -173,7 +175,7 @@ class Page
         $pageStr = str_replace(
             array('%header%', '%nowPage%', '%totalRow%', '%totalPage%', '%upPage%', '%downPage%', '%first%', '%prePage%', '%linkPage%', '%nextPage%', '%end%'),
             array($this->config['header'], $this->nowPage, $this->totalRows, $this->totalPages, $upPage, $downPage, $theFirst, $prePage, $linkPage, $nextPage, $theEnd), $this->tmp);
-        echo $pageStr;exit;
+        //echo $pageStr;exit;
         return $pageStr;
     }
 

@@ -263,6 +263,22 @@ Timeline UI Base
   color: #555555;
 }
 
+/* silver */
+.timeline li.timeline-silver .timeline-body:after {
+    border-right-color: silver;
+}
+
+.timeline li.timeline-silver .timeline-body {
+    background: silver;
+}
+
+.timeline li.timeline-silver .timeline-time span.time {
+    color: silver;
+}
+
+
+
+
 @media (max-width: 767px) {
   timeline > li .timeline-time span.time {
     font-size: 18px;

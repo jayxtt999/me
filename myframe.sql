@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-19 18:02:02
+Date: 2015-03-20 17:00:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -121,25 +121,27 @@ CREATE TABLE `xtt_common_menu` (
   `icon` varchar(45) DEFAULT NULL COMMENT 'icon标签class',
   `parent_id` int(10) unsigned DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
+  `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
 -- ----------------------------
-INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '1');
-INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('200', '主页', '主页', '2015-03-18 16:42:17', 'home', 'index', 'index', '', '2', '1', '', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '1');
-INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '2015-02-28 16:06:42', 'admin', 'article', 'add', '', '1', '0', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', '2015-03-18 16:42:17', 'home', 'blog', 'index', '', '1', '1', '', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0', '0');
+INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('200', '主页', '主页', '2015-03-18 16:42:17', 'home', 'index', 'index', '', '2', '1', '', '1', '0', '1');
+INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '2015-02-28 16:06:42', 'admin', 'article', 'add', '', '1', '0', '1', '1', '0', '0');
+INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0', '0');
+INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', '2015-03-18 16:42:17', 'home', 'blog', 'index', '', '1', '1', '', '1', '0', '1');
+INSERT INTO `xtt_common_menu` VALUES ('217', '说说管理', '说说管理', null, 'admin', 'twitter', 'index', '', '1', '1', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -219,7 +221,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -256,3 +258,45 @@ INSERT INTO `xtt_member_login_log` VALUES ('29', '1270', '2015-03-16 10:43:48', 
 INSERT INTO `xtt_member_login_log` VALUES ('30', '1270', '2015-03-16 11:03:02', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('31', '1270', '2015-03-17 09:07:31', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('32', '1270', '2015-03-18 16:24:11', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('33', '1270', '2015-03-20 10:01:36', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('34', '1270', '2015-03-20 10:06:50', '1');
+
+-- ----------------------------
+-- Table structure for xtt_twitter
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_twitter`;
+CREATE TABLE `xtt_twitter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `img` varchar(200) DEFAULT NULL,
+  `author` int(10) NOT NULL DEFAULT '1',
+  `crate_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `replynum` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `author` (`author`)
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_twitter
+-- ----------------------------
+INSERT INTO `xtt_twitter` VALUES ('10', '源码不能乱下载....', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('11', '老师再水也体谅下，都是混口饭吃，不容易啊', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('5', '最近情绪大起大落，也终于觉得，人在失落的时候是最冷静的。 所以有句话叫，化悲痛为力量', 'content/uploadfile/201210/thum-c3461349883618.jpg', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('7', '坑爹的就业培训', null, '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('8', '有意见可以说，乐意接受，你不说谁知道呢？', null, '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('9', '代号“兔子”', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('12', '腾讯下次5块钱你就别通知我了，害我白高兴。', 'content/uploadfile/201210/thum-b8641350574015.png', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('13', '我无法一一言明。 \r\n\r\n就算这同样的夜景， \r\n有人看到的是灯火璀璨， \r\n有人看到的无非更落寞。 \r\n\r\n这话矫情， \r\n可我相信， \r\n总有那么一刻你会明白， \r\n它真实着。 \r\n\r\n我信平和多于激烈， \r\n我觉着一切都归于淡， \r\n就像我们父母的现在， \r\n平平静静，淡淡然然', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('14', '手贱又刷机。刷你妹哦', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('17', '让改变发生吧', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('18', '希望不要跟市场营销的抢饭碗', null, '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('19', '尼玛哦', 'content/uploadfile/201211/thum-e9b91352032226.png', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('23', '明天招聘会，求工作', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('22', '要开始忙碌了吧', null, '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('24', '小菜鸟', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('25', '看不懂，傻眼了。', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('27', '我见不得你骗我', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('28', '再见--张震岳', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('29', '传说中的世界末日在12月21日就要到了，如果这天真的是世界末日，你还有什么心理话没说呢？有什么愿望还没有实现呢？此刻！大声的喊出来吧，还犹豫什么？虽说末日要来了，我还是要说：“2013年，我会做的更好，活的更精彩', '', '1', '2015-03-20 13:56:27', '1', '1');
+INSERT INTO `xtt_twitter` VALUES ('36', '跨一步，一步很短，但很宽。跨过去，或璀璨，或萧条。这都只是一种心态罢了', '', '1', '2015-03-20 13:56:27', '0', '1');

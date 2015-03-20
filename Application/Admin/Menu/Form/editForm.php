@@ -96,6 +96,15 @@ class editForm extends \System\Library\Form\Form
         $this->setBsCheckBox("is_admin","是否只能管理员查看", $array);
 
 
+        $array = array(
+            "class" => "make-switch",
+            "placeholder" => "IS_NAV",
+            "data-on-color"=>"primary",
+            "data-off-color"=>"info",
+        );
+        $this->setBsCheckBox("is_nav","是否为导航", $array);
+
+
 
         $array = array(
             "class" => "form-control",
