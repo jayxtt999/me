@@ -71,7 +71,7 @@ class loginController extends abstractController
                     return $this->link()->error("账号密码错误!");
                 } else {
                     $this->LoginGmc($authInfo);
-                    $url = $redirect?$redirect:"admin:index:index";
+                    $url = "admin:index:index";
                     return $this->link()->success($url,"登陆成功");
                 }
             }

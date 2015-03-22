@@ -269,7 +269,7 @@ class Form
         }
         $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
         if ($this->_bindDate[$name]) {
-            $value = $this->_bindDate[$name];
+            $value = htmlspecialchars_decode($this->_bindDate[$name],ENT_COMPAT);
         }
         $this->_name[$name];
         if (is_array($param)) {
@@ -292,7 +292,7 @@ class Form
              <script type='text/javascript'>
                var ue".$name." = UE.getEditor('" . $name . "',{textarea:\"".$name."\",".$config."});
                 ue".$name.".ready(function(){
-                        ue".$name.".setContent('" . $value . "');
+                        ue".$name.".setContent('".$value."');
                     })
              </script>
         </div>";
@@ -307,7 +307,7 @@ class Form
     {
         if ($this->_ueditor[$name]) {
             return $this->_ueditor[$name];
-        } else {
+        }else {
             return "<span style='color: red'>Uedit插件加载失败</span>";
         }
     }

@@ -81,7 +81,7 @@ class configController extends abstractController
         foreach ($type as $v) {
             $types[] = str_replace("*.", "", $v);
         }
-        if (!in_array($fileParts['extension'], $types)) {
+        if (!in_array(strtolower($fileParts['extension']), $types)) {
             exit (json_encode(array('success' => false, 'msg' => '类型错误!')));
         }
 

@@ -595,6 +595,8 @@ function rmBreak($content) {
 }
 
 
+
+
 /**
  * 执行挂在钩子上的函数,支持多参数 eg:doAction('post_comment', $author, $email, $url, $comment);
  *

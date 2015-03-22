@@ -103,15 +103,33 @@ class articleController extends abstractController{
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->start('articleEdit');
         $data = $this->request()->getData();//获取数据
+
+        /*
+         *  'id' => int 3
+  'title' => string '娴嬭瘯0000' (length=10)
+  'tag' => string '' (length=0)
+  'category' => int 1
+  'password' => string '' (length=0)
+  'istop' => int 1
+  'allow_comment' => int 1
+         * */
+        $data['id'] = post("id",'int');
+        $data['title'] = post("title",'string');
+        $data['tag'] = post("tag",'string');
+        $data['category'] = post("category",'int');
+        $data['istop'] = post("istop",'int');
+        $data['allow_comment'] = post("allow_comment",'int');
+        $data['content'] = post("content",'html');
+        $data['excerpt'] = post("excerpt",'html');
         $data = checkForm::init($data,$form->_name);
         $id = $data['id'];
         unset($data['id']);
+
         $data['time'] = date("Y-m-d H:i:s");
         $member = $this->getMember();
         $data['member_id'] = $member['id'];
-
         //处理日志缩略图（空则取文章第一张,文章没有则取默认图片）
-        if($_FILES['thumbnail']){
+        if($_FILES['thumbnail']['name']){
             //thumbnail不为空
             $targetFolder = 'Data/upload/image/article'; // Relative to the root
             //验证来路合法性

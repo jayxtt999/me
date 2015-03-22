@@ -76,7 +76,7 @@ class EditForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("thumbnail", "文章缩略图", $array, array('datatype' => '*0-24'), "file", 1, 3);
+        $this->setText("thumbnail", "文章缩略图", $array, array(), "file", 1, 3);
 
 
         $array = array(

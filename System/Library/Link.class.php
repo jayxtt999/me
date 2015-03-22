@@ -81,7 +81,6 @@ class Link
      */
     public function defaultUrl($url)
     {
-
         $urlMvc = "";
         foreach ($url as $k => $v) {
             //m=admin&c=menu&a=save
@@ -94,6 +93,7 @@ class Link
                 $urlMvc .= $first . $this->mvc[$k] . "=" . $v;
             }
         }
+
         return $urlMvc;
     }
 

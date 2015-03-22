@@ -95,7 +95,7 @@
 
                 <div class="col-md-12">
                     <p>
-                        <a href="javascript:;" data-page="1" class=" btn blue  default btn-block" id="showMore">
+                        <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block" id="showMore">
                             Load More </a>
                     </p>
 
@@ -126,23 +126,31 @@
             var table = $('#sample_menu');
             // begin first table
             table.dataTable({
-                "columns": [{
-                    "orderable": false
-                }, {
-                    "orderable": false
-                }, {
-                    "orderable": true
-                }, {
-                    "orderable": true
-                }, {
-                    "orderable": true
-                }, {
-                    "orderable": false
-                }, {
-                    "orderable": false
-                }, {
-                    "orderable": false
-                }
+                "columns": [
+                    {
+                        "orderable": false
+                    },
+                    {
+                        "orderable": false
+                    },
+                    {
+                        "orderable": true
+                    },
+                    {
+                        "orderable": true
+                    },
+                    {
+                        "orderable": true
+                    },
+                    {
+                        "orderable": false
+                    },
+                    {
+                        "orderable": false
+                    },
+                    {
+                        "orderable": false
+                    }
                 ],
                 "lengthMenu": [
                     [10, 20, -1],
@@ -160,13 +168,16 @@
                         "first": "First"
                     }
                 },
-                "columnDefs": [{  // set default column settings
-                    'orderable': false,
-                    'targets': [0]
-                }, {
-                    "searchable": false,
-                    "targets": [0]
-                }],
+                "columnDefs": [
+                    {  // set default column settings
+                        'orderable': false,
+                        'targets': [0]
+                    },
+                    {
+                        "searchable": false,
+                        "targets": [0]
+                    }
+                ],
                 "order": [
                     //[1, "asc"]
                 ] // set first column as a default sort by asc
@@ -210,10 +221,31 @@
 
 
     $('#showMore').click(function () {
-
+        p = $(this).attr("data-page")
+        alert(p)
         Metronic.blockUI();
         $.ajax({
 
+            url: "/index.php?m=admin&c=twitter&a=index",
+            type: "post",
+            datatype: "json",
+            timeout: 5000,
+            data: {p: p},
+            success: function (d) {
+
+
+            },
+            error: function () {
+                alert("异常！");
+                Metronic.unblockUI()
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    ajaxTimeoutTest.abort();
+                    alert("超时");
+                    Metronic.unblockUI()
+                }
+            }
 
 
         })
