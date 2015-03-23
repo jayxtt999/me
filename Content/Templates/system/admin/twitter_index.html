@@ -26,7 +26,19 @@
                 <div class="col-md-12">
 
 
-                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+
+                        <ul class="list-inline blog-images">
+                            <li>
+                                <a class="fancybox-button" data-rel="fancybox-button" title="sanzhi" href="javascript:;">
+                                    <img style="width: 100%;height: 100%;margin-top: 20px;" src="{:ADMIM_TPL_PATH}/assets/admin/pages/media/blog/13.jpg">
+                                </a>
+                            </li>
+
+                        </ul>
+
+
+                    </div>
 
                     <div class="col-md-9">
 
@@ -282,30 +294,26 @@
                     Metronic.unblockUI()
                     window.scrollTo(0,document.body.scrollHeight);
                 } else {
-                    layer.alert("没有更多数据了", 8)
                     Metronic.unblockUI()
+                    layer.alert("没有更多数据了", 8)
                 }
 
             },
             error: function () {
-                layer.alert("异常!", 8)
                 Metronic.unblockUI()
+                layer.alert("异常!", 8)
             },
             complete: function (XMLHttpRequest, status) {
                 if (status == 'timeout') {
                     ajaxTimeoutTest.abort();
-                    layer.alert("超时!", 8)
                     Metronic.unblockUI()
+                    layer.alert("超时!", 8)
+
                 }
             }
 
 
         })
-
-
-        window.setTimeout(function () {
-            Metronic.unblockUI();
-        }, 2000);
 
     });
 
@@ -313,10 +321,36 @@
     //发布说说
     $("#release_twitter").click(function () {
         var twitter = $(".wysihtml5").val()
-        return false;
         Metronic.blockUI();
         $.ajax({
+            url: "/index.php?m=admin&c=twitter&a=add",
+            type: "post",
+            datatype: "json",
+            timeout: 5000,
+            data: "twitter=" + twitter,
+            success: function (data) {
+                if (data.status) {
+                    Metronic.unblockUI()
+                    var html = "<li style='display: none' class='timeline-red'><div class='timeline-time'><span class='date'>" + data.crate_time.substr(0, 10) + "</span><span class='time'>" + data.crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data.id + "</h2><div class='timeline-content'>" + data.content + "<div class='timeline-footer'></div></div></li>";
+                    $(".timeline").prepend(html)
+                    $(".timeline :first-child").fadeIn("slow");
 
+                } else {
+                    Metronic.unblockUI()
+                    layer.alert("发表失败", 8)
+                }
+            },
+            error: function () {
+                Metronic.unblockUI()
+                layer.alert("异常!", 8)
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    ajaxTimeoutTest.abort();
+                    Metronic.unblockUI()
+                    layer.alert("超时!", 8)
+                }
+            }
 
         })
 

@@ -34,4 +34,34 @@ class twitterController extends abstractController{
 
     }
 
+
+    /**
+     *        添加说说
+     * */
+    public function addAction(){
+
+        $re  = new \System\Library\Request();
+        $content  = post("twitter","html");
+        $member = $this->getMember();
+        $crate_time = date("Y-m-d H:i:s");
+        $array = array(
+            'content'=>$content,
+            'img'=>"",
+            'author'=>$member['id'],
+            'crate_time'=>$crate_time,
+            'replynum'=>0,
+            'status'=>1,
+        );
+        $id = db()->table("twitter")->insert($array)->done();
+        if($re->isAjax()){
+            if($id){
+                return JsonObject(array("status"=>true,"id"=>$id,"crate_time"=>$crate_time,"content"=>$content));
+            }else{
+                return JsonObject(array("status"=>false));
+            }
+        }
+
+
+    }
+
 }
