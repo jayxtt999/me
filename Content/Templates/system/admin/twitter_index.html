@@ -1,5 +1,7 @@
 <include file="layout@admin@head"/>
 <link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/timeline.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
+
 
 
 <!-- BEGIN CONTAINER -->
@@ -20,6 +22,39 @@
             <include file="layout@layout@widgets"/>
             <!-- END PAGE HEADER-->
             <div class="row">
+
+                <div class="col-md-12">
+
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-9">
+
+                        <div class="chat-form well well-lg">
+                            <div class="input-cont">
+                                <textarea class="wysihtml5 form-control" rows="6" name="editor1" data-error-container="#editor1_error" placeholder="发布新说说..."></textarea>
+
+
+                                <div id="editor1_error">
+                                </div>
+                            </div>
+
+                            <h4 class="block">
+                                <button type="button" style="float: right;margin-right: 40px;" id="release_twitter" class="btn green-meadow">Send Twitter</button>
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
 
@@ -30,15 +65,7 @@
                             foreach($list as $k=>$vo){
                         </php>
 
-
-                        <li class="timeline-{$color[$k%5]}
-                    <php>
-                    if($k+1==count($list))
-                    {
-                    echo 'timeline-noline';
-                    }
-                    </php>
-                    ">
+                        <li class="timeline-{$color[$k%5]} <php>if($k+1==count($list)){ echo 'timeline-noline';}</php>">
                             <div class="timeline-time">
 								<span class="date">
                     <php>echo substr($vo['crate_time'],0,10);</php>
@@ -114,13 +141,16 @@
 
 
 <include file="layout@admin@foot"/>
-
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
 
 <script>
+    //说说编辑器
+    $('.wysihtml5').wysihtml5({
+        "stylesheets": ["{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
+    });
 
-    /**
-     * 表格插件
-     */
+    //表格插件
     var TableManaged = function () {
         var initTable1 = function () {
             var table = $('#sample_menu');
@@ -219,30 +249,52 @@
     }();
     TableManaged.init();
 
-
+    //显示更多
     $('#showMore').click(function () {
         p = $(this).attr("data-page")
-        alert(p)
         Metronic.blockUI();
         $.ajax({
-
             url: "/index.php?m=admin&c=twitter&a=index",
             type: "post",
             datatype: "json",
             timeout: 5000,
-            data: {p: p},
+            data: "p=" + p,
             success: function (d) {
-
+                var data = d.data;
+                var color = d.color;
+                var page = d.p;
+                if (data && data!="") {
+                    //移除最后一个闭合样式
+                    $(".timeline :last-child").removeClass("timeline-noline")
+                    //循环开始
+                    for (var i = 0; i < data.length; i++) {
+                        //判断是否为最后一个元素
+                        var is_end = ""
+                        if (i == data.length - 1) {
+                            is_end = "timeline-noline";
+                        }
+                        //拼接html
+                        var html = "<li class='timeline-" + color[i % 5] + " " + is_end + "'><div class='timeline-time'><span class='date'>" + data[i].crate_time.substr(0, 10) + "</span><span class='time'>" + data[i].crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data[i].id + "</h2><div class='timeline-content'>" + data[i].content + "<div class='timeline-footer'></div></div></li>";
+                        $(".timeline").append(html)
+                    }
+                    //当前页 +1
+                    $('#showMore').attr("data-page", page)
+                    Metronic.unblockUI()
+                    window.scrollTo(0,document.body.scrollHeight);
+                } else {
+                    layer.alert("没有更多数据了", 8)
+                    Metronic.unblockUI()
+                }
 
             },
             error: function () {
-                alert("异常！");
+                layer.alert("异常!", 8)
                 Metronic.unblockUI()
             },
             complete: function (XMLHttpRequest, status) {
                 if (status == 'timeout') {
                     ajaxTimeoutTest.abort();
-                    alert("超时");
+                    layer.alert("超时!", 8)
                     Metronic.unblockUI()
                 }
             }
@@ -258,9 +310,24 @@
     });
 
 
+    //发布说说
+    $("#release_twitter").click(function () {
+        var twitter = $(".wysihtml5").val()
+        return false;
+        Metronic.blockUI();
+        $.ajax({
+
+
+        })
+
+    })
+
+    //删除说说
     function articleDel(id) {
         layer.confirm('确定删除吗？', function () {
             window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
         });
     }
 </script>
+
+

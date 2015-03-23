@@ -138,9 +138,9 @@ class DB
      * @param $limit
      * @return $this
      */
-    public function limit($limit)
+    public function limit($start,$length)
     {
-        $this->limit = $limit;
+        $this->limit = "$start,$length";
         return $this;
     }
 

@@ -613,4 +613,13 @@ function rmBreak($content) {
 }*/
 
 
+/**
+ * json
+ * @param $array
+ */
+function JsonObject($array){
+    header("Content-type: application/json");
+    exit(json_encode($array));
+}
+
 
