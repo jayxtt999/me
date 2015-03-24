@@ -1,0 +1,70 @@
+<include file="home@blog@head"/>
+
+
+<div class="content">
+    <div class="container">
+        <div class="content-grids">
+            <div class="col-md-8 content-main">
+
+
+                <div class="content-grid">
+                    <div class="content-grid-head">
+                        <h3>{$blog['title']}</h3>
+                        <h4>{$blog['time']},所属分类：{$blog['category']},作者: <a href="jvascript:;">{$blog['author']}</a></h4>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="content-grid-single">
+
+                        {$blog['content']}
+
+                        <div class="content-form">
+                            <h3>Leave a comment</h3>
+                            <form>
+                                <input type="text" placeholder="Name" required="">
+                                <input type="text" placeholder="E-mail" required="">
+                                <input type="text" placeholder="Phone" required="">
+                                <textarea placeholder="Message"></textarea>
+                                <input type="submit" value="SEND">
+                            </form>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-4 content-main-right">
+                <div class="search">
+                    <h3>SEARCH HERE</h3>
+
+                    <form>
+                        <input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
+                        <input type="submit" value="">
+                    </form>
+                </div>
+                <div class="categories">
+                    <h3>CATEGORIES</h3>
+                    <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>
+                    <li><a href="#">Vestibulum commodo felis quis tort</a></li>
+                    <li><a href="#">Fusce pellentesque suscipit</a></li>
+                </div>
+                <div class="archives">
+                    <h3>ARCHIVES</h3>
+                    <li class="active"><a href="#">July 2014</a></li>
+                    <li><a href="#">June 2014</a></li>
+                    <li><a href="#">May 2014</a></li>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<include file="home@index@foot"/>

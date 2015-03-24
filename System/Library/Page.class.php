@@ -42,6 +42,7 @@ class Page
     // 默认分页变量名
     protected $varPage ;
 
+    public  $isShow;
     //默认模板
     protected $tmp ;
 
@@ -170,7 +171,11 @@ class Page
 
         $this->tmp = file_get_contents(WEB_TEMP_PATH."/default/home"."/blog_page.html",true);
 
-
+        if(!$upPage && !$downPage && $linkPage){
+            $this->isShow = false;
+        }else{
+            $this->isShow = true;
+        }
 
         $pageStr = str_replace(
             array('%header%', '%nowPage%', '%totalRow%', '%totalPage%', '%upPage%', '%downPage%', '%first%', '%prePage%', '%linkPage%', '%nextPage%', '%end%'),

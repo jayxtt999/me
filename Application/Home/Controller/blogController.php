@@ -22,16 +22,20 @@ class blogController extends abstractController{
 
         $page = new \System\Library\Page($count);
 
-        $show  = $page->show();// 分页显示输出
+        if($page->isShow){
+            $show  = $page->show();// 分页显示输出
+        }else{
+            $show = "";
+        }
         // 进行分页数据查询
-        $all = db()->Table('article')->getAll($where)->order("istop desc")->limit($page->firstRow.','.$page->listRows)->done();
+        $all = db()->Table('article')->getAll($where)->limit($page->firstRow,$page->listRows)->order("istop desc")->done();
 
         foreach($all as $k=>$v){
 
             $logList[$k]['title'] = htmlspecialchars(trim($v['title']));
-            $logList[$k]['url'] = $this->getView()->log($v['id']);
             $logList[$k]['id'] = $v['id'];
-            $cookiePassword = cookie('xtt_logpwd_'.$v['id'])?addslashes(trim($_COOKIE['em_logpwd_' . $v['gid']])) : '';
+            $logList[$k]['url'] = $this->getView()->log($v['id']);
+            $cookiePassword = cookie('xtt_logpwd_'.$v['id'])?addslashes(trim(cookie('xtt_logpwd_'.$v['id']))) : '';
             $logList[$k]['excerpt'] = empty($v['excerpt']) ? breakLog($v['content'], $v['id']) : $v['excerpt'];
             if (!empty($v['password']) && $cookiePassword != $v['password']) {
                 $logList[$k]['excerpt'] = '<p>[该日志已设置加密，请点击标题输入密码访问]</p>';
@@ -46,10 +50,6 @@ class blogController extends abstractController{
 
             $model = new \Home\Model\homeModel();
             $logList[$k]['category'] = $model->getArticleCategory($v['category']);
-            $logList[$k]['comment_num'] = $v['comment_num']?$v['comment_num']:0;
-            $logList[$k]['view_num'] = $v['view_num']?$v['view_num']:0;
-            $logList[$k]['istop'] = $v['istop']?true:false;
-
             $tag = new \Admin\Model\articleModel();
             //获取该文章标签
             $tags = $tag->getTags($v['id'],true);
@@ -60,11 +60,74 @@ class blogController extends abstractController{
 
         }
         $this->getView()->assign(array('articleAll'=>$logList,'show'=>$show));
+        $this->getView()->display();
+    }
+
+    /**
+     * 显示博文
+     */
+    public function showAction(){
+
+        $id = get("id","int");
+        $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
+        $where['member_id'] = 1;
+        $where['id'] = $id;
+        $row = db()->Table('article')->getRow($where)->limit(0,1)->done();
+        if(!empty($row['password'])){
+            $cookiePassword = addslashes(trim(cookie('xtt_logpwd_'.$row['id'])));
+            if($cookiePassword != $row['password']){
+
+                $this->getView()->assign(array('id'=>$id,'msg'=>""));
+                return $this->getView()->display("checkpwd");
+            }
+        }
+        $model = new \Home\Model\homeModel();
+        $row['category'] = $model->getArticleCategory($row['category']);
+        $tag = new \Admin\Model\articleModel();
+        //获取该文章标签
+        $tags = $tag->getTags($row['id'],true);
+        if($tags){
+            $row['tags'] =explode(",",$tags);
+        }
+        $row['author'] = member($row['member_id']);
+
+        $this->getView()->assign(array('blog'=>$row));
+        return $this->getView()->display();
+    }
+
+
+    public function checkPwdAction(){
+
+        $id = post("id","int");
+        $password = post("password","string");
+        $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
+        $where['member_id'] = 1;
+        $where['id'] = $id;
+        $row = db()->Table('article')->getRow($where)->limit(0,1)->done();
+        if($row){
+
+            if(!empty($row['password'])){
+                if($password == $row['password']){
+                    cookie('xtt_logpwd_'.$row['id'],$password);
+                    $this->link()->toUrl("home:blog:show:id-".$id,1,"验证成功");
+                }else{
+                    //验证失败
+                    $this->getView()->assign(array("msg"=>"密码错误",'id'=>$id));
+                    return $this->getView()->display();
+                }
+            }else{
+                //无需验证
+                $this->link()->toUrl("home:blog:show:id-".$id);
+            }
+
+        }else{
+            //  不存在
+            $this->link()->toUrl("home:blog:index",1,"该博文不存在...");
+        }
 
 
 
-        $v = $this->getView();
-        $v->display();
+
     }
 
 

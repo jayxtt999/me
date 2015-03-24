@@ -1,7 +1,7 @@
 <include file="layout@admin@head"/>
 <link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/timeline.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" type="text/css" href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
-
+<link rel="stylesheet" type="text/css"
+      href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
 
 
 <!-- BEGIN CONTAINER -->
@@ -30,8 +30,9 @@
 
                         <ul class="list-inline blog-images">
                             <li>
-                                <a class="fancybox-button" data-rel="fancybox-button" title="sanzhi" href="javascript:;">
-                                    <img style="width: 100%;height: 100%;margin-top: 20px;" src="{:ADMIM_TPL_PATH}/assets/admin/pages/media/blog/13.jpg">
+                                <a class="fancybox-button" data-rel="fancybox-button" href="javascript:;">
+                                    <img style="width: 100%;height: 100%;margin-top: 20px;"
+                                         src="{:ADMIM_TPL_PATH}/assets/admin/pages/media/blog/13.jpg">
                                 </a>
                             </li>
 
@@ -44,7 +45,8 @@
 
                         <div class="chat-form well well-lg">
                             <div class="input-cont">
-                                <textarea class="wysihtml5 form-control" rows="6" name="editor1" data-error-container="#editor1_error" placeholder="发布新说说..."></textarea>
+                                <textarea class="wysihtml5 form-control" rows="6" name="editor1"
+                                          data-error-container="#editor1_error" placeholder="发布新说说..."></textarea>
 
 
                                 <div id="editor1_error">
@@ -52,7 +54,9 @@
                             </div>
 
                             <h4 class="block">
-                                <button type="button" style="float: right;margin-right: 40px;" id="release_twitter" class="btn green-meadow">Send Twitter</button>
+                                <button type="button" style="float: right;margin-right: 40px;" id="release_twitter"
+                                        class="btn green-meadow">Send Twitter
+                                </button>
 
                             </h4>
 
@@ -62,9 +66,6 @@
 
 
                 </div>
-
-
-
 
 
                 <div class="col-md-12">
@@ -81,7 +82,6 @@
                             <div class="timeline-time">
 								<span class="date">
                     <php>echo substr($vo['crate_time'],0,10);</php>
-
                                 </span>
 								<span class="time">
 								 <php>echo substr($vo['crate_time'],11,5);</php></span>
@@ -92,6 +92,8 @@
                             <div class="timeline-body">
                                 <h2>#_
                                     <php>echo $vo['id'];</php>
+                                    <button class="close" value="<php>echo $vo['id'];</php>"
+                                            onclick="rmTwitter(this)">&times;</button>
                                 </h2>
                                 <div class="timeline-content">
 
@@ -153,215 +155,253 @@
 
 
 <include file="layout@admin@foot"/>
-<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+<script type="text/javascript"
+        src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
+<script type="text/javascript"
+        src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
 
 <script>
-    //说说编辑器
-    $('.wysihtml5').wysihtml5({
-        "stylesheets": ["{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
-    });
 
-    //表格插件
-    var TableManaged = function () {
-        var initTable1 = function () {
-            var table = $('#sample_menu');
-            // begin first table
-            table.dataTable({
-                "columns": [
-                    {
-                        "orderable": false
-                    },
-                    {
-                        "orderable": false
-                    },
-                    {
-                        "orderable": true
-                    },
-                    {
-                        "orderable": true
-                    },
-                    {
-                        "orderable": true
-                    },
-                    {
-                        "orderable": false
-                    },
-                    {
-                        "orderable": false
-                    },
-                    {
-                        "orderable": false
-                    }
-                ],
-                "lengthMenu": [
-                    [10, 20, -1],
-                    [10, 20, "All"] // change per page values here
-                ],
-                // set the initial value
-                "pageLength": 10,
-                "pagingType": "bootstrap_full_number",
-                "language": {
-                    "lengthMenu": "  _MENU_ 条",
-                    "paginate": {
-                        "previous": "Prev",
-                        "next": "Next",
-                        "last": "Last",
-                        "first": "First"
-                    }
+//说说编辑器
+$('.wysihtml5').wysihtml5({
+    "stylesheets": ["{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
+});
+
+//表格插件
+var TableManaged = function () {
+    var initTable1 = function () {
+        var table = $('#sample_menu');
+        // begin first table
+        table.dataTable({
+            "columns": [
+                {
+                    "orderable": false
                 },
-                "columnDefs": [
-                    {  // set default column settings
-                        'orderable': false,
-                        'targets': [0]
-                    },
-                    {
-                        "searchable": false,
-                        "targets": [0]
-                    }
-                ],
-                "order": [
-                    //[1, "asc"]
-                ] // set first column as a default sort by asc
+                {
+                    "orderable": false
+                },
+                {
+                    "orderable": true
+                },
+                {
+                    "orderable": true
+                },
+                {
+                    "orderable": true
+                },
+                {
+                    "orderable": false
+                },
+                {
+                    "orderable": false
+                },
+                {
+                    "orderable": false
+                }
+            ],
+            "lengthMenu": [
+                [10, 20, -1],
+                [10, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "pageLength": 10,
+            "pagingType": "bootstrap_full_number",
+            "language": {
+                "lengthMenu": "  _MENU_ 条",
+                "paginate": {
+                    "previous": "Prev",
+                    "next": "Next",
+                    "last": "Last",
+                    "first": "First"
+                }
+            },
+            "columnDefs": [
+                {  // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                },
+                {
+                    "searchable": false,
+                    "targets": [0]
+                }
+            ],
+            "order": [
+                //[1, "asc"]
+            ] // set first column as a default sort by asc
+        });
+
+        var tableWrapper = jQuery('#sample_menu_wrapper');
+
+
+        table.find('.group-checkable').change(function () {
+            var set = jQuery(this).attr("data-set");
+            var checked = jQuery(this).is(":checked");
+            jQuery(set).each(function () {
+                if (checked) {
+                    $(this).attr("checked", true);
+                } else {
+                    $(this).attr("checked", false);
+                }
             });
+            jQuery.uniform.update(set);
+        });
 
-            var tableWrapper = jQuery('#sample_menu_wrapper');
+        table.on('change', 'tbody tr .checkboxes', function () {
+            $(this).parents('tr').toggleClass("active");
+        });
 
+        tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
 
-            table.find('.group-checkable').change(function () {
-                var set = jQuery(this).attr("data-set");
-                var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
-                    if (checked) {
-                        $(this).attr("checked", true);
-                    } else {
-                        $(this).attr("checked", false);
-                    }
-                });
-                jQuery.uniform.update(set);
-            });
-
-            table.on('change', 'tbody tr .checkboxes', function () {
-                $(this).parents('tr').toggleClass("active");
-            });
-
-            tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
-
+    }
+    return {
+        //main function to initiate the module
+        init: function () {
+            if (!jQuery().dataTable) {
+                return;
+            }
+            initTable1();
         }
-        return {
-            //main function to initiate the module
-            init: function () {
-                if (!jQuery().dataTable) {
-                    return;
-                }
-                initTable1();
-            }
-        };
+    };
 
-    }();
-    TableManaged.init();
+}();
+TableManaged.init();
 
-    //显示更多
-    $('#showMore').click(function () {
-        p = $(this).attr("data-page")
-        Metronic.blockUI();
-        $.ajax({
-            url: "/index.php?m=admin&c=twitter&a=index",
-            type: "post",
-            datatype: "json",
-            timeout: 5000,
-            data: "p=" + p,
-            success: function (d) {
-                var data = d.data;
-                var color = d.color;
-                var page = d.p;
-                if (data && data!="") {
-                    //移除最后一个闭合样式
-                    $(".timeline :last-child").removeClass("timeline-noline")
-                    //循环开始
-                    for (var i = 0; i < data.length; i++) {
-                        //判断是否为最后一个元素
-                        var is_end = ""
-                        if (i == data.length - 1) {
-                            is_end = "timeline-noline";
-                        }
-                        //拼接html
-                        var html = "<li class='timeline-" + color[i % 5] + " " + is_end + "'><div class='timeline-time'><span class='date'>" + data[i].crate_time.substr(0, 10) + "</span><span class='time'>" + data[i].crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data[i].id + "</h2><div class='timeline-content'>" + data[i].content + "<div class='timeline-footer'></div></div></li>";
-                        $(".timeline").append(html)
+//显示更多
+$('#showMore').click(function () {
+    p = $(this).attr("data-page")
+    Metronic.blockUI();
+    $.ajax({
+        url: "/index.php?m=admin&c=twitter&a=index",
+        type: "post",
+        datatype: "json",
+        timeout: 5000,
+        data: "p=" + p,
+        success: function (d) {
+            var data = d.data;
+            var color = d.color;
+            var page = d.p;
+            if (data && data != "") {
+                //移除最后一个闭合样式
+                $(".timeline :last-child").removeClass("timeline-noline")
+                //循环开始
+                for (var i = 0; i < data.length; i++) {
+                    //判断是否为最后一个元素
+                    var is_end = ""
+                    if (i == data.length - 1) {
+                        is_end = "timeline-noline";
                     }
-                    //当前页 +1
-                    $('#showMore').attr("data-page", page)
-                    Metronic.unblockUI()
-                    window.scrollTo(0,document.body.scrollHeight);
-                } else {
-                    Metronic.unblockUI()
-                    layer.alert("没有更多数据了", 8)
+                    //拼接html
+                    var html = "<li class='timeline-" + color[i % 5] + " " + is_end + "'><div class='timeline-time'><span class='date'>" + data[i].crate_time.substr(0, 10) + "</span><span class='time'>" + data[i].crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data[i].id + "</h2><div class='timeline-content'>" + data[i].content + "<div class='timeline-footer'></div></div></li>";
+                    $(".timeline").append(html)
                 }
-
-            },
-            error: function () {
+                //当前页 +1
+                $('#showMore').attr("data-page", page)
                 Metronic.unblockUI()
-                layer.alert("异常!", 8)
-            },
-            complete: function (XMLHttpRequest, status) {
-                if (status == 'timeout') {
-                    ajaxTimeoutTest.abort();
-                    Metronic.unblockUI()
-                    layer.alert("超时!", 8)
-
-                }
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                Metronic.unblockUI()
+                layer.alert("没有更多数据了", 8)
             }
 
-
-        })
-
-    });
-
-
-    //发布说说
-    $("#release_twitter").click(function () {
-        var twitter = $(".wysihtml5").val()
-        Metronic.blockUI();
-        $.ajax({
-            url: "/index.php?m=admin&c=twitter&a=add",
-            type: "post",
-            datatype: "json",
-            timeout: 5000,
-            data: "twitter=" + twitter,
-            success: function (data) {
-                if (data.status) {
-                    Metronic.unblockUI()
-                    var html = "<li style='display: none' class='timeline-red'><div class='timeline-time'><span class='date'>" + data.crate_time.substr(0, 10) + "</span><span class='time'>" + data.crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data.id + "</h2><div class='timeline-content'>" + data.content + "<div class='timeline-footer'></div></div></li>";
-                    $(".timeline").prepend(html)
-                    $(".timeline :first-child").fadeIn("slow");
-
-                } else {
-                    Metronic.unblockUI()
-                    layer.alert("发表失败", 8)
-                }
-            },
-            error: function () {
+        },
+        error: function () {
+            Metronic.unblockUI()
+            layer.alert("异常!", 8)
+        },
+        complete: function (XMLHttpRequest, status) {
+            if (status == 'timeout') {
+                ajaxTimeoutTest.abort();
                 Metronic.unblockUI()
-                layer.alert("异常!", 8)
-            },
-            complete: function (XMLHttpRequest, status) {
-                if (status == 'timeout') {
-                    ajaxTimeoutTest.abort();
-                    Metronic.unblockUI()
-                    layer.alert("超时!", 8)
-                }
-            }
+                layer.alert("超时!", 8)
 
-        })
+            }
+        }
+
 
     })
 
-    //删除说说
-    function articleDel(id) {
-        layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
-        });
+});
+
+
+//发布说说
+i = 0;
+$("#release_twitter").click(function () {
+    var twitter = $(".wysihtml5").val()
+    Metronic.blockUI();
+    $.ajax({
+        url: "/index.php?m=admin&c=twitter&a=add",
+        type: "post",
+        datatype: "json",
+        timeout: 5000,
+        data: "twitter=" + twitter,
+        success: function (data) {
+            if (data.status) {
+                Metronic.unblockUI()
+                color = data.color
+                var html = "<li style='display: none' class='timeline-" + color[i%5] + "'><div class='timeline-time'><span class='date'>" + data.crate_time.substr(0, 10) + "</span><span class='time'>" + data.crate_time.substr(11, 5) + "</span></div><div class='timeline-icon'> <i class='fa fa-comments'></i></div> <div class='timeline-body'><h2>#_" + data.id + "<button class='close' value='" + data.id + "' onclick='rmTwitter(this)'>&times;</button></h2><div class='timeline-content'>" + data.content + "<div class='timeline-footer'></div></div></li>";
+
+                $(".timeline").prepend(html)
+                $(".timeline :first-child").fadeIn("slow");
+                i++
+            } else {
+                Metronic.unblockUI()
+                layer.alert("发表失败", 8)
+            }
+        },
+        error: function () {
+            Metronic.unblockUI()
+            layer.alert("异常!", 8)
+        },
+        complete: function (XMLHttpRequest, status) {
+            if (status == 'timeout') {
+                ajaxTimeoutTest.abort();
+                Metronic.unblockUI()
+                layer.alert("超时!", 8)
+            }
+        }
+    })
+
+})
+
+//删除说说
+function rmTwitter(e) {
+
+    var id = $(e).val();
+    if (id) {
+        Metronic.blockUI();
+        $.ajax({
+            url: "/index.php?m=admin&c=twitter&a=del",
+            type: "post",
+            datatype: "json",
+            timeout: 5000,
+            data: "id=" + id,
+            success: function (data) {
+                if (data.status) {
+                    Metronic.unblockUI()
+                    $(e).parent().parent().parent().fadeOut("slow");
+                } else {
+                    Metronic.unblockUI()
+                    layer.alert("删除失败", 8)
+                }
+            },
+            error: function () {
+                Metronic.unblockUI()
+                layer.alert("异常!", 8)
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    ajaxTimeoutTest.abort();
+                    Metronic.unblockUI()
+                    layer.alert("超时!", 8)
+                }
+            }
+        })
+
     }
+
+}
+
+
 </script>
 
 

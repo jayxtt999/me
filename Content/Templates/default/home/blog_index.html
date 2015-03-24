@@ -12,7 +12,7 @@
 
                     <div class="content-grid-sec">
                         <div class="content-sec-info">
-                            <h3><a href="single.html">
+                            <h3><a href="{$vo.url}">
 
                                 {$vo.title}
 
@@ -26,9 +26,9 @@
                             <p>
                                 {$vo.excerpt}
                             </p>
-<!--
-                            <img src="{$vo.thumbnail}" alt=""/>
--->
+                            <!--
+                                                        <img src="{$vo.thumbnail}" alt=""/>
+                            -->
 
                             <div class="conten-sec-data">
 
@@ -44,7 +44,7 @@
                                         <li>
                                             <i class="fa fa-comments"></i>
                                             <a href="#">
-                                                 {$vo.comment_num} Comment </a>
+                                                {$vo.comment_num} Comment </a>
                                         </li>
                                     </ul>
 
@@ -67,11 +67,11 @@
 
                                 </div>
 
-                                <div class="conten-sec-right">
+                                <!--<div class="conten-sec-right">
 
                                     <a class="bttn" href="single.html">MORE</a>
 
-                                </div>
+                                </div>-->
 
                                 <div style="clear: both"></div>
                             </div>
@@ -81,9 +81,7 @@
 
                 </volist>
 
-
                 {$show}
-
 
 
             </div>

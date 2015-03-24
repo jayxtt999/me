@@ -52,16 +52,30 @@ class twitterController extends abstractController{
             'replynum'=>0,
             'status'=>1,
         );
+        $color = array(
+            "yellow","green","blue","purple","grey"
+        );
         $id = db()->table("twitter")->insert($array)->done();
         if($re->isAjax()){
             if($id){
-                return JsonObject(array("status"=>true,"id"=>$id,"crate_time"=>$crate_time,"content"=>$content));
+                return JsonObject(array("status"=>true,"id"=>$id,"crate_time"=>$crate_time,"content"=>$content,"color"=>array_reverse($color)));
             }else{
                 return JsonObject(array("status"=>false));
             }
         }
+    }
 
 
+    public function delAction(){
+
+        $re  = new \System\Library\Request();
+        $id  = post("id","int");
+        $res = db()->table("twitter")->delete(array('id'=>$id))->done();
+        if($res){
+            return JsonObject(array("status"=>true));
+        }else{
+            return JsonObject(array("status"=>false));
+        }
     }
 
 }

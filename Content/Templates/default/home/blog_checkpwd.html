@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>博文密码 | {$webConfig['site_title']}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta name="keywords" content="{$webConfig['site_key']}">
+    <meta name="description" content="{$webConfig['site_description']}"/>
+    <meta name="blogname" content="{$webConfig['blogname']}">
+    <meta name="bloginfo" content="{$webConfig['bloginfo']}">
+    <link href="http://fonts.useso.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/lock.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+    <link href="{:ADMIM_TPL_PATH}/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+
+<body style="background-color:#808080">
+<div class="page-lock">
+
+    <div class="page-body">
+
+        <if condition="$msg">
+        <div class="alert alert-block alert-danger fade in">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            <h4 class="alert-heading">Error!</h4>
+            <p>
+                    {$msg}
+            </p>
+
+        </div>
+        </if>
+
+        <img class="page-lock-img" src="{:ADMIM_TPL_PATH}/assets/admin/pages/media/profile/lock.gif" alt="">
+        <div class="page-lock-info">
+            <h1>该博文已被加密</h1>
+			<span class="email">
+			输入密码查看 </span>
+            <form class="form-inline" action="/index.php?m=home&c=blog&a=checkPwd" method="post">
+                <div class="input-group input-medium">
+                    <input type="hidden" name="id" value="{$id}">
+                    <input type="text" name="password"  class="form-control" placeholder="Password">
+					<span class="input-group-btn">
+					<button type="submit" class="btn blue icn-only"><i class="m-icon-swapright m-icon-white"></i></button>
+					</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>
