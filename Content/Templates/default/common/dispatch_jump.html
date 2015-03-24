@@ -15,6 +15,7 @@
             font-family: '微软雅黑';
             color: #333;
             font-size: 16px;
+            background: url({$templatesPath}/images/main-bg.jpg);
         }
 
         .system-message {
@@ -52,11 +53,11 @@
 <body>
 <div class="system-message">
     <present name="message">
-        <h1>:)</h1>
 
-        <p class="success"><?php echo($message); ?></p>
+
+        <p class="success"><?php echo($message); ?>√</p>
         <else/>
-        <h1>:(</h1>
+        <h1>×</h1>
 
         <p class="error"><?php echo($error); ?></p>
     </present>

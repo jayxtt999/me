@@ -5,7 +5,7 @@
  * Date: 2015/3/3 0003
  * Time: ���� 10:35
  */
-namespace Admin\Article\Type;
+namespace Admin\Comment\Type;
 class Status extends \System\Library\statusGateway
 {
     const STATUS_ENABLE = 1;

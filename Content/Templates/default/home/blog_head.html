@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta http－equiv="Content－Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{$blog['title']} | {$webConfig['site_title']}</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta name="keywords" content="{$blog['title']}">
-    <meta name="description" content="{$blog['excerpt']}"/>
+    <meta name="description" content="{$webConfig['blogname']}"/>
     <meta name="blogname" content="{$webConfig['blogname']}">
     <meta name="bloginfo" content="{$webConfig['bloginfo']}">
 
@@ -30,7 +30,11 @@
         jQuery(document).ready(function($) {
             $(".scroll").click(function(event){
                 event.preventDefault();
-                $('html,body').animate({scrollTop:$(this.hash).offset().top},900);
+                $('html,body').animate({
+
+                    scrollTop:$(this.hash).offset().top
+
+                },900);
             });
         });
     </script>
