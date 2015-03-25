@@ -81,6 +81,11 @@ class blogController extends abstractController{
                 return $this->getView()->display("checkpwd");
             }
         }
+        $config = new \Admin\Model\webConfigModel();
+        $webConfig = $config->getConfig();
+        if($webConfig['ischkcomment']){
+            new \Common\Security\CommentVerSession();
+        }
         $model = new \Home\Model\homeModel();
         $row['category'] = $model->getArticleCategory($row['category']);
         $tag = new \Admin\Model\articleModel();
@@ -91,9 +96,30 @@ class blogController extends abstractController{
         }
         $row['author'] = member($row['member_id']);
 
+        //加载评论
+        $where['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
+        $where['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
+        $where['data'] = $id;
+        $count = db()->Table('comment')->getAll($where)->count()->done();        //getAll
+        $page = new \System\Library\Page($count);
+        if($page->isShow){
+            $show  = $page->show();// 分页显示输出
+        }else{
+            $show = "";
+        }
+        // 进行分页数据查询
+        $all = db()->Table('comment')->getAll($where)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
+
+
+
+
+
         $this->getView()->assign(array('blog'=>$row));
         return $this->getView()->display();
     }
+
+
+
 
 
     public function checkPwdAction(){

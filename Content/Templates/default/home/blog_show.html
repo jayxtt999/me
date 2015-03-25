@@ -1,6 +1,5 @@
 <include file="home@blog@head"/>
 
-
 <div class="content">
     <div class="container">
         <div class="content-grids">
@@ -10,7 +9,8 @@
                 <div class="content-grid">
                     <div class="content-grid-head">
                         <h3>{$blog['title']}</h3>
-                        <h4>{$blog['time']},所属分类：{$blog['category']},作者: <a href="jvascript:;">{$blog['author']}</a></h4>
+                        <h4>{$blog['time']},所属分类：{$blog['category']},作者: <a href="jvascript:;">{$blog['author']}</a>
+                        </h4>
 
                         <div class="clearfix"></div>
                     </div>
@@ -20,15 +20,61 @@
                         {$blog['content']}
 
                         <div class="content-form">
-                            <h3>Leave a comment</h3>
-                            <form action="/index.php?m=home&c=comment&a=add" method="post">
-                                <input type="text" name="name"  placeholder="Name" required="text">
-                                <input type="text" name="email" placeholder="E-mail" required="email">
-                                <textarea name="content" placeholder="content"  name="" required="text"></textarea>
-                                <input type="submit" value="SEND">
-                            </form>
-                        </div>
 
+                            <if condition = "$webConfig['ischkcomment']">
+
+                            <h3>Leave a comment</h3>
+                            <form id="comment_form">
+                                <input type="text" class="comment_name" name="name" placeholder="昵称" required="text">
+                                <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
+                                <textarea name="content" class="comment_content" placeholder="内容" name=""
+                                          required="text"></textarea>
+
+                                <div>
+                                <img id="comment_verify" src="/index.php?m=common&amp;c=getcommentver&amp;a=index"
+                                     onclick="javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index'"
+                                      alt="">
+
+
+                                <input type="text" id="check_code" maxlength="4" name="check_code" placeholder="验证码" required="check_code">
+                                </div>
+                                <input type="button"  style="width: 100px;height: 38px;" value="SEND" onclick="addComment();">
+                            </form>
+
+                            </if>
+
+                            <ul class="chats">
+                                <li class="in">
+                                    <img class="avatar" alt="" src="{:ADMIM_TPL_PATH}/assets/admin/layout/img/avatar1.jpg">
+                                    <div class="message">
+											<span class="arrow">
+											</span>
+                                        <a href="#" class="name">
+                                            Bob Nilson </a>
+											<span class="datetime">
+											at 20:09 </span>
+											<span class="body">
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                                    </div>
+                                </li>
+
+                                <li class="out">
+                                    <img class="avatar" alt="" src="{:ADMIM_TPL_PATH}/assets/admin/layout/img/avatar2.jpg">
+                                    <div class="message">
+											<span class="arrow">
+											</span>
+                                        <a href="#" class="name">
+                                            Lisa Wong </a>
+											<span class="datetime">
+											at 20:11 </span>
+											<span class="body">
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </div>
 
 
                     </div>
@@ -64,6 +110,65 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/layer/layer.min.js"></script>
+
+<script>
+    function addComment() {
+        var name = $.trim($(".comment_name").val());
+        var qq = $(".comment_qq").val();
+        var content = $(".comment_content").val();
+        if (!name || !qq || !content) {
+            layer.msg('请完整填写各字段', 1, 8);
+            return false;
+        }
+        var re = /\d{5,11}/;
+        if (!re.test(qq)) {
+            layer.msg('QQ格式错误', 1, 8);
+            return false;
+        }
+        $.ajax({
+            url: "/index.php?m=home&c=comment&a=add",
+            type: "post",
+            dataType: "json",
+            timeout: 5000,
+            data: {
+
+                name: name, qq: qq, content: content
+
+            },
+            beforeSend: function () {
+                var load = layer.load('提交中', 3);
+            },
+            success: function (d) {
+                layer.close("load")
+                if (d.status) {
+                    layer.msg('提交成功', 3, {
+                        type: 9,
+                        rate: 'bottom',
+                        shade: [0]
+                    });
+                    $('#comment_form')[0].reset()
+                } else {
+                    layer.msg(d.msg,1,8);
+                }
+            },
+            error: function () {
+                layer.msg('提交失败',1,8);
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    ajaxTimeoutTest.abort();
+                    layer.alert("超时!",1, 8)
+                }
+            }
+
+        })
+        return false;
+
+
+    }
+
+</script>
 
 
 <include file="home@index@foot"/>

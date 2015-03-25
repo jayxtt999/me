@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-24 17:39:02
+Date: 2015-03-25 17:59:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,7 +35,7 @@ CREATE TABLE `xtt_article` (
   `status` tinyint(1) DEFAULT '1',
   `password` varchar(32) DEFAULT NULL COMMENT '日志密码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_article
@@ -85,13 +85,18 @@ DROP TABLE IF EXISTS `xtt_comment`;
 CREATE TABLE `xtt_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(256) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `content` text NOT NULL,
+  `qq` varchar(256) NOT NULL,
+  `content` text NOT NULL COMMENT '内容',
   `type` tinyint(1) NOT NULL COMMENT '文章评论/说说评论等',
-  `status` tinyint(1) NOT NULL COMMENT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
+  `data` int(10) NOT NULL COMMENT '对应说说 /博文id',
+  `ref_id` int(10) NOT NULL DEFAULT '0' COMMENT '引用id',
+  `member_id` int(10) DEFAULT NULL COMMENT '用户（可为空）',
+  `up` int(10) DEFAULT '0' COMMENT '顶',
+  `down` int(10) DEFAULT NULL COMMENT '踩',
   `open` text COMMENT '为第三方评论（如友言）数据预留',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_comment
@@ -216,7 +221,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -271,6 +276,7 @@ INSERT INTO `xtt_member_login_log` VALUES ('47', '1270', '2015-03-22 12:37:54', 
 INSERT INTO `xtt_member_login_log` VALUES ('48', '1270', '2015-03-22 13:12:38', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('49', '1270', '2015-03-22 20:15:28', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('50', '1270', '2015-03-24 15:14:08', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('51', '1270', '2015-03-25 11:43:04', '1');
 
 -- ----------------------------
 -- Table structure for xtt_twitter
