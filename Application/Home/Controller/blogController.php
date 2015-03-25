@@ -23,9 +23,9 @@ class blogController extends abstractController{
         $page = new \System\Library\Page($count);
 
         if($page->isShow){
-            $show  = $page->show();// 分页显示输出
+            $showPage  = $page->show();// 分页显示输出
         }else{
-            $show = "";
+            $showPage = "";
         }
         // 进行分页数据查询
         $all = db()->Table('article')->getAll($where)->limit($page->firstRow,$page->listRows)->order("istop desc")->done();
@@ -59,7 +59,7 @@ class blogController extends abstractController{
             $logList[$k]['password'] = $v['password'];
 
         }
-        $this->getView()->assign(array('articleAll'=>$logList,'show'=>$show));
+        $this->getView()->assign(array('articleAll'=>$logList,'show'=>$showPage));
         $this->getView()->display();
     }
 
@@ -97,29 +97,41 @@ class blogController extends abstractController{
         $row['author'] = member($row['member_id']);
 
         //加载评论
-        $where['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
-        $where['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
-        $where['data'] = $id;
-        $count = db()->Table('comment')->getAll($where)->count()->done();        //getAll
+        $commentWhere['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
+        $commentWhere['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
+        $commentWhere['data'] = $id;
+        $count = db()->Table('comment')->getAll($commentWhere)->count()->done();        //getAll
         $page = new \System\Library\Page($count);
         if($page->isShow){
-            $show  = $page->show();// 分页显示输出
+            $showPage= $page->show();// 分页显示输出
         }else{
-            $show = "";
+            $showPage = "";
         }
         // 进行分页数据查询
-        $all = db()->Table('comment')->getAll($where)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
+        $comments = db()->Table('comment')->getAll($commentWhere)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
+
+        //生成序列树木
+        $comments= ($this->sortOut($comments));
 
 
+        $this->getView()->assign(array('blog'=>$row,"show"=>$showPage,"comments"=>$comments));
 
 
-
-        $this->getView()->assign(array('blog'=>$row));
         return $this->getView()->display();
     }
 
 
-
+    public function sortOut($cate,$pid=0,$level=0){
+        $tree = array();
+        foreach($cate as $v){
+            if($v['ref_id'] == $pid){
+                $v['level'] = $level + 1;
+                $tree[] = $v;
+                $tree = array_merge($tree, self::sortOut($cate,$v['id'],$level+1));
+            }
+        }
+        return $tree;
+    }
 
 
     public function checkPwdAction(){

@@ -44,33 +44,38 @@
                             </if>
 
                             <ul class="chats">
-                                <li class="in">
-                                    <img class="avatar" alt="" src="{:ADMIM_TPL_PATH}/assets/admin/layout/img/avatar1.jpg">
-                                    <div class="message">
+
+                                <php>
+                                        foreach($comments as $k=>$v)
+                                        {
+                                        $class = $v['level']%2==1?"in":"out";
+                                        $left1 = 10+30*($v['level']-1);
+                                        $left2 = 65+30*($v['level']-1);
+
+                                </php>
+
+                                <li class="{$class}">
+                                    <img class="avatar" alt="" style="margin-left: {$left1}px;" src="http://qlogo1.store.qq.com/qzone/{$v['qq']}/{$v['qq']}/50">
+                                    <div class="message" style="margin-left: {$left2}px;">
 											<span class="arrow">
 											</span>
                                         <a href="#" class="name">
-                                            Bob Nilson </a>
+                                            {$v['name']} </a>
 											<span class="datetime">
-											at 20:09 </span>
+											at {$v['crate_time']} </span>
 											<span class="body">
-											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+											{$v['content']} </span>
                                     </div>
                                 </li>
 
-                                <li class="out">
-                                    <img class="avatar" alt="" src="{:ADMIM_TPL_PATH}/assets/admin/layout/img/avatar2.jpg">
-                                    <div class="message">
-											<span class="arrow">
-											</span>
-                                        <a href="#" class="name">
-                                            Lisa Wong </a>
-											<span class="datetime">
-											at 20:11 </span>
-											<span class="body">
-											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
-                                    </div>
-                                </li>
+                                <php>
+
+
+                                    }
+
+                                </php>
+
+
 
                             </ul>
 

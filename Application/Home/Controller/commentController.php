@@ -59,7 +59,6 @@ class commentController extends abstractController
         $data['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
         $res = db()->Table('comment')->insert($data)->done();
 
-
         if ($res) {
             return JsonObject(array('status' => true));
         } else {
