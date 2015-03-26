@@ -30,6 +30,16 @@ class pdoMysql
         }
     }
 
+
+    /**
+     * @param $func
+     * @param $args
+     * @return mixed
+     */
+    public function __call($func, $args) {
+        return call_user_func_array(array(&$this->pdo, $func), $args);
+    }
+
     /**
      * query sql
      * @param $sql
@@ -244,6 +254,7 @@ class pdoMysql
     }
 
 
+
     /**
      * 更新记录
      * @param $table
@@ -263,10 +274,11 @@ class pdoMysql
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
                 if(strpos($v,"+") || strpos($v,"-")){
-                    $setSql .= $k. "=:d_$k" . $semicolon;
+                    $buildModel = true;
                 }else{
-                    $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
+                    $buildModel = false;
                 }
+                $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
@@ -274,15 +286,20 @@ class pdoMysql
                 $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":w_$k" . ")";
             }
             $this->sql .= $whereSql;
-            var_dump($dataVal);
-            echo  $this->sql;exit;
             try {
-                $stmt = $this->pdo->prepare($this->sql);
-                $stmt->execute($dataVal);
-                return $stmt->rowCount();
+                if($buildModel){
+                    $buildSql = $this->update_pdo_query($this->sql,$dataVal);
+                    return $this->pdo->exec($buildSql);
+                }else{
+                    $stmt = $this->pdo->prepare($this->sql);
+                    $stmt->execute($dataVal);
+                    return $stmt->rowCount();
+
+                }
             } catch (\Exception $ex) {
                 exception($ex->getMessage());
             }
+
         } else {
             exception("ERROR:update 必须传入参数");
         }
@@ -323,6 +340,12 @@ class pdoMysql
         }
     }
 
+    /**
+     * 删除记录
+     * * @param $table
+     * @param array $where
+     * @return int
+     */
     public function delete($table, array $where)
     {
         if (is_array($where)) {
@@ -351,12 +374,44 @@ class pdoMysql
 
     }
 
-
+    /**
+     *  获取新行
+     * @param $table
+     * @return string
+     */
     public function getnewrow($table){
 
         $data = array();
         return $this->insert($table,$data);
 
     }
+
+    /**
+     * prepare转sql 用于有些无法使用pdo prepare过滤方式 ==> update table set a=a+1
+     * @param $string
+     * @param $array
+     * @return mixed
+     */
+    function update_pdo_query($string, $array) {
+        //Get the key lengths for each of the array elements.
+        $keys = array_map('strlen', array_keys($array));
+
+        //Sort the array by string length so the longest strings are replaced first.
+        array_multisort($keys, SORT_DESC, $array);
+
+        foreach($array as $k => $v) {
+            //Quote non-numeric values.
+            if(substr($k,0,2)=="d_"){
+                $replacement = is_numeric($v) ? $v : $v;
+            }else{
+                $replacement = is_numeric($v) ? $v : "'{$v}'";
+            }
+            //Replace the needle.
+            $string = str_replace("(:".$k.")", $replacement, $string);
+        }
+
+        return $string;
+    }
+
 
 }

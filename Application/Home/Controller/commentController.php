@@ -94,7 +94,7 @@ class commentController extends abstractController
                 return JsonObject(array('status' => false));
             }
         }elseif($operation == "dislike"){
-            $res = db()->table("comment")->upDate(array("up"=>"down+1"),$where)->done();
+            $res = db()->table("comment")->upDate(array("down"=>"down+1"),$where)->done();
             if($res){
                 return JsonObject(array('status' => true));
             }else{

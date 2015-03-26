@@ -146,7 +146,7 @@
 
     $(".icon-like,.icon-dislike").click(function () {
 
-
+        var z = $(this)
         var num = $(this).text();
         var data = $(this).attr("data").split("_")
         var id = data[1]
@@ -160,11 +160,11 @@
             },
             success: function (d) {
                 if (d.status) {
-                    $(this).animate({
+                    z.animate({
                         fontSize: "16px"
                     })
-                    $(this).text(++num);
-                    $(this).animate({
+                    z.text(++num);
+                    z.animate({
                         fontSize: "12px"
                     })
                 }
