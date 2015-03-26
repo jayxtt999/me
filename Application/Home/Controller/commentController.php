@@ -68,4 +68,43 @@ class commentController extends abstractController
     }
 
 
+    /**
+     * 顶踩
+     */
+    public function likeAction(){
+
+        //id: id, status: status,type: "article",data:1
+
+        $id = post("id","int");
+        $operation =  post("operationtype","string");
+        $data = post("data","int");
+        $type = post("type","string")=="article"?1:2;
+
+        $where = array();
+        $where['id'] = $id;
+        $where['type'] = $type;
+        $where['data'] = $data;
+        $where['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
+
+        if($operation == "like"){
+            $res = db()->table("comment")->upDate(array("up"=>"up+1"),$where)->done();
+            if($res){
+                return JsonObject(array('status' => true));
+            }else{
+                return JsonObject(array('status' => false));
+            }
+        }elseif($operation == "dislike"){
+            $res = db()->table("comment")->upDate(array("up"=>"down+1"),$where)->done();
+            if($res){
+                return JsonObject(array('status' => true));
+            }else{
+                return JsonObject(array('status' => false));
+            }
+        }else{
+                return JsonObject(array('status' => false));
+        }
+
+    }
+
+
 }

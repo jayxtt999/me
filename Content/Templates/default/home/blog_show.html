@@ -21,41 +21,48 @@
 
                         <div class="content-form">
 
-                            <if condition = "$webConfig['ischkcomment']">
+                            <if condition="$webConfig['ischkcomment']">
 
-                            <h3>Leave a comment</h3>
-                            <form id="comment_form">
-                                <input type="text" class="comment_name" name="name" placeholder="昵称" required="text">
-                                <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
-                                <textarea name="content" class="comment_content" placeholder="内容" name=""
-                                          required="text"></textarea>
+                                <h3>Leave a comment</h3>
 
-                                <div>
-                                <img id="comment_verify" src="/index.php?m=common&amp;c=getcommentver&amp;a=index"
-                                     onclick="javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index'"
-                                      alt="">
+                                <form id="comment_form">
+                                    <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                           required="text">
+                                    <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
+                                    <textarea name="content" class="comment_content" placeholder="内容" name=""
+                                              required="text"></textarea>
+
+                                    <div>
+                                        <img id="comment_verify"
+                                             src="/index.php?m=common&amp;c=getcommentver&amp;a=index"
+                                             onclick="javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index'"
+                                             alt="">
 
 
-                                <input type="text" id="check_code" maxlength="4" name="check_code" placeholder="验证码" required="check_code">
-                                </div>
-                                <input type="button"  style="width: 100px;height: 38px;" value="SEND" onclick="addComment();">
-                            </form>
+                                        <input type="text" id="check_code" maxlength="4" name="check_code"
+                                               placeholder="验证码" required="check_code">
+                                    </div>
+                                    <input type="button" style="width: 100px;height: 38px;" value="SEND"
+                                           onclick="addComment();">
+                                </form>
 
                             </if>
 
                             <ul class="chats">
 
                                 <php>
-                                        foreach($comments as $k=>$v)
-                                        {
-                                        $class = $v['level']%2==1?"in":"out";
-                                        $left1 = 10+30*($v['level']-1);
-                                        $left2 = 65+30*($v['level']-1);
+                                    foreach($comments as $k=>$v)
+                                    {
+                                    $class = $v['level']%2==1?"in":"out";
+                                    $left1 = 10+30*($v['level']-1);
+                                    $left2 = 65+30*($v['level']-1);
 
                                 </php>
 
-                                <li class="{$class}">
-                                    <img class="avatar" alt="" style="margin-left: {$left1}px;" src="http://qlogo1.store.qq.com/qzone/{$v['qq']}/{$v['qq']}/50">
+                                <li class="{$class}" >
+                                    <img class="avatar" alt="" style="margin-left: {$left1}px;"
+                                         src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
+
                                     <div class="message" style="margin-left: {$left2}px;">
 											<span class="arrow">
 											</span>
@@ -65,16 +72,34 @@
 											at {$v['crate_time']} </span>
 											<span class="body">
 											{$v['content']} </span>
+
+                                        <div>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_like"  class="ico icon-like">{$v['up']}</span>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_dislike" class="ico icon-dislike">{$v['down']}</span>
+                                            <span aria-hidden="true" class="ico icon-speech">评论</span>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                        <div class="rep_content">
+
+                                            <textarea class="form-control" rows="3"></textarea>
+
+                                            <button class="btn btn-default pull-right" data="ref_{$v['id']}" type="button">Button</button>
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
+
                                     </div>
                                 </li>
 
                                 <php>
 
-
                                     }
 
                                 </php>
-
 
 
                             </ul>
@@ -118,6 +143,49 @@
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/layer/layer.min.js"></script>
 
 <script>
+
+    $(".icon-like,.icon-dislike").click(function () {
+
+
+        var num = $(this).text();
+        var data = $(this).attr("data").split("_")
+        var id = data[1]
+        var operationtype = data[2]
+        $.ajax({
+            url: "/index.php?m=home&c=comment&a=like",
+            type: "post",
+            dataType: "json",
+            data: {
+                id: id, operationtype: operationtype,type: "article",data:{$blog['id']}
+            },
+            success: function (d) {
+                if (d.status) {
+                    $(this).animate({
+                        fontSize: "16px"
+                    })
+                    $(this).text(++num);
+                    $(this).animate({
+                        fontSize: "12px"
+                    })
+                }
+            }
+
+        })
+
+    })
+
+
+
+    $(".icon-speech").click(function () {
+
+        $(this).parent().next().animate({
+
+            height: "toggle"
+        })
+
+    })
+
+
     function addComment() {
         var name = $.trim($(".comment_name").val());
         var qq = $(".comment_qq").val();
@@ -154,16 +222,16 @@
                     });
                     $('#comment_form')[0].reset()
                 } else {
-                    layer.msg(d.msg,1,8);
+                    layer.msg(d.msg, 1, 8);
                 }
             },
             error: function () {
-                layer.msg('提交失败',1,8);
+                layer.msg('提交失败', 1, 8);
             },
             complete: function (XMLHttpRequest, status) {
                 if (status == 'timeout') {
                     ajaxTimeoutTest.abort();
-                    layer.alert("超时!",1, 8)
+                    layer.alert("超时!", 1, 8)
                 }
             }
 
@@ -172,6 +240,7 @@
 
 
     }
+
 
 </script>
 

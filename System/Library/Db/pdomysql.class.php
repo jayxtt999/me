@@ -262,7 +262,11 @@ class pdoMysql
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
-                $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
+                if(strpos($v,"+") || strpos($v,"-")){
+                    $setSql .= $k. "=:d_$k" . $semicolon;
+                }else{
+                    $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
+                }
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
@@ -270,6 +274,8 @@ class pdoMysql
                 $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":w_$k" . ")";
             }
             $this->sql .= $whereSql;
+            var_dump($dataVal);
+            echo  $this->sql;exit;
             try {
                 $stmt = $this->pdo->prepare($this->sql);
                 $stmt->execute($dataVal);

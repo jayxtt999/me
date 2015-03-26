@@ -749,8 +749,8 @@ p.agree {
     color: #BBA198;
     line-height: 1.5em;
     font-size: 0.95em;
-    font-family: 'Source Sans Pro', sans-serif;
 }
+
 
 .content-grid-single p {
     color: #BBA198;
@@ -1892,3 +1892,35 @@ img.single-pic {
     border-bottom: 8px solid transparent;
     border-right: 8px solid #F3565D;
 }
+
+.ico{
+    display: block;
+    margin-left: 5px;
+    cursor: pointer;
+    float: left;
+}
+
+.trans{
+    transform: rotate(-30deg);
+    -ms-transform: rotate(-30deg);		/* IE 9 */
+    -webkit-transform: rotate(-30deg);	/* Safari and Chrome */
+    -o-transform: rotate(-30deg);		/* Opera */
+    -moz-transform: rotate(-30deg);		/* Firefox */
+}
+.retrans{
+    transform: rotate(0deg);
+    -ms-transform: rotate(0deg);		/* IE 9 */
+    -webkit-transform: rotate(0deg);	/* Safari and Chrome */
+    -o-transform: rotate(0deg);		/* Opera */
+    -moz-transform: rotate(0deg);		/* Firefox */
+}
+
+.rep_content{
+
+    display: none;
+}
+
+.rep_content textarea{
+    margin-bottom: 5px;
+}
+
