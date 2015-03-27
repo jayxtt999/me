@@ -13,10 +13,10 @@ class CommentVerSession {
 
     private $commentVer = null;
 
-    public function __construct()
+    public function __construct($id="")
     {
         session('[start]');
-        $this->commentVer = "Blog_Comment";
+        $this->commentVer = "Blog_Comment_".$id;
     }
 
     /**

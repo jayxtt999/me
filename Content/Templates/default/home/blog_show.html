@@ -33,17 +33,19 @@
                                               required="text"></textarea>
 
                                     <div>
-                                        <img id="comment_verify"
-                                             src="/index.php?m=common&amp;c=getcommentver&amp;a=index"
-                                             onclick="javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index'"
+                                        <img class="comment_verify"
+                                             src="/index.php?m=common&amp;c=getcommentver&amp;a=index&id=0"
+                                             onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id=0'"
                                              alt="">
 
 
-                                        <input type="text" id="check_code" maxlength="4" name="check_code"
+                                        <input type="text" class="check_code"
+                                               style="width: 15%;display: inline;margin-left: 5px;" maxlength="4"
+                                               name="check_code"
                                                placeholder="验证码" required="check_code">
                                     </div>
                                     <input type="button" style="width: 100px;height: 38px;" value="SEND"
-                                           onclick="addComment();">
+                                           onclick="addComment(this,0,0);">
                                 </form>
 
                             </if>
@@ -59,7 +61,7 @@
 
                                 </php>
 
-                                <li class="{$class}" >
+                                <li class="{$class} comment_{$v['id']}">
                                     <img class="avatar" alt="" style="margin-left: {$left1}px;"
                                          src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
 
@@ -74,22 +76,39 @@
 											{$v['content']} </span>
 
                                         <div>
-                                            <span aria-hidden="true" data="ref_{$v['id']}_like"  class="ico icon-like">{$v['up']}</span>
-                                            <span aria-hidden="true" data="ref_{$v['id']}_dislike" class="ico icon-dislike">{$v['down']}</span>
-                                            <span aria-hidden="true" class="ico icon-speech">评论</span>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_like" class="ico icon-like"
+                                                  onclick="upDownComment(this)">{$v['up']}</span>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_dislike"
+                                                  class="ico icon-dislike"
+                                                  onclick="upDownComment(this)">{$v['down']}</span>
+                                            <span aria-hidden="true" class="ico icon-speech"
+                                                  onclick="icon_speech(this)">评论</span>
 
                                             <div class="clearfix"></div>
                                         </div>
 
 
-                                        <div class="rep_content">
+                                        <form class="rep_content">
 
-                                            <textarea class="form-control" rows="3"></textarea>
+                                            <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                                   required="text">
+                                            <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                                                   required="qq">
+                                            <textarea name="content" class="comment_content" placeholder="内容" name=""
+                                                      required="text"></textarea>
 
-                                            <button class="btn btn-default pull-right" data="ref_{$v['id']}" type="button">Button</button>
-                                            <div class="clearfix"></div>
+                                            <div>
+                                                <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                                     onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                                     style="cursor: pointer;height: 44px;width: 100px;">
+                                                <input type="text" maxlength="4" class="check_code"
+                                                       style="width: 15%;display: inline;margin-left: 5px;"
+                                                       placeholder="验证码" required="check_code">
+                                            </div>
+                                            <input type="button" style="width: 100px;height: 38px;" value="提交"
+                                                   onclick="addComment(this,{$v['id']},{$v['level']});">
 
-                                        </div>
+                                        </form>
 
 
                                     </div>
@@ -144,11 +163,12 @@
 
 <script>
 
-    $(".icon-like,.icon-dislike").click(function () {
-
-        var z = $(this)
-        var num = $(this).text();
-        var data = $(this).attr("data").split("_")
+    /**
+     *  顶踩
+     */
+    function upDownComment(z) {
+        var num = $(z).text();
+        var data = $(z).attr("data").split("_")
         var id = data[1]
         var operationtype = data[2]
         $.ajax({
@@ -156,7 +176,7 @@
             type: "post",
             dataType: "json",
             data: {
-                id: id, operationtype: operationtype,type: "article",data:{$blog['id']}
+                id: id, operationtype: operationtype, type: "article", data: {$blog['id']}
             },
             success: function (d) {
                 if (d.status) {
@@ -171,34 +191,25 @@
             }
 
         })
+    }
 
-    })
-
-
-
-    $(".icon-speech").click(function () {
-
-        $(this).parent().next().animate({
+    /**
+     *  显示评论区
+     */
+    function icon_speech(z) {
+        $(z).parent().next().animate({
 
             height: "toggle"
         })
+    }
 
-    })
+    $(".submit_comment").click(function () {
 
+        var data = $(this).attr("data").split("_")
+        var ref_id = data[1];
+        var blog_id = data[2];
+        var content = $(".comment_" + ref_id + "").val();
 
-    function addComment() {
-        var name = $.trim($(".comment_name").val());
-        var qq = $(".comment_qq").val();
-        var content = $(".comment_content").val();
-        if (!name || !qq || !content) {
-            layer.msg('请完整填写各字段', 1, 8);
-            return false;
-        }
-        var re = /\d{5,11}/;
-        if (!re.test(qq)) {
-            layer.msg('QQ格式错误', 1, 8);
-            return false;
-        }
         $.ajax({
             url: "/index.php?m=home&c=comment&a=add",
             type: "post",
@@ -220,6 +231,81 @@
                         rate: 'bottom',
                         shade: [0]
                     });
+                    $('#comment_form')[0].reset()
+                } else {
+                    layer.msg(d.msg, 1, 8);
+                }
+            },
+            error: function () {
+                layer.msg('提交失败', 1, 8);
+            },
+            complete: function (XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    ajaxTimeoutTest.abort();
+                    layer.alert("超时!", 1, 8)
+                }
+            }
+
+        })
+
+
+    })
+
+
+    /**
+     * 添加评论
+     * @returns {boolean}
+     */
+    function addComment(z, ref_id, level) {
+        var name = $.trim($(z).parent().find(".comment_name").val());
+        var qq = $(z).parent().find(".comment_qq").val();
+        var check_code = $(z).parent().find(".check_code").val();
+        var content = $(z).parent().find(".comment_content").val();
+
+        if (!name || !qq || !content) {
+            layer.msg('请完整填写各字段', 1, 8);
+            return false;
+        }
+        var re = /\d{5,11}/;
+        if (!re.test(qq)) {
+            layer.msg('QQ格式错误', 1, 8);
+            return false;
+        }
+        var blogid = {$blog['id']}
+
+
+        $.ajax({
+            url: "/index.php?m=home&c=comment&a=add",
+            type: "post",
+            dataType: "json",
+            timeout: 5000,
+            data: {
+
+                name: name, qq: qq, content: content, data: blogid, ref_id: ref_id, level: level, check_code: check_code
+
+            },
+            beforeSend: function () {
+                var load = layer.load('提交中', 3);
+            },
+            success: function (d) {
+                layer.close("load")
+                if (d.status) {
+                    layer.msg('提交成功', 3, {
+                        type: 9,
+                        rate: 'bottom',
+                        shade: [0]
+                    });
+                    if (ref_id == 0) {
+                        $(".chats").prepend(d.html)
+                    } else {
+
+                        $(z).parent().animate({
+                            height: "0px"
+                        })
+                        $(z).parent().hide()
+
+                        $(".comment_" + ref_id).after(d.html)
+                    }
                     $('#comment_form')[0].reset()
                 } else {
                     layer.msg(d.msg, 1, 8);

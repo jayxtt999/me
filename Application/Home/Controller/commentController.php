@@ -32,6 +32,7 @@ class commentController extends abstractController
         // 进行分页数据查询
         $comment = db()->Table('comment')->getAll($where)->limit($page->firstRow, $page->listRows)->order("istop desc")->done();
 
+
         $this->getView()->assign(array('comment' => $comment, 'show' => $show));
         $this->getView()->display();
     }
@@ -45,22 +46,38 @@ class commentController extends abstractController
         $data = $this->getRequest()->getData();
         $config = new \Admin\Model\webConfigModel();
         $webConfig = $config->getConfig();
+
         if ($webConfig['ischkcomment']) {
             //用于验证码
-            $checkCode = post("check_code", "string");
-            $commentVer = new \Common\Security\CommentVerSession();
+            $commentVer = new \Common\Security\CommentVerSession($data['ref_id']);
             $randVal = $commentVer->getSession();
-            if (md5(strtoupper($checkCode)) !== $randVal) {
+            //验证 0 开头的 验证码 由于验证码首位为0，会被 getData 过滤
+            if (md5(strtoupper(str_pad($data['check_code'],4,0,STR_PAD_LEFT))) !== $randVal) {
                 return JsonObject(array('status' => false,'msg'=>"请输入正确的验证码"));
             }
         }
 
         $data['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
-        $data['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
+        $status = $webConfig['iscomment']?\Admin\Comment\Type\Status::STATUS_ENABLE:\Admin\Comment\Type\Status::STATUS_UNABLE;
+        $data['status'] = $status;
+        $data['crate_time'] = date("Y-m-d H:i:s");
+        $level = $data['level'];
+        unset($data['level']);
+        unset($data['check_code']);
+
         $res = db()->Table('comment')->insert($data)->done();
 
+        if($status){
+            //组转html
+            $left1 = 10+30*$level;
+            $left2 = 65+30*$level;
+            $html = "<li class='out comment_".$res."'><img class='avatar' alt='' style='margin-left: ".$left1."px;' src='http://q1.qlogo.cn/g?b=qq&amp;nk={$data['qq']}&amp;s=100&amp;t=".time()."'><div class='message' style='margin-left: ".$left2."px;'><span class='arrow'></span><a href='#' class='name'>".$data['name']." </a><span class='datetime'>at ".$data['crate_time']." </span><span class='body'>".$data['content']." </span><div><span aria-hidden='true' data='ref_".$res."_like' class='ico icon-like' onclick='upDownComment(this)'>0</span><span aria-hidden='true' data='ref_".$res."_dislike' class='ico icon-dislike' onclick='upDownComment(this)'>0</span><span aria-hidden='true' class='ico icon-speech' onclick='icon_speech(this)'>评论</span><div class='clearfix'></div></div><form class='rep_content'><input type='text' placeholder='昵称'><input type='text' placeholder='QQ'><textarea name='content' class='comment_content' placeholder='内容' required='text'></textarea><div><img src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."' onclick='javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."'' style='cursor: pointer;height: 44px;width: 100px;'><input type='text' maxlength='4' name='check_code' style='width: 15%;display: inline;margin-left: 5px;' placeholder='验证码' required='check_code'></div><input type='button' style='width: 100px;height: 38px;' value='提交' onclick='addComment();'></form></div></li>";
+        }else{
+            $html = "";
+        }
+
         if ($res) {
-            return JsonObject(array('status' => true));
+            return JsonObject(array('status' => true,'html'=>$html));
         } else {
             return JsonObject(array('status' => false,'msg'=>"提交失败"));
         }

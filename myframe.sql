@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50524
 File Encoding         : 65001
 
-Date: 2015-03-26 18:05:48
+Date: 2015-03-27 17:47:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -97,15 +97,41 @@ CREATE TABLE `xtt_comment` (
   `down` int(10) DEFAULT '0' COMMENT '踩',
   `open` text COMMENT '为第三方评论（如友言）数据预留',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_comment
 -- ----------------------------
-INSERT INTO `xtt_comment` VALUES ('1', '张三', '154894476', '2015-03-26 09:57:53', '测试', '1', '1', '1', '0', null, '0', '0', null);
-INSERT INTO `xtt_comment` VALUES ('2', '李四', '154894476', '2015-03-26 17:59:20', '测试2', '1', '1', '1', '0', null, '0', '0', null);
-INSERT INTO `xtt_comment` VALUES ('3', '王五', '154894476', '2015-03-26 09:57:53', '测试3', '1', '1', '1', '1', null, '0', '0', '');
-INSERT INTO `xtt_comment` VALUES ('4', '赵六', '154894476', '2015-03-26 09:57:54', '测试4', '1', '1', '1', '2', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('1', '张三', '154894476', '2015-03-27 11:42:11', '测试', '1', '1', '1', '0', null, '1', '1', null);
+INSERT INTO `xtt_comment` VALUES ('2', '李四', '154894476', '2015-03-27 11:42:08', '测试2', '1', '1', '1', '0', null, '7', '2', null);
+INSERT INTO `xtt_comment` VALUES ('3', '王五', '154894476', '2015-03-27 11:42:13', '测试3', '1', '1', '1', '1', null, '1', '1', '');
+INSERT INTO `xtt_comment` VALUES ('4', '赵六', '154894476', '2015-03-27 11:42:09', '测试4', '1', '1', '1', '2', null, '3', '1', null);
+INSERT INTO `xtt_comment` VALUES ('5', '111111', '111111', '2015-03-27 14:04:10', '11111', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('6', '陈楠', '899565484', '2015-03-27 14:07:37', '测试啊啊啊', '1', '1', '1', '0', null, '1', '2', null);
+INSERT INTO `xtt_comment` VALUES ('7', '12121212', '2147483647', '2015-03-27 14:12:00', '啊大大的', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('8', '啊啊啊', '2147483647', '2015-03-27 14:23:01', '阿达大大', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('9', '陈楠22', '545544445', '2015-03-27 14:30:15', '你叫陈楠', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('10', '陈楠22', '545544445', '2015-03-27 14:30:18', '你叫陈楠', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('11', '陈楠22', '545544445', '2015-03-27 14:30:25', '你叫陈楠', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('12', '12121', '584545125', '2015-03-27 14:43:30', '啊大大的', '1', '1', '1', '10', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('13', '傻逼', '956595412', '2015-03-27 14:46:52', '阿达达傻逼', '1', '1', '1', '12', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('14', 'asdadad', '2147483647', '2015-03-27 15:48:58', '啊大大的', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('15', '呵呵', '2147483647', '2015-03-27 15:49:18', '爱的发啊发', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('16', '啊啊啊啊', '2147483647', '2015-03-27 15:51:14', '啊事实上事实上身上试试是谁是谁', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('17', '阿SA说', '2147483647', '2015-03-27 15:54:33', '啊啊啊啊啊啊啊啊啊', '1', '1', '1', '0', null, '2', '2', null);
+INSERT INTO `xtt_comment` VALUES ('18', '啊啊啊啊啊', '2147483647', '2015-03-27 16:07:17', '2147483647', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('19', '啊啊啊啊啊啊啊', '1121212121', '2015-03-27 16:28:54', '11111111', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('20', '啊啊啊啊啊啊啊啊啊', '2147483647', '2015-03-27 16:29:55', '14141414', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('21', '哈哈哈', '2147483647', '2015-03-27 16:35:49', '阿萨发发', '1', '1', '1', '20', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('22', '啊啊啊啊啊', '121211452', '2015-03-27 16:36:11', '阿萨发发', '1', '1', '1', '0', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('23', '啊啊发发', '1412412414', '2015-03-27 16:38:21', '141412412', '1', '1', '1', '21', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('24', '啊啊发发', '1412412414', '2015-03-27 16:38:42', '141412412', '1', '1', '1', '21', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('25', '啊啊飒飒是', '45455', '2015-03-27 17:08:29', '121212', '1', '1', '1', '21', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('26', '啊飒飒是', '121212', '2015-03-27 17:10:43', '12a121af2af', '1', '1', '1', '22', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('27', '啊飒飒是', '2147483647', '2015-03-27 17:17:46', '阿萨发发', '1', '1', '1', '22', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('28', '啊啊大大', '1245666221', '2015-03-27 17:29:13', '阿萨发发舒服', '1', '1', '1', '26', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('29', '啊啊啊啊', '5454545', '2015-03-27 17:44:51', '1212122', '1', '1', '1', '27', null, '0', '0', null);
+INSERT INTO `xtt_comment` VALUES ('30', '阿达打法', '566121212', '2015-03-27 17:45:09', '1按时发发发', '1', '1', '1', '0', null, '0', '0', null);
 
 -- ----------------------------
 -- Table structure for xtt_common_menu
@@ -226,7 +252,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -282,6 +308,7 @@ INSERT INTO `xtt_member_login_log` VALUES ('48', '1270', '2015-03-22 13:12:38', 
 INSERT INTO `xtt_member_login_log` VALUES ('49', '1270', '2015-03-22 20:15:28', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('50', '1270', '2015-03-24 15:14:08', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('51', '1270', '2015-03-25 11:43:04', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('52', '1270', '2015-03-27 12:59:59', '1');
 
 -- ----------------------------
 -- Table structure for xtt_twitter

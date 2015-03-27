@@ -100,27 +100,34 @@ class blogController extends abstractController{
         $commentWhere['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
         $commentWhere['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
         $commentWhere['data'] = $id;
-        $count = db()->Table('comment')->getAll($commentWhere)->count()->done();        //getAll
+
+       /* $count = db()->Table('comment')->getAll($commentWhere)->count()->done();        //getAll
         $page = new \System\Library\Page($count);
         if($page->isShow){
             $showPage= $page->show();// 分页显示输出
         }else{
             $showPage = "";
-        }
+        }*/
         // 进行分页数据查询
-        $comments = db()->Table('comment')->getAll($commentWhere)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
+        $comments = db()->Table('comment')->getAll($commentWhere)->order("id desc")->done();
+        //$comments = db()->Table('comment')->getAll($commentWhere)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
 
         //生成序列树
         $comments= ($this->sortOut($comments));
 
-
-        $this->getView()->assign(array('blog'=>$row,"show"=>$showPage,"comments"=>$comments));
+        $this->getView()->assign(array('blog'=>$row,"comments"=>$comments));
 
 
         return $this->getView()->display();
     }
 
-
+    /**
+     * 重置序列
+     * @param $cate
+     * @param int $pid
+     * @param int $level
+     * @return array
+     */
     public function sortOut($cate,$pid=0,$level=0){
         $tree = array();
         foreach($cate as $v){
@@ -134,6 +141,9 @@ class blogController extends abstractController{
     }
 
 
+    /**
+     * 验证密码
+     */
     public function checkPwdAction(){
 
         $id = post("id","int");
