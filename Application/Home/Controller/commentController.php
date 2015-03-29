@@ -47,7 +47,13 @@ class commentController extends abstractController
         $config = new \Admin\Model\webConfigModel();
         $webConfig = $config->getConfig();
 
-        if ($webConfig['ischkcomment']) {
+        //评论是否开启
+        if(!$webConfig['iscomment']){
+            return JsonObject(array('status' => false,'msg'=>"评论已关闭"));
+        }
+
+        //是否需要验证码
+        if ($webConfig['comment_code']) {
             //用于验证码
             $commentVer = new \Common\Security\CommentVerSession($data['ref_id']);
             $randVal = $commentVer->getSession();
@@ -57,25 +63,37 @@ class commentController extends abstractController
             }
         }
 
-        $data['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
-        $status = $webConfig['iscomment']?\Admin\Comment\Type\Status::STATUS_ENABLE:\Admin\Comment\Type\Status::STATUS_UNABLE;
+        //内容是否必须有中文
+        if ($webConfig['comment_needchinese']){
+            if (!preg_match("/[\x7f-\xff]/", $data['content'])) {
+                return JsonObject(array('status' => false,'msg'=>"评论内容必须要含有中文"));
+            }
+        }
+
+
+
+
+        $data['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;//
+        $status = $webConfig['ischkcomment']?\Admin\Comment\Type\Status::STATUS_ENABLE:\Admin\Comment\Type\Status::STATUS_UNABLE;
         $data['status'] = $status;
         $data['crate_time'] = date("Y-m-d H:i:s");
+        $data['ip'] =  $this->getRequest()->getIP();
         $level = $data['level'];
         unset($data['level']);
         unset($data['check_code']);
 
         $res = db()->Table('comment')->insert($data)->done();
-
         if($status){
             //组转html
             $left1 = 10+30*$level;
             $left2 = 65+30*$level;
-            $html = "<li class='out comment_".$res."'><img class='avatar' alt='' style='margin-left: ".$left1."px;' src='http://q1.qlogo.cn/g?b=qq&amp;nk={$data['qq']}&amp;s=100&amp;t=".time()."'><div class='message' style='margin-left: ".$left2."px;'><span class='arrow'></span><a href='#' class='name'>".$data['name']." </a><span class='datetime'>at ".$data['crate_time']." </span><span class='body'>".$data['content']." </span><div><span aria-hidden='true' data='ref_".$res."_like' class='ico icon-like' onclick='upDownComment(this)'>0</span><span aria-hidden='true' data='ref_".$res."_dislike' class='ico icon-dislike' onclick='upDownComment(this)'>0</span><span aria-hidden='true' class='ico icon-speech' onclick='icon_speech(this)'>评论</span><div class='clearfix'></div></div><form class='rep_content'><input type='text' placeholder='昵称'><input type='text' placeholder='QQ'><textarea name='content' class='comment_content' placeholder='内容' required='text'></textarea><div><img src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."' onclick='javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."'' style='cursor: pointer;height: 44px;width: 100px;'><input type='text' maxlength='4' name='check_code' style='width: 15%;display: inline;margin-left: 5px;' placeholder='验证码' required='check_code'></div><input type='button' style='width: 100px;height: 38px;' value='提交' onclick='addComment();'></form></div></li>";
+            $showCheckCodeHtml = $webConfig['comment_code']?"<div><img src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."' onclick='javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."'' style='cursor: pointer;height: 44px;width: 100px;'><input type='text' maxlength='4' name='check_code' style='width: 15%;display: inline;margin-left: 5px;' placeholder='验证码' required='check_code'></div>":'';
+            $html = "<li class='out comment_".$res."'><img class='avatar' alt='' style='margin-left: ".$left1."px;' src='http://q1.qlogo.cn/g?b=qq&amp;nk={$data['qq']}&amp;s=100&amp;t=".time()."'><div class='message' style='margin-left: ".$left2."px;'><span class='arrow'></span><a href='#' class='name'>".$data['name']." </a><span class='datetime'>at ".$data['crate_time']." </span><span class='body'>".$data['content']." </span><div><span aria-hidden='true' data='ref_".$res."_like' class='ico icon-like' onclick='upDownComment(this)'>0</span><span aria-hidden='true' data='ref_".$res."_dislike' class='ico icon-dislike' onclick='upDownComment(this)'>0</span><span aria-hidden='true' class='ico icon-speech' onclick='icon_speech(this)'>评论</span><div class='clearfix'></div></div><form class='rep_content'><input type='text'class='comment_name' placeholder='昵称'><input type='text' class='comment_qq' placeholder='QQ'><textarea name='content' class='comment_content' placeholder='内容' required='text'></textarea>".$showCheckCodeHtml."<input type='button' style='width: 100px;height: 38px;' value='提交' onclick='addComment();'></form></div>
+            </li>";
         }else{
             $html = "";
         }
-
+        //echo $html;exit;
         if ($res) {
             return JsonObject(array('status' => true,'html'=>$html));
         } else {

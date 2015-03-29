@@ -109,7 +109,7 @@ class blogController extends abstractController{
             $showPage = "";
         }*/
         // 进行分页数据查询
-        $comments = db()->Table('comment')->getAll($commentWhere)->order("id desc")->done();
+        $comments = db()->Table('comment')->getAll($commentWhere)->order("id ".$webConfig['comment_order'])->done();
         //$comments = db()->Table('comment')->getAll($commentWhere)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
 
         //生成序列树

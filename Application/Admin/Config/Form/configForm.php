@@ -106,11 +106,11 @@ class configForm extends \System\Library\Form\Form
 
         $this->setBsCheckBox("comment_code", "评论验证码", $array);
 
-        $this->setBsCheckBox("isgravatar", "评论人头像", $array);
+/*        $this->setBsCheckBox("isgravatar", "评论人头像", $array);*/
 
         $this->setBsCheckBox("comment_needchinese", "评论必须有中文", $array);
 
-        $this->setBsCheckBox("comment_paging", "评论分页", $array);
+        //$this->setBsCheckBox("comment_paging", "评论分页", $array);
 
 
         $array = array(
@@ -121,7 +121,8 @@ class configForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'n0-5'),"text",3,3);
+
+        //$this->setText("comment_pnum", "评论每页显示条数", $array, array('datatype' => 'n0-5'),"text",3,3);
 
 
         $array = array(
