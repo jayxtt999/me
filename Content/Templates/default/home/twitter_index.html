@@ -1,4 +1,4 @@
-<include file="home@blog@head"/>
+<include file="home@index@head"/>
 
 <div class="content">
     <div class="container">
@@ -20,58 +20,45 @@
                                         {
                                     </php>
 
-                                    <li >
-                                        <img class="avatar" alt="" style="margin-left: {$left1}px;"
-                                             src="http://q1.qlogo.cn/g?b=qq&nk=435024179&s=100&t={:time()}">
 
-                                        <div class="message">
+                                    <li class="in comment_{$v['id']}">
+                                        <img class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=435024179&s=100&t={:time()}">
+
+                                        <div class="message" style="margin-left: 65px;">
 											<span class="arrow">
 											</span>
                                             <a href="#" class="name">
-                                                {$v['author']} </a>
+                                                {:member($v['author'])} </a>
 											<span class="datetime">
 											at {$v['crate_time']} </span>
 											<span class="body">
 											{$v['content']} </span>
 
                                             <div>
+                                                <span aria-hidden="true" data="ref_1_like" class="ico icon-like" onclick="upDownComment(this)">1</span>
+                                                <span aria-hidden="true" data="ref_1_dislike" class="ico icon-dislike" onclick="upDownComment(this)">1</span>
+                                                <span aria-hidden="true" class="ico icon-speech" onclick="icon_speech(this)">评论</span>
 
-                                            <span aria-hidden="true" class="ico icon-speech"
-                                                  onclick="icon_speech(this)">评论</span>
                                                 <div class="clearfix"></div>
                                             </div>
 
 
                                             <form class="rep_content">
 
-                                                <input type="text" class="comment_name" name="name" placeholder="昵称"
-                                                       required="text">
-                                                <input type="text" class="comment_qq" name="qq" placeholder="QQ"
-                                                       required="qq">
-                                                <textarea name="content" class="comment_content" placeholder="内容"
-                                                          name=""
-                                                          required="text"></textarea>
+                                                <input type="text" class="comment_name" name="name" placeholder="昵称" required="text">
+                                                <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
+                                                <textarea name="content" class="comment_content" placeholder="内容" required="text"></textarea>
 
-                                                <if condition="$webConfig['comment_code']==1">
 
-                                                    <div>
-                                                        <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
-                                                             onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
-                                                             style="cursor: pointer;height: 44px;width: 100px;">
-                                                        <input type="text" maxlength="4" class="check_code"
-                                                               style="width: 15%;display: inline;margin-left: 5px;"
-                                                               placeholder="验证码" required="check_code">
-                                                    </div>
+                                                <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,{$v['id']},1);">
 
-                                                </if>
-
-                                                <input type="button" style="width: 100px;height: 38px;" value="提交"
-                                                       onclick="/*addComment(this,{$v['id']},{$v['level']});*/">
                                             </form>
 
 
                                         </div>
                                     </li>
+
+
 
                                     <php>
 
@@ -84,6 +71,10 @@
 
 
                         </div>
+                        <p class="loadMore">
+                            <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block" >
+                                Load More </a>
+                        </p>
 
 
                     </div>
@@ -136,7 +127,7 @@
             type: "post",
             dataType: "json",
             data: {
-                id: id, operationtype: operationtype, type: "article", data: {$blog['id']}
+                id: id, operationtype: operationtype, type: "article", data:id
             },
             success: function (d) {
                 if (d.status) {
@@ -190,56 +181,7 @@
         })
     }
 
-    /**
-     *提交
-     */
-    $(".submit_comment").click(function () {
 
-        var data = $(this).attr("data").split("_")
-        var ref_id = data[1];
-        var blog_id = data[2];
-        var content = $(".comment_" + ref_id + "").val();
-
-        $.ajax({
-            url: "/index.php?m=home&c=comment&a=add",
-            type: "post",
-            dataType: "json",
-            timeout: 5000,
-            data: {
-
-                name: name, qq: qq, content: content
-
-            },
-            beforeSend: function () {
-                var load = layer.load('提交中', 3);
-            },
-            success: function (d) {
-                layer.close("load")
-                if (d.status) {
-                    layer.msg('提交成功', 3, {
-                        type: 9,
-                        rate: 'bottom',
-                        shade: [0]
-                    });
-                    $('#comment_form')[0].reset()
-                } else {
-                    layer.msg(d.msg, 1, 8);
-                }
-            },
-            error: function () {
-                layer.msg('提交失败', 1, 8);
-            },
-            complete: function (XMLHttpRequest, status) {
-                if (status == 'timeout') {
-                    ajaxTimeoutTest.abort();
-                    layer.alert("超时!", 1, 8)
-                }
-            }
-
-        })
-
-
-    })
 
 
     /**
@@ -261,10 +203,6 @@
             layer.msg('QQ格式错误', 1, 8);
             return false;
         }
-
-        <if condition="$webConfig['comment_needchinese']==1">
-        checkchinese(content)
-        </if>
 
         var blogid = {$blog['id']}
 

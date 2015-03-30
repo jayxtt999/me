@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/3/30 0030
- * Time: 下午 2:36
+ * Time: 锟斤拷锟斤拷 2:36
  */
 
 namespace Home\Controller;
@@ -13,10 +13,9 @@ class twitterController extends abstractController
 {
 
     /**
-     * 获取列表
+     *璇磋鍒楄〃
      */
     public function indexAction(){
-
         $where = array(
             'status' => \Admin\Article\Type\Status::STATUS_ENABLE,
         );
@@ -24,15 +23,22 @@ class twitterController extends abstractController
         $page = new \System\Library\Page($count);
         $page->listRows = 10;
         if($page->isShow){
-            $showPage  = $page->show();// 分页显示输出
+            $showPage  = $page->show();
         }else{
             $showPage = "";
         }
-        // 进行分页数据查询
         $list = db()->Table('twitter')->getAll($where)->limit($page->firstRow,$page->listRows)->done();
+        $commentWhere['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
+        $commentWhere['type'] = \Admin\Comment\Type\Type::STATUS_TWIITER;
+        $lists = array();
+        foreach($list as $k=>$v){
+            $commentWhere['data'] = $v['id'];
+            $lists[$k] = $v;
+            $lists[$k]['comment'] =  db()->Table('comment')->getAll($commentWhere)->done();
+        }
 
-        return $this->getView()->assign(array('list'=>$list));
-
+        $this->getView()->assign(array('list'=>$lists));
+        $this->getView()->display();
     }
 
 
