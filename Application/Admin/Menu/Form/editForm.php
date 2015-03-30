@@ -70,7 +70,7 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "URL",
         );
-        $this->setText("url", "URL", $array, array('datatype' => 's0-124',));
+        $this->setText("url", "URL", $array, array('datatype' => 's0-256',));
 
         $array = array(
             "class" => "form-control",

@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50617
+Source Server Version : 50520
 Source Host           : localhost:3306
 Source Database       : myframe
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-03-29 21:16:44
+Date: 2015-03-30 18:29:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `xtt_article`
+-- Table structure for xtt_article
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article`;
 CREATE TABLE `xtt_article` (
@@ -43,7 +43,7 @@ CREATE TABLE `xtt_article` (
 INSERT INTO `xtt_article` VALUES ('1', '测试0000', '阿SA说', '<p><a id=\"ematt:22\" href=\"http://www.bailili.cn/content/uploadfile/201211/73381352854321.jpg\" target=\"_blank\"><img title=\"点击查看原图\" border=\"0\" alt=\"点击查看原图\" src=\"http://www.xietaotao.cn/content/uploadfile/201211/4f5ff581ac03122baf7eb057b7e0a0bd20121115095059.jpg\" width=\"315\" height=\"337\" /></a></p>\r\n<p>玛丽莲.梦露——36岁</p>\r\n<p>梦露虽有颠沛流离的童年，却从未放弃希望自己能成为大明星珍.哈露的梦想。戏里戏外都风情万种的梦露承受着拳击手丈夫的家庭暴力；在片场休息室里茫然无助的眼神被镁光灯偷偷的瞬间捕捉；被人追随惯的巨星也喜欢站在阳台惬意地观察来来往往的普通人。1963年，蹉跎青春经不起上帝的挥一挥手，没有带走任何一片“云彩”。难道追随珍.哈露的足迹注定将梦露神华戛然而止在36岁吗？</p>\r\n<p><a id=\"ematt:24\" href=\"http://www.bailili.cn/content/uploadfile/201211/5b0a1352855050.jpg\" target=\"_blank\"><img border=\"0\" alt=\"点击查看原图\" src=\"http://www.xietaotao.cn/content/uploadfile/201211/aa0f0814fad83c7066bba703e8b166bf20121115095103.jpg\" /></a></p>\r\n<p>伊丽莎白.肖特——22岁</p>\r\n<p>1947年的一个清晨，伊丽莎白.肖特被人发现惨死在公园里。从腹部开始已经横腰拦断变成了两截，四肢张开，被人鸡奸。这个年轻的二流演员先天发育不完整的性器官无法完成正常的性行为。一切源于歧视？追查真凶至今都未果，外界也先后有很多猜测，甚至有某知名导演表示知道真正的凶手，但出于自己的声望不愿站出来指正。现在的影迷也许不知道这个年轻的演员，但是很难忘根据这事件改编搬上大银幕的《黑色大丽花》。</p>\r\n<p><a id=\"ematt:25\" href=\"http://www.bailili.cn/content/uploadfile/201211/3b171352855202.jpg\" target=\"_blank\"><img border=\"0\" alt=\"点击查看原图\" src=\"http://www.xietaotao.cn/content/uploadfile/201211/8b1cfce5d06ecefd6ebeb732f50f4db620121115095106.jpg\" /></a></p>\r\n<p>卡罗尔.隆巴德</p>\r\n<p>她永远是好莱坞皇帝克拉克盖博一生中最爱的女人。1939年盖博不只是有《乱世佳人》，上帝也拍了卡罗尔.隆巴德与他做伴，天作之合往往好景不长，婚姻维持了3年后，还是以一场飞机失事带走了生来为喜剧而打造的女人。作为有5段婚姻，无数情人的风流影帝享年59岁回归了自己的真爱，葬在了她的身旁。时至今日，她的早逝并未让我们记住她是一个30年代在好莱坞最会表演的喜剧女演员，一切皆因她有位羡煞旁人的传奇丈夫。</p>\r\n<p><a id=\"ematt:26\" href=\"http://www.bailili.cn/content/uploadfile/201211/e0771352855612.jpg\" target=\"_blank\"><img title=\"点击查看原图\" border=\"0\" alt=\"点击查看原图\" src=\"http://www.xietaotao.cn/content/uploadfile/201211/7476bbbed48a977682540fee66c599eb20121115095107.jpg\" width=\"294\" height=\"368\" /></a></p>\r\n<p>卡罗尔.兰迪斯——29岁</p>\r\n<p>1919年1月1日这个注定不平凡的女人来到了人世。演技平平却天生丽质的卡罗尔.兰迪斯还是迅速蹿红跻身明星之列。据说盛行活泼热爱运动的她跑步速度很快，讽刺的是他的婚姻也是如此。4段婚姻失败加上与已婚人士关系的扑朔迷离，她放弃了大好前途以及像卓别林和某同性暧昧者此般情人，在1948年7月4日，正值老美沉浸在建国日当天的喜悦中，她选择用过量安眠药了结自己短暂又富戏剧性的一生。</p>\r\n<p>&nbsp;</p>\r\n<p>佩吉.安特维斯特——24岁</p>\r\n<p>30年代初的经济萧条迫使这个舞台剧演员只身转战好莱坞望改变窘境。在某部恶评如潮的电影中扮演了一个小角色，电影公司不得不将该片中断放映。而佩吉的命运也仿佛不见天日，没有得到那点微薄报酬使身无分文的她彻底失去了生存的勇气。用酒精麻醉自己后爬上永不熄灭的“HOLLYWOODLAND”（1939年“LAND”才被拿去），在“H”上纵身跃下。佩吉是“好莱坞”标志牌上轻生的第一人，希望她在天堂里能够好过点......</p>\r\n<p>&nbsp;</p>\r\n<p>本文转自《小资风尚》第二十九期</p>', 'http://www.me.me/Data/upload/image/article/1/yt_3165799a056f7b453ed86904513ca977.jpg', '2015-03-26 11:51:50', '1', '1', '100', '100', '1', '1', '1', '123456');
 
 -- ----------------------------
--- Table structure for `xtt_article_category`
+-- Table structure for xtt_article_category
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article_category`;
 CREATE TABLE `xtt_article_category` (
@@ -61,7 +61,7 @@ INSERT INTO `xtt_article_category` VALUES ('2', '测试222', 'cs2');
 INSERT INTO `xtt_article_category` VALUES ('3', '测试333', 'cs3');
 
 -- ----------------------------
--- Table structure for `xtt_article_tag`
+-- Table structure for xtt_article_tag
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article_tag`;
 CREATE TABLE `xtt_article_tag` (
@@ -79,7 +79,7 @@ INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1');
 INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1');
 
 -- ----------------------------
--- Table structure for `xtt_comment`
+-- Table structure for xtt_comment
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_comment`;
 CREATE TABLE `xtt_comment` (
@@ -98,7 +98,7 @@ CREATE TABLE `xtt_comment` (
   `down` int(10) DEFAULT '0' COMMENT '踩',
   `open` text COMMENT '为第三方评论（如友言）数据预留',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_comment
@@ -145,9 +145,13 @@ INSERT INTO `xtt_comment` VALUES ('39', '23423423', '423423423', '2015-03-29 20:
 INSERT INTO `xtt_comment` VALUES ('40', '23423423', '423423423', '2015-03-29 20:45:50', '4234234', '1', '1', '1', '0', null, '0', '', '0', null);
 INSERT INTO `xtt_comment` VALUES ('41', '啊盛大速度', '2147483647', '2015-03-29 20:47:01', '2147483647', '1', '1', '1', '0', null, '0', '', '0', null);
 INSERT INTO `xtt_comment` VALUES ('42', '啊盛大速度', '123123412', '2015-03-29 20:48:22', '412412', '1', '1', '1', '0', null, '0', '', '0', null);
+INSERT INTO `xtt_comment` VALUES ('43', '啊啊', '1341414', '2015-03-30 14:04:48', '阿达说的', '1', '1', '1', '0', null, '0', '127.0.0.1', '0', null);
+INSERT INTO `xtt_comment` VALUES ('44', '阿达说的', '2131321', '2015-03-30 14:04:56', '34141确实是', '1', '1', '1', '0', null, '0', '127.0.0.1', '0', null);
+INSERT INTO `xtt_comment` VALUES ('45', '2131313', '1231312', '2015-03-30 14:06:39', '啊事实上事实上身上', '1', '1', '1', '0', null, '0', '127.0.0.1', '0', null);
+INSERT INTO `xtt_comment` VALUES ('46', '1313131312', '131313', '2015-03-30 14:06:57', '啊事实上事实上身上', '1', '1', '1', '0', null, '0', '127.0.0.1', '0', null);
 
 -- ----------------------------
--- Table structure for `xtt_common_menu`
+-- Table structure for xtt_common_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_common_menu`;
 CREATE TABLE `xtt_common_menu` (
@@ -166,7 +170,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -185,10 +189,11 @@ INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '20
 INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0', '0');
 INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', '2015-03-18 16:42:17', 'home', 'blog', 'index', '', '1', '1', '', '1', '0', '1');
 INSERT INTO `xtt_common_menu` VALUES ('217', '说说管理', '说说管理', null, 'admin', 'twitter', 'index', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('218', '博文详情', '博文详情', null, 'home', 'blog', 'show', '', '1', '1', '', '1', '0', '0');
+INSERT INTO `xtt_common_menu` VALUES ('218', '博文详情', '博文详情', null, 'home', 'blog', 'show', '', '1', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('219', 'Twitter', '说说', null, 'home', 'twitter', 'index', '', '1', '1', '', '1', '0', '1');
 
 -- ----------------------------
--- Table structure for `xtt_config`
+-- Table structure for xtt_config
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_config`;
 CREATE TABLE `xtt_config` (
@@ -229,7 +234,7 @@ INSERT INTO `xtt_config` VALUES ('27', 'login_code', '1');
 INSERT INTO `xtt_config` VALUES ('30', 'comment_order', 'asc');
 
 -- ----------------------------
--- Table structure for `xtt_member_info`
+-- Table structure for xtt_member_info
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_member_info`;
 CREATE TABLE `xtt_member_info` (
@@ -255,7 +260,7 @@ CREATE TABLE `xtt_member_info` (
 INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'http://192.168.1.104/Data/upload/image/avatar/1/yt_6c97b038825a6687d5826e1e97daa22f.JPG', '2015-03-21 21:36:12', '1', '职业', '兴趣爱好', '男', '用户说明', '昵称', '1');
 
 -- ----------------------------
--- Table structure for `xtt_member_login_log`
+-- Table structure for xtt_member_login_log
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_member_login_log`;
 CREATE TABLE `xtt_member_login_log` (
@@ -266,7 +271,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -326,9 +331,10 @@ INSERT INTO `xtt_member_login_log` VALUES ('52', '1270', '2015-03-27 12:59:59', 
 INSERT INTO `xtt_member_login_log` VALUES ('53', '1270', '2015-03-29 18:35:23', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('54', '1270', '2015-03-29 19:25:44', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('55', '1270', '2015-03-29 21:05:53', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('56', '1270', '2015-03-30 13:24:31', '1');
 
 -- ----------------------------
--- Table structure for `xtt_twitter`
+-- Table structure for xtt_twitter
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_twitter`;
 CREATE TABLE `xtt_twitter` (

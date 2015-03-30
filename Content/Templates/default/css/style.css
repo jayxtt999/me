@@ -1924,3 +1924,13 @@ img.single-pic {
     margin-bottom: 5px;
 }
 
+
+.comment_controller span{
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.comment_controller{
+    margin-bottom: 20px;
+}
+

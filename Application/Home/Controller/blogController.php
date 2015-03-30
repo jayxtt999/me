@@ -101,16 +101,7 @@ class blogController extends abstractController{
         $commentWhere['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
         $commentWhere['data'] = $id;
 
-       /* $count = db()->Table('comment')->getAll($commentWhere)->count()->done();        //getAll
-        $page = new \System\Library\Page($count);
-        if($page->isShow){
-            $showPage= $page->show();// 分页显示输出
-        }else{
-            $showPage = "";
-        }*/
-        // 进行分页数据查询
         $comments = db()->Table('comment')->getAll($commentWhere)->order("id ".$webConfig['comment_order'])->done();
-        //$comments = db()->Table('comment')->getAll($commentWhere)->limit($page->firstRow,$page->listRows)->order("id desc")->done();
 
         //生成序列树
         $comments= ($this->sortOut($comments));

@@ -7,91 +7,37 @@
 
 
                 <div class="content-grid">
-                    <div class="content-grid-head">
-                        <h3>{$blog['title']}</h3>
-                        <h4>{$blog['time']},所属分类：{$blog['category']},作者: <a href="jvascript:;">{$blog['author']}</a>
-                        </h4>
-
-                        <div class="clearfix"></div>
-                    </div>
 
                     <div class="content-grid-single">
 
-                        {$blog['content']}
 
                         <div class="content-form">
-                            <if condition="$webConfig['iscomment']==1">
-
-                                <h3>Leave a comment</h3>
-
-                                <form id="comment_form">
-                                    <input type="text" class="comment_name" name="name" placeholder="昵称"
-                                           required="text">
-                                    <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
-                                    <textarea name="content" class="comment_content" placeholder="内容" name=""
-                                              required="text"></textarea>
-
-                                    <if condition="$webConfig['comment_code']==1">
-                                        <div>
-                                            <img class="comment_verify"
-                                                 src="/index.php?m=common&amp;c=getcommentver&amp;a=index&id=0"
-                                                 onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id=0'"
-                                                 alt="">
-
-
-                                            <input type="text" class="check_code"
-                                                   style="width: 15%;display: inline;margin-left: 5px;" maxlength="4"
-                                                   name="check_code"
-                                                   placeholder="验证码" required="check_code">
-                                        </div>
-                                    </if>
-                                    <input type="button" style="width: 100px;height: 38px;" value="SEND"
-                                           onclick="addComment(this,0,0);">
-                                </form>
-
-                                <p class="comment_controller">
-                                    <span>一共有{:count($comments)}条评论</span>
-                                    <span onclick="hideComment()">[-]收起评论</span>
-                                    <span onclick="showComment()">[+]展开评论</span>
-                                </p>
-
-
-
 
                                 <ul class="chats">
 
                                     <php>
-                                        foreach($comments as $k=>$v)
+                                        foreach($list as $k=>$v)
                                         {
-                                        $class = $v['level']%2==1?"in":"out";
-                                        $left1 = 10+30*($v['level']-1);
-                                        $left2 = 65+30*($v['level']-1);
-
                                     </php>
 
-                                    <li class="{$class} comment_{$v['id']}">
+                                    <li >
                                         <img class="avatar" alt="" style="margin-left: {$left1}px;"
-                                             src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
+                                             src="http://q1.qlogo.cn/g?b=qq&nk=435024179&s=100&t={:time()}">
 
-                                        <div class="message" style="margin-left: {$left2}px;">
+                                        <div class="message">
 											<span class="arrow">
 											</span>
                                             <a href="#" class="name">
-                                                {$v['name']} </a>
+                                                {$v['author']} </a>
 											<span class="datetime">
 											at {$v['crate_time']} </span>
 											<span class="body">
 											{$v['content']} </span>
 
                                             <div>
-                                            <span aria-hidden="true" data="ref_{$v['id']}_like" class="ico icon-like"
-                                                  onclick="upDownComment(this)">{$v['up']}</span>
-                                            <span aria-hidden="true" data="ref_{$v['id']}_dislike"
-                                                  class="ico icon-dislike"
-                                                  onclick="upDownComment(this)">{$v['down']}</span>
+
                                             <span aria-hidden="true" class="ico icon-speech"
                                                   onclick="icon_speech(this)">评论</span>
-
                                                 <div class="clearfix"></div>
                                             </div>
 
@@ -120,8 +66,7 @@
                                                 </if>
 
                                                 <input type="button" style="width: 100px;height: 38px;" value="提交"
-                                                       onclick="addComment(this,{$v['id']},{$v['level']});">
-
+                                                       onclick="/*addComment(this,{$v['id']},{$v['level']});*/">
                                             </form>
 
 
@@ -137,9 +82,7 @@
 
                                 </ul>
 
-                                <else/>
-                                <p>[日志评论已关闭]</p>
-                            </if>
+
                         </div>
 
 

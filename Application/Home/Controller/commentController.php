@@ -70,11 +70,22 @@ class commentController extends abstractController
             }
         }
 
+        //检测评论间隔时间
+        $where = array(
+            'ip'=>$this->getRequest()->getIP(),
+            'crate_time?>'=>date("Y-m-d H:i:s",(time()-15)),
+        );
+
+        $interval = db()->Table('comment')->getAll($where)->done();
+
+        if($interval){
+            return JsonObject(array('status' => false,'msg'=>"操作频繁,请稍后再试"));
+        }
 
 
 
         $data['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;//
-        $status = $webConfig['ischkcomment']?\Admin\Comment\Type\Status::STATUS_ENABLE:\Admin\Comment\Type\Status::STATUS_UNABLE;
+        $status = $webConfig['ischkcomment']?\Admin\Comment\Type\Status::STATUS_UNABLE:\Admin\Comment\Type\Status::STATUS_ENABLE;
         $data['status'] = $status;
         $data['crate_time'] = date("Y-m-d H:i:s");
         $data['ip'] =  $this->getRequest()->getIP();
