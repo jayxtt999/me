@@ -778,7 +778,7 @@ p.agree {
     font-family: 'Oswald', sans-serif;
 }
 
-.content-form form input[type="text"], .content-form form textarea {
+.content-form  input[type="text"], .content-form  textarea {
     padding: 10px 15px;
     width: 80%;
     color: #333;
@@ -789,16 +789,17 @@ p.agree {
     outline: none;
     display: block;
     margin: 10px 0;
+    border-radius: 15px;
 }
 
-.content-form form textarea {
+.content-form  textarea {
     height: 100px;
     resize: none;
 }
 
-.content-form form input[type="submit"] {
+.content-form  input[type="button"] {
     color: #fff;
-    background: #EB5A41;
+    background: rgb(244, 114, 92);
     padding: 0.4em 1.5em;
     text-decoration: none;
     font-size: 0.9em;
@@ -814,10 +815,9 @@ p.agree {
     -ms-transition: 0.5s all ease;
 }
 
-.content-form form input[type="submit"]:hover {
-    background: transparent;
-    color: #EB5A41;
-    border: 1px solid #EB5A41;
+.content-form form input[type="button"]:hover {
+    background: #EB5A41;
+    color: #fff;
 }
 
 .comments {

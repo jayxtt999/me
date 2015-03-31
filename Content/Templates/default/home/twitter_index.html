@@ -42,9 +42,99 @@
                                                 </div>
                                                 <b class="shuoshuo_quote_after c_tx3">”</b></div>
                                             <div class="shuoshuo_op">
-                                                <a href="javascript:void(0);" class="shuoshuo_comment bg6 ui_mr5" title="评论">
+                                                <a href="javascript:void(0);" onclick="icon_speech(this)" class="shuoshuo_comment bg6 ui_mr5" title="评论">
                                                 {:count($vo['comment'])}</a>
-                                                <a href="javascript:void(0);" class="shuoshuo_rt bg6 " title="转发">0</a></div>
+                                                <a href="javascript:void(0);" class="shuoshuo_rt bg6 " title="转发">0</a>
+                                            </div>
+
+                                                <?php
+
+                                                 if(count($vo['comment'])>0){
+
+                                                ?>
+
+                                            <ul class="chats">
+
+                                                <php>
+                                                    foreach($vo['comment'] as $k=>$v)
+                                                    {
+                                                    $class = $v['level']%2==1?"in":"out";
+                                                    $left1 = 10+30*($v['level']-1);
+                                                    $left2 = 65+30*($v['level']-1);
+
+                                                </php>
+
+                                                <li class="{$class} comment_{$v['id']}">
+                                                    <img class="avatar" alt="" style="margin-left: {$left1}px;"
+                                                         src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
+
+                                                    <div class="message" style="margin-left: {$left2}px;">
+											<span class="arrow">
+											</span>
+                                                        <a href="#" class="name">
+                                                            {$v['name']} </a>
+											<span class="datetime">
+											at {$v['crate_time']} </span>
+											<span class="body">
+											{$v['content']} </span>
+
+                                                        <div>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_like_{$vo['id']}" class="ico icon-like"
+                                                  onclick="upDownComment(this)">{$v['up']}</span>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_dislike"
+                                                  class="ico icon-dislike"
+                                                  onclick="upDownComment(this)">{$v['down']}</span>
+                                            <span aria-hidden="true" class="ico icon-speech"
+                                                  onclick="icon_speech(this)">评论</span>
+
+                                                            <div class="clearfix"></div>
+                                                        </div>
+
+
+                                                        <form class="rep_content">
+
+                                                            <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                                                   required="text">
+                                                            <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                                                                   required="qq">
+                                                            <textarea name="content" class="comment_content" placeholder="内容"
+                                                                      name=""
+                                                                      required="text"></textarea>
+
+                                                            <if condition="$webConfig['comment_code']==1">
+
+                                                                <div>
+                                                                    <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                                                         onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                                                         style="cursor: pointer;height: 44px;width: 100px;">
+                                                                    <input type="text" maxlength="4" class="check_code"
+                                                                           style="width: 15%;display: inline;margin-left: 5px;"
+                                                                           placeholder="验证码" required="check_code">
+                                                                </div>
+
+                                                            </if>
+
+                                                            <input type="button" style="width: 100px;height: 38px;" value="提交"
+                                                                   onclick="addComment(this,{$v['id']},{$v['level']});">
+
+                                                        </form>
+
+
+                                                    </div>
+                                                </li>
+
+                                                <php>
+
+                                                    }
+
+                                                </php>
+
+
+                                            </ul>
+
+
+                                                <?php }?>
+
                                         </li>
 
                                         <?php
@@ -107,20 +197,22 @@
         var data = $(z).attr("data").split("_")
         var id = data[1]
         var operationtype = data[2]
+        var twitterid = data[3]
+
         $.ajax({
             url: "/index.php?m=home&c=comment&a=like",
             type: "post",
             dataType: "json",
             data: {
-                id: id, operationtype: operationtype, type: "article", data: id
+                id: id, operationtype: operationtype, type: "twitter", data: twitterid
             },
             success: function (d) {
                 if (d.status) {
-                    z.animate({
+                    $(z).animate({
                         fontSize: "16px"
                     })
-                    z.text(++num);
-                    z.animate({
+                    $(z).text(++num);
+                    $(z).animate({
                         fontSize: "12px"
                     })
                 }

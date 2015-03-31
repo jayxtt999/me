@@ -197,11 +197,11 @@
             },
             success: function (d) {
                 if (d.status) {
-                    z.animate({
+                    $(z).animate({
                         fontSize: "16px"
                     })
-                    z.text(++num);
-                    z.animate({
+                    $(z).text(++num);
+                    $(z).animate({
                         fontSize: "12px"
                     })
                 }
