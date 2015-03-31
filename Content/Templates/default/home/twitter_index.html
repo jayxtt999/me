@@ -8,71 +8,56 @@
 
                 <div class="content-grid">
 
-                    <div class="content-grid-single">
+                    <div class="content-grid-twitter">
 
 
                         <div class="content-form">
 
-                                <ul class="chats">
 
-                                    <php>
-                                        foreach($list as $k=>$v)
-                                        {
-                                    </php>
+                            <div class="shuoshuo">
+                                <ol class="shuoshuo_list">
 
+                                        <?php
+                                            foreach($list as $vo){
+                                        ?>
 
-                                    <li class="in comment_{$v['id']}">
-                                        <img class="avatar" src="http://q1.qlogo.cn/g?b=qq&nk=435024179&s=100&t={:time()}">
-
-                                        <div class="message" style="margin-left: 65px;">
-											<span class="arrow">
-											</span>
-                                            <a href="#" class="name">
-                                                {:member($v['author'])} </a>
-											<span class="datetime">
-											at {$v['crate_time']} </span>
-											<span class="body">
-											{$v['content']} </span>
-
-                                            <div>
-                                                <span aria-hidden="true" data="ref_1_like" class="ico icon-like" onclick="upDownComment(this)">1</span>
-                                                <span aria-hidden="true" data="ref_1_dislike" class="ico icon-dislike" onclick="upDownComment(this)">1</span>
-                                                <span aria-hidden="true" class="ico icon-speech" onclick="icon_speech(this)">评论</span>
-
-                                                <div class="clearfix"></div>
+                                        <li class="shuoshuo_item">
+                                            <div class="shuoshuo_meta">
+                                                <div class="shuoshuo_time bg6"><span class="day">{:substr($vo['crate_time'],8,2)}</span><span
+                                                        class="month">{:substr($vo['crate_time'],5,2)}月</span></div>
                                             </div>
+                                            <div class="shuoshuo_content bor3 bg"><b
+                                                    class="shuoshuo_quote_before c_tx3">“</b>
 
+                                                <div class="shuoshuo_detail">
 
-                                            <form class="rep_content">
+                                                    {$vo['content']}
 
-                                                <input type="text" class="comment_name" name="name" placeholder="昵称" required="text">
-                                                <input type="text" class="comment_qq" name="qq" placeholder="QQ" required="qq">
-                                                <textarea name="content" class="comment_content" placeholder="内容" required="text"></textarea>
+                                                    <if condition="$vo['img']">
+                                                        <div class="media">
+                                                            <img src="" onclick="javascript:;" >
+                                                        </div>
+                                                    </if>
 
+                                                </div>
+                                                <b class="shuoshuo_quote_after c_tx3">”</b></div>
+                                            <div class="shuoshuo_op">
+                                                <a href="javascript:void(0);" class="shuoshuo_comment bg6 ui_mr5" title="评论">
+                                                {:count($vo['comment'])}</a>
+                                                <a href="javascript:void(0);" class="shuoshuo_rt bg6 " title="转发">0</a></div>
+                                        </li>
 
-                                                <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,{$v['id']},1);">
+                                        <?php
+                                            }
+                                        ?>
 
-                                            </form>
-
-
-                                        </div>
-                                    </li>
-
-
-
-                                    <php>
-
-                                        }
-
-                                    </php>
-
-
-                                </ul>
+                                </ol>
+                            </div>
 
 
                         </div>
                         <p class="loadMore">
-                            <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block" >
+                            <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block">
                                 Load More </a>
                         </p>
 
@@ -127,7 +112,7 @@
             type: "post",
             dataType: "json",
             data: {
-                id: id, operationtype: operationtype, type: "article", data:id
+                id: id, operationtype: operationtype, type: "article", data: id
             },
             success: function (d) {
                 if (d.status) {
@@ -145,28 +130,27 @@
     }
 
     /*
-    *验证是否有中文
-    */
-    function checkchinese(content){
+     *验证是否有中文
+     */
+    function checkchinese(content) {
 
-        if(escape(content).indexOf("%u") < 0)
-        {
+        if (escape(content).indexOf("%u") < 0) {
             layer.msg('评论必须要有中文', 1, 8);
-           return false
+            return false
         }
     }
 
     /**
      * 隐藏评论区
      */
-    function hideComment(){
+    function hideComment() {
         $(".chats").hide("slow")
     }
 
     /**
      * 显示评论区
      */
-    function showComment(){
+    function showComment() {
         $(".chats").show("slow")
     }
 
@@ -180,8 +164,6 @@
             height: "toggle"
         })
     }
-
-
 
 
     /**

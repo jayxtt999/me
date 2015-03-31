@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/3/30 0030
- * Time: ���� 2:36
+ * Time: 锟斤拷锟斤拷 2:36
  */
 
 namespace Home\Controller;
@@ -12,9 +12,7 @@ namespace Home\Controller;
 class twitterController extends abstractController
 {
 
-    /**
-     *说说列表
-     */
+
     public function indexAction(){
         $where = array(
             'status' => \Admin\Article\Type\Status::STATUS_ENABLE,
@@ -36,7 +34,6 @@ class twitterController extends abstractController
             $lists[$k] = $v;
             $lists[$k]['comment'] =  db()->Table('comment')->getAll($commentWhere)->done();
         }
-
         $this->getView()->assign(array('list'=>$lists));
         $this->getView()->display();
     }

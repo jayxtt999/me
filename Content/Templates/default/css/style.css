@@ -172,6 +172,12 @@ ul, label {
     padding: 1em 18px;
 }
 
+
+.content-grid-info, .content-grid-twitter {
+    background-size: 100% 100%;
+    padding: 1em 18px;
+}
+
 .content-grid-info h3, .content-sec-info h3 {
     font-size: 1.5em;
 }
@@ -1936,4 +1942,119 @@ img.single-pic {
 
 .loadMore{
     background-color: silver;
+}
+
+.shuoshuo{
+
+    width: 100%;
+    font-size: 16px;
+}
+
+.shuoshuo_item {
+    position: relative;
+    padding: 0 0px 0 70px;
+    margin-bottom: 30px;
+    _zoom: 1;
+}
+
+.shuoshuo_meta {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.shuoshuo_meta .shuoshuo_time {
+    width: 56px;
+    height: 56px;
+    -webkit-border-radius: 28px;
+    border-radius: 28px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.shuoshuo_meta .shuoshuo_time .day {
+    font: 24px/1 Tahoma;
+    display: block;
+    margin-top: 10px;
+}
+.shuoshuo_meta .shuoshuo_time .month {
+    font-size: 12px;
+    display: block;
+}
+.shuoshuo_content {
+    padding: 8px;
+    overflow: hidden;
+    _zoom: 1;
+}
+.shuoshuo_quote_before {
+    font-size: 0;
+    line-height: 99;
+    height: 29px;
+    width: 32px;
+    display: block;
+    overflow: hidden;
+    float: left;
+    background: url("../images/quote_before.png") no-repeat;
+
+}
+.shuoshuo_detail {
+    clear: both;
+    padding: 6px 22px;
+}
+.shuoshuo_quote_after {
+    font-size: 0;
+    line-height: 99;
+    height: 29px;
+    width: 32px;
+    display: block;
+    overflow: hidden;
+    float: right;
+    background: url("../images/quote_after.png") no-repeat;
+}
+.shuoshuo_op {
+    position: relative;
+    padding-right: 25px;
+    text-align: right;
+    _top: 3px;
+}
+.shuoshuo_op .shuoshuo_rt, .shuoshuo .shuoshuo_op .shuoshuo_comment, .shuoshuo .shuoshuo_op .shuoshuo_like {
+    display: inline-block;
+    padding: 7px 10px 4px 34px;
+    font: 12px Arial, Helvetica, sans-serif;
+    background-image: url(../images/qing_shuoshuo.png);
+    background-repeat: no-repeat;
+    background-position: 0 -26px;
+    border-radius: 0 0 4px 4px;
+    vertical-align: top;
+}
+.shuoshuo_op .shuoshuo_rt {
+    background-position: 0 -55px;
+}
+
+.bg6_hover:hover, .bg6 {
+    background-color: #7b62a1;
+}
+
+.ui_mr5 {
+    margin-right: 5px;
+}
+.bg6, .bg6 a, .bg6_hover:hover, .bg6_hover:hover a, .c_tx6 {
+    color: #fff;
+}
+
+.bg {
+    background: #faf8ff;
+}
+.bor3, .bgr3, .tbor3, .bbor3, .lbor3, .rbor3 {
+    border-color: #dfd8f0;
+}
+.bg, .bgr, .bg_hover:hover, .bg_deep_dom {
+    background-color: #FFFFFF;
+}
+.bor3, .bgr3, .tbor3, .bbor3, .lbor3, .rbor3 {
+    border: 1px solid #DCC6F1;
+}
+
+.shuoshuo_detail .media {
+    padding-top: 7px;
 }
