@@ -46,7 +46,7 @@
                                         </div>
                                     </if>
                                     <input type="button" style="width: 100px;height: 38px;" value="SEND"
-                                           onclick="addComment(this,0,0);">
+                                           onclick="addComment(this,0,0,{$blog['id']});">
                                 </form>
 
                                 <p class="comment_controller">
@@ -120,7 +120,7 @@
                                                 </if>
 
                                                 <input type="button" style="width: 100px;height: 38px;" value="提交"
-                                                       onclick="addComment(this,{$v['id']},{$v['level']});">
+                                                       onclick="addComment(this,{$v['id']},{$v['level']},{$blog['id']});">
 
                                             </form>
 
@@ -303,7 +303,7 @@
      * 添加评论
      * @returns {boolean}
      */
-    function addComment(z, ref_id, level) {
+    function addComment(z, ref_id, level,blogid) {
         var name = $.trim($(z).parent().find(".comment_name").val());
         var qq = $(z).parent().find(".comment_qq").val();
         var check_code = $(z).parent().find(".check_code").val();
@@ -323,7 +323,7 @@
         checkchinese(content)
         </if>
 
-        var blogid = {$blog['id']}
+        var blogid = blogid
 
 
         $.ajax({
@@ -333,7 +333,7 @@
             timeout: 5000,
             data: {
 
-                name: name, qq: qq, content: content, data: blogid, ref_id: ref_id, level: level, check_code: check_code
+                name: name, qq: qq, content: content, data: blogid, ref_id: ref_id, level: level, check_code: check_code,type:<?php echo \Admin\Comment\Type\Type::TYPE_ARTICLE;?>
 
             },
             beforeSend: function () {
@@ -352,7 +352,7 @@
                     } else {
 
                         $(z).parent().animate({
-                            height: "0px"
+                            height: "toggle"
                         })
                         $(z).parent().hide()
 

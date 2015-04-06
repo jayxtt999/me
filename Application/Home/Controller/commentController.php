@@ -84,7 +84,6 @@ class commentController extends abstractController
 
 
 
-        $data['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;//
         $status = $webConfig['ischkcomment']?\Admin\Comment\Type\Status::STATUS_UNABLE:\Admin\Comment\Type\Status::STATUS_ENABLE;
         $data['status'] = $status;
         $data['crate_time'] = date("Y-m-d H:i:s");
@@ -98,8 +97,10 @@ class commentController extends abstractController
             //组转html
             $left1 = 10+30*$level;
             $left2 = 65+30*$level;
+            //1=out 2=in
+            $classInorOut = $level%2==1?"out":"in";
             $showCheckCodeHtml = $webConfig['comment_code']?"<div><img src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."' onclick='javascript:this.src='/index.php?m=common&amp;c=getcommentver&amp;a=index&amp;id=".$res."'' style='cursor: pointer;height: 44px;width: 100px;'><input type='text' maxlength='4' name='check_code' style='width: 15%;display: inline;margin-left: 5px;' placeholder='验证码' required='check_code'></div>":'';
-            $html = "<li class='out comment_".$res."'><img class='avatar' alt='' style='margin-left: ".$left1."px;' src='http://q1.qlogo.cn/g?b=qq&amp;nk={$data['qq']}&amp;s=100&amp;t=".time()."'><div class='message' style='margin-left: ".$left2."px;'><span class='arrow'></span><a href='#' class='name'>".$data['name']." </a><span class='datetime'>at ".$data['crate_time']." </span><span class='body'>".$data['content']." </span><div><span aria-hidden='true' data='ref_".$res."_like' class='ico icon-like' onclick='upDownComment(this)'>0</span><span aria-hidden='true' data='ref_".$res."_dislike' class='ico icon-dislike' onclick='upDownComment(this)'>0</span><span aria-hidden='true' class='ico icon-speech' onclick='icon_speech(this)'>评论</span><div class='clearfix'></div></div><form class='rep_content'><input type='text'class='comment_name' placeholder='昵称'><input type='text' class='comment_qq' placeholder='QQ'><textarea name='content' class='comment_content' placeholder='内容' required='text'></textarea>".$showCheckCodeHtml."<input type='button' style='width: 100px;height: 38px;' value='提交' onclick='addComment();'></form></div>
+            $html = "<li class='".$classInorOut." comment_".$res."'><img class='avatar' alt='' style='margin-left: ".$left1."px;' src='http://q1.qlogo.cn/g?b=qq&amp;nk={$data['qq']}&amp;s=100&amp;t=".time()."'><div class='message' style='margin-left: ".$left2."px;'><span class='arrow'></span><a href='#' class='name'>".$data['name']." </a><span class='datetime'>at ".$data['crate_time']." </span><span class='body'>".$data['content']." </span><div><span aria-hidden='true' data='ref_".$res."_like' class='ico icon-like' onclick='upDownComment(this)'>0</span><span aria-hidden='true' data='ref_".$res."_dislike' class='ico icon-dislike' onclick='upDownComment(this)'>0</span><span aria-hidden='true' class='ico icon-speech' onclick='icon_speech(this)'>评论</span><div class='clearfix'></div></div><form class='rep_content'><input type='text'class='comment_name' placeholder='昵称'><input type='text' class='comment_qq' placeholder='QQ'><textarea name='content' class='comment_content' placeholder='内容' required='text'></textarea>".$showCheckCodeHtml."<input type='button' style='width: 100px;height: 38px;' value='提交' onclick='addComment(this,".$res.",".$level.",".$data['data'].");'></form></div>
             </li>";
         }else{
             $html = "";

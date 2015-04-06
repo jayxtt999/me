@@ -43,7 +43,7 @@
                                                 <b class="shuoshuo_quote_after c_tx3">”</b></div>
                                             <div class="shuoshuo_op">
                                                 <a href="javascript:void(0);" onclick="icon_speech(this)" class="shuoshuo_comment bg6 ui_mr5" title="评论">
-                                                {:count($vo['comment'])}</a>
+                                                {$vo['comment_count']}</a>
                                                 <a href="javascript:void(0);" class="shuoshuo_rt bg6 " title="转发">0</a>
                                             </div>
 
@@ -53,7 +53,7 @@
 
                                                 ?>
 
-                                            <ul class="chats">
+                                            <ul class="chats" style="display: none">
 
                                                 <php>
                                                     foreach($vo['comment'] as $k=>$v)
@@ -115,7 +115,7 @@
                                                             </if>
 
                                                             <input type="button" style="width: 100px;height: 38px;" value="提交"
-                                                                   onclick="addComment(this,{$v['id']},{$v['level']});">
+                                                                   onclick="addComment(this,{$v['id']},{$v['level']},{$vo['id']});">
 
                                                         </form>
 
@@ -128,12 +128,74 @@
                                                     }
 
                                                 </php>
+                                                <form >
+
+                                                    <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                                           required="text">
+                                                    <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                                                           required="qq">
+                                                    <textarea name="content" class="comment_content" placeholder="内容"
+                                                              name=""
+                                                              required="text"></textarea>
+
+                                                    <if condition="$webConfig['comment_code']==1">
+
+                                                        <div>
+                                                            <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                                                 onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                                                 style="cursor: pointer;height: 44px;width: 100px;">
+                                                            <input type="text" maxlength="4" class="check_code"
+                                                                   style="width: 15%;display: inline;margin-left: 5px;"
+                                                                   placeholder="验证码" required="check_code">
+                                                        </div>
+
+                                                    </if>
+
+                                                    <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,0,0,{$vo['id']});">
+
+                                                </form>
 
 
                                             </ul>
 
 
-                                                <?php }?>
+                                                <?php }else{ ?>
+
+
+                                            <ul class="chats" style="display: none">
+
+                                            <form>
+
+                                                <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                                       required="text">
+                                                <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                                                       required="qq">
+                                                <textarea name="content" class="comment_content" placeholder="内容"
+                                                          name=""
+                                                          required="text"></textarea>
+
+                                                <if condition="$webConfig['comment_code']==1">
+
+                                                    <div>
+                                                        <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                                             onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                                             style="cursor: pointer;height: 44px;width: 100px;">
+                                                        <input type="text" maxlength="4" class="check_code"
+                                                               style="width: 15%;display: inline;margin-left: 5px;"
+                                                               placeholder="验证码" required="check_code">
+                                                    </div>
+
+                                                </if>
+
+                                                <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,0,0,{$vo['id']});">
+
+                                            </form>
+                                            </ul>
+
+
+                                            <?php } ?>
+
+
 
                                         </li>
 
@@ -262,7 +324,7 @@
      * 添加评论
      * @returns {boolean}
      */
-    function addComment(z, ref_id, level) {
+    function addComment(z, ref_id, level,commentId) {
         var name = $.trim($(z).parent().find(".comment_name").val());
         var qq = $(z).parent().find(".comment_qq").val();
         var check_code = $(z).parent().find(".check_code").val();
@@ -278,7 +340,7 @@
             return false;
         }
 
-        var blogid = {$blog['id']}
+        var commentId = commentId
 
 
         $.ajax({
@@ -288,7 +350,7 @@
             timeout: 5000,
             data: {
 
-                name: name, qq: qq, content: content, data: blogid, ref_id: ref_id, level: level, check_code: check_code
+                name: name, qq: qq, content: content, data: commentId, ref_id: ref_id, level: level, check_code: check_code,type:<?php echo \Admin\Comment\Type\Type::STATUS_TWIITER;?>
 
             },
             beforeSend: function () {
@@ -307,10 +369,9 @@
                     } else {
 
                         $(z).parent().animate({
-                            height: "0px"
+                            height: "toggle"
                         })
                         $(z).parent().hide()
-
                         $(".comment_" + ref_id).after(d.html)
                     }
                     $('#comment_form')[0].reset()
