@@ -5,15 +5,14 @@
  * Date: 15-4-4
  * Time: 下午11:07
  */
-$comment = array(
-    "不错呀",
-    "支持楼主",
-    "赞赞赞",
-    "么么哒",
-    "萌萌哒",
-);
 
-for ($i = 66600; $i <= 66708; $i++) {//66528;
+//http://www.me.me/cccc.php?i=71377
+$s = 1;
+$i = $_GET['i'];
+for ($i; $i <= 71642; $i++) {//70420;
+    if($s==50){
+        header("location:http://www.me.me/cccc.php?i=".$i);
+    }
 
 $url = "http://www.gbsq.org/JYBBS/jforum.html";
 
@@ -54,11 +53,8 @@ curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
 $res = curl_exec($ch);
 curl_close($ch);
 
-print str_repeat(" ", 4096);
 
 //登录结束    测试评论
-
-
 
     $commentUrl = "http://www.gbsq.org/JYBBS/posts/list/0/66445.html#74604";
     $ch = curl_init();
@@ -71,6 +67,7 @@ print str_repeat(" ", 4096);
     $comment = file_get_contents("http://apix.sinaapp.com/joke/?appkey=trialuser");
     $comment = str_replace("\\n\\n技术支持 方倍工作室", "", $comment);
     $comment[5] = str_replace("\"", "", $comment);*/
+    $comment = mt_rand(10,84);
     $post_data = array(
         "action" => "insertSave",
         "module" => "posts",
@@ -79,8 +76,7 @@ print str_repeat(" ", 4096);
         "topic_id" => $i, //文章id
         "quick" => "1",
         "quick" => "1",
-        "message" => "<p>".$comment[mt_rand(0,4)]
-  ."</p>",
+        "message" => "<p><img src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif' _src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif'/><img src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif' _src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif'/><img src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif' _src='http://img.baidu.com/hi/jx2/j_00".$comment.".gif'/></p>",
         "post" => "12121212",
     );
     curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -90,8 +86,11 @@ print str_repeat(" ", 4096);
     curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);
     $res = curl_exec($ch);
     curl_close($ch);
-    echo $i . "<br/>";
-    sleep(1);
+    echo $i . $res."<br/>";
+    if(strpos($res,"400")){
+        continue;
+    }
+    $s++;
     ob_flush();
     flush();
 }
