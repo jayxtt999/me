@@ -116,7 +116,7 @@ class safeFilter
         $str = str_replace("_", "\_", $str);    // 把 '_'过滤掉
         $str = str_replace("%", "\%", $str);    // 把 '%'过滤掉
         $str = nl2br($str);    // 回车转换
-        $str = htmlspecialchars($str);    // html标记转换
+        //$str = htmlspecialchars($str);    // html标记转换
         return $str;
     }
 

@@ -93,6 +93,7 @@ class articleController extends abstractController{
         $tTags = $tag->getTags($id,true);
         //获取已有全部标签
         $tags = $tag->getTags("",true);
+
         $this->getView()->assign(array('tags'=>$tags,'tTags'=>$tTags,'data'=>$row));
         $this->getView()->display();
     }
