@@ -1,0 +1,255 @@
+<include file="layout@admin@head"/>
+        <style>
+
+            .sort,.name,.alias,.show{
+                cursor: pointer;
+            }
+
+        </style>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+    <include file="layout@layout@menu"/>
+
+</div>
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <include file="layout@layout@widgets"/>
+    <!-- END PAGE HEADER-->
+    <div class="row">
+        <div class="col-md-10">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box grey-cascade">
+                <div class="portlet-title">
+                    <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse">
+                        </a>
+                        <a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                        <a href="javascript:;" class="reload">
+                        </a>
+                        <a href="javascript:;" class="remove">
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="portlet-body">
+
+                    <table class="table table-striped table-bordered table-hover" id="sample_menu">
+                        <thead>
+                        <tr>
+
+                            <th>
+                                序号
+                            </th>
+
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                别名
+                            </th>
+                            <th>
+                                查看
+                            </th>
+                            <th>
+                                日志
+                            </th>
+
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <php>
+                            foreach($category as $vo){
+                        </php>
+                        <tr class='odd gradeX' data-id="<php> echo $vo['id']</php>">
+                            <td class="sort"><php> echo $vo['sort'];</php></td>
+                            <td class="name"><php> echo $vo['name'];</php></td>
+                            <td class="alias"><php> echo $vo['alias'];</php></td>
+                            <td class="show">
+                                <i class="fa fa-th-list"></i>
+                            </td>
+
+                            <td><php> echo $vo['num'];</php></td>
+                            <td>
+                                <a href="javascript:articleDel('{$vo.id}');" class='btn
+                                                purple' title='删除'><i class='fa fa-times'></i></a>
+                            </td>
+                        </tr>
+
+                        <php>
+                            }
+                        </php>
+
+
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+
+<include file="layout@admin@foot"/>
+
+
+<script>
+
+    /**
+     * 表格插件
+     */
+    var TableManaged = function () {
+        var initTable1 = function () {
+            var table = $('#sample_menu');
+            // begin first table
+            table.dataTable({
+                "columns": [{
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }
+                ],
+                "lengthMenu": [
+                    [10, 20, -1],
+                    [10, 20, "All"] // change per page values here
+                ],
+                // set the initial value
+                "pageLength": 10,
+                "pagingType": "bootstrap_full_number",
+                "language": {
+                    "lengthMenu": "  _MENU_ 条",
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+                "columnDefs": [{  // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                }, {
+                    "searchable": false,
+                    "targets": [0]
+                }],
+                "order": [
+                    //[1, "asc"]
+                ] // set first column as a default sort by asc
+            });
+
+            var tableWrapper = jQuery('#sample_menu_wrapper');
+
+
+            table.find('.group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            table.on('change', 'tbody tr .checkboxes', function () {
+                $(this).parents('tr').toggleClass("active");
+            });
+
+            tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+
+        }
+        return {
+            //main function to initiate the module
+            init: function () {
+                if (!jQuery().dataTable) {
+                    return;
+                }
+                initTable1();
+            }
+        };
+
+    }();
+    TableManaged.init();
+
+    $(".sort,.name,.alias").click(function(){
+
+        if($(this).find(".alias_input").attr("type") == "text"){
+            return false;
+        }
+        var z =$(this)
+        var name = $.trim($(this).html());
+        var m = $.trim($(this).text());
+        $(this).html("<input type=text value=\""+name+"\" class=alias_input>");
+        $(this).find(".alias_input").focus();
+        $(this).find(".alias_input").bind("blur", function(){
+            var n = $.trim($(this).val());
+            if(n != m){
+                //window.location = "sort.php?action=update&sid="+$(this).parent().parent().find(".sort_id").val()+"&alias="+encodeURIComponent(n);
+                $.ajax({
+                    url:"/index.php?m=admin&c=category&a=edit",
+                    dataType:"json",
+                    type:"post",
+                    data:"id="+$(this).parent().parent().attr("data-id")+"&type="+$(this).parent().attr("class")+"&v="+encodeURIComponent(n),
+                    success:function(d){
+                        if(d.status){
+                            layer.msg(d.msg,1,1)
+                            z.text(n)
+                        }else{
+                            layer.msg(d.msg,1,8)
+                        }
+                    }
+                })
+
+            }else{
+                $(this).parent().html(name);
+            }
+        });
+
+
+    })
+
+    function articleDel(id) {
+        layer.confirm('确定删除吗？', function () {
+            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
+        });
+    }
+</script>

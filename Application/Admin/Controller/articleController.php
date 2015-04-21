@@ -105,15 +105,6 @@ class articleController extends abstractController{
         $form->start('articleEdit');
         $data = $this->request()->getData();//获取数据
 
-        /*
-         *  'id' => int 3
-  'title' => string '娴嬭瘯0000' (length=10)
-  'tag' => string '' (length=0)
-  'category' => int 1
-  'password' => string '' (length=0)
-  'istop' => int 1
-  'allow_comment' => int 1
-         * */
         $data['id'] = post("id",'int');
         $data['title'] = post("title",'string');
         $data['tag'] = post("tag",'string');
