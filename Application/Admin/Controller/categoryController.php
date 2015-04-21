@@ -21,7 +21,6 @@ class categoryController extends abstractController{
             $category[$k]['num'] = $num;
         }
 
-
         $this->getView()->assign(array("category"=>$category));
         $this->getView()->display();
 
@@ -37,6 +36,18 @@ class categoryController extends abstractController{
             return JsonObject(array("status"=>true,"msg"=>"更新成功"));
         }else{
             return JsonObject(array("status"=>false,"msg"=>"更新失败"));
+        }
+
+    }
+
+    public function delAction(){
+
+        $id = get("id","int");
+        $res = db()->Table('article_category')->delete(array('id'=>$id))->done();
+        if($res){
+            return $this->link()->success("admin:category:index","删除成功");
+        }else{
+            return $this->link()->error("删除失败");
         }
 
     }
