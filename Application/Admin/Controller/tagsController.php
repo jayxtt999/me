@@ -11,17 +11,12 @@ namespace Admin\Controller;
 
 use Admin\Controller\abstractController;
 
-class categoryController extends abstractController{
+class tagsController extends abstractController{
 
     public function indexAction(){
 
-        $category = db()->table('article_category')->getAll()->order('id')->done();
-        foreach($category as $k=>$v){
-            $num = db()->table('article')->getAll(array('category'=>$v['id']))->count()->done();
-            $category[$k]['num'] = $num;
-        }
-
-        $this->getView()->assign(array("category"=>$category));
+        $tag = db()->table('article_tag')->getAll()->order('id')->done();
+        $this->getView()->assign(array("tag"=>$tag));
         $this->getView()->display();
 
     }
