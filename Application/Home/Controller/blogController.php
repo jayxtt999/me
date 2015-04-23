@@ -56,7 +56,9 @@ class blogController extends abstractController{
             if($tags){
                 $logList[$k]['tags'] =explode(",",$tags);
             }
-            $logList[$k]['password'] = $v['password'];
+            $logList[$k]['comment_num'] = $v['comment_num'];
+            $logList[$k]['view_num'] = $v['view_num'];
+            $logList[$k]['istop'] = $v['istop'];
 
         }
         $this->getView()->assign(array('articleAll'=>$logList,'show'=>$showPage));

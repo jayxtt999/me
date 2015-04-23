@@ -1,85 +1,110 @@
 <include file="home@index@head"/>
 
 <div class="content">
-    <div class="container">
-        <div class="content-grids">
-            <div class="col-md-8 content-main">
+<div class="container">
+<div class="content-grids">
+<div class="col-md-8 content-main">
 
 
-                <div class="content-grid">
+<div class="content-grid">
 
-                    <div class="content-grid-twitter">
-
-
-                        <div class="content-form">
+<div class="content-grid-twitter">
 
 
-                            <div class="shuoshuo">
-                                <ol class="shuoshuo_list">
+<div class="content-form">
 
-                                        <?php
+
+<div class="shuoshuo">
+    <ol class="shuoshuo_list">
+
+        <?php
                                             foreach($list as $vo){
                                         ?>
 
-                                        <li class="shuoshuo_item">
-                                            <div class="shuoshuo_meta">
-                                                <div class="shuoshuo_time bg6"><span class="day">{:substr($vo['crate_time'],8,2)}</span><span
-                                                        class="month">{:substr($vo['crate_time'],5,2)}月</span></div>
-                                            </div>
-                                            <div class="shuoshuo_content bor3 bg"><b
-                                                    class="shuoshuo_quote_before c_tx3">“</b>
+        <li class="shuoshuo_item">
+            <div class="shuoshuo_meta">
+                <div class="shuoshuo_time bg6"><span class="day">{:substr($vo['crate_time'],8,2)}</span><span
+                        class="month">{:substr($vo['crate_time'],5,2)}月</span></div>
+            </div>
+            <div class="shuoshuo_content bor3 bg"><b
+                    class="shuoshuo_quote_before c_tx3">“</b>
 
-                                                <div class="shuoshuo_detail">
+                <div class="shuoshuo_detail">
 
-                                                    {$vo['content']}
+                    {$vo['content']}
 
-                                                    <if condition="$vo['img']">
-                                                        <div class="media">
-                                                            <img src="" onclick="javascript:;" >
-                                                        </div>
-                                                    </if>
+                    <if condition="$vo['img']">
+                        <div class="media">
+                            <img src="" onclick="javascript:;">
+                        </div>
+                    </if>
 
-                                                </div>
-                                                <b class="shuoshuo_quote_after c_tx3">”</b></div>
-                                            <div class="shuoshuo_op">
-                                                <a href="javascript:void(0);" onclick="icon_speech(this)" class="shuoshuo_comment bg6 ui_mr5" title="评论">
-                                                {$vo['comment_count']}</a>
-                                                <a href="javascript:void(0);" class="shuoshuo_rt bg6 " title="转发">0</a>
-                                            </div>
+                </div>
+                <b class="shuoshuo_quote_after c_tx3">”</b></div>
+            <div class="shuoshuo_op">
+                <a href="javascript:void(0);" onclick="icon_speech(this)" class="shuoshuo_comment bg6 ui_mr5"
+                   title="评论">
+                    {$vo['comment_count']}</a>
 
-                                                <?php
+                <script type="text/javascript">
+                    (function(){
+                        var p = {
+                            url:location.href+"&id=1"+{$vo['id']},
+                            showcount:'0',/*是否显示分享总数,显示：'1'，不显示：'0' */
+                            desc:'{$vo['content']}',/*默认分享理由(可选)*/
+                            summary:'{$vo['content']}',/*分享摘要(可选)*/
+                            title:'{$routeInfo['name']} | {$webConfig['site_title']}',/*分享标题(可选)*/
+                            site:'{$webConfig['site_title']}',/*分享来源 如：腾讯网(可选)*/
+                            pics:'{$vo['img']}', /*分享图片的路径(可选)*/
+                            style:'202',
+                            width:105,
+                            height:31
+                        };
+                        var s = [];
+                        for(var i in p){
+                            s.push(i + '=' + encodeURIComponent(p[i]||''));
+                        }
+                        document.write(['<a version="1.0" class="shuoshuo_rt bg6" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?',s.join('&'),'" target="_blank">分享</a>'].join(''));
+                    })();
+                </script>
+                <script src="http://qzonestyle.gtimg.cn/qzone/app/qzlike/qzopensl.js#jsdate=20111201" charset="utf-8"></script>
+
+            </div>
+
+            <?php
 
                                                  if(count($vo['comment'])>0){
 
-                                                ?>
+            ?>
 
-                                            <ul class="chats" style="display: none">
+            <ul class="chats" style="display: none">
 
-                                                <php>
-                                                    foreach($vo['comment'] as $k=>$v)
-                                                    {
-                                                    $class = $v['level']%2==1?"in":"out";
-                                                    $left1 = 10+30*($v['level']-1);
-                                                    $left2 = 65+30*($v['level']-1);
+                <php>
+                    foreach($vo['comment'] as $k=>$v)
+                    {
+                    $class = $v['level']%2==1?"in":"out";
+                    $left1 = 10+30*($v['level']-1);
+                    $left2 = 65+30*($v['level']-1);
 
-                                                </php>
+                </php>
 
-                                                <li class="{$class} comment_{$v['id']}">
-                                                    <img class="avatar" alt="" style="margin-left: {$left1}px;"
-                                                         src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
+                <li class="{$class} comment_{$v['id']}">
+                    <img class="avatar" alt="" style="margin-left: {$left1}px;"
+                         src="http://q1.qlogo.cn/g?b=qq&nk={$v['qq']}&s=100&t={:time()}">
 
-                                                    <div class="message" style="margin-left: {$left2}px;">
+                    <div class="message" style="margin-left: {$left2}px;">
 											<span class="arrow">
 											</span>
-                                                        <a href="#" class="name">
-                                                            {$v['name']} </a>
+                        <a href="#" class="name">
+                            {$v['name']} </a>
 											<span class="datetime">
 											at {$v['crate_time']} </span>
 											<span class="body">
 											{$v['content']} </span>
 
-                                                        <div>
-                                            <span aria-hidden="true" data="ref_{$v['id']}_like_{$vo['id']}" class="ico icon-like"
+                        <div>
+                                            <span aria-hidden="true" data="ref_{$v['id']}_like_{$vo['id']}"
+                                                  class="ico icon-like"
                                                   onclick="upDownComment(this)">{$v['up']}</span>
                                             <span aria-hidden="true" data="ref_{$v['id']}_dislike"
                                                   class="ico icon-dislike"
@@ -87,165 +112,166 @@
                                             <span aria-hidden="true" class="ico icon-speech"
                                                   onclick="icon_speech(this)">评论</span>
 
-                                                            <div class="clearfix"></div>
-                                                        </div>
-
-
-                                                        <form class="rep_content">
-
-                                                            <input type="text" class="comment_name" name="name" placeholder="昵称"
-                                                                   required="text">
-                                                            <input type="text" class="comment_qq" name="qq" placeholder="QQ"
-                                                                   required="qq">
-                                                            <textarea name="content" class="comment_content" placeholder="内容"
-                                                                      name=""
-                                                                      required="text"></textarea>
-
-                                                            <if condition="$webConfig['comment_code']==1">
-
-                                                                <div>
-                                                                    <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
-                                                                         onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
-                                                                         style="cursor: pointer;height: 44px;width: 100px;">
-                                                                    <input type="text" maxlength="4" class="check_code"
-                                                                           style="width: 15%;display: inline;margin-left: 5px;"
-                                                                           placeholder="验证码" required="check_code">
-                                                                </div>
-
-                                                            </if>
-
-                                                            <input type="button" style="width: 100px;height: 38px;" value="提交"
-                                                                   onclick="addComment(this,{$v['id']},{$v['level']},{$vo['id']});">
-
-                                                        </form>
-
-
-                                                    </div>
-                                                </li>
-
-                                                <php>
-
-                                                    }
-
-                                                </php>
-                                                <form >
-
-                                                    <input type="text" class="comment_name" name="name" placeholder="昵称"
-                                                           required="text">
-                                                    <input type="text" class="comment_qq" name="qq" placeholder="QQ"
-                                                           required="qq">
-                                                    <textarea name="content" class="comment_content" placeholder="内容"
-                                                              name=""
-                                                              required="text"></textarea>
-
-                                                    <if condition="$webConfig['comment_code']==1">
-
-                                                        <div>
-                                                            <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
-                                                                 onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
-                                                                 style="cursor: pointer;height: 44px;width: 100px;">
-                                                            <input type="text" maxlength="4" class="check_code"
-                                                                   style="width: 15%;display: inline;margin-left: 5px;"
-                                                                   placeholder="验证码" required="check_code">
-                                                        </div>
-
-                                                    </if>
-
-                                                    <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,0,0,{$vo['id']});">
-
-                                                </form>
-
-
-                                            </ul>
-
-
-                                                <?php }else{ ?>
-
-
-                                            <ul class="chats" style="display: none">
-
-                                            <form>
-
-                                                <input type="text" class="comment_name" name="name" placeholder="昵称"
-                                                       required="text">
-                                                <input type="text" class="comment_qq" name="qq" placeholder="QQ"
-                                                       required="qq">
-                                                <textarea name="content" class="comment_content" placeholder="内容"
-                                                          name=""
-                                                          required="text"></textarea>
-
-                                                <if condition="$webConfig['comment_code']==1">
-
-                                                    <div>
-                                                        <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
-                                                             onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
-                                                             style="cursor: pointer;height: 44px;width: 100px;">
-                                                        <input type="text" maxlength="4" class="check_code"
-                                                               style="width: 15%;display: inline;margin-left: 5px;"
-                                                               placeholder="验证码" required="check_code">
-                                                    </div>
-
-                                                </if>
-
-                                                <input type="button" style="width: 100px;height: 38px;" value="提交" onclick="addComment(this,0,0,{$vo['id']});">
-
-                                            </form>
-                                            </ul>
-
-
-                                            <?php } ?>
-
-
-
-                                        </li>
-
-                                        <?php
-                                            }
-                                        ?>
-
-                                </ol>
-                            </div>
-
-
+                            <div class="clearfix"></div>
                         </div>
-                        <p class="loadMore">
-                            <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block">
-                                Load More </a>
-                        </p>
+
+
+                        <form class="rep_content">
+
+                            <input type="text" class="comment_name" name="name" placeholder="昵称"
+                                   required="text">
+                            <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                                   required="qq">
+                            <textarea name="content" class="comment_content" placeholder="内容"
+                                      name=""
+                                      required="text"></textarea>
+
+                            <if condition="$webConfig['comment_code']==1">
+
+                                <div>
+                                    <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                         onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                         style="cursor: pointer;height: 44px;width: 100px;">
+                                    <input type="text" maxlength="4" class="check_code"
+                                           style="width: 15%;display: inline;margin-left: 5px;"
+                                           placeholder="验证码" required="check_code">
+                                </div>
+
+                            </if>
+
+                            <input type="button" style="width: 100px;height: 38px;" value="提交"
+                                   onclick="addComment(this,{$v['id']},{$v['level']},{$vo['id']});">
+
+                        </form>
 
 
                     </div>
+                </li>
 
-                </div>
+                <php>
+
+                    }
+
+                </php>
+                <form>
+
+                    <input type="text" class="comment_name" name="name" placeholder="昵称"
+                           required="text">
+                    <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                           required="qq">
+                    <textarea name="content" class="comment_content" placeholder="内容"
+                              name=""
+                              required="text"></textarea>
+
+                    <if condition="$webConfig['comment_code']==1">
+
+                        <div>
+                            <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                 onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                 style="cursor: pointer;height: 44px;width: 100px;">
+                            <input type="text" maxlength="4" class="check_code"
+                                   style="width: 15%;display: inline;margin-left: 5px;"
+                                   placeholder="验证码" required="check_code">
+                        </div>
+
+                    </if>
+
+                    <input type="button" style="width: 100px;height: 38px;" value="提交"
+                           onclick="addComment(this,0,0,{$vo['id']});">
+
+                </form>
 
 
-            </div>
+            </ul>
 
-            <div class="col-md-4 content-main-right">
-                <div class="search">
-                    <h3>SEARCH HERE</h3>
 
-                    <form>
-                        <input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
-                        <input type="submit" value="">
-                    </form>
-                </div>
-                <div class="categories">
-                    <h3>CATEGORIES</h3>
-                    <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>
-                    <li><a href="#">Vestibulum commodo felis quis tort</a></li>
-                    <li><a href="#">Fusce pellentesque suscipit</a></li>
-                </div>
-                <div class="archives">
-                    <h3>ARCHIVES</h3>
-                    <li class="active"><a href="#">July 2014</a></li>
-                    <li><a href="#">June 2014</a></li>
-                    <li><a href="#">May 2014</a></li>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
+            <?php }else{ ?>
+
+
+            <ul class="chats" style="display: none">
+
+                <form>
+
+                    <input type="text" class="comment_name" name="name" placeholder="昵称"
+                           required="text">
+                    <input type="text" class="comment_qq" name="qq" placeholder="QQ"
+                           required="qq">
+                    <textarea name="content" class="comment_content" placeholder="内容"
+                              name=""
+                              required="text"></textarea>
+
+                    <if condition="$webConfig['comment_code']==1">
+
+                        <div>
+                            <img src="/index.php?m=common&c=getcommentver&a=index&id={$v['id']}"
+                                 onclick="javascript:this.src='/index.php?m=common&c=getcommentver&a=index&id={$v['id']}'"
+                                 style="cursor: pointer;height: 44px;width: 100px;">
+                            <input type="text" maxlength="4" class="check_code"
+                                   style="width: 15%;display: inline;margin-left: 5px;"
+                                   placeholder="验证码" required="check_code">
+                        </div>
+
+                    </if>
+
+                    <input type="button" style="width: 100px;height: 38px;" value="提交"
+                           onclick="addComment(this,0,0,{$vo['id']});">
+
+                </form>
+            </ul>
+
+
+            <?php } ?>
+
+
+        </li>
+
+        <?php
+                                            }
+                                        ?>
+
+    </ol>
+</div>
+
+
+</div>
+<p class="loadMore">
+    <a href="javascript:;" data-page="{$p}" class=" btn blue  default btn-block">
+        Load More </a>
+</p>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+<div class="col-md-4 content-main-right">
+    <div class="search">
+        <h3>SEARCH HERE</h3>
+
+        <form>
+            <input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
+            <input type="submit" value="">
+        </form>
     </div>
+    <div class="categories">
+        <h3>CATEGORIES</h3>
+        <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>
+        <li><a href="#">Vestibulum commodo felis quis tort</a></li>
+        <li><a href="#">Fusce pellentesque suscipit</a></li>
+    </div>
+    <div class="archives">
+        <h3>ARCHIVES</h3>
+        <li class="active"><a href="#">July 2014</a></li>
+        <li><a href="#">June 2014</a></li>
+        <li><a href="#">May 2014</a></li>
+    </div>
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
 </div>
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/layer/layer.min.js"></script>
 
@@ -324,7 +350,7 @@
      * 添加评论
      * @returns {boolean}
      */
-    function addComment(z, ref_id, level,commentId) {
+    function addComment(z, ref_id, level, commentId) {
         var name = $.trim($(z).parent().find(".comment_name").val());
         var qq = $(z).parent().find(".comment_qq").val();
         var check_code = $(z).parent().find(".check_code").val();
@@ -350,47 +376,58 @@
             timeout: 5000,
             data: {
 
-                name: name, qq: qq, content: content, data: commentId, ref_id: ref_id, level: level, check_code: check_code,type:<?php echo \Admin\Comment\Type\Type::STATUS_TWIITER;?>
+                name: name,
+                qq: qq,
+                content: content,
+                data: commentId,
+                ref_id: ref_id,
+                level: level,
+                check_code: check_code,
+                type: <?php echo \Admin\Comment\Type\Type::STATUS_TWIITER;?>
 
-            },
-            beforeSend: function () {
-                var load = layer.load('提交中', 3);
-            },
-            success: function (d) {
-                layer.close("load")
-                if (d.status) {
-                    layer.msg('提交成功', 3, {
-                        type: 9,
-                        rate: 'bottom',
-                        shade: [0]
-                    });
-                    if (ref_id == 0) {
-                        $(".chats").prepend(d.html)
-                    } else {
+    }
+    ,
+    beforeSend: function () {
+        var load = layer.load('提交中', 3);
+    }
+    ,
+    success: function (d) {
+        layer.close("load")
+        if (d.status) {
+            layer.msg('提交成功', 3, {
+                type: 9,
+                rate: 'bottom',
+                shade: [0]
+            });
+            if (ref_id == 0) {
+                $(".chats").prepend(d.html)
+            } else {
 
-                        $(z).parent().animate({
-                            height: "toggle"
-                        })
-                        $(z).parent().hide()
-                        $(".comment_" + ref_id).after(d.html)
-                    }
-                    $('#comment_form')[0].reset()
-                } else {
-                    layer.msg(d.msg, 1, 8);
-                }
-            },
-            error: function () {
-                layer.msg('提交失败', 1, 8);
-            },
-            complete: function (XMLHttpRequest, status) {
-                if (status == 'timeout') {
-                    ajaxTimeoutTest.abort();
-                    layer.alert("超时!", 1, 8)
-                }
+                $(z).parent().animate({
+                    height: "toggle"
+                })
+                $(z).parent().hide()
+                $(".comment_" + ref_id).after(d.html)
             }
+            $('#comment_form')[0].reset()
+        } else {
+            layer.msg(d.msg, 1, 8);
+        }
+    }
+    ,
+    error: function () {
+        layer.msg('提交失败', 1, 8);
+    }
+    ,
+    complete: function (XMLHttpRequest, status) {
+        if (status == 'timeout') {
+            ajaxTimeoutTest.abort();
+            layer.alert("超时!", 1, 8)
+        }
+    }
 
-        })
-        return false;
+    })
+    return false;
 
 
     }
