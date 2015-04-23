@@ -3,72 +3,74 @@
 
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-<!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 
-    <include file="layout@layout@menu"/>
-
-</div>
-<!-- END SIDEBAR -->
-<!-- BEGIN CONTENT -->
-<div class="page-content-wrapper">
-<div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <include file="layout@layout@widgets"/>
-    <!-- END PAGE HEADER-->
-    <div class="row">
-        <div class="col-md-10">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet box grey-cascade">
-                <div class="portlet-title">
-                    <div class="caption">
+        <include file="layout@layout@menu"/>
+        <style>
+            .select2-container-multi .select2-choices {
+                min-height: 300px;
+            }
+        </style>
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <include file="layout@layout@widgets"/>
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-10">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
                                 <span class="glyphicon glyphicon-arrow-left"
                                       onclick="javascript:history.go(-1);"></span>
 
-                    </div>
-                    <div class="tools">
-                        <a href="javascript:;" class="collapse">
-                        </a>
-                        <a href="#portlet-config" data-toggle="modal" class="config">
-                        </a>
-                        <a href="javascript:;" class="reload">
-                        </a>
-                        <a href="javascript:;" class="remove">
-                        </a>
-                    </div>
-                </div>
-                <div class="portlet-body">
-
-                    <form action="#" class="form-horizontal form-row-sepe">
-                        <div class="form-body">
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Tags Support List</label>
-                        <div class="col-md-4">
-                            <input type="hidden" id="select2_sample5" class="form-control select2" value="red, blue">
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="javascript:;" class="reload">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    </div>
-                    </form>
+                        <div class="portlet-body">
+
+                            <form action="#" class="form-horizontal form-row-sepe">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">标签列表</label>
+
+                                        <div class="col-md-4">
+                                            <input type="hidden" id="select2_sample5" class="form-control select2"
+                                                   value="<volist name='tags' id='tag'><if condition='$i eq count($tags)'>{$tag.tagname}<else />{$tag.tagname},</if></volist>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
 
 
+                        </div>
+
+
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
                 </div>
-
-
-
-
-
-
             </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
+
+
         </div>
+
     </div>
-
-
-</div>
-
-</div>
 </div>
 
 </div>
@@ -82,10 +84,20 @@
 
 
 <script>
-    jQuery(document).ready(function() {
 
+
+    jQuery(document).ready(function () {
+
+        var v = $("#select2_sample5").val().split(",");
         $("#select2_sample5").select2({
-            tags: ["red", "green", "blue", "yellow", "pink"]
+            tags: [],
+            placeholder: "请输入"
+        }).on("change", function () {
+            $.ajax({
+                url: "/index.php?m=admin&c=tags&a=checkTags",
+                data: "tags=" + $(this).val(),
+                type: "post"
+            })
         });
 
     });

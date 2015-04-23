@@ -15,8 +15,8 @@ class tagsController extends abstractController{
 
     public function indexAction(){
 
-        $tag = db()->table('article_tag')->getAll()->order('id')->done();
-        $this->getView()->assign(array("tag"=>$tag));
+        $tags = db()->table('article_tag')->getAll()->order('id')->done();
+        $this->getView()->assign(array("tags"=>$tags));
         $this->getView()->display();
 
     }
@@ -56,6 +56,35 @@ class tagsController extends abstractController{
             return $this->link()->success("admin:category:index","删除成功");
         }else{
             return $this->link()->error("删除失败");
+        }
+
+    }
+
+    /**
+     * 对比tags 处理 add or delete
+     */
+    public function checkTagsAction(){
+
+        $tags = post("tags","txt");
+        $tagsAll = db()->table('article_tag')->getAll()->order('id')->done();
+        $dbTag = array();//oldTags
+        foreach($tagsAll as $v){
+            $oldTags[$v['id']] = $v['tagname'];
+        }
+        $newTags = explode(",",$tags);
+        //取差集
+        $diffTags = array_merge(array_diff($newTags,$oldTags),array_diff($oldTags,$newTags));
+        if(!$diffTags){
+            return "null";
+        }
+        foreach($diffTags as $v){
+            if(in_array($v,$oldTags)){
+                //删除
+                db()->Table('article_tag')->delete(array('tagname'=>$v))->done();
+            }else{
+                //新增
+                db()->Table('article_tag')->insert(array('tagname'=>$v))->done();
+            }
         }
 
     }
