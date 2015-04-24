@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-04-21 17:56:59
+Date: 2015-04-24 17:47:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,19 +40,19 @@ CREATE TABLE `xtt_article` (
 -- ----------------------------
 -- Records of xtt_article
 -- ----------------------------
-INSERT INTO `xtt_article` VALUES ('1', '测试0000', '&lt;p&gt;阿SA说adasdadadadasdasd&lt;/p&gt;', '', '', '2015-04-02 14:23:55', '1', '1', '100', '100', '1', '1', '1', '123456');
+INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>阿SA说adasdadadadasdasd</p>', '', '', '2015-04-22 16:20:21', '1', '1', '100', '100', '1', '1', '1', '123456');
 
 -- ----------------------------
 -- Table structure for xtt_article_category
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article_category`;
 CREATE TABLE `xtt_article_category` (
-  `id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '分类名',
   `alias` varchar(255) DEFAULT NULL COMMENT '别名',
   `sort` int(10) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_article_category
@@ -60,6 +60,10 @@ CREATE TABLE `xtt_article_category` (
 INSERT INTO `xtt_article_category` VALUES ('1', '测试11100000啊00221问问啊啊122', 'cs1', '0');
 INSERT INTO `xtt_article_category` VALUES ('2', '测试2222222去223232啊223', 'cs2', '0');
 INSERT INTO `xtt_article_category` VALUES ('3', '222测试333222223435412121', 'cs34', '12');
+INSERT INTO `xtt_article_category` VALUES ('9', '2222', '222222', '22');
+INSERT INTO `xtt_article_category` VALUES ('10', '2222', '222222', '22');
+INSERT INTO `xtt_article_category` VALUES ('11', '4324', '42342', '232');
+INSERT INTO `xtt_article_category` VALUES ('12', null, null, '0');
 
 -- ----------------------------
 -- Table structure for xtt_article_tag
@@ -75,9 +79,9 @@ CREATE TABLE `xtt_article_tag` (
 -- ----------------------------
 -- Records of xtt_article_tag
 -- ----------------------------
-INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1,1');
-INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1,1');
-INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1,1');
 
 -- ----------------------------
 -- Table structure for xtt_comment
@@ -171,7 +175,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -180,7 +184,6 @@ INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55
 INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0', '0');
-INSERT INTO `xtt_common_menu` VALUES ('5', '会员列表', '会员管理', '2015-02-11 10:30:08', 'admin', 'member', 'list', null, '0', '1', '1', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('200', '主页', '主页', '2015-03-18 16:42:17', 'home', 'index', 'index', '', '2', '1', '', '1', '0', '1');
 INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1', '0');
@@ -193,6 +196,8 @@ INSERT INTO `xtt_common_menu` VALUES ('217', '说说管理', '说说管理', nul
 INSERT INTO `xtt_common_menu` VALUES ('218', '博文详情', '博文详情', null, 'home', 'blog', 'show', '', '1', '0', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('219', 'Twitter', '说说', null, 'home', 'twitter', 'index', '', '1', '1', '', '1', '0', '1');
 INSERT INTO `xtt_common_menu` VALUES ('220', '分类管理', 'category', null, 'admin', 'category', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('221', '标签管理', '文章标签管理', null, 'admin', 'tags', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理', null, 'admin', 'sidebar', 'index', '', '1', '1', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -273,7 +278,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -338,6 +343,40 @@ INSERT INTO `xtt_member_login_log` VALUES ('57', '1270', '2015-03-30 21:46:02', 
 INSERT INTO `xtt_member_login_log` VALUES ('58', '1270', '2015-04-02 14:23:14', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('59', '1270', '2015-04-21 14:28:15', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('60', '1270', '2015-04-21 15:17:42', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('61', '1270', '2015-04-22 09:21:40', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('62', '1270', '2015-04-23 15:42:56', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('63', '1270', '2015-04-24 09:31:19', '1');
+
+-- ----------------------------
+-- Table structure for xtt_sidebar
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_sidebar`;
+CREATE TABLE `xtt_sidebar` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) DEFAULT NULL,
+  `title` varchar(256) DEFAULT NULL COMMENT '标题',
+  `data` varchar(518) DEFAULT NULL COMMENT '数据',
+  `group` varchar(128) DEFAULT NULL COMMENT '用户组 system or diy',
+  `show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示',
+  `sort` tinyint(4) DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_sidebar
+-- ----------------------------
+INSERT INTO `xtt_sidebar` VALUES ('1', 'blogger', 'blogger', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:7:\"blogger\";}}', 'system', '1', '1');
+INSERT INTO `xtt_sidebar` VALUES ('2', '日历', 'calendar', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"日历\";}}', 'system', '1', '2');
+INSERT INTO `xtt_sidebar` VALUES ('3', '最新说说', 'newtwitter', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"最新碎语\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示最新碎语数\";s:4:\"data\";s:1:\"5\";}}', 'system', '1', '3');
+INSERT INTO `xtt_sidebar` VALUES ('4', '标签', 'tags', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"标签\";}}', 'system', '1', '4');
+INSERT INTO `xtt_sidebar` VALUES ('5', '分类', 'category', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"分类\";}}', 'system', '1', '5');
+INSERT INTO `xtt_sidebar` VALUES ('6', '存档', 'archive', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"存档\";}}', 'system', '1', '6');
+INSERT INTO `xtt_sidebar` VALUES ('7', '链接', 'link', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"链接\";}}', 'system', '1', '7');
+INSERT INTO `xtt_sidebar` VALUES ('8', '搜索', 'search', 'a:1:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:6:\"搜索\";}}', 'system', '1', '8');
+INSERT INTO `xtt_sidebar` VALUES ('9', '最新评论', 'newcomment', 'a:3:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"最新评论\";}i:1;a:2:{s:5:\"title\";s:21:\"首页最新评论数\";s:4:\"data\";s:2:\"10\";}i:2;a:2:{s:5:\"title\";s:27:\"新近评论截取字节数\";s:4:\"data\";s:2:\"20\";}}', 'system', '1', '9');
+INSERT INTO `xtt_sidebar` VALUES ('10', '最新日志', 'newblog', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"最新日志\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示最新日志数\";s:4:\"data\";s:2:\"10\";}}', 'system', '1', '10');
+INSERT INTO `xtt_sidebar` VALUES ('11', '热门日志', 'hotblog', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"热门日志\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示热门日志数\";s:4:\"data\";s:2:\"10\";}}', 'system', '1', '11');
+INSERT INTO `xtt_sidebar` VALUES ('12', '随机日志', 'randblog', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"随机日志\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示随机日志数\";s:4:\"data\";s:2:\"10\";}}', 'system', '1', '12');
 
 -- ----------------------------
 -- Table structure for xtt_twitter
