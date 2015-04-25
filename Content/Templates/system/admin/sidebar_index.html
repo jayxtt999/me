@@ -1,0 +1,297 @@
+<include file="layout@admin@head"/>
+<link rel="stylesheet" type="text/css"
+      href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-nestable/jquery.nestable.css"/>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+    <include file="layout@layout@menu"/>
+    <style>
+        .accordion-toggle-ex {
+            width: 93%;
+            display: block;
+            float: left
+        }
+
+        .glyphicon-ex {
+            display: block;
+            float: left;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</div>
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+<div class="page-content">
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <include file="layout@layout@widgets"/>
+    <!-- END PAGE HEADER-->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box grey-cascade">
+                <div class="portlet-title">
+                    <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse">
+                        </a>
+                        <a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                        <a href="javascript:;" class="reload">
+                        </a>
+                        <a href="javascript:;" class="remove">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+
+                    <div class="row">
+
+                        <div class="panel-group accordion scrollable col-md-6" id="accordion2">
+
+                            <h4 class="text-success">
+                                系统组件
+                            </h4>
+
+                            <volist name="systemWidgetsAll" id="vo">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle accordion-toggle-ex" data-toggle="collapse"
+                                               data-parent="#accordion2" href="#collapse_sidebar_{$vo.id}">
+                                                {$vo.name}
+                                            </a>
+
+                                            <if condition="$vo.show eq 1">
+                                                <span class="glyphicon-ex glyphicon  glyphicon-minus"
+                                                      data-show="{$vo.show}" onclick="activation(this,{$vo.id})"></span>
+                                                <else/>
+                                                <span class="glyphicon-ex glyphicon  glyphicon-plus"
+                                                      data-show="{$vo.show}" onclick="activation(this,{$vo.id})"></span>
+                                            </if>
+
+
+                                            <div style="clear: both"></div>
+
+                                        </h4>
+                                    </div>
+                                    <div id="collapse_sidebar_{$vo.id}" class="panel-collapse collapse">
+                                        <div class="panel-body">
+
+
+                                            <form class="form-horizontal" role="form"
+                                                  action="/index.php?m=admin&c=sidebar&a=edit" method="post">
+                                                <input type="hidden" name="sidebar_id" value="{$vo.id}">
+
+                                                <div class="form-body">
+
+
+                                                    <volist name="vo.data" id="vos">
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">{$vos.title}</label>
+
+                                                            <div class="col-md-9">
+                                                                <input type="text" name="data[]"
+                                                                       class="form-control input-inline input-medium"
+                                                                       value="{$vos.data}">
+                                                            </div>
+                                                        </div>
+                                                    </volist>
+
+
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button type="submit" class="btn green">Submit</button>
+                                                        <button type="button" class="btn default">Cancel
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </volist>
+
+                            <h4 class="text-success">
+                                自定义组件
+                            </h4>
+
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse"
+                                           data-parent="#accordion2" href="#collapse_add">
+                                            自定义一个新的组件+</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_add" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                        <form class="form-horizontal" role="form"
+                                              action="/index.php?m=admin&c=sidebar&a=add" method="post">
+                                            <div class="form-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label">组件名</label>
+
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="new_title"
+                                                               class="form-control input-inline input-medium">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label">内容 （支持html）</label>
+
+                                                    <div class="col-md-9">
+                                                        <textarea name="new_content " rows="10"
+                                                                  cols="32"></textarea>
+                                                    </div>
+
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button type="submit" class="btn green">Submit</button>
+                                                        <button type="button" class="btn default">Cancel
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <h4 class="text-success">
+                                显示激活
+                            </h4>
+
+
+                            <div class="dd" id="nestable_list_2">
+                                <ol class="dd-list">
+
+                                    <volist name="actionWidgetsAll" id="vo">
+
+                                        <li class="dd-item" id="dd-item-{$vo.id}">
+                                            <div class="dd-handle">
+                                                {$vo.name}
+                                            </div>
+                                        </li>
+
+                                    </volist>
+
+                                </ol>
+
+                                <button type="button" id="save_component_sort" class="btn green">保存组件排序</button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+
+<include file="layout@admin@foot"/>
+
+<script src="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-nestable/jquery.nestable.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<script>
+
+
+    jQuery(document).ready(function () {
+
+        //拖动
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+
+        $('#nestable_list_2').nestable({
+            group: 1
+        })
+
+        updateOutput($('#nestable_list_2').data('output', $('#nestable_list_2_output')));
+
+
+        //提交
+        $("#save_component_sort").click(function(){
+
+
+
+
+
+        })
+
+
+    });
+
+
+
+    //激活 or 关闭
+    function activation(z, id) {
+
+        var show = parseInt($(z).attr("data-show"))
+        if (show) {
+            $(z).removeClass("glyphicon-minus")
+            $(z).addClass("glyphicon-plus")
+            $(z).attr("data-show", 0)
+            $("#dd-item-"+id).remove()
+        } else {
+            $(z).removeClass("glyphicon-plus")
+            $(z).addClass("glyphicon-minus")
+            $(z).attr("data-show", 1)
+            var html = "<li class='dd-item' id='dd-item-"+id+"'><div class='dd-handle'>"+$(z).prev().text()+"</div></li>"
+            $(".dd-list").append(html)
+        }
+    }
+
+</script>

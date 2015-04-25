@@ -41,7 +41,7 @@ class cacheFile extends Cache{
     public function set($key, $value) {
         $filename = $this->_get_cache_file($key);
         //写文件, 文件锁避免出错
-        file_put_contents($filename, serialize($value), LOCK_EX);
+        file_put_contents($filename, "<?php exit;//".serialize($value), LOCK_EX);
         if(file_exists($filename)){
             return true;
         }else{
@@ -69,7 +69,7 @@ class cacheFile extends Cache{
             if (empty($value)) {
                 return false;
             }
-            return unserialize($value);
+            return unserialize(str_replace("<?php exit;//", '', $value));
         }else{
             $this->delete($key);
             return false;
