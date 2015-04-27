@@ -189,11 +189,7 @@ class articleController extends abstractController{
     public function delAction(){
         $id = get("id","int");
         $res = db()->Table('article')->upDate(array('status'=>\Admin\Article\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();
-        if($res){
-            return $this->link()->success("admin:article:list","删除成功");
-        }else{
-            return $this->link()->error("删除失败");
-        }
+        return $res;
 
     }
 
