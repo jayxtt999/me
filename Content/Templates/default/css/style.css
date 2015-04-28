@@ -1789,7 +1789,14 @@ img.single-pic {
     }
 }
 
-/*附加*/
+
+
+
+
+
+
+
+/*--------------------------------附加------------------------------*/
 #check_code {
     width: 15%;
     display: inline;
@@ -2057,4 +2064,140 @@ img.single-pic {
 
 .shuoshuo_detail .media {
     padding-top: 7px;
+}
+
+
+/*        附加 侧边栏          */
+
+.bg-blue-madison {
+    border-color: #578ebe !important;
+    background-image: none !important;
+    background-color: #578ebe !important;
+    color: white !important;
+}
+
+.bg-purple-studio {
+    border-color: #8e44ad !important;
+    background-image: none !important;
+    background-color: #8e44ad !important;
+    color: white !important;
+}
+
+.bg-grey-cascade {
+    border-color: #95a5a6 !important;
+    background-image: none !important;
+    background-color: #95a5a6 !important;
+    color: white !important;
+}
+
+.bg-blue-hoki {
+    border-color: #67809f !important;
+    background-image: none !important;
+    background-color: #67809f !important;
+    color: white !important;
+}
+
+.bg-green {
+    border-color: #35aa47 !important;
+    background-image: none !important;
+    background-color: #35aa47 !important;
+    color: white !important;
+}
+
+.bg-green-meadow {
+    border-color: #1bbc9b !important;
+    background-image: none !important;
+    background-color: #1bbc9b !important;
+    color: white !important;
+}
+
+
+
+
+
+
+
+.tiles .tile.double {
+    width: 380px !important;
+}
+.tiles .tile {
+    display: block;
+    letter-spacing: 0.02em;
+    height: 135px;
+    width: 135px !important;
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    line-height: 20px;
+    overflow: hidden;
+    border: 4px solid transparent;
+}
+
+
+.tiles .tile .tile-body {
+    height: 100%;
+    vertical-align: top;
+    padding: 10px 10px;
+    overflow: hidden;
+    position: relative;
+    font-weight: 400;
+    font-size: 12px;
+    color: #000000;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.tiles .tile .tile-body img {
+    float: left;
+    margin-right: 10px;
+}
+.tiles .tile .tile-body h3, .tiles .tile .tile-body h4 {
+    margin-bottom: 5px;
+}
+.tiles .tile .tile-body h1, .tiles .tile .tile-body h2, .tiles .tile .tile-body h3, .tiles .tile .tile-body h4, .tiles .tile .tile-body h5, .tiles .tile .tile-body h6, .tiles .tile .tile-body p {
+    padding: 0;
+    margin: 0;
+    line-height: 22px;
+}
+.tiles .tile .tile-object {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 30px;
+    background-color: transparent;
+}
+.tiles .tile .tile-object > .name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 15px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #ffffff;
+}
+.tiles .tile .tile-object > .number {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    line-height: 14px;
+    margin-bottom: 8px;
+    margin-right: 10px;
+}
+
+.tiles .tile-body img{
+    width: 80px;
+    height: 80px;
 }

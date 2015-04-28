@@ -1,0 +1,84 @@
+
+<div class="col-md-4 content-main-right">
+
+    <volist name="sidebarSystem" id="vo">
+
+        <if condition="$key eq 'search'">
+
+            <div class="search">
+                <h3>{$vo.title}</h3>
+
+                <form>
+                    <input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
+                    <input type="submit" value="">
+                </form>
+            </div>
+
+        <elseif condition="$key eq 'category'"/>
+
+            <div class="categories">
+                <h3>{$vo.title}</h3>
+
+                <volist name="vo.data" id="categoriesData">
+                   <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                    <li><a href="#">{$categoriesData.name}</a></li>
+                </volist>
+
+            </div>
+
+        <elseif condition="$key eq 'blogger'"/>
+
+            <div class="tiles">
+                <div class="tile double bg-purple-studio">
+                    <div class="tile-body">
+
+                        <img src="{$vo.data.avatar}" alt="{$vo.data.nickname}" class="img-circle">
+                        <h4>{$vo.data.email}</h4>
+                        <p>
+                            {$vo.data.userinfo}
+                        </p>
+                    </div>
+                    <div class="tile-object">
+                        <div class="name">
+                            {$vo.data.nickname}
+                        </div>
+                        <div class="number">
+                            {$vo.data.create_time}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        <elseif condition="$key eq 'calendar'"/>
+            <div id="calendar">
+            </div>
+            <script src="http://ajax.useso.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-datepaginator/bootstrap-datepaginator.min.js" type="text/javascript"></script>
+            <script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/ui-datepaginator.js"></script>
+            <script>
+                jQuery(document).ready(function() {
+                    alert("????")
+                    $('#calendar').datepaginator();
+                });
+            </script>
+
+        </if>
+
+
+
+    </volist>
+
+
+
+
+
+
+    <div class="archives">
+        <h3>ARCHIVES</h3>
+        <li class="active"><a href="#">July 2014</a></li>
+        <li><a href="#">June 2014</a></li>
+        <li><a href="#">May 2014</a></li>
+    </div>
+</div>
+

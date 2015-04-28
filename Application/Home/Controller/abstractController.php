@@ -16,7 +16,6 @@ class abstractController extends \System\Core\Controller
     function __construct()
     {
         //获取菜单
-
         //获取菜单栏 && 获取当前路由相关信息
         $common = new \Home\Model\menuModel();
         $this->common = $common;
@@ -26,12 +25,19 @@ class abstractController extends \System\Core\Controller
         $config = new \Admin\Model\webConfigModel();
         $webConfig = $config->getConfig();
         $templatesPath = WEB_TEMP_PATH."/".C("view_templates");
+        //获取侧边栏信息
+        $sidebarModel  =  new \Home\Model\sidebarModel();
+        $sidebar = $sidebarModel->getSidebarData();
+        //载入
         $tplData = array(
             'menuData' => $menuData,
             'routeInfo' => $routeInfo,
             'webConfig' => $webConfig,
             'templatesPath' => $templatesPath,
+            'sidebarSystem' => $sidebar['system'],
+            'sidebarDiy' => $sidebar['diy'],
         );
+        //var_dump( $sidebar['system']);exit;
         $this->getView()->assign($tplData);
 
 
