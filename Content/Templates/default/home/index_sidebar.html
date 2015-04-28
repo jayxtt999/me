@@ -51,17 +51,16 @@
             </div>
 
         <elseif condition="$key eq 'calendar'"/>
-            <div id="calendar">
+            <link href="{$templatesPath}/css/clock.css" rel='stylesheet' type='text/css' />
+            <div id="clock" class="light">
+                <div class="display">
+                    <div class="date"></div>
+                    <div class="digits"></div>
+                </div>
             </div>
-            <script src="http://ajax.useso.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-            <script src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-datepaginator/bootstrap-datepaginator.min.js" type="text/javascript"></script>
-            <script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/ui-datepaginator.js"></script>
-            <script>
-                jQuery(document).ready(function() {
-                    alert("????")
-                    $('#calendar').datepaginator();
-                });
-            </script>
+            <script type="text/javascript" src="{$templatesPath}/js/moment.min.js"></script>
+            <script type="text/javascript" src="{$templatesPath}/js/clock.js"></script>
+
 
         </if>
 
