@@ -61,8 +61,22 @@
             <script type="text/javascript" src="{$templatesPath}/js/moment.min.js"></script>
             <script type="text/javascript" src="{$templatesPath}/js/clock.js"></script>
 
+        <elseif condition="$key eq 'newtwitter'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            <volist name="vo.data" id="newTwitterData">
+                <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                <li><a href="#">{$newTwitterData.content}</a></li>
+            </volist>
+
+        </div>
 
         </if>
+
+
+
 
 
 

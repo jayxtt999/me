@@ -32,7 +32,6 @@ class sidebar {
 
     //最新说说
     public static function newtwitter($data=null){
-
         $title  = $data[0]['data'];
         $number  = $data[1]['data'];
         $newTwitter =  db()->table("twitter")->getAll(array('status'=>1))->limit(0,$number)->done();
@@ -45,6 +44,7 @@ class sidebar {
     //标签
     public static function tags($data=null){
 
+        $tags = db()->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
 
 
     }

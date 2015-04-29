@@ -70,6 +70,18 @@ class sidebarController extends abstractController
         return JsonObject(array("msg" => "保存成功"));
     }
 
+    public function checkSwitchAction(){
+
+        $id = get("id", "int");
+        $row = db()->table('sidebar')->getRow(array('id'=>$id))->done();
+        if($row['show'] == \Admin\Sidebar\Type\Show::STATUS_ENABLE){
+            db()->table('sidebar')->upDate(array('show' => \Admin\Sidebar\Type\Show::STATUS_UNABLE), array('id' => $id))->done();
+        }else{
+            db()->table('sidebar')->upDate(array('show' => \Admin\Sidebar\Type\Show::STATUS_ENABLE), array('id' => $id))->done();
+        }
+    }
+
+
     /**
      * edit
      */
