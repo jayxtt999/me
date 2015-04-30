@@ -144,6 +144,19 @@ class DB
         return $this;
     }
 
+
+    /**
+     * 直接sql
+     * @param $sql
+     * @return mixed
+     */
+    public function sql($sql){
+
+        return $this->db->exec($sql);
+
+    }
+
+
     /**
      * Done
      * @return mixed

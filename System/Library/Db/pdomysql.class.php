@@ -54,6 +54,7 @@ class pdoMysql
         } else {
             $this->res = $res;
         }
+        return $this->res;
     }
 
     /**
@@ -62,9 +63,11 @@ class pdoMysql
      */
     public function exec($sql)
     {
-        $res = $this->pdo->exec($sql);
-        if ($res) {
-            $this->res = $res;
+        $stmt = $this->pdo->prepare($sql);
+        $exeres = $stmt->execute();
+        if ($exeres) {
+            $this->res = $exeres;
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
 

@@ -21,7 +21,7 @@
 
                 <volist name="vo.data" id="categoriesData">
                    <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
-                    <li><a href="#">{$categoriesData.name}</a></li>
+                    <li><a href="#"><i class="fa fa-chevron-circle-right"></i><span class="title">{$categoriesData.name}</span></a></li>
                 </volist>
 
             </div>
@@ -69,6 +69,57 @@
             <volist name="vo.data" id="newTwitterData">
                 <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
                 <li><a href="#">{$newTwitterData.content}</a></li>
+            </volist>
+
+        </div>
+
+        <elseif condition="$key eq 'tags'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            {$vo.data}
+
+        </div>
+
+
+
+        <elseif condition="$key eq 'newblog'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            <volist name="vo.data" id="newBlogData">
+                <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                <li><a href="#"><span class="title">{$newBlogData.title}</span></a></li>
+            </volist>
+
+        </div>
+
+
+
+        <elseif condition="$key eq 'hotblog'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            <volist name="vo.data" id="hotBlogData">
+                <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                <li><a href="#"></i><span class="title">{$hotBlogData.title}</span></a></li>
+            </volist>
+
+        </div>
+
+
+
+        <elseif condition="$key eq 'randblog'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            <volist name="vo.data" id="randBlogData">
+                <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                <li><a href="#"><span class="title">{$randBlogData.title}</span></a></li>
             </volist>
 
         </div>
