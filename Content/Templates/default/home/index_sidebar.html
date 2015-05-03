@@ -124,6 +124,22 @@
 
         </div>
 
+
+        <elseif condition="$key eq 'archive'"/>
+
+        <div class="categories">
+            <h3>{$vo.title}</h3>
+
+            <volist name="vo.data" id="archiveBlogData" >
+                <!-- <li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>-->
+                <li><a href="#"><span class="title">{$key}【{$archiveBlogData}】</span></a></li>
+            </volist>
+
+        </div>
+
+
+
+
         </if>
 
 
