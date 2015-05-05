@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/4/28 0028
- * Time: ÏÂÎç 2:44
+ * Time: ä¸‹åˆ 2:44
  */
 
 namespace Home\Model;
@@ -13,16 +13,21 @@ class sidebarModel extends \System\Core\Model{
 
 
     public function getSidebarData(){
-        //²éÑ¯¿ªÆôµÄÏµÍ³²à±ßÀ¸
+        //æŸ¥è¯¢å¼€å¯çš„ç³»ç»Ÿä¾§è¾¹æ 
         $db = parent::getDb();
         $res = $db->table('sidebar')->getAll(array('show'=>\Admin\Sidebar\Type\Show::STATUS_ENABLE))->order('sort')->done();
         foreach($res as $v){
             $data = unserialize($v['data']);
             $callback = $v['title'];
             if($v['group'] == \Admin\Sidebar\Type\Group::SIDEBAR_SYSTEM){
-                $sidebarSystemData[$callback] = \System\Library\sidebar::$callback($data);
+                /*$class = new \ReflectionClass('\System\Library\sidebar');
+                $instance  = $class->newInstanceArgs();
+                $method = $class->getmethod($callback);
+                $sidebarSystemData[$callback] = $method->invokeArgs($instance,array($data));*/
+
+                $sidebarSystemData[$callback] = \System\Library\sidebar::init($callback,$data);
             }else{
-                $sidebarDiyData[$callback] = \System\Library\sidebar::$callback($data);
+                $sidebarDiyData[$callback] = \System\Library\sidebar::init($callback,$data);
             }
         }
         return array('system'=>$sidebarSystemData,'diy'=>$sidebarDiyData);

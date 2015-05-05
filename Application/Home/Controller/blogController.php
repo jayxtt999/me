@@ -13,10 +13,36 @@ class blogController extends abstractController{
 
     public function indexAction(){
 
+        //获取相关用于检索的参数
+        //分类
+        $category = get("category","txt")?trim(get("category","txt")):"";
+        //归档
+        $archive = get("archive","txt")?trim(get("archive","txt")):"";
+        //标签
+        $tag = get("tag","txt")?trim(get("tag","txt")):"";
+
+
+
         //获取文章列表
         $where = $logList = array();
         $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
         $where['member_id'] = 1;
+
+        //检索
+        if(!empty($category)){
+            $where['category'] = $category;
+        }
+        if(!empty($archive)){
+            preg_match("/^(\d{4})年(\d{1,2})月$/",$archive,$result);
+            $where['time?>='] = "$result[1]-$result[2]-01 00:00:00";
+            $where['time?<'] = "$result[1]-".($result[2]+1)."-01 00:00:00";
+        }
+        if(!empty($tag)){
+            $tagRow = db()->Table('article_tag')->getRow(array('tagname'=>$tag))->done();        //getRow
+            if($tagRow){
+                $where['id'] = explode(",",$tagRow['gid']);
+            }
+        }
 
         $count = db()->Table('article')->getAll($where)->order("istop desc")->count()->done();        //getAll
 

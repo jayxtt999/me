@@ -14,9 +14,14 @@ class twitterController extends abstractController
 
 
     public function indexAction(){
-        $where = array(
-            'status' => \Admin\Article\Type\Status::STATUS_ENABLE,
-        );
+
+        $where = array();
+        $id = get("id","int");
+        if(!empty($id)){
+            $where['id'] = $id;
+            $this->getView()->assign(array('id'=>$id));
+        }
+        $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
         $count = db()->Table('twitter')->getAll($where)->count()->done();
         $page = new \System\Library\Page($count);
         $page->listRows = 10;

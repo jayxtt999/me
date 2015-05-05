@@ -217,7 +217,7 @@
                                         <div class="panel-body">
 
                                             <form class="form-horizontal" role="form"
-                                                  action="/index.php?m=admin&c=sidebar&a=add" method="post">
+                                                  action="/index.php?m=admin&c=sidebar&a=add" method="post" onsubmit="return checkAdd()">
                                                 <div class="form-body">
 
                                                     <div class="form-group">
@@ -391,6 +391,24 @@
         });
 
     }
+
+
+    function checkAdd(){
+        if($.trim($("input[name='new_title']").val())==""){
+            layer.msg('组件名不能为空', {
+                icon: 8
+            });
+            return false
+        }
+        if($.trim($("input[na名me='new_content']").val())==""){
+            layer.msg('组件内容不能为空', {
+                icon: 8
+            });
+            return false
+        }
+
+    }
+
 
     //激活 or 关闭
     function activation(z, id) {

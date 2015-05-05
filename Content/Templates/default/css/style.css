@@ -341,8 +341,7 @@ a.bttn:hover {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 0.95em;
     text-decoration: none;
-    padding: 6px 0;
-    display: block;
+    line-height: 28px;
     font-weight: 400;
 }
 
@@ -2288,4 +2287,10 @@ img.single-pic {
     -moz-box-shadow: none;
     box-shadow: none;
     text-shadow: none;
+}
+
+.f12{
+    font-size: 12px;
+    font-style:italic;
+    font-family: 微软雅黑;
 }

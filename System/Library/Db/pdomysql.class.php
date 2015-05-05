@@ -196,6 +196,12 @@ class pdoMysql
         if ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $val) {
+                    if(is_array($val)){
+                        $whereVal["w_" . $key] = "(".implode(",",$val).")";
+                        $whereData .= " and " . "`" . $key . "` in (:w_$key)";
+                        $whereDataCache .= " and " . "`" . $key . "` in  (".implode(",",$val).")";
+                        continue;
+                    }
                     $wz = strpos($key, "?");
                     $parame = $wz ? substr($key, $wz + 1) : "=";
                     if ($wz) {

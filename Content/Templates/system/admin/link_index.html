@@ -1,7 +1,7 @@
 <include file="layout@admin@head"/>
         <style>
 
-            .sort,.name,.alias,.show{
+            .sort,.name,.src,.show{
                 cursor: pointer;
             }
 
@@ -58,14 +58,9 @@
                                 名称
                             </th>
                             <th>
-                                别名
+                                地址
                             </th>
-                            <th>
-                                查看
-                            </th>
-                            <th>
-                                日志
-                            </th>
+
 
                             <th>
                                 操作
@@ -75,17 +70,13 @@
                         <tbody>
 
                         <php>
-                            foreach($category as $vo){
+                            foreach($link as $vo){
                         </php>
                         <tr class='odd gradeX' data-id="<php> echo $vo['id']</php>">
                             <td class="sort"><php> echo $vo['sort'];</php></td>
                             <td class="name"><php> echo $vo['name'];</php></td>
-                            <td class="alias"><php> echo $vo['alias'];</php></td>
-                            <td class="show">
-                                <i class="fa fa-th-list"></i>
-                            </td>
+                            <td class="src"><php> echo $vo['src'];</php></td>
 
-                            <td><php> echo $vo['num'];</php></td>
                             <td>
                                 <a href="javascript:articleDel('{$vo.id}');" class='btn
                                                 purple' title='删除'><i class='fa fa-times'></i></a>
@@ -133,9 +124,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">别名</label>
+                                    <label class="col-md-3 control-label">地址</label>
                                     <div class="col-md-9">
-                                        <input type="text" name="alias" class="form-control addalias" placeholder="alias">
+                                        <input type="text" name="src" class="form-control addsrc" placeholder="src">
                                     </div>
                                 </div>
 
@@ -144,7 +135,7 @@
                             </div>
                             <div class="form-actions right">
                                 <button type="button" class="btn default">取消</button>
-                                <button type="button" class="btn green add_category">提交</button>
+                                <button type="button" class="btn green add_link">提交</button>
                             </div>
                         </form>
                     </div>
@@ -183,13 +174,9 @@
                 "columns": [{
                     "orderable": true
                 }, {
-                    "orderable": true
-                }, {
-                    "orderable": true
-                }, {
                     "orderable": false
                 }, {
-                    "orderable": false
+                    "orderable": true
                 }, {
                     "orderable": false
                 }
@@ -258,22 +245,21 @@
     }();
     TableManaged.init();
 
-    $(".sort,.name,.alias").click(function(){
+    $(".sort,.name,.src").click(function(){
 
-        if($(this).find(".alias_input").attr("type") == "text"){
+        if($(this).find(".src_input").attr("type") == "text"){
             return false;
         }
         var z =$(this)
         var name = $.trim($(this).html());
         var m = $.trim($(this).text());
-        $(this).html("<input type=text value=\""+name+"\" class=alias_input>");
-        $(this).find(".alias_input").focus();
-        $(this).find(".alias_input").bind("blur", function(){
+        $(this).html("<input type=text value=\""+name+"\" class=src_input>");
+        $(this).find(".src_input").focus();
+        $(this).find(".src_input").bind("blur", function(){
             var n = $.trim($(this).val());
             if(n != m){
-                //window.location = "sort.php?action=update&sid="+$(this).parent().parent().find(".sort_id").val()+"&alias="+encodeURIComponent(n);
                 $.ajax({
-                    url:"/index.php?m=admin&c=category&a=edit",
+                    url:"/index.php?m=admin&c=link&a=edit",
                     dataType:"json",
                     type:"post",
                     data:"id="+$(this).parent().parent().attr("data-id")+"&type="+$(this).parent().attr("class")+"&v="+encodeURIComponent(n),
@@ -281,7 +267,7 @@
                         if(d.status){
                             z.text(n)
                         }else{
-                            layer.msg(d.msg, {
+                            layer.msg('更新失败', {
                                 icon: 8
                             });
                         }
@@ -296,13 +282,13 @@
     })
 
 
-    $(".add_category").click(function(){
+    $(".add_link").click(function(){
 
         $.ajax({
-            url:"/index.php?m=admin&c=category&a=add",
+            url:"/index.php?m=admin&c=link&a=add",
             dataType:"json",
             type:"post",
-            data:"sort="+$(".addsort").val()+"&name="+$(".addname").val()+"&alias="+$(".addalias").val(),
+            data:"sort="+$(".addsort").val()+"&name="+$(".addname").val()+"&src="+$(".addsrc").val(),
             success:function(d){
                 if(d.status){
                     layer.msg(d.msg, {
@@ -310,11 +296,11 @@
                     },function(){
                         window.location.reload()
                     });
+
                 }else{
-                    layer.msg(d.msg, {
+                    layer.msg('添加失败', {
                         icon: 8
                     });
-
                 }
             }
         })
@@ -324,7 +310,7 @@
 
     function articleDel(id) {
         layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=category&a=del&id=" + id
+            window.location.href = "/index.php?m=admin&c=link&a=del&id=" + id
         });
     }
 </script>
