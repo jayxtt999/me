@@ -38,8 +38,8 @@ class cacheFile extends Cache{
      * @param $key
      * @param $value
      */
-    public function set($key, $value) {
-        $filename = $this->_get_cache_file($key);
+    public function set($key, $value,$path,$model) {
+        $filename = $this->_get_cache_file($key,$path,$model);
         //写文件, 文件锁避免出错
         file_put_contents($filename, "<?php exit;//".serialize($value), LOCK_EX);
         if(file_exists($filename)){
@@ -52,8 +52,8 @@ class cacheFile extends Cache{
     /**删除对应的一个缓存
      * @param $key
      */
-    public function delete($key) {
-        $filename = $this->_get_cache_file($key);
+    public function delete($key,$path,$model) {
+        $filename = $this->_get_cache_file($key,$path,$model);
         unlink($filename);
     }
 
@@ -62,16 +62,16 @@ class cacheFile extends Cache{
      * @param $key
      * @return bool|mixed
      */
-    public function get($key) {
-        if ($this->_has_cache($key)) {
-            $filename = $this->_get_cache_file($key);
+    public function get($key,$path,$model) {
+        if ($this->_has_cache($key,$path,$model)) {
+            $filename = $this->_get_cache_file($key,$path,$model);
             $value = file_get_contents($filename);
             if (empty($value)) {
                 return false;
             }
             return unserialize(str_replace("<?php exit;//", '', $value));
         }else{
-            $this->delete($key);
+            $this->delete($key,$path,$model);
             return false;
         }
     }
@@ -94,8 +94,8 @@ class cacheFile extends Cache{
      * @param $key
      * @return bool
      */
-    public function has($key){
-        return $this->_has_cache($key);
+    public function has($key,$path,$model){
+        return $this->_has_cache($key,$path,$model);
     }
 
     /**
@@ -103,8 +103,8 @@ class cacheFile extends Cache{
      * @param $key
      * @return bool
      */
-    private function _has_cache($key) {
-        $filename = $this->_get_cache_file($key);
+    private function _has_cache($key,$path,$model) {
+        $filename = $this->_get_cache_file($key,$path,$model);
         if(file_exists($filename) && (filemtime($filename) + $this->options['expire'] >= time())) {
             return true;
         }
@@ -128,9 +128,24 @@ class cacheFile extends Cache{
      * @param $key
      * @return string
      */
-    private function _safe_filename($key) {
+    private function _safe_filename($key,$path,$model) {
         if ($this->_is_valid_key($key)) {
-            return md5($key);
+            if($path){
+                //如果手动指定了目录
+                $path = $this->options['path'] .$path;
+                if(!is_readable($path))
+                {
+                    //目录不存在则创建
+                    is_file($path) or mkdir($path,0700);
+                }
+            }else{
+                $path = $this->options['path'];
+            }
+            if($model){
+                return $path.'/'.$key;
+            }else{
+                return $path.'/'.md5($key);
+            }
         }
         //key不合法的时候，均使用默认文件'unvalid_cache_key'，不使用抛出异常，简化使用，增强容错性
         return 'unvalid_cache_key';
@@ -141,8 +156,8 @@ class cacheFile extends Cache{
      * @param $key
      * @return string
      */
-    private function _get_cache_file($key)
+    private function _get_cache_file($key,$path,$model)
     {
-        return $this->options['path'] . $this->_safe_filename($key) . $this->options['suffix'];
+        return $this->_safe_filename($key,$path,$model) . $this->options['suffix'];
     }
 }

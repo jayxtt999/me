@@ -11,9 +11,12 @@ namespace Admin\Model;
 
 class plugModel  extends \System\Core\Model{
 
-
+    /**
+     * 获取文件夹插件列表
+     * @return array
+     */
     public function getPlugins(){
-
+        $pluginFiles = array();
         $pluginPath = ROOT_PATH . '/content/plugins';
         $pluginDir = @dir($pluginPath);
         if ($pluginDir) {
@@ -28,8 +31,8 @@ class plugModel  extends \System\Core\Model{
                             if (preg_match('|^\.+$|', $subFile)) {
                                 continue;
                             }
-                            if ($subFile == $file.'.php') {
-                                $pluginFiles[] = "$file/$subFile";
+                            if (strtolower($subFile) == strtolower($file.'plugin.class.php')) {
+                                $pluginFiles[strtolower($file)] = "\\Content\\Plugins\\".$file."\\".$file."Plugin";
                             }
                         }
                     }
@@ -38,52 +41,28 @@ class plugModel  extends \System\Core\Model{
         }else{
             return array();
         }
-        sort($pluginFiles);
-
-        var_dump($pluginFiles);exit;
-
-        foreach ($pluginFiles as $pluginFile) {
-
-            $pluginData = $this->getPluginData("$pluginPath/$pluginFile");
-            if (empty($pluginData['Name'])) {
+        foreach ($pluginFiles as $k=>$class) {
+            $pluginData = $this->getPluginData($class);
+            if (empty($pluginData['name'])) {
                 continue;
             }
-            $pluginsAll[$pluginFile] = $pluginData;
+            $pluginsAll[$k] = $pluginData;
         }
         return $pluginsAll;
 
 
     }
 
-    public function getPluginData($pluginFile){
+    /**
+     * 获取插件信息
+     * @param $pluginClassName
+     * @return mixed
+     */
+    public function getPluginData($pluginClassName){
 
-        echo 111;exit;
-        $pluginData = implode('', file($pluginFile));
-        preg_match("/Plugin Name:(.*)/i", $pluginData, $plugin_name);
-        preg_match("/Version:(.*)/i", $pluginData, $version);
-        preg_match("/Plugin URL:(.*)/i", $pluginData, $plugin_url);
-        preg_match("/Description:(.*)/i", $pluginData, $description);
-        preg_match("/Author:(.*)/i", $pluginData, $author_name);
-        preg_match("/Author URL:(.*)/i", $pluginData, $author_url);
+        $plug = new $pluginClassName;
+        return $plug->info;
 
-        $plugin_name = isset($plugin_name[1]) ? trim($plugin_name[1]) : '';
-        $version = isset($version[1]) ? $version[1] : '';
-        $description = isset($description[1]) ? $description[1] : '';
-        $plugin_url = isset($plugin_url[1]) ? trim($plugin_url[1]) : '';
-        $author = isset($author_name[1]) ? trim($author_name[1]) : '';
-        $author_url = isset($author_url[1]) ? trim($author_url[1]) : '';
-
-        return array(
-            'Name' => $plugin_name,
-            'Version' => $version,
-            'Description' => $description,
-            'Url' => $plugin_url,
-            'Author' => $author,
-            'AuthorUrl' => $author_url,
-        );
-
-
-        
     }
 
 

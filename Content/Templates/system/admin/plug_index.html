@@ -1,0 +1,303 @@
+<include file="layout@admin@head"/>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            Widget settings form goes here
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn blue">Save changes</button>
+                            <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <include file="layout@layout@widgets"/>
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="javascript:;" class="reload">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+
+                            <table class="table table-striped table-bordered table-hover" id="sample_menu">
+                                <thead>
+                                <tr>
+                                    <th class="table-checkbox">
+                                        <input type="checkbox" class="group-checkable"
+                                               data-set="#sample_menu .checkboxes"/>
+                                    </th>
+
+                                    <th>
+                                        插件标识
+                                    </th>
+                                    <th>
+                                        插件名
+                                    </th>
+                                    <th>
+                                        插件描述
+                                    </th>
+                                    <th>
+                                        状态
+                                    </th>
+                                    <th>
+                                        作者
+                                    </th>
+                                    <th>
+                                        版本
+                                    </th>
+
+                                    <th>
+                                        操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <volist name="plugAll" id="vo">
+
+
+                                    <tr class='odd gradeX'>
+                                        <td><input type='checkbox' class='checkboxes' value='1'/></td>
+                                        <td>
+                                            {$vo.name}
+                                        </td>
+                                        <td>
+                                            {$vo.title}
+                                        </td>
+                                        <td>
+                                            {$vo.description}
+                                        </td>
+                                        <td>
+                                            <if condition="($vo.isInstall eq true)">
+                                                <if condition="($vo.status )">
+                                                    开启
+                                                    <else/>
+                                                    关闭
+                                                </if>
+                                                <else />
+                                                未安装
+                                            </if>
+
+
+                                        </td>
+                                        <td>
+                                            {$vo.author}
+                                        </td>
+                                        <td>
+                                            {$vo.version}
+                                        </td>
+
+                                        <td>
+                                            <if condition="($vo.isInstall eq true)">
+                                                <a class='btn blue'>设置</a>
+                                                <if condition="($vo.status)">
+                                                    <a class='btn green'>启用</a>
+                                                    <else/>
+                                                    <a class='btn yellow'>禁用</a>
+                                                </if>
+                                                <a class='btn red'>卸载</a>
+                                                <else />
+                                                <a class="btn purple" href="javascript:install('{$vo.name}')">安装</a>
+                                            </if>
+                                    </tr>
+                                </volist>
+
+
+
+
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+
+<include file="layout@admin@foot"/>
+
+
+<script>
+
+    /**
+     * 表格插件
+     */
+    var TableManaged = function () {
+        var initTable1 = function () {
+            var table = $('#sample_menu');
+            // begin first table
+            table.dataTable({
+                "columns": [{
+                    "orderable": false
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }],
+                "lengthMenu": [
+                    [10, 20, -1],
+                    [10, 20, "All"] // change per page values here
+                ],
+                // set the initial value
+                "pageLength": 10,
+                "pagingType": "bootstrap_full_number",
+                "language": {
+                    "lengthMenu": "  _MENU_ records",
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+                "columnDefs": [{  // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                }, {
+                    "searchable": false,
+                    "targets": [0]
+                }],
+                "order": [
+                    //[1, "asc"]
+                ] // set first column as a default sort by asc
+            });
+
+            var tableWrapper = jQuery('#sample_menu_wrapper');
+
+
+            table.find('.group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                    } else {
+                        $(this).attr("checked", false);
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            table.on('change', 'tbody tr .checkboxes', function () {
+                $(this).parents('tr').toggleClass("active");
+            });
+
+            tableWrapper.find('.dataTables_length select').addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+
+        }
+        return {
+            //main function to initiate the module
+            init: function () {
+                if (!jQuery().dataTable) {
+                    return;
+                }
+                initTable1();
+            }
+        };
+
+    }();
+    TableManaged.init();
+
+    function menuDel(id) {
+        layer.confirm('确定删除吗？', function () {
+            window.location.href = "/index.php?m=admin&c=menu&a=del&id=" + id
+        });
+    }
+
+
+    function install(name){
+        if(!name){
+            layer.msg('插件不存在', {
+                icon: 8
+            });
+        }
+        $.ajax({
+            url:'/index.php?m=admin&c=plug&a=install',
+            dataType:'json',
+            type:'post',
+            date:'name='+name,
+            beforesend:function(){
+                layer.msg('插件不存在', {
+                    icon:13
+                });
+            },
+
+            success:function(d){
+                if(d.status){
+                    layer.msg('安装成功', {
+                        icon:1
+                    });
+                }else{
+                    layer.msg('安装失败'+ d.msg, {
+                        icon:8
+                    });
+                }
+
+            }
+        })
+
+    }
+
+
+</script>

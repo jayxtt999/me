@@ -135,6 +135,24 @@ return array(
         "radis" => array(),
     ),
 
+    /*定义插件挂载点*/
+    'plugs_hook'=>array(
+
+        'tempHead'=>'页面头部拓展',
+        'tempFoot'=>'页面尾部拓展',
+        'addLog'=>'添加博文拓展',
+        'saveLog'=>'保存博文拓展',
+        'delLog'=>'删除博文拓展',
+        'relatedLog'=>'阅读博文拓展',
+        'commentPost'=>'发表评论扩展点（写入评论前）',//可用于垃圾评论防范
+        'commentSaved'=>'发表评论扩展点（写入评论后）',//用于发布评论成功的后续操作，如发通知邮件
+        'navbar'=>'导航拓展',//用于发布评论成功的后续操作，如发通知邮件
+
+
+
+    ),
+
+
     /*杂项*/
     'default_timezone' => 'PRC',
     'user_auth_key'=>'xtt',

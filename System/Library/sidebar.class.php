@@ -21,10 +21,10 @@ class sidebar
      */
     public function init($callback, $data)
     {
-        if (cache('sidebar_' . $callback)) {
-            return cache('sidebar_' . $callback);
+        if (cache('sidebar_' . $callback,'','sidebar','sidebar')) {
+            return cache('sidebar_' . $callback,'','sidebar','sidebar');
         } else {
-            cache('sidebar_' . $callback, self::$callback($data));
+            cache('sidebar_' . $callback, self::$callback($data),'sidebar','sidebar');
             return self::$callback($data);
         }
     }

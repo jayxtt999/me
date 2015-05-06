@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-04-28 18:02:39
+Date: 2015-05-06 18:02:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,12 +52,12 @@ CREATE TABLE `xtt_article_category` (
   `alias` varchar(255) DEFAULT NULL COMMENT '别名',
   `sort` int(10) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_article_category
 -- ----------------------------
-INSERT INTO `xtt_article_category` VALUES ('1', '测试11100000啊00221问问啊啊122', 'cs1', '0');
+INSERT INTO `xtt_article_category` VALUES ('1', '测试11100000啊00221问问啊啊122', 'cs1', '11');
 INSERT INTO `xtt_article_category` VALUES ('2', '测试2222222去223232啊223', 'cs2', '0');
 INSERT INTO `xtt_article_category` VALUES ('3', '222测试333222223435412121', 'cs34', '12');
 INSERT INTO `xtt_article_category` VALUES ('9', '2222', '222222', '22');
@@ -73,7 +73,7 @@ CREATE TABLE `xtt_article_tag` (
   `tagname` varchar(256) DEFAULT NULL COMMENT '标签名',
   `gid` varchar(256) DEFAULT NULL COMMENT '日志id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_article_tag
@@ -81,6 +81,7 @@ CREATE TABLE `xtt_article_tag` (
 INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1,1,1');
 INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1,1,1');
 INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('14', '啊啊啊', null);
 
 -- ----------------------------
 -- Table structure for xtt_comment
@@ -174,7 +175,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -197,6 +198,8 @@ INSERT INTO `xtt_common_menu` VALUES ('219', 'Twitter', '说说', null, 'home', 
 INSERT INTO `xtt_common_menu` VALUES ('220', '分类管理', 'category', null, 'admin', 'category', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('221', '标签管理', '文章标签管理', null, 'admin', 'tags', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理', null, 'admin', 'sidebar', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('223', '链接管理', '链接管理', null, 'admin', 'link', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('224', '插件管理', '插件管理', null, 'admin', 'plug', 'index', '', '1', '1', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -240,6 +243,31 @@ INSERT INTO `xtt_config` VALUES ('27', 'login_code', '1');
 INSERT INTO `xtt_config` VALUES ('30', 'comment_order', 'asc');
 
 -- ----------------------------
+-- Table structure for xtt_link
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_link`;
+CREATE TABLE `xtt_link` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) DEFAULT NULL,
+  `sort` int(10) DEFAULT NULL,
+  `info` varchar(256) DEFAULT NULL,
+  `src` varchar(256) DEFAULT NULL,
+  `status` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_link
+-- ----------------------------
+INSERT INTO `xtt_link` VALUES ('1', '测试0000试试1', '10', '我是测试链接', 'http://www.baidu.com收拾收拾ss', '1');
+INSERT INTO `xtt_link` VALUES ('2', 'hao123', '111', null, 'www.hao123.com', '0');
+INSERT INTO `xtt_link` VALUES ('3', 'hao123', '111', null, 'www.hao123.com', '0');
+INSERT INTO `xtt_link` VALUES ('4', 'hao123', '111', null, 'www.hao123.com', '0');
+INSERT INTO `xtt_link` VALUES ('5', 'hao123', '111', null, 'www.hao123.com', '0');
+INSERT INTO `xtt_link` VALUES ('7', '啊啊啊啊啊啊啊啊', '121212', null, '啊S', '0');
+INSERT INTO `xtt_link` VALUES ('8', '啊啊啊啊啊啊啊啊', '121212', null, '啊S', '0');
+
+-- ----------------------------
 -- Table structure for xtt_member_info
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_member_info`;
@@ -277,7 +305,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -348,6 +376,35 @@ INSERT INTO `xtt_member_login_log` VALUES ('63', '1270', '2015-04-24 09:31:19', 
 INSERT INTO `xtt_member_login_log` VALUES ('64', '1270', '2015-04-27 09:13:48', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('65', '1270', '2015-04-27 09:31:53', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('66', '1270', '2015-04-28 09:11:23', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('67', '1270', '2015-04-29 16:41:48', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('68', '1270', '2015-04-30 09:54:19', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('69', '1270', '2015-05-04 15:13:26', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('70', '1270', '2015-05-04 15:37:42', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('71', '1270', '2015-05-05 16:28:29', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('72', '1270', '2015-05-06 11:13:48', '1');
+
+-- ----------------------------
+-- Table structure for xtt_plugs
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_plugs`;
+CREATE TABLE `xtt_plugs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(40) NOT NULL COMMENT '插件名或标识',
+  `title` varchar(20) NOT NULL DEFAULT '' COMMENT '中文名',
+  `description` text COMMENT '插件描述',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
+  `config` text COMMENT '配置',
+  `author` varchar(40) DEFAULT '' COMMENT '作者',
+  `version` varchar(20) DEFAULT '' COMMENT '版本号',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '安装时间',
+  `plugs_hook` varchar(256) DEFAULT NULL COMMENT '插件挂载点',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='插件表';
+
+-- ----------------------------
+-- Records of xtt_plugs
+-- ----------------------------
+INSERT INTO `xtt_plugs` VALUES ('1', 'test', '测试', '我只是一个测试', '1', null, 'xtt', '1.0', '2015-05-06 11:57:17', null);
 
 -- ----------------------------
 -- Table structure for xtt_sidebar

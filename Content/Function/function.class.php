@@ -424,18 +424,21 @@ function loader($class)
     preg_match('/(?P<namespace>.+\\\)?(?P<class>[^\\\]+$)/', $class, $matches);
     $class = (isset($matches['class'])) ? $matches['class'] : '';
     $namespace = (isset($matches['namespace'])) ? $matches['namespace'] : '';
-
+    //控制器
     if (substr($class, -10) == "Controller" && strlen($class) !== 10) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    } elseif (substr($class, -5) == "Model" && strlen($class) !== 5) {
+    }
+    //模型
+    elseif (substr($class, -5) == "Model" && strlen($class) !== 5) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    } elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
+    }
+    elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
@@ -455,7 +458,7 @@ function loader($class)
  * @param string $val
  * @param string $model  model 默认文件名为 MD5（key ）,否则为自定义文件名模式
  */
-function cache($key, $val = "",$model="")
+function cache($key, $val = "",$path="",$model="")
 {
 
     $cache = new \System\Core\Cache();
@@ -463,12 +466,12 @@ function cache($key, $val = "",$model="")
     $cache = new \System\Library\Cache\cacheFile();
     $cache->connect($type, C("cache:$type"));
     if (!empty($key) && !empty($val)) {
-        $cache->set($key, $val);
+        $cache->set($key, $val,$path,$model);
     } else if ($key && !$val) {
-        if ($cache->get($key)) {
-            return $cache->get($key);
+        if ($cache->get($key,$path,$model)) {
+            return $cache->get($key,$path,$model);
         } else {
-            $cache->delete($key);
+            $cache->delete($key,$path,$model);
         }
     }
 
