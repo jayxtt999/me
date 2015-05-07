@@ -73,6 +73,9 @@ class DB
         return $this;
     }
 
+
+
+
     public function getNewRow()
     {
 
@@ -93,6 +96,7 @@ class DB
         $this->where = $where;
         $this->order = "";
         $this->limit = "";
+        $this->fields = "*";
         $this->count = false;
         return $this;
     }
@@ -217,6 +221,11 @@ class DB
         return $this;
     }
 
+    /**
+     * 删除
+     * @param array $where
+     * @return $this
+     */
     public function delete(array $where)
     {
         $this->options = "DELETE";
@@ -224,6 +233,31 @@ class DB
         return $this;
     }
 
+    /**
+     * 事务开始
+     * @return mixed
+     */
+    public function beginTransaction(){
+        return $this->db->beginTransaction();
+    }
+
+    /**
+     * 事务提交
+     * @return mixed
+     */
+    public function commit()
+    {
+        return $this->db->commit();
+    }
+
+    /**
+     * 事务回滚
+     * @return mixed
+     */
+    public function rollBack()
+    {
+        return $this->db->rollBack();
+    }
 
     /**
      * @access public

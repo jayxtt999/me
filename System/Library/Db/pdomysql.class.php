@@ -90,17 +90,17 @@ class pdoMysql
 
     public function beginTransaction()
     {
-        $this->pdo->beginTransaction();
+        return $this->pdo->beginTransaction();
     }
 
     public function commit()
     {
-        $this->pdo->commit();
+       return $this->pdo->commit();
     }
 
     public function rollBack()
     {
-        $this->pdo->rollBack();
+       return $this->pdo->rollBack();
     }
 
 

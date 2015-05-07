@@ -17,22 +17,21 @@ class plugModel  extends \System\Core\Model{
      */
     public function getPlugins(){
         $pluginFiles = array();
-        $pluginPath = ROOT_PATH . '/content/plugins';
-        $pluginDir = @dir($pluginPath);
+        $pluginDir = @dir(PLUGIN_PATH);
         if ($pluginDir) {
             while(($file = $pluginDir->read()) !== false) {
                 if (preg_match('|^\.+$|', $file)) {
                     continue;
                 }
-                if (is_dir($pluginPath . '/' . $file)) {
-                    $pluginsSubDir = @ dir($pluginPath . '/' . $file);
+                if (is_dir(PLUGIN_PATH . '/' . $file)) {
+                    $pluginsSubDir = @ dir(PLUGIN_PATH . '/' . $file);
                     if ($pluginsSubDir) {
                         while(($subFile = $pluginsSubDir->read()) !== false) {
                             if (preg_match('|^\.+$|', $subFile)) {
                                 continue;
                             }
                             if (strtolower($subFile) == strtolower($file.'plugin.class.php')) {
-                                $pluginFiles[strtolower($file)] = "\\Content\\Plugins\\".$file."\\".$file."Plugin";
+                                $pluginFiles[] = strtolower($file);
                             }
                         }
                     }
@@ -41,29 +40,20 @@ class plugModel  extends \System\Core\Model{
         }else{
             return array();
         }
-        foreach ($pluginFiles as $k=>$class) {
-            $pluginData = $this->getPluginData($class);
+        foreach ($pluginFiles as $k=>$v) {
+            $pluginData = getPluginData($v);
             if (empty($pluginData['name'])) {
                 continue;
             }
-            $pluginsAll[$k] = $pluginData;
+            $pluginsAll[$v] = $pluginData;
         }
         return $pluginsAll;
 
 
     }
 
-    /**
-     * 获取插件信息
-     * @param $pluginClassName
-     * @return mixed
-     */
-    public function getPluginData($pluginClassName){
 
-        $plug = new $pluginClassName;
-        return $plug->info;
 
-    }
 
 
 

@@ -276,7 +276,9 @@
             url:'/index.php?m=admin&c=plug&a=install',
             dataType:'json',
             type:'post',
-            date:'name='+name,
+            data:{
+                name:name
+            },
             beforesend:function(){
                 layer.msg('插件不存在', {
                     icon:13

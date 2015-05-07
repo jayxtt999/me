@@ -626,5 +626,29 @@ function JsonObject($array){
 }
 
 
+/**
+ * 获取插件类的类名
+ * @param strng $name 插件名
+ */
+function getPlugClass($name){
+    $class = "\\Content\\Plugins\\".$name."\\".$name."Plugin";
+    return $class;
+}
+
+
+/**
+ * 获取插件信息
+ * @param $pluginClassName
+ * @return mixed
+ */
+function getPluginData($name){
+
+    $pluginClassName = getPlugClass($name);
+    $plug = new $pluginClassName;
+    return $plug->info;
+
+}
+
+
 
 
