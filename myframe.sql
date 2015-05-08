@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-05-07 18:05:24
+Date: 2015-05-08 18:08:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -256,7 +256,7 @@ CREATE TABLE `xtt_hook` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of xtt_hook
@@ -270,7 +270,9 @@ INSERT INTO `xtt_hook` VALUES ('6', 'relatedLog', '阅读博文拓展', '1', '00
 INSERT INTO `xtt_hook` VALUES ('7', 'commentPost', '发表评论扩展点（写入评论前）', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('8', 'commentSaved', '发表评论扩展点（写入评论后）', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('9', 'navbar', '导航拓展', '1', '0000-00-00 00:00:00', '', '1');
-INSERT INTO `xtt_hook` VALUES ('10', 'documentDetailAfter', '文档末尾拓展', '1', '0000-00-00 00:00:00', '', '1');
+INSERT INTO `xtt_hook` VALUES ('10', 'documentDetailAfter', '文档末尾拓展', '1', '0000-00-00 00:00:00', 'test222', '1');
+INSERT INTO `xtt_hook` VALUES ('11', 'appBegin', '应用程序开始', '1', '0000-00-00 00:00:00', '', '1');
+INSERT INTO `xtt_hook` VALUES ('12', 'appEnd', '应用程序结束', '1', '0000-00-00 00:00:00', 'Trace', '1');
 
 -- ----------------------------
 -- Table structure for xtt_link
@@ -335,7 +337,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -413,6 +415,7 @@ INSERT INTO `xtt_member_login_log` VALUES ('70', '1270', '2015-05-04 15:37:42', 
 INSERT INTO `xtt_member_login_log` VALUES ('71', '1270', '2015-05-05 16:28:29', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('72', '1270', '2015-05-06 11:13:48', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('73', '1270', '2015-05-07 10:23:48', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('74', '1270', '2015-05-08 09:16:08', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
@@ -427,15 +430,16 @@ CREATE TABLE `xtt_plugs` (
   `config` text COMMENT '配置',
   `author` varchar(40) DEFAULT '' COMMENT '作者',
   `version` varchar(20) DEFAULT '' COMMENT '版本号',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '安装时间',
+  `crate_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '安装时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='插件表';
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='插件表';
 
 -- ----------------------------
 -- Records of xtt_plugs
 -- ----------------------------
 INSERT INTO `xtt_plugs` VALUES ('1', 'test', '测试', '我只是一个测试', '1', null, 'xtt', '1.0', '2015-05-06 11:57:17');
-INSERT INTO `xtt_plugs` VALUES ('12', 'test222', '插件测试222', '插件测试222', '1', 'a:1:{s:6:\"config\";s:185:\"{\"comment_type\":\"1\",\"comment_uid_youyan\":\"90040\",\"comment_short_name_duoshuo\":\"\",\"comment_form_pos_duoshuo\":\"buttom\",\"comment_data_list_duoshuo\":\"10\",\"comment_data_order_duoshuo\":\"asc\"}\";}', 'xietaotao', '1.0', '0000-00-00 00:00:00');
+INSERT INTO `xtt_plugs` VALUES ('13', 'test222', '插件测试222', '插件测试222', '1', 'a:1:{s:6:\"config\";s:185:\"{\"comment_type\":\"1\",\"comment_uid_youyan\":\"90040\",\"comment_short_name_duoshuo\":\"\",\"comment_form_pos_duoshuo\":\"buttom\",\"comment_data_list_duoshuo\":\"10\",\"comment_data_order_duoshuo\":\"asc\"}\";}', 'xietaotao', '1.0', '2015-05-08 14:10:26');
+INSERT INTO `xtt_plugs` VALUES ('18', 'trace', 'Trace追踪', '来自于Thinkphp', '1', 'a:1:{s:6:\"config\";s:2:\"[]\";}', 'Thinkphp', '1.0', '2015-05-08 15:21:41');
 
 -- ----------------------------
 -- Table structure for xtt_sidebar

@@ -109,7 +109,7 @@
                                         </td>
                                         <td>
                                             <if condition="($vo.isInstall eq true)">
-                                                <if condition="($vo.status )">
+                                                <if condition="($vo.status)">
                                                     开启
                                                     <else/>
                                                     关闭
@@ -131,9 +131,9 @@
                                             <if condition="($vo.isInstall eq true)">
                                                 <a class='btn blue'>设置</a>
                                                 <if condition="($vo.status)">
-                                                    <a class='btn green'>启用</a>
+                                                    <a class='btn green'>禁用</a>
                                                     <else/>
-                                                    <a class='btn yellow'>禁用</a>
+                                                    <a class='btn yellow'>启用</a>
                                                 </if>
                                                 <a class='btn red'>卸载</a>
                                                 <else />
@@ -279,19 +279,21 @@
             data:{
                 name:name
             },
-            beforesend:function(){
-                layer.msg('插件不存在', {
-                    icon:13
+            beforeSend:function(){
+                layer.msg('加载中', {
+                    icon: 16
                 });
+
             },
 
             success:function(d){
                 if(d.status){
-                    layer.msg('安装成功', {
+                    layer.msg(d.msg, {
                         icon:1
                     });
+                    window.location.reload();
                 }else{
-                    layer.msg('安装失败'+ d.msg, {
+                    layer.msg(d.msg, {
                         icon:8
                     });
                 }

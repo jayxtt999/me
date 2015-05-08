@@ -13,8 +13,6 @@ class plugController extends abstractController{
 
     public function indexAction(){
 
-        /*$plugModel   = new \Admin\Model\plugModel();
-        $plugModel->getPlugins();*/
         $plugNewAll = array();
         $plugModel   = new \Admin\Model\plugModel();
         $plugLocAll = $plugModel->getPlugins();
@@ -68,12 +66,18 @@ class plugController extends abstractController{
             db()->beginTransaction();
             //获取插件配置信息
             $config  =  serialize(array('config'=>json_encode($plug->getConfig())));
+            $info['name'] = strtolower($info['name']);
             $info['config'] = $config;
-            //db()->table('plugs')->insert($info)->done();
+            $info['crate_time'] = date("Y-m-d H:i:s");
+            db()->table('plugs')->insert($info)->done();
             //exit;
             $hookModel = new \Admin\Model\hookModel();
-            $hookModel->updateHooks($name);
-
+            $r = $hookModel->updateHooks($name);
+            if($r){
+                JsonObject(array('status'=>true,'msg'=>"安装成功"));
+            }else{
+                JsonObject(array('status'=>true,'msg'=>"安装失败"));
+            }
             //更新钩子信息
 
 

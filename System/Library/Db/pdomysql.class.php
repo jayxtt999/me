@@ -36,7 +36,8 @@ class pdoMysql
      * @param $args
      * @return mixed
      */
-    public function __call($func, $args) {
+    public function __call($func, $args)
+    {
         return call_user_func_array(array(&$this->pdo, $func), $args);
     }
 
@@ -95,12 +96,12 @@ class pdoMysql
 
     public function commit()
     {
-       return $this->pdo->commit();
+        return $this->pdo->commit();
     }
 
     public function rollBack()
     {
-       return $this->pdo->rollBack();
+        return $this->pdo->rollBack();
     }
 
 
@@ -143,7 +144,7 @@ class pdoMysql
         if ('' != $this->sql) {
             $this->error .= "\n [ SQL语句 ] : " . $this->sql;
         }
-        trace($this->error, '', 'ERR');
+        \System\Core\Error::trace($this->error, '', 'ERR');
         return $this->error;
     }
 
@@ -159,18 +160,26 @@ class pdoMysql
     }
 
 
+
     /**
      * 数据库调试 记录当前SQL
      * @access protected
+     * @param boolean $start  调试开始标记 true 开始 false 结束
      */
-    protected function debug()
-    {
-        // 记录操作结束时间
-        if (C('db:db_sql_log')) {
-            G('queryEndTime');
-            \System\Core\Error::trace($this->sql . ' [ RunTime:' . G('queryStartTime', 'queryEndTime', 6) . 's ]', '', 'SQL');
+    protected function debug($start) {
+        if(C('db:db_sql_log')) {// 开启数据库调试模式
+            if($start) {
+                G('queryStartTime');
+            }else{
+                //$this->model  =   '_think_';
+                // 记录操作结束时间
+                G('queryEndTime');
+                \System\Core\Error::trace($this->sql.'[ RunTime:'.G('queryStartTime','queryEndTime').'s ]','','SQL');
+            }
         }
     }
+
+
 
     /**
      * @param int $model 模式 1 返回单挑 2 多条
@@ -196,10 +205,10 @@ class pdoMysql
         if ($where) {
             if (is_array($where)) {
                 foreach ($where as $key => $val) {
-                    if(is_array($val)){
-                        $whereVal["w_" . $key] = "(".implode(",",$val).")";
+                    if (is_array($val)) {
+                        $whereVal["w_" . $key] = "(" . implode(",", $val) . ")";
                         $whereData .= " and " . "`" . $key . "` in (:w_$key)";
-                        $whereDataCache .= " and " . "`" . $key . "` in  (".implode(",",$val).")";
+                        $whereDataCache .= " and " . "`" . $key . "` in  (" . implode(",", $val) . ")";
                         continue;
                     }
                     $wz = strpos($key, "?");
@@ -219,38 +228,54 @@ class pdoMysql
         $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereData ";
         $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache ";
         //处理不支持预处理的 order by limit
-        if($order || $limit){
-            $order = $order?$order:"id desc";
-            $limit = $limit?"LIMIT ".$limit:"";
+        if ($order || $limit) {
+            $order = $order ? $order : "id desc";
+            $limit = $limit ? "LIMIT " . $limit : "";
             $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
             $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
         }
 
         $type = C("cache:type") ? C("cache:type") : false;
         $type = false;
+        //如果存在缓存
         if ($type) {
             if (cache("sql_" . $sqlCache)) {
                 return cache("sql_" . $sqlCache);
             }
         }
         try {
+            $this->debug(true);
             $stmt = $this->pdo->prepare($this->sql);
-            if($order || $limit){
+            if ($order || $limit) {
                 $exeres = $stmt->execute();
-            }else{
+            } else {
                 $exeres = $stmt->execute($whereVal);
             }
+            //根据查询条件取出结果集
             if ($model == 1) {
                 $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
             } else if ($model == 2) {
-
-                if($count){
+                if ($count) {
                     $this->res = $stmt->rowCount();
-                }else{
+                } else {
                     $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
                 }
             }
+            $this->debug(false);
 
+            /*
+            //如果存在 只取fields 多条 返回array 单条 返回值
+             if (($fields !== "*")) {
+                 if ($model == 2) {
+                     foreach ($this->res as $v) {
+                         $_res[] = $v[$fields];
+                     }
+                     $this->res = $_res;
+                 } else {
+                     $this->res = $this->res[$fields];
+                 }
+             }*/
+            //缓存sql结果
             if ($type) {
                 cache("sql_" . $sqlCache, $this->res);
             }
@@ -261,7 +286,6 @@ class pdoMysql
 
 
     }
-
 
 
     /**
@@ -282,9 +306,9 @@ class pdoMysql
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
-                if(strpos($v,"+") || strpos($v,"-")){
+                if (strpos($v, "+") || strpos($v, "-")) {
                     $buildModel = true;
-                }else{
+                } else {
                     $buildModel = false;
                 }
                 $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
@@ -296,10 +320,10 @@ class pdoMysql
             }
             $this->sql .= $whereSql;
             try {
-                if($buildModel){
-                    $buildSql = $this->update_pdo_query($this->sql,$dataVal);
+                if ($buildModel) {
+                    $buildSql = $this->update_pdo_query($this->sql, $dataVal);
                     return $this->pdo->exec($buildSql);
-                }else{
+                } else {
                     $stmt = $this->pdo->prepare($this->sql);
                     $stmt->execute($dataVal);
                     return $stmt->rowCount();
@@ -388,10 +412,11 @@ class pdoMysql
      * @param $table
      * @return string
      */
-    public function getnewrow($table){
+    public function getnewrow($table)
+    {
 
         $data = array();
-        return $this->insert($table,$data);
+        return $this->insert($table, $data);
 
     }
 
@@ -401,22 +426,23 @@ class pdoMysql
      * @param $array
      * @return mixed
      */
-    function update_pdo_query($string, $array) {
+    function update_pdo_query($string, $array)
+    {
         //Get the key lengths for each of the array elements.
         $keys = array_map('strlen', array_keys($array));
 
         //Sort the array by string length so the longest strings are replaced first.
         array_multisort($keys, SORT_DESC, $array);
 
-        foreach($array as $k => $v) {
+        foreach ($array as $k => $v) {
             //Quote non-numeric values.
-            if(substr($k,0,2)=="d_"){
+            if (substr($k, 0, 2) == "d_") {
                 $replacement = is_numeric($v) ? $v : $v;
-            }else{
+            } else {
                 $replacement = is_numeric($v) ? $v : "'{$v}'";
             }
             //Replace the needle.
-            $string = str_replace("(:".$k.")", $replacement, $string);
+            $string = str_replace("(:" . $k . ")", $replacement, $string);
         }
 
         return $string;

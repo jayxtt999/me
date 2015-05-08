@@ -184,37 +184,9 @@ function G($start, $end = '', $dec = 4)
  */
 function Hook($tag, &$params = NULL)
 {
-    if ($tag) {
-        if (APP_DEBUG) {
-            G($tag . 'Start');
-            \System\Core\Error::trace('[ ' . $tag . ' ] --START--', '', 'INFO');
-        }
-        // 执行扩展
-        if (strpos($tag, '/')) {
-            list($tag, $method) = explode('/', $tag);
-        } else {
-            $method = 'run';
-        }
-        $class = "\\System\\Library\\Hook\\" . $tag . 'Hook';
-
-        if (APP_DEBUG) {
-            G('behaviorStart');
-        }
-        $behavior = new $class();
-        $behavior->$method($params);
-        if (APP_DEBUG) { // 记录行为的执行日志
-            G('behaviorEnd');
-            \System\Core\Error::trace($tag . ' Hook ::' . $method . ' [ RunTime:' . G('behaviorStart', 'behaviorEnd', 6) . 's ]', '', 'INFO');
-        }
-
-        if (APP_DEBUG) { // 记录行为的执行日志
-            \System\Core\Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
-        }
-    } else { // 未执行任何行为 返回false
-        return false;
-    }
-
+    \System\Library\Hook::listen($tag,$params);
 }
+
 
 
 /**
@@ -631,7 +603,7 @@ function JsonObject($array){
  * @param strng $name 插件名
  */
 function getPlugClass($name){
-    $class = "\\Content\\Plugins\\".$name."\\".$name."Plugin";
+    $class = "\\Content\\Plugins\\".ucfirst($name)."\\".ucfirst($name)."Plugin";
     return $class;
 }
 
@@ -651,4 +623,22 @@ function getPluginData($name){
 
 
 
+/**
+ * 字符串转换为数组，主要用于把分隔符调整到第二个参数
+ * @param  string $str  要分割的字符串
+ * @param  string $glue 分割符
+ * @return array
+ */
+function str2arr($str, $glue = ','){
+    return explode($glue, $str);
+}
 
+/**
+ * 数组转换为字符串，主要用于把分隔符调整到第二个参数
+ * @param  array  $arr  要连接的数组
+ * @param  string $glue 分割符
+ * @return string
+ */
+function arr2str($arr, $glue = ','){
+    return implode($glue, $arr);
+}

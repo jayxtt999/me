@@ -20,14 +20,14 @@ define('Hook_PATH', SYS_LIB_PATH . '/Hook');
 define('APP_PATH', ROOT_PATH . '/Application');
 define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
 define('WEB_TEMP_PATH', '/Content/Templates');
-define('PLUGIN_PATH', ROOT_PATH.'/Content/Plugins/');
+define('PLUGIN_PATH', ROOT_PATH . '/Content/Plugins/');
 
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
 
 //后台模版中css js路径
-define('ADMIM_TPL_PATH','/Content/Templates/system');
+define('ADMIM_TPL_PATH', '/Content/Templates/system');
 
 define('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
 define('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);
@@ -62,22 +62,25 @@ final class Application
         self::$appConfig = require_once 'config.php';
         //初始化
         self::init();
+        // 项目开始拓展
+        //Hook('appBegin');
         $route = self::$appLib['route'];
         $route::init(self::$appConfig['route']); //设置url的类型
-        // 项目开始拓展  钩子系统有2种，后端与前端
-        // 后端用于一些功能性增加，如记录日志,权限控制,日志拓展等等   D:\wamp\www\me\System\Library\Hook   以单个class
-        // 前端用于一些显示上的数据改变，如加个天气 音乐播放器 图片插件等等    D:\wamp\www\me\Content\plugin        以文件夹
-        Hook('trace');// 异常追踪
-        // 项目结束拓展
+        Hook('appEnd');
     }
 
 
     public static function init()
     {
+        //设置自动加载类
         self::setAutoLibs();
+        //自动加载 run
         self::autoload();
         // 设定错误和异常处理
         self::loadError();
+        //设定插件加载映射
+        self::loadPlug();
+        //设置网页压缩方式
         if (C('output_encode')) {
             $zlib = ini_get('zlib.output_compression');
             if (empty($zlib)) ob_start('ob_gzhandler');
@@ -88,6 +91,7 @@ final class Application
         session(C('session'));
         // 记录应用初始化时间
         G('initTime');
+
     }
 
     /**
@@ -126,17 +130,21 @@ final class Application
     public static function setAutoLibs()
     {
         self::$appLib = array(
-            'route'=>'\\System\\Core\\Route',
-            'view'=>'\\System\\Core\\View',
-            'model'=>'\\System\\Core\\Model',
-            'controller'=>'\\System\\Core\\Controller',
-            'db'=>'\\System\\Core\\Db',
-            'error'=>'\\System\\Core\\Error',
-            'log'=>'\\System\\Core\\Log',
-            'cache'=>'\\System\\Core\\Cache',
+            'route' => '\\System\\Core\\Route',
+            'view' => '\\System\\Core\\View',
+            'model' => '\\System\\Core\\Model',
+            'controller' => '\\System\\Core\\Controller',
+            'db' => '\\System\\Core\\Db',
+            'error' => '\\System\\Core\\Error',
+            'log' => '\\System\\Core\\Log',
+            'cache' => '\\System\\Core\\Cache',
         );
     }
 
+    /**
+     * 加载类库
+     * @param $className
+     */
     public static function loadLibs($className)
     {
         if (empty($className)) {
@@ -154,6 +162,16 @@ final class Application
         } else {
             trigger_error('加载 ' . $className . ' 类库不存在');
         }
+    }
+
+    /**
+     * 读取钩子与插件的对应关系
+     */
+    public function loadPlug()
+    {
+        $plugsAll = \Admin\Model\hookModel::getPlugs();
+        \System\Library\Hook::setTags($plugsAll);
+
     }
 
 
