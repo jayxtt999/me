@@ -49,7 +49,6 @@ class pdoMysql
     {
         G('queryStartTime');
         $res = $this->pdo->query($sql);
-        $this->debug();
         if (false === $res) {
             $this->error();
         } else {
@@ -64,10 +63,12 @@ class pdoMysql
      */
     public function exec($sql)
     {
+        $this->debug(true);
         $stmt = $this->pdo->prepare($sql);
         $exeres = $stmt->execute();
         if ($exeres) {
             $this->res = $exeres;
+            $this->debug(false);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
@@ -144,7 +145,7 @@ class pdoMysql
         if ('' != $this->sql) {
             $this->error .= "\n [ SQL语句 ] : " . $this->sql;
         }
-        \System\Core\Error::trace($this->error, '', 'ERR');
+        trace($this->error, '', 'ERR');
         return $this->error;
     }
 
@@ -171,10 +172,9 @@ class pdoMysql
             if($start) {
                 G('queryStartTime');
             }else{
-                //$this->model  =   '_think_';
                 // 记录操作结束时间
                 G('queryEndTime');
-                \System\Core\Error::trace($this->sql.'[ RunTime:'.G('queryStartTime','queryEndTime').'s ]','','SQL');
+                trace($this->sql.'[ RunTime:'.G('queryStartTime','queryEndTime').'s ]','','SQL');
             }
         }
     }

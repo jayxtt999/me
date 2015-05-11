@@ -642,3 +642,18 @@ function str2arr($str, $glue = ','){
 function arr2str($arr, $glue = ','){
     return implode($glue, $arr);
 }
+
+
+
+
+/**
+ * 添加和获取页面Trace记录
+ * @param string $value 变量
+ * @param string $label 标签
+ * @param string $level 日志级别
+ * @param boolean $record 是否记录日志
+ * @return void|array
+ */
+function trace($value='[xtt]',$label='',$level='DEBUG',$record=false) {
+    return  \System\Core\Error::trace($value,$label,$level,$record);
+}

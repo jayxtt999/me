@@ -129,15 +129,19 @@
 
                                         <td>
                                             <if condition="($vo.isInstall eq true)">
-                                                <a class='btn blue'>设置</a>
-                                                <if condition="($vo.status)">
-                                                    <a class='btn green'>禁用</a>
-                                                    <else/>
-                                                    <a class='btn yellow'>启用</a>
+
+                                                <if condition="($vo.config neq false)">
+                                                    <a class='btn blue' href="/index.php?m=admin&c=plug&a=setting&id={$vo.id}">设置</a>
                                                 </if>
-                                                <a class='btn red'>卸载</a>
+
+                                                <if condition="($vo.status eq true)">
+                                                    <a class='btn green' href="javascript:;" onclick="plugAjax({$vo.id},'unable')">禁用</a>
+                                                    <else/>
+                                                    <a class='btn yellow' href="javascript:;" onclick="plugAjax({$vo.id},'enable')">启用</a>
+                                                </if>
+                                                <a class='btn red' onclick="plugAjax({$vo.status},'uninstall')">卸载</a>
                                                 <else />
-                                                <a class="btn purple" href="javascript:install('{$vo.name}')">安装</a>
+                                                <a class="btn purple" href="javascript:plugAjax('{$vo.name}','install')">安装</a>
                                             </if>
                                     </tr>
                                 </volist>
@@ -266,18 +270,18 @@
     }
 
 
-    function install(name){
-        if(!name){
+    function plugAjax(v,f){
+        if(!v){
             layer.msg('插件不存在', {
                 icon: 8
             });
         }
         $.ajax({
-            url:'/index.php?m=admin&c=plug&a=install',
+            url:'/index.php?m=admin&c=plug&a='+f,
             dataType:'json',
             type:'post',
             data:{
-                name:name
+                'val':v
             },
             beforeSend:function(){
                 layer.msg('加载中', {
@@ -285,22 +289,22 @@
                 });
 
             },
-
             success:function(d){
                 if(d.status){
                     layer.msg(d.msg, {
-                        icon:1
+                        icon:1,
+                        time: 1000
+                    },function(){
+                        window.location.reload();
                     });
-                    window.location.reload();
+
                 }else{
                     layer.msg(d.msg, {
                         icon:8
                     });
                 }
-
             }
         })
-
     }
 
 

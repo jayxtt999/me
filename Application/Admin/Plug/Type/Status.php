@@ -9,9 +9,9 @@ namespace Admin\Plug\Type;
 class Status extends \System\Library\statusGateway{
 
     const STATUS_ENABLE = 1;
-    const STATUS_UNABLE = 2;
-    const STATUS_INSTALL = 3;
-    const STATUS_UNINSTALL = 4;
+    const STATUS_UNABLE = 0;
+    const STATUS_INSTALL = 2;
+    const STATUS_UNINSTALL = 3;
 
     public function init()
     {

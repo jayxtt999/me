@@ -31,7 +31,7 @@ class Form
     public function init($name = null, $url = null, $model = null, $param = null)
     {
         if (!$name) {
-            \System\Core\Error::trace("表单name未定义", '', 'ERR');
+            trace("表单name未定义", '', 'ERR');
         }
         if (is_array($param)) {
             $paramS = "";
@@ -77,7 +77,7 @@ class Form
     public function setHide($name, $param, $isCheck = false)
     {
         if (!$name) {
-            \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
+            trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $this->_name[$name];
         $this->setText($name, $label = "", $param, $valid = "", true);
@@ -130,7 +130,7 @@ class Form
     public function setText($name, $label = "", $param = "", $valid = array(), $type = "text", $lw = 3, $dw = 9,$val="")
     {
         if (!$name) {
-            \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
+            trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $this->_name[$name] = $valid;
         if (is_array($param)) {
@@ -185,7 +185,7 @@ class Form
     public function setTextArea($name, $label = "", $param = "", $valid = "", $isHide = false, $lw = 3, $dw = 9)
     {
         if (!$name) {
-            \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
+            trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
         if ($this->_bindDate[$name]) {
@@ -223,7 +223,7 @@ class Form
     public function setSelect($name, $label, $param = "", $data = "", $lw = 3, $dw = 6)
     {
         if (!$name) {
-            \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
+            trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
         $this->_name[$name];
@@ -265,7 +265,7 @@ class Form
     {
         $name = strtolower($name);
         if (!$name) {
-            \System\Core\Error::trace("Text name" . $name . "未定义", '', 'ERR');
+            trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
         if ($this->_bindDate[$name]) {

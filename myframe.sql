@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-05-08 18:08:05
+Date: 2015-05-11 18:02:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -175,7 +175,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -200,6 +200,7 @@ INSERT INTO `xtt_common_menu` VALUES ('221', '标签管理', '文章标签管理
 INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理', null, 'admin', 'sidebar', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('223', '链接管理', '链接管理', null, 'admin', 'link', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('224', '插件管理', '插件管理', null, 'admin', 'plug', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('225', '插件配置', '插件配置', '2015-05-11 14:39:17', 'admin', 'plug', 'setting', '', '1', '0', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -337,7 +338,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -416,6 +417,8 @@ INSERT INTO `xtt_member_login_log` VALUES ('71', '1270', '2015-05-05 16:28:29', 
 INSERT INTO `xtt_member_login_log` VALUES ('72', '1270', '2015-05-06 11:13:48', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('73', '1270', '2015-05-07 10:23:48', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('74', '1270', '2015-05-08 09:16:08', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('75', '1270', '2015-05-11 09:16:03', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('76', '1270', '2015-05-11 14:42:46', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
@@ -438,8 +441,8 @@ CREATE TABLE `xtt_plugs` (
 -- Records of xtt_plugs
 -- ----------------------------
 INSERT INTO `xtt_plugs` VALUES ('1', 'test', '测试', '我只是一个测试', '1', null, 'xtt', '1.0', '2015-05-06 11:57:17');
-INSERT INTO `xtt_plugs` VALUES ('13', 'test222', '插件测试222', '插件测试222', '1', 'a:1:{s:6:\"config\";s:185:\"{\"comment_type\":\"1\",\"comment_uid_youyan\":\"90040\",\"comment_short_name_duoshuo\":\"\",\"comment_form_pos_duoshuo\":\"buttom\",\"comment_data_list_duoshuo\":\"10\",\"comment_data_order_duoshuo\":\"asc\"}\";}', 'xietaotao', '1.0', '2015-05-08 14:10:26');
-INSERT INTO `xtt_plugs` VALUES ('18', 'trace', 'Trace追踪', '来自于Thinkphp', '1', 'a:1:{s:6:\"config\";s:2:\"[]\";}', 'Thinkphp', '1.0', '2015-05-08 15:21:41');
+INSERT INTO `xtt_plugs` VALUES ('13', 'test222', '插件测试222', '插件测试222', '1', '{\"comment_type\":\"1\",\"comment_uid_youyan\":\"\",\"comment_short_name_duoshuo\":\"\",\"comment_data_list_duoshuo\":\"\"}', 'xietaotao', '1.0', '2015-05-08 14:10:26');
+INSERT INTO `xtt_plugs` VALUES ('18', 'trace', 'Trace追踪', '来自于Thinkphp', '1', '', 'Thinkphp', '1.0', '2015-05-08 15:21:41');
 
 -- ----------------------------
 -- Table structure for xtt_sidebar

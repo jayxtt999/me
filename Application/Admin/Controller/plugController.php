@@ -43,7 +43,7 @@ class plugController extends abstractController{
 
     public function installAction(){
 
-        $name = post("name","txt");
+        $name = post("val","txt");
         //检查插件是否存在
         $class  = getPlugClass($name);
         if(!class_exists($class)){
@@ -76,7 +76,7 @@ class plugController extends abstractController{
             if($r){
                 JsonObject(array('status'=>true,'msg'=>"安装成功"));
             }else{
-                JsonObject(array('status'=>true,'msg'=>"安装失败"));
+                JsonObject(array('status'=>false,'msg'=>"安装失败"));
             }
             //更新钩子信息
 
@@ -90,5 +90,68 @@ class plugController extends abstractController{
 
     }
 
+
+    public function unableAction(){
+
+        $id = post("val","int");
+        $row = db()->table("plugs")->getRow(array('id'=>$id))->done();
+        if(!$row){
+            JsonObject(array('status'=>false,'msg'=>"禁用失败,插件不存在"));
+        }
+        if($row['status'] == \Admin\Plug\Type\Status::STATUS_UNABLE){
+            JsonObject(array('status'=>true,'msg'=>"已禁用"));
+        }
+        $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();
+        JsonObject(array('status'=>true,'msg'=>"已禁用"));
+    }
+
+    public function enableAction(){
+
+        $id = post("val","int");
+        $row = db()->table("plugs")->getRow(array('id'=>$id))->done();
+        if(!$row){
+            JsonObject(array('status'=>false,'msg'=>"开启失败,插件不存在"));
+        }
+        if($row['status'] == \Admin\Plug\Type\Status::STATUS_ENABLE){
+            JsonObject(array('status'=>true,'msg'=>"已开启"));
+        }
+        $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_ENABLE),array('id'=>$id))->done();
+        JsonObject(array('status'=>true,'msg'=>"已开启"));
+    }
+
+
+    public function settingAction(){
+        $id = get("id","int");
+        if(!$id){
+            return $this->link()->error("参数错误");
+        }
+        $plug = db()->table("plugs")->getRow(array('id'=>$id))->done();
+        if(!$plug){
+            return $this->link()->error("插件未安装");
+        }
+        $plugClass = getPlugClass($plug['name']);
+        if(!class_exists($plugClass)){
+            trace("插件{$plug['name']}无法实例化,",'ADDONS','ERR');
+        }
+        $data  =   new $plugClass;
+        $dbConfig = $plug['config'];
+        $plug['config'] = include $data->config_file;
+        if($dbConfig){
+            $dbConfig = json_decode($dbConfig, true);
+            foreach ($plug['config'] as $key => $value) {
+                if($value['type'] != 'group'){
+                    $plug['config'][$key]['value'] = $dbConfig[$key];
+                }else{
+                    foreach ($value['options'] as $gourp => $options) {
+                        foreach ($options['options'] as $gkey => $value) {
+                            $plug['config'][$key]['options'][$gourp]['options'][$gkey]['value'] = $dbConfig[$gkey];
+                        }
+                    }
+                }
+            }
+        }
+        $this->getView()->assign(array('data'=>$plug));
+        $this->getView()->display();
+    }
 
 } 

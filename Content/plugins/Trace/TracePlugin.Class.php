@@ -54,7 +54,7 @@ class TracePlugin extends Plugin{
             $base   =   array_merge($base,include $traceFile);
         }
 
-        $debug  =   \System\Core\Error::trace();
+        $debug  =   trace();
         $tabs   =   C('debug:trace_page_tabs');
         foreach ($tabs as $name=>$title){
             switch(strtoupper($name)) {
