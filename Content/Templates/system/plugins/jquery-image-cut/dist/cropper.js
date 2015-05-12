@@ -1198,6 +1198,29 @@
       return data;
     },
 
+    //自定义上传服务器
+    saveData:function(){
+
+        var canvas = this.getCroppedCanvas();
+        $.ajax({
+            url: "/index.php?m=admin&c=user&a=avatarupload",
+            data: {
+                data: canvas.toDataURL(),
+                avatarToken: $("#avatarToken").val()
+                },
+            type: "post",
+            datatype: "json",
+            success:function(d){
+                if(d.success){
+                   window.location.reload();
+                }else{
+                    alert(d.msg)
+                }
+            }
+        })
+
+    },
+
     getContainerData: function () {
       return this.built ? this.container : {};
     },
@@ -1405,7 +1428,6 @@
 
         return args;
       }).call(this));
-
       return canvas;
     },
 

@@ -150,7 +150,7 @@ class plugController extends abstractController{
                 }
             }
         }
-        $this->getView()->assign(array('data'=>$plug));
+        $this->getView()->assign(array('data'=>$plug,'id'=>$id));
         $this->getView()->display();
     }
 

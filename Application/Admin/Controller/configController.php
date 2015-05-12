@@ -27,14 +27,7 @@ class configController extends abstractController
         $form = new \Admin\Config\Form\configForm();
         $form->bind($newData); //绑定Row
         $form->start('config'); //开始渲染
-        //管理员资料
-        $member = $this->getMember();
-        $memberRow = db()->Table('member_info')->getRow(array('role' => \Member\Info\Table\Role::LEVEL_ADMIN,'id'=>$member['id']))->done();        //getRow
-        $memberForm = new \Member\Login\Form\infoForm();
-        $memberForm->bind($memberRow); //绑定Row
-        $memberForm->start('info'); //开始渲染
-        //获取头像
-        $this->getView()->assign(array('form' => $form,'memberform' => $memberForm,'avatar'=>$member['avatar']));
+        $this->getView()->assign(array('form' => $form));
         return $this->getView()->display();
     }
 

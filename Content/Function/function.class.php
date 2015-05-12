@@ -184,9 +184,8 @@ function G($start, $end = '', $dec = 4)
  */
 function Hook($tag, &$params = NULL)
 {
-    \System\Library\Hook::listen($tag,$params);
+    \System\Library\Hook::listen($tag, $params);
 }
-
 
 
 /**
@@ -226,7 +225,7 @@ function session($name, $value = '')
             }
         }
         // 启动session
-        if(C('session:session_auto_start')){
+        if (C('session:session_auto_start')) {
             session_start();
         }
     } elseif ('' === $value) {
@@ -402,15 +401,13 @@ function loader($class)
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    }
-    //模型
+    } //模型
     elseif (substr($class, -5) == "Model" && strlen($class) !== 5) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
         }
-    }
-    elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
+    } elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
             return include $classPath;
@@ -428,9 +425,9 @@ function loader($class)
  * 缓存
  * @param $key
  * @param string $val
- * @param string $model  model 默认文件名为 MD5（key ）,否则为自定义文件名模式
+ * @param string $model model 默认文件名为 MD5（key ）,否则为自定义文件名模式
  */
-function cache($key, $val = "",$path="",$model="")
+function cache($key, $val = "", $path = "", $model = "")
 {
 
     $cache = new \System\Core\Cache();
@@ -438,12 +435,12 @@ function cache($key, $val = "",$path="",$model="")
     $cache = new \System\Library\Cache\cacheFile();
     $cache->connect($type, C("cache:$type"));
     if (!empty($key) && !empty($val)) {
-        $cache->set($key, $val,$path,$model);
+        $cache->set($key, $val, $path, $model);
     } else if ($key && !$val) {
-        if ($cache->get($key,$path,$model)) {
-            return $cache->get($key,$path,$model);
+        if ($cache->get($key, $path, $model)) {
+            return $cache->get($key, $path, $model);
         } else {
-            $cache->delete($key,$path,$model);
+            $cache->delete($key, $path, $model);
         }
     }
 
@@ -539,10 +536,9 @@ function exception($msg)
  */
 function member($id)
 {
-    $user = db()->Table('member_info')->getRow(array('id'=>$id))->done();        //getAll
+    $user = db()->Table('member_info')->getRow(array('id' => $id))->done();        //getAll
     return $user['username'];
 }
-
 
 
 /**
@@ -551,10 +547,11 @@ function member($id)
  * @param string $content 日志内容
  * @param int $lid 日志id
  */
-function breakLog($content, $lid) {
+function breakLog($content, $lid)
+{
     $a = explode('[break]', $content, 2);
     if (!empty($a[1])) {
-        $a[0].='<p class="readmore"><a href="' . Url::log($lid) . '">阅读全文&gt;&gt;</a></p>';
+        $a[0] .= '<p class="readmore"><a href="' . Url::log($lid) . '">阅读全文&gt;&gt;</a></p>';
     }
     return $a[0];
 }
@@ -564,12 +561,11 @@ function breakLog($content, $lid) {
  *
  * @param string $content 日志内容
  */
-function rmBreak($content) {
+function rmBreak($content)
+{
     $content = str_replace('[break]', '', $content);
     return $content;
 }
-
-
 
 
 /**
@@ -592,7 +588,8 @@ function rmBreak($content) {
  * json
  * @param $array
  */
-function JsonObject($array){
+function JsonObject($array)
+{
     header("Content-type: application/json");
     exit(json_encode($array));
 }
@@ -602,8 +599,9 @@ function JsonObject($array){
  * 获取插件类的类名
  * @param strng $name 插件名
  */
-function getPlugClass($name){
-    $class = "\\Content\\Plugins\\".ucfirst($name)."\\".ucfirst($name)."Plugin";
+function getPlugClass($name)
+{
+    $class = "\\Content\\Plugins\\" . ucfirst($name) . "\\" . ucfirst($name) . "Plugin";
     return $class;
 }
 
@@ -613,7 +611,8 @@ function getPlugClass($name){
  * @param $pluginClassName
  * @return mixed
  */
-function getPluginData($name){
+function getPluginData($name)
+{
 
     $pluginClassName = getPlugClass($name);
     $plug = new $pluginClassName;
@@ -622,28 +621,27 @@ function getPluginData($name){
 }
 
 
-
 /**
  * 字符串转换为数组，主要用于把分隔符调整到第二个参数
- * @param  string $str  要分割的字符串
+ * @param  string $str 要分割的字符串
  * @param  string $glue 分割符
  * @return array
  */
-function str2arr($str, $glue = ','){
+function str2arr($str, $glue = ',')
+{
     return explode($glue, $str);
 }
 
 /**
  * 数组转换为字符串，主要用于把分隔符调整到第二个参数
- * @param  array  $arr  要连接的数组
+ * @param  array $arr 要连接的数组
  * @param  string $glue 分割符
  * @return string
  */
-function arr2str($arr, $glue = ','){
+function arr2str($arr, $glue = ',')
+{
     return implode($glue, $arr);
 }
-
-
 
 
 /**
@@ -654,6 +652,133 @@ function arr2str($arr, $glue = ','){
  * @param boolean $record 是否记录日志
  * @return void|array
  */
-function trace($value='[xtt]',$label='',$level='DEBUG',$record=false) {
-    return  \System\Core\Error::trace($value,$label,$level,$record);
+function trace($value = '[xtt]', $label = '', $level = 'DEBUG', $record = false)
+{
+    return \System\Core\Error::trace($value, $label, $level, $record);
 }
+
+/**
+ * Token
+ * @param int $len
+ * @param bool $md5
+ * @return string
+ */
+function getToken($len = 32, $md5 = true)
+{
+    # Seed random number generator
+    # Only needed for PHP versions prior to 4.2
+    mt_srand((double)microtime() * 1000000);
+    # Array of characters, adjust as desired
+    $chars = array(
+        'Q',
+        '@',
+        '8',
+        'y',
+        '%',
+        '^',
+        '5',
+        'Z',
+        '(',
+        'G',
+        '_',
+        'O',
+        '`',
+        'S',
+        '-',
+        'N',
+        '<',
+        'D',
+        '{',
+        '}',
+        '[',
+        ']',
+        'h',
+        ';',
+        'W',
+        '.',
+        '/',
+        '|',
+        ':',
+        '1',
+        'E',
+        'L',
+        '4',
+        '&',
+        '6',
+        '7',
+        '#',
+        '9',
+        'a',
+        'A',
+        'b',
+        'B',
+        '~',
+        'C',
+        'd',
+        '>',
+        'e',
+        '2',
+        'f',
+        'P',
+        'g',
+        ')',
+        '?',
+        'H',
+        'i',
+        'X',
+        'U',
+        'J',
+        'k',
+        'r',
+        'l',
+        '3',
+        't',
+        'M',
+        'n',
+        '=',
+        'o',
+        '+',
+        'p',
+        'F',
+        'q',
+        '!',
+        'K',
+        'R',
+        's',
+        'c',
+        'm',
+        'T',
+        'v',
+        'j',
+        'u',
+        'V',
+        'w',
+        ',',
+        'x',
+        'I',
+        '$',
+        'Y',
+        'z',
+        '*'
+    );
+    # Array indice friendly number of chars;
+    $numChars = count($chars) - 1;
+    $token = '';
+    # Create random token at the specified length
+    for ($i = 0; $i < $len; $i++)
+        $token .= $chars[mt_rand(0, $numChars)];
+    # Should token be run through md5?
+    if ($md5) {
+        # Number of 32 char chunks
+        $chunks = ceil(strlen($token) / 32);
+        $md5token = '';
+        # Run each chunk through md5
+        for ($i = 1; $i <= $chunks; $i++)
+            $md5token .= md5(substr($token, $i * 32 - 32, 32));
+        # Trim the token
+        $token = substr($md5token, 0, $len);
+    }
+    return $token;
+}
+
+?>

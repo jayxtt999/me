@@ -21,31 +21,14 @@ class infoController extends abstractController
         $data = $this->request()->getData();
         $memberForm = new \Member\Login\Form\infoForm();
         $memberForm->start('info');
-        $coordinates = $data['coordinates'];
-        unset($data['coordinates']);
         $data = checkForm::init($data, $memberForm->_name);
         $member = $this->getMember();
-
         //生成头像
-        if(!function_exists('imagecreate')){
-            Error::halt("请先开启GD库");exit;
-        }
         try{
-            $zb = explode(",",$coordinates);
-            $targ_w = $targ_h = 150;
-            $targetFile = str_replace("http://".$_SERVER['SERVER_NAME']."/","", $data['avatar']);
-            $img_r = imagecreatefromjpeg($targetFile);
-            $dst_r = ImageCreateTrueColor($targ_w,$targ_h);
-            imagecopyresampled($dst_r,$img_r,0,0,$zb[0],$zb[2],$targ_w,$targ_h,$zb[1],$zb[3]);
-            //imagecopyresampled($dst_r,$img_r,0,0,0,0,100,100,100,100);
-            imagejpeg($dst_r,$targetFile);
-            imagedestroy($dst_r);
             db()->upDate($data,array('id'=>$member['id']))->done();
-            return $this->link()->success("admin:config:index", "保存成功");
+            return $this->link()->success("admin:user:profile", "保存成功");
         }catch (\Exception $e){
-
             Error::halt($e->getMessage());exit;
-
         }
 
 

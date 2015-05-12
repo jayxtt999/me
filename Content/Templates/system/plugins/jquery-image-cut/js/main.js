@@ -77,25 +77,25 @@ $(function () {
 
     $image.on({
       'build.cropper': function (e) {
-        //console.log(e.type);
+        console.log(e.type);
       },
       'built.cropper': function (e) {
-        //console.log(e.type);
+        console.log(e.type);
       },
       'dragstart.cropper': function (e) {
-        //console.log(e.type, e.dragType);
+        console.log(e.type, e.dragType);
       },
       'dragmove.cropper': function (e) {
-       // console.log(e.type, e.dragType);
+        console.log(e.type, e.dragType);
       },
       'dragend.cropper': function (e) {
-       // console.log(e.type, e.dragType);
+        console.log(e.type, e.dragType);
       },
       'zoomin.cropper': function (e) {
-        //console.log(e.type);
+        console.log(e.type);
       },
       'zoomout.cropper': function (e) {
-        //console.log(e.type);
+        console.log(e.type);
       }
     }).cropper(options);
 
@@ -167,7 +167,6 @@ $(function () {
     var $inputImage = $('#inputImage'),
         URL = window.URL || window.webkitURL,
         blobURL;
-
     if (URL) {
       $inputImage.change(function () {
         var files = this.files,
