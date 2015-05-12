@@ -154,4 +154,20 @@ class plugController extends abstractController{
         $this->getView()->display();
     }
 
+
+    public function settingSaveAction(){
+
+        $id = post("id","int");
+        $config = post("config","txt");
+        $flag = db()->table('plugs')->upDate(array('config'=>json_encode($config)),array('id'=>$id))->done();
+        if($flag !== false){
+            return $this->link()->success('/index.php?m=admin&c=plug&a=index',"保存成功");
+        }else{
+            return $this->link()->error("保存失败");
+        }
+
+    }
+
+
+
 } 
