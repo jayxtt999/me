@@ -102,6 +102,7 @@ class plugController extends abstractController{
             JsonObject(array('status'=>true,'msg'=>"已禁用"));
         }
         $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();
+        $hookModel  = new \Admin\Model\hookModel();
         JsonObject(array('status'=>true,'msg'=>"已禁用"));
     }
 
@@ -116,6 +117,8 @@ class plugController extends abstractController{
             JsonObject(array('status'=>true,'msg'=>"已开启"));
         }
         $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_ENABLE),array('id'=>$id))->done();
+        $hookModel  = new \Admin\Model\hookModel();
+
         JsonObject(array('status'=>true,'msg'=>"已开启"));
     }
 

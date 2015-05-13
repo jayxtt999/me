@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/5/8 0008
- * Time: ÏÂÎç 3:38
+ * Time: ä¸‹åˆ 3:38
  */
 
 namespace System\Library;
@@ -21,9 +21,9 @@ class Hook
     }
 
     /**
-     * ¼àÌı±êÇ©µÄ²å¼ş
-     * @param string $tag ±êÇ©Ãû³Æ
-     * @param mixed $params ´«Èë²ÎÊı
+     * ç›‘å¬æ ‡ç­¾çš„æ’ä»¶
+     * @param string $tag æ ‡ç­¾åç§°
+     * @param mixed $params ä¼ å…¥å‚æ•°
      * @return void
      */
     public static function listen($tag, &$params = NULL)
@@ -31,22 +31,24 @@ class Hook
         if (isset(self::$tags[$tag])) {
             if (APP_DEBUG) {
                 G($tag . 'Start');
-                trace('[ ' . $tag . ' ] --START--', '', 'INFO');
+                \System\Core\Error::trace('[ ' . $tag . ' ] --START--', '', 'INFO');
             }
             foreach (self::$tags[$tag] as $name) {
+
+
                 APP_DEBUG && G($name . '_start');
                 $result = self::exec($name, $tag, $params);
                 if (APP_DEBUG) {
                     G($name . '_end');
-                    trace('Run ' . $name . ' [ RunTime:' . G($name . '_start', $name . '_end', 6) . 's ]', '', 'INFO');
+                    \System\Core\Error::trace('Run ' . $name . ' [ RunTime:' . G($name . '_start', $name . '_end', 6) . 's ]', '', 'INFO');
                 }
                 if (false === $result) {
-                    // Èç¹û·µ»Øfalse ÔòÖĞ¶Ï²å¼şÖ´ĞĞ
+                    // å¦‚æœè¿”å›false åˆ™ä¸­æ–­æ’ä»¶æ‰§è¡Œ
                     return;
                 }
             }
-            if (APP_DEBUG) { // ¼ÇÂ¼ĞĞÎªµÄÖ´ĞĞÈÕÖ¾
-                trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
+            if (APP_DEBUG) { // è®°å½•è¡Œä¸ºçš„æ‰§è¡Œæ—¥å¿—
+                \System\Core\Error::trace('[ ' . $tag . ' ] --END-- [ RunTime:' . G($tag . 'Start', $tag . 'End', 6) . 's ]', '', 'INFO');
             }
         }
 
@@ -55,17 +57,17 @@ class Hook
 
 
     /**
-     * Ö´ĞĞÄ³¸ö²å¼ş
-     * @param string $name ²å¼şÃû³Æ
-     * @param string $tag ·½·¨Ãû£¨±êÇ©Ãû£©
-     * @param Mixed $params ´«ÈëµÄ²ÎÊı
+     * æ‰§è¡ŒæŸä¸ªæ’ä»¶
+     * @param string $name æ’ä»¶åç§°
+     * @param string $tag æ–¹æ³•åï¼ˆæ ‡ç­¾åï¼‰
+     * @param Mixed $params ä¼ å…¥çš„å‚æ•°
      * @return void
      */
     static public function exec($name, $tag, &$params = NULL)
     {
         //$s = new \Content\Plugins\Trace\TracePlugin();
         //$s->appBegin();exit;
-        $plugClass = "\\Content\\Plugins\\Trace\\".$name."Plugin";
+        $plugClass = "\\Content\\Plugins\\".ucfirst($name)."\\".$name."Plugin";
         $plug = new $plugClass();
         return $plug->$tag($params);
     }
