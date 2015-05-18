@@ -71,7 +71,7 @@ class hookModel  extends \System\Core\Model{
             JsonObject(array('status'=>false,'msg'=>"未实现".$plug_name."插件的入口文件"));
         }
         $methods = get_class_methods($plug_class);
-        $_hooks = db()->table("hook")->getAll(array('status'=>\Admin\Hoke\Type\Status::STATUS_ENABLE,'type'=>\Admin\Hoke\Type\Type::TYPE_DIY))->fields('name')->done();
+        $_hooks = db()->table("hook")->getAll(array('status'=>\Admin\Hoke\Type\Status::STATUS_ENABLE))->fields('name')->done();
         $hooks = array();
         foreach($_hooks as $v){
             $hooks[] = $v['name'];

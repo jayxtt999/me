@@ -8,13 +8,13 @@
 namespace Admin\Hoke\Type;
 class Type extends \System\Library\statusGateway{
 
-    const TYPE_DIY = 1;
-    const TYPE_ADMIN = 2;
+    const TYPE_CONTROLLER = 1;
+    const TYPE_VIEW = 2;
 
     public function init()
     {
-        $this->set(self::TYPE_DIY, 'diy', '自定义');
-        $this->set(self::TYPE_ADMIN, 'admin', '系统');
+        $this->set(self::TYPE_CONTROLLER, 'diy', '控制器');
+        $this->set(self::TYPE_VIEW, 'admin', '视图');
     }
 
 } 
