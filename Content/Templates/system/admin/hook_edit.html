@@ -1,0 +1,219 @@
+<include file="layout@admin@head"/>
+<link rel="stylesheet" type="text/css" href="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-nestable/jquery.nestable.css"/>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+
+            <include file="layout@layout@widgets"/>
+
+            <!-- END PAGE HEADER-->
+
+            <div class="row">
+                <div class="col-md-9 ">
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+                            </div>
+                            <div class="tools">
+                                <a href="" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="" class="reload">
+                                </a>
+                                <a href="" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            {$form->begin('hookEdit')}
+                            <div class="form-body">
+
+                                <div class="form-group">
+                                    {$form->getText('name')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getTextArea('description')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getSelect('type')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getBsCheckBox('status')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getText('crate_time')}
+                                </div>
+
+
+                                <div class="form-group">
+
+
+                                    <label class="col-md-3 control-label">钩子挂载的插件排序</label>
+                                    <if condition="$plugs == true">
+
+                                        <div class="col-md-9">
+                                            <div class="dd" id="nestable_list_2">
+                                                <ol class="dd-list">
+
+                                                    <volist name="plugs" id="vo">
+
+                                                        <li class="dd-item" id="dd-item-{$key}" data-id="{$key}" data="{$vo}">
+                                                            <div class="dd-handle">
+                                                                {$vo}
+                                                            </div>
+                                                        </li>
+
+                                                    </volist>
+
+                                                </ol>
+
+                                                <button type="button" id="save_component_sort" class="btn green">保存组件排序</button>
+                                            </div>
+                                        </div>
+                                        <else />
+                                        <div class="col-md-9">
+                                            暂无插件，无法排序
+                                        </div>
+
+
+                                    </if>
+
+
+
+
+                                </div>
+
+
+
+
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-5 col-md-4">
+                                        <button type="submit" class="btn green">Submit</button>
+                                        <button type="button" class="btn default">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {$form->end('hookEdit')}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+<include file="layout@admin@foot"/>
+<script src="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-nestable/jquery.nestable.js"></script>
+
+
+<script>
+
+    $(function () {
+
+
+        //拖动
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+            if (window.JSON) {
+                output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
+            } else {
+                output.val('JSON browser support required for this demo.');
+            }
+        };
+
+        $('#nestable_list_2').nestable({
+            group: 1
+        })
+
+        updateOutput($('#nestable_list_2').data('output', $('#nestable_list_2_output')));
+
+
+        //提交
+        $("#save_component_sort").click(function () {
+
+            var data = new Array();
+            for (i = 0; i < $(".dd-list li").length; i++) {
+                data.push($(".dd-list li").eq(i).attr("data"));
+            }
+            $.ajax({
+                url:"/index.php?m=admin&c=hook&a=sort",
+                type:"post",
+                dataType:"json",
+                data:{
+                    'data':data,'id':{$id}
+                },
+                success:function(d){
+                    layer.msg(d.msg);
+                }
+
+            })
+
+        })
+
+
+        $(".form-horizontal").Validform({
+            tiptype: function (msg, o, cssctl) {
+                o.type = 5
+                var objtip = o.obj.parent().parent(".form-group");
+                cssctl(objtip, o.type);
+                var objtip2 = o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+        //checkBox使用bootstrapSwitch 必须手动添加此段代码
+        $('input[name="istop"]，input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            state ? $(this).val(1) : $(this).val(2);
+        });
+        $(".article_tag").click(function () {
+            var val = $("#tags").val();
+            if(val){
+                val +=  ","+$(this).text()
+            }else{
+                val = $(this).text();
+            }
+            $("#tags").val(val);
+        })
+        $("#tags").val("{$tTags}")
+    })
+
+
+
+
+
+</script>
+
+
+

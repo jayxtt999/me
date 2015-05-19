@@ -613,7 +613,6 @@ function getPlugClass($name)
  */
 function getPluginData($name)
 {
-
     $pluginClassName = getPlugClass($name);
     $plug = new $pluginClassName;
     return $plug->info;
@@ -780,5 +779,42 @@ function getToken($len = 32, $md5 = true)
     }
     return $token;
 }
+
+
+/**
+ * 删除文件夹所有及其文件
+ * @param $name
+ * @return bool
+ */
+function deletePlugDir($dir){
+
+
+    if(str_replace("/","\\",$dir)!==realpath($dir) || !is_dir($dir)){
+        return false;
+    }
+
+    //先删除目录下的文件：
+    $dh = opendir($dir);
+    while ($file=readdir($dh)) {
+        if($file!="." && $file!="..") {
+            $fullpath=$dir."/".$file;
+            if(!is_dir($fullpath)) {
+                unlink($fullpath);
+            } else {
+                deldir($fullpath);
+            }
+        }
+    }
+    closedir($dh);
+    //删除当前文件夹：
+    if(rmdir($dir)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
 
 ?>

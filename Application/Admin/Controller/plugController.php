@@ -9,142 +9,202 @@
 namespace Admin\Controller;
 
 
-class plugController extends abstractController{
+class plugController extends abstractController
+{
 
-    public function indexAction(){
+    public function indexAction()
+    {
 
         $plugNewAll = array();
-        $plugModel   = new \Admin\Model\plugModel();
+        $plugModel = new \Admin\Model\plugModel();
         $plugLocAll = $plugModel->getPlugins();
         $plugDb = db()->table('plugs')->getAll()->done();
 
-        foreach($plugDb as $k=>$v){
+        foreach ($plugDb as $k => $v) {
             $plugAll[$v['name']] = $v;
             $plugAll[$v['name']]['isInstall'] = true;
         }
 
+        $arr = array_diff_assoc($plugLocAll, $plugAll);
 
-        $arr = array_diff_assoc($plugLocAll,$plugAll);
-
-        if($arr){
-            $plugAll = array_merge($plugAll,$arr);
+        if ($arr) {
+            $plugAll = array_merge($plugAll, $arr);
         }
         $config = new \Admin\Model\webConfigModel();
         $data = array(
-            'plugAll'=>$plugAll,
-            'plugHooKConfig'=>C("plugs_hook"),
+            'plugAll' => $plugAll,
+            'plugHooKConfig' => C("plugs_hook"),
         );
 
         $this->getView()->assign($data);
+
         return $this->getView()->display();
 
     }
 
+    /**
+     * 安装插件
+     */
+    public function installAction()
+    {
 
-    public function installAction(){
-
-        $name = post("val","txt");
+        $name = post("val", "txt");
         //检查插件是否存在
-        $class  = getPlugClass($name);
-        if(!class_exists($class)){
-            JsonObject(array('status'=>false,'msg'=>'插件不存在'));
+        $class = getPlugClass($name);
+        if (!class_exists($class)) {
+            JsonObject(array('status' => false, 'msg' => '插件不存在'));
         }
         //检查插件是否完整
-        $plug  =   new $class;
+        $plug = new $class;
         $info = $plug->info;
-        if(!$info || !$plug->checkInfo()){
+        if (!$info || !$plug->checkInfo()) {
             //检测信息的正确性
-            JsonObject(array('status'=>false,'msg'=>'插件信息缺失'));
+            JsonObject(array('status' => false, 'msg' => '插件信息缺失'));
         }
         //预安装，有些插件需要操作数据库..
-        $install_flag   =   $plug->install();
-        if(!$install_flag){
-            JsonObject(array('status'=>false,'msg'=>'插件预安装操作失败'));
+        $install_flag = $plug->install();
+        if (!$install_flag) {
+            JsonObject(array('status' => false, 'msg' => '插件预安装操作失败'));
         }
         //保存插件信息 && 更新钩子
-        try{
+        try {
             db()->beginTransaction();
             //获取插件配置信息
-            $config  =  serialize(array('config'=>json_encode($plug->getConfig())));
+            $config = $plug->getConfig()?serialize(array('config' => json_encode($plug->getConfig()))):"";
             $info['name'] = strtolower($info['name']);
             $info['config'] = $config;
             $info['crate_time'] = date("Y-m-d H:i:s");
             db()->table('plugs')->insert($info)->done();
-            //exit;
             $hookModel = new \Admin\Model\hookModel();
             $r = $hookModel->updateHooks($name);
-            if($r){
-                JsonObject(array('status'=>true,'msg'=>"安装成功"));
-            }else{
-                JsonObject(array('status'=>false,'msg'=>"安装失败"));
+            if ($r) {
+                db()->commit();
+                JsonObject(array('status' => true, 'msg' => "安装成功"));
+            } else {
+                db()->rollBack();
+                JsonObject(array('status' => false, 'msg' => "安装失败"));
             }
             //更新钩子信息
 
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             db()->rollBack();
         }
 
-
-
-
     }
 
 
-    public function unableAction(){
+    /**
+     * 卸载插件
+     */
+    public function uninstallAction()
+    {
 
-        $id = post("val","int");
-        $row = db()->table("plugs")->getRow(array('id'=>$id))->done();
-        if(!$row){
-            JsonObject(array('status'=>false,'msg'=>"禁用失败,插件不存在"));
+        $id = post("val", "int");
+        $row = db()->table("plugs")->getRow(array("id" => $id))->done();
+        $hookModel = new \Admin\Model\hookModel();
+        if (!$row) {
+            JsonObject(array('status' => false, 'msg' => "插件不存在"));
         }
-        if($row['status'] == \Admin\Plug\Type\Status::STATUS_UNABLE){
-            JsonObject(array('status'=>true,'msg'=>"已禁用"));
+        $class = getPlugClass($row['name']);
+        if (!class_exists($class)) {
+            JsonObject(array('status' => false, 'msg' => '插件文件缺失,卸载失败'));
         }
-        $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();
-        $hookModel  = new \Admin\Model\hookModel();
-        JsonObject(array('status'=>true,'msg'=>"已禁用"));
+        $plugs = new $class;
+        $uninstall_flag = $plugs->uninstall();
+        if (!$uninstall_flag) {
+            JsonObject(array('status' => false, 'msg' => '执行插件预卸载操作失败'));
+        }
+        db()->beginTransaction();
+        $r1 = db()->table("plugs")->delete(array("id" => $id))->done();
+        $r2 = $hookModel->removeHooks($row['name']);
+        if ($r1 && $r2) {
+            $this->deletePlugDir($row['name']);
+            //db()->commit();
+            JsonObject(array('status' => true, 'msg' => '卸载成功'));
+
+        } else {
+            db()->rollBack();
+            JsonObject(array('status' => false, 'msg' => '卸载失败'));
+        }
     }
 
-    public function enableAction(){
-
-        $id = post("val","int");
-        $row = db()->table("plugs")->getRow(array('id'=>$id))->done();
-        if(!$row){
-            JsonObject(array('status'=>false,'msg'=>"开启失败,插件不存在"));
-        }
-        if($row['status'] == \Admin\Plug\Type\Status::STATUS_ENABLE){
-            JsonObject(array('status'=>true,'msg'=>"已开启"));
-        }
-        $r = db()->table("plugs")->upDate(array('status'=>\Admin\Plug\Type\Status::STATUS_ENABLE),array('id'=>$id))->done();
-        $hookModel  = new \Admin\Model\hookModel();
-
-        JsonObject(array('status'=>true,'msg'=>"已开启"));
+    /**
+     * 删除插件文件
+     * @param $name
+     * @return bool
+     */
+    public function deletePlugDir($name)
+    {
+        $dir = PLUGIN_PATH . ucfirst(trim($name));
+        return deletePlugDir($dir);
     }
 
+    /**
+     * 禁用插件
+     */
+    public function unableAction()
+    {
 
-    public function settingAction(){
-        $id = get("id","int");
-        if(!$id){
+        $id = post("val", "int");
+        $row = db()->table("plugs")->getRow(array('id' => $id))->done();
+        if (!$row) {
+            JsonObject(array('status' => false, 'msg' => "禁用失败,插件不存在"));
+        }
+        if ($row['status'] == \Admin\Plug\Type\Status::STATUS_UNABLE) {
+            JsonObject(array('status' => true, 'msg' => "已禁用"));
+        }
+        $r = db()->table("plugs")->upDate(array('status' => \Admin\Plug\Type\Status::STATUS_UNABLE), array('id' => $id))->done();
+        $hookModel = new \Admin\Model\hookModel();
+        JsonObject(array('status' => true, 'msg' => "已禁用"));
+    }
+
+    /**
+     * 开启插件
+     */
+    public function enableAction()
+    {
+
+        $id = post("val", "int");
+        $row = db()->table("plugs")->getRow(array('id' => $id))->done();
+        if (!$row) {
+            JsonObject(array('status' => false, 'msg' => "开启失败,插件不存在"));
+        }
+        if ($row['status'] == \Admin\Plug\Type\Status::STATUS_ENABLE) {
+            JsonObject(array('status' => true, 'msg' => "已开启"));
+        }
+        $r = db()->table("plugs")->upDate(array('status' => \Admin\Plug\Type\Status::STATUS_ENABLE), array('id' => $id))->done();
+        $hookModel = new \Admin\Model\hookModel();
+
+        JsonObject(array('status' => true, 'msg' => "已开启"));
+    }
+
+    /**
+     * 插件设置
+     */
+    public function settingAction()
+    {
+        $id = get("id", "int");
+        if (!$id) {
             return $this->link()->error("参数错误");
         }
-        $plug = db()->table("plugs")->getRow(array('id'=>$id))->done();
-        if(!$plug){
+        $plug = db()->table("plugs")->getRow(array('id' => $id))->done();
+        if (!$plug) {
             return $this->link()->error("插件未安装");
         }
         $plugClass = getPlugClass($plug['name']);
-        if(!class_exists($plugClass)){
-            trace("插件{$plug['name']}无法实例化,",'ADDONS','ERR');
+        if (!class_exists($plugClass)) {
+            trace("插件{$plug['name']}无法实例化,", 'ADDONS', 'ERR');
         }
-        $data  =   new $plugClass;
+        $data = new $plugClass;
         $dbConfig = $plug['config'];
         $plug['config'] = include $data->config_file;
-        if($dbConfig){
+        if ($dbConfig) {
             $dbConfig = json_decode($dbConfig, true);
             foreach ($plug['config'] as $key => $value) {
-                if($value['type'] != 'group'){
+                if ($value['type'] != 'group') {
                     $plug['config'][$key]['value'] = $dbConfig[$key];
-                }else{
+                } else {
                     foreach ($value['options'] as $gourp => $options) {
                         foreach ($options['options'] as $gkey => $value) {
                             $plug['config'][$key]['options'][$gourp]['options'][$gkey]['value'] = $dbConfig[$gkey];
@@ -153,24 +213,27 @@ class plugController extends abstractController{
                 }
             }
         }
-        $this->getView()->assign(array('data'=>$plug,'id'=>$id));
+        $this->getView()->assign(array('data' => $plug, 'id' => $id));
         $this->getView()->display();
     }
 
 
-    public function settingSaveAction(){
+    /**
+     * 保存设置
+     */
+    public function settingSaveAction()
+    {
 
-        $id = post("id","int");
-        $config = post("config","txt");
-        $flag = db()->table('plugs')->upDate(array('config'=>json_encode($config)),array('id'=>$id))->done();
-        if($flag !== false){
-            return $this->link()->success('/index.php?m=admin&c=plug&a=index',"保存成功");
-        }else{
+        $id = post("id", "int");
+        $config = post("config", "txt");
+        $flag = db()->table('plugs')->upDate(array('config' => json_encode($config)), array('id' => $id))->done();
+        if ($flag !== false) {
+            return $this->link()->success('/index.php?m=admin&c=plug&a=index', "保存成功");
+        } else {
             return $this->link()->error("保存失败");
         }
 
     }
 
 
-
-} 
+}

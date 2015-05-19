@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-05-11 18:02:28
+Date: 2015-05-19 17:59:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -175,7 +175,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -201,6 +201,9 @@ INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理
 INSERT INTO `xtt_common_menu` VALUES ('223', '链接管理', '链接管理', null, 'admin', 'link', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('224', '插件管理', '插件管理', null, 'admin', 'plug', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('225', '插件配置', '插件配置', '2015-05-11 14:39:17', 'admin', 'plug', 'setting', '', '1', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('226', '个人资料', '个人资料', null, 'admin', 'user', 'profile', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('227', '钩子管理', '钩子管理', null, 'admin', 'hook', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('228', '编辑钩子', '编辑钩子', null, 'admin', 'hook', 'edit', '', '1', '0', '', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -252,17 +255,17 @@ CREATE TABLE `xtt_hook` (
   `name` varchar(40) NOT NULL DEFAULT '' COMMENT '钩子名称',
   `description` text COMMENT '描述',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '类型 1可diy挂载点 2 系统挂载点',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `crate_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
   `plugs` varchar(255) NOT NULL DEFAULT '' COMMENT '钩子挂载的插件 ''，''分割',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of xtt_hook
 -- ----------------------------
-INSERT INTO `xtt_hook` VALUES ('1', 'tempHead', '页面头部拓展', '1', '0000-00-00 00:00:00', '', '1');
+INSERT INTO `xtt_hook` VALUES ('1', 'tempHead', '页面头部拓展', '1', '0000-00-00 00:00:00', 'headtest', '1');
 INSERT INTO `xtt_hook` VALUES ('2', 'tempFoot', '页面尾部拓展', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('3', 'addLog', '添加博文拓展', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('4', 'saveLog', '保存博文拓展', '1', '0000-00-00 00:00:00', '', '1');
@@ -271,7 +274,7 @@ INSERT INTO `xtt_hook` VALUES ('6', 'relatedLog', '阅读博文拓展', '1', '00
 INSERT INTO `xtt_hook` VALUES ('7', 'commentPost', '发表评论扩展点（写入评论前）', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('8', 'commentSaved', '发表评论扩展点（写入评论后）', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('9', 'navbar', '导航拓展', '1', '0000-00-00 00:00:00', '', '1');
-INSERT INTO `xtt_hook` VALUES ('10', 'documentDetailAfter', '文档末尾拓展', '1', '0000-00-00 00:00:00', 'test222', '1');
+INSERT INTO `xtt_hook` VALUES ('10', 'documentDetailAfter', '文档末尾拓展', '1', '0000-00-00 00:00:00', 'test222,tes3333', '1');
 INSERT INTO `xtt_hook` VALUES ('11', 'appBegin', '应用程序开始', '1', '0000-00-00 00:00:00', '', '1');
 INSERT INTO `xtt_hook` VALUES ('12', 'appEnd', '应用程序结束', '1', '0000-00-00 00:00:00', 'Trace', '1');
 
@@ -324,7 +327,7 @@ CREATE TABLE `xtt_member_info` (
 -- ----------------------------
 -- Records of xtt_member_info
 -- ----------------------------
-INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'http://www.me.me/Data/upload/image/avatar/1/yt_2f90e65580f021c16c1c17f106402f45.jpg', '2015-04-28 17:07:57', '1', '职业', '兴趣爱好', '男', '用户说明', '赫本', '1');
+INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'http://www.me.me/Data/upload/image/avatar/1/yt_42da8e3bc1061d3ccc5fac1e163a3390.jpg', '2015-05-12 17:46:04', '1', '职业', '兴趣爱好', '男', '用户说明', '赫本啊啊22223', '1');
 
 -- ----------------------------
 -- Table structure for xtt_member_login_log
@@ -338,7 +341,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -419,6 +422,10 @@ INSERT INTO `xtt_member_login_log` VALUES ('73', '1270', '2015-05-07 10:23:48', 
 INSERT INTO `xtt_member_login_log` VALUES ('74', '1270', '2015-05-08 09:16:08', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('75', '1270', '2015-05-11 09:16:03', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('76', '1270', '2015-05-11 14:42:46', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('77', '1270', '2015-05-12 14:21:06', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('78', '1270', '2015-05-16 13:47:56', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('79', '1270', '2015-05-18 14:56:24', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('80', '1270', '2015-05-19 09:14:42', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
@@ -434,15 +441,17 @@ CREATE TABLE `xtt_plugs` (
   `author` varchar(40) DEFAULT '' COMMENT '作者',
   `version` varchar(20) DEFAULT '' COMMENT '版本号',
   `crate_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '安装时间',
+  `has_adminlist` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否有后台操作',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='插件表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='插件表';
 
 -- ----------------------------
 -- Records of xtt_plugs
 -- ----------------------------
-INSERT INTO `xtt_plugs` VALUES ('1', 'test', '测试', '我只是一个测试', '1', null, 'xtt', '1.0', '2015-05-06 11:57:17');
-INSERT INTO `xtt_plugs` VALUES ('13', 'test222', '插件测试222', '插件测试222', '1', '{\"comment_type\":\"1\",\"comment_uid_youyan\":\"\",\"comment_short_name_duoshuo\":\"\",\"comment_data_list_duoshuo\":\"\"}', 'xietaotao', '1.0', '2015-05-08 14:10:26');
-INSERT INTO `xtt_plugs` VALUES ('18', 'trace', 'Trace追踪', '来自于Thinkphp', '1', '', 'Thinkphp', '1.0', '2015-05-08 15:21:41');
+INSERT INTO `xtt_plugs` VALUES ('1', 'test', '测试', '我只是一个测试', '1', null, 'xtt', '1.0', '2015-05-06 11:57:17', '0');
+INSERT INTO `xtt_plugs` VALUES ('13', 'test222', '插件测试222', '插件测试222', '1', '{\"comment_type\":\"1\",\"comment_uid_youyan\":\"\",\"comment_short_name_duoshuo\":\"\",\"comment_data_list_duoshuo\":\"\"}', 'xietaotao', '1.0', '2015-05-08 14:10:26', '0');
+INSERT INTO `xtt_plugs` VALUES ('18', 'trace', 'Trace追踪', '来自于Thinkphp', '1', '', 'Thinkphp', '1.0', '2015-05-08 15:21:41', '0');
+INSERT INTO `xtt_plugs` VALUES ('21', 'headtest', 'tempHead插件测试', '插件测试', '1', '', 'xietaotao', '1.0', '2015-05-19 17:27:35', '0');
 
 -- ----------------------------
 -- Table structure for xtt_sidebar

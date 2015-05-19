@@ -19,6 +19,7 @@ class hookController extends abstractController{
         return $this->getView()->display();
     }
 
+
     public function editAction(){
 
         $id = get("id","int");
@@ -26,17 +27,29 @@ class hookController extends abstractController{
         if(!$row){
             return $this->link()->error("参数错误");
         }
-        $form = new \Admin\Hook\Form\editForm();        //获取表单
+        $form = new \Admin\Hoke\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
-        $form->start('articleEdit');                      //开始渲染
-        $this->getView()->assign(array('form'=>$form));
+        $form->start('hookEdit');                      //开始渲染
+        $plugs = array();
+        if($row['plugs']){
+            $plugs = explode(",",$row['plugs']);
+        }
 
-
-
-
+        $this->getView()->assign(array('form'=>$form,'plugs'=>$plugs,'id'=>$id));
+        return $this->getView()->display();
 
     }
 
+    public function sortAction(){
+
+        $data = post("data", "txt");
+        $id = post("id", "int");
+        $plugs = arr2str($data,",");
+        $res = db()->table('hook')->upDate(array('plugs' => $plugs), array('id' => $id))->done();
+        if($res){
+            return JsonObject(array("msg" => "保存成功"));
+        }
+    }
 
 
 } 

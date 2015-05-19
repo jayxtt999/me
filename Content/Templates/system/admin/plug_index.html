@@ -130,7 +130,7 @@
                                         <td>
                                             <if condition="($vo.isInstall eq true)">
 
-                                                <if condition="($vo.config neq false)">
+                                                <if condition="($vo.config eq true)">
                                                     <a class='btn blue' href="/index.php?m=admin&c=plug&a=setting&id={$vo.id}">设置</a>
                                                 </if>
 
@@ -139,7 +139,7 @@
                                                     <else/>
                                                     <a class='btn yellow' href="javascript:;" onclick="plugAjax({$vo.id},'enable')">启用</a>
                                                 </if>
-                                                <a class='btn red' onclick="plugAjax({$vo.status},'uninstall')">卸载</a>
+                                                <a class='btn red' onclick="plugAjax({$vo.id},'uninstall')">卸载</a>
                                                 <else />
                                                 <a class="btn purple" href="javascript:plugAjax('{$vo.name}','install')">安装</a>
                                             </if>
@@ -271,6 +271,10 @@
 
 
     function plugAjax(v,f){
+
+        if(!confirm("继续?")){
+            return false;
+        }
         if(!v){
             layer.msg('插件不存在', {
                 icon: 8

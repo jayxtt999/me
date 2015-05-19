@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/5/18 0018
- * Time: ÏÂÎç 6:02
+ * Time: ä¸‹åˆ 6:02
  */
 namespace Admin\Hoke\Form;
 use System\Library\Form\Form;
@@ -25,56 +25,18 @@ class editForm extends \System\Library\Form\Form{
             "class" => "form-control",
             "placeholder" => "NAME",
         );
-        $this->setText("name", "", $array, array('datatype' => '*2-24',));
+        $this->setText("name", "Hookå", $array, array('datatype' => '*2-24',));
+
+
 
 
         $array = array(
             "class" => "form-control",
-            "placeholder" => date("Y-m-d H:i:s"),
-            "disabled" => "disabled"
+            "style" => "height:100px"
         );
-        $this->setText("time", "", $array, array(), "text", 0, 3);
-
-        $array = array(
-            "class" => "form-control",
-        );
-
-        $this->setUeditor("content", "", $array);
+        $this->setTextArea("description", "æè¿°", $array, array('datatype' => '*0-512'));
 
 
-        $array = array(
-            "class" => "form-control",
-            "id" => "tags",
-            "placeholder" => "ÈÕÖ¾±êÇ©£¬¶ººÅ»ò¿Õ¸ñ·Ö¸ô",
-        );
-        $this->setText("tag", "", $array, array('datatype' => '*0-256',), "text", 0, 6);
-
-
-        $array = array(
-            "class" => "form-control",
-
-        );
-        $menu = new \Admin\Model\articleModel();
-        $data = $menu->getCategory();
-        $this->setSelect("category", "", $array, $data, 3, 3);
-
-        $array = array(
-            "class" => "form-control",
-            "style" => "height:200px"
-
-        );
-        $this->setUeditor("excerpt", "", $array);
-
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("password", "·ÃÎÊÃÜÂë", $array, array('datatype' => '*0-24'), "text", 1, 3);
-
-        $array = array(
-            "class" => "form-control",
-        );
-        $this->setText("thumbnail", "ÎÄÕÂËõÂÔÍ¼", $array, array(), "file", 1, 3);
 
 
         $array = array(
@@ -82,9 +44,24 @@ class editForm extends \System\Library\Form\Form{
             "data-on-color" => "primary",
             "data-off-color" => "info",
         );
-        $this->setBsCheckBox("istop", "ÊÇ·ñÖÃ¶¥", $array);
+        $this->setBsCheckBox("status", "çŠ¶æ€", $array);
 
-        $this->setBsCheckBox("allow_comment", "ÔÊÐíÆÀÂÛ", $array);
+
+        $array = array(
+            "class" => "form-control",
+        );
+        $this->setSelect("type", "ç±»åž‹", $array,array("controller"=>"æŽ§åˆ¶å™¨","view"=>"è§†å›¾"),3);
+
+
+
+        $array = array(
+            "class" => "form-control",
+            "disabled" => "disabled"
+        );
+        $this->setText("crate_time", "åˆ›å»ºæ—¶é—´", $array, array(), "text", 3);
+
+
+
 
 
     }

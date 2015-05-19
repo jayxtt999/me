@@ -13,8 +13,8 @@ class Type extends \System\Library\statusGateway{
 
     public function init()
     {
-        $this->set(self::TYPE_CONTROLLER, 'diy', '控制器');
-        $this->set(self::TYPE_VIEW, 'admin', '视图');
+        $this->set(self::TYPE_CONTROLLER, 'controller', '控制器');
+        $this->set(self::TYPE_VIEW, 'view', '视图');
     }
 
 } 

@@ -217,8 +217,11 @@ class Form
 
     /**
      * @param $name
-     * @param string $param
-     * @param string $data
+     * @param $label
+     * @param string $param 加载的参数
+     * @param string $data 数据
+     * @param int $lw label宽度
+     * @param int $dw data宽度
      */
     public function setSelect($name, $label, $param = "", $data = "", $lw = 3, $dw = 6)
     {
