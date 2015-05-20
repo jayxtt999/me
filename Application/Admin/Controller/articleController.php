@@ -61,8 +61,7 @@ class articleController extends abstractController{
      */
     public function addAction(){
 
-        $id = db()->Table('article')->getNewRow()->done();        //getRow
-        $row = db()->Table('article')->getRow(array('id'=>$id))->done();        //getRow
+        $row = db()->Table('article')->getTableStructure()->done();
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('articleEdit');                      //开始渲染
