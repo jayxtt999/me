@@ -311,7 +311,7 @@ class pdoMysql
                 } else {
                     $buildModel = false;
                 }
-                $setSql .= "`" . $k . "`" . "=(" . ":d_$k" . ")" . $semicolon;
+                $setSql .= "`" . $k . "`" . "=(\"" . ":d_$k" . "\")" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {

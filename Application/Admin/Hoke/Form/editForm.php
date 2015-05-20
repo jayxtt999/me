@@ -28,6 +28,9 @@ class editForm extends \System\Library\Form\Form{
         $this->setText("name", "Hook名", $array, array('datatype' => '*2-24',));
 
 
+        $this->setText("id", "", array(), array(),'hidden');
+
+
 
 
         $array = array(

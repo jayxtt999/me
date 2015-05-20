@@ -7,6 +7,7 @@
  */
 
 namespace Admin\Controller;
+use System\Library\Form\checkForm as checkForm;
 
 
 class hookController extends abstractController{
@@ -49,6 +50,46 @@ class hookController extends abstractController{
         if($res){
             return JsonObject(array("msg" => "保存成功"));
         }
+    }
+
+
+    public function addAction(){
+
+
+        $id = db()->Table('hook')->getNewRow()->done();        //getRow
+        $row = db()->table("hook")->getRow(array('id'=>$id))->done();
+
+        $form = new \Admin\Hoke\Form\editForm();        //获取表单
+        $form->bind($row);                                  //绑定Row
+        $form->start('hookEdit');                      //开始渲染
+
+        $this->getView()->assign(array('form'=>$form,'id'=>$id));
+        return $this->getView()->display();
+
+    }
+
+
+    public function saveAction(){
+
+
+
+        $form = new \Admin\Hoke\Form\editForm();        //获取表单
+        $form->start('hookEdit');
+        $data = $this->request()->getData();//获取数据
+        $data = checkForm::init($data,$form->_name);
+        $id = $data['id'];
+        unset($data['id']);
+        $data['crate_time'] = date("Y-m-d H:i:s");
+        $res = db()->table("hook")->upDate($data,array('id'=>$id))->done();
+
+
+
+        if($res){
+            return $this->link()->success("admin:hook:index","保存成功");
+        }else{
+            return $this->link()->error("保存失败");
+        }
+
     }
 
 

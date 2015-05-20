@@ -46,9 +46,6 @@
 
                                 <div class="form-group">
                                     {$form->getText('id')}
-                                </div>
-
-                                <div class="form-group">
                                     {$form->getText('name')}
                                 </div>
 
@@ -64,53 +61,6 @@
                                 <div class="form-group">
                                     {$form->getBsCheckBox('status')}
                                 </div>
-
-
-                                <div class="form-group">
-                                    {$form->getText('crate_time')}
-                                </div>
-
-
-                                <div class="form-group">
-
-
-                                    <label class="col-md-3 control-label">钩子挂载的插件排序</label>
-                                    <if condition="$plugs == true">
-
-                                        <div class="col-md-9">
-                                            <div class="dd" id="nestable_list_2">
-                                                <ol class="dd-list">
-
-                                                    <volist name="plugs" id="vo">
-
-                                                        <li class="dd-item" id="dd-item-{$key}" data-id="{$key}" data="{$vo}">
-                                                            <div class="dd-handle">
-                                                                {$vo}
-                                                            </div>
-                                                        </li>
-
-                                                    </volist>
-
-                                                </ol>
-
-                                                <button type="button" id="save_component_sort" class="btn green">保存组件排序</button>
-                                            </div>
-                                        </div>
-                                        <else />
-                                        <div class="col-md-9">
-                                            暂无插件，无法排序
-                                        </div>
-
-
-                                    </if>
-
-
-
-
-                                </div>
-
-
-
 
                             <div class="form-actions">
                                 <div class="row">
