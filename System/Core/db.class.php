@@ -83,6 +83,12 @@ class DB
         return $this;
     }
 
+    public function getTableStructure()
+    {
+        $this->options = "GETTABLESTRUCTURE";
+        return $this;
+    }
+
 
     /**
      *获取全部记录
@@ -183,8 +189,15 @@ class DB
             case "GETNEWROW":
                 return $this->db->getnewrow($this->table);
                 break;
+            case "GETTABLESTRUCTURE":
+                return $this->db->getTableStructure($this->table);
+                break;
         }
     }
+
+
+
+
 
     /**
      * 获取sql

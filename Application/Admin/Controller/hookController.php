@@ -56,14 +56,12 @@ class hookController extends abstractController{
     public function addAction(){
 
 
-        $id = db()->Table('hook')->getNewRow()->done();        //getRow
-        $row = db()->table("hook")->getRow(array('id'=>$id))->done();
-
+        $row = db()->Table('hook')->getTableStructure()->done();
         $form = new \Admin\Hoke\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('hookEdit');                      //开始渲染
 
-        $this->getView()->assign(array('form'=>$form,'id'=>$id));
+        $this->getView()->assign(array('form'=>$form));
         return $this->getView()->display();
 
     }

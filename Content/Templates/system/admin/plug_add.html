@@ -1,0 +1,224 @@
+<include file="layout@admin@head"/>
+<link rel="stylesheet" type="text/css"
+      href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-select/bootstrap-select.min.css"/>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+
+            <include file="layout@layout@widgets"/>
+
+            <!-- END PAGE HEADER-->
+
+            <div class="row">
+                <div class="col-md-9 ">
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+                            </div>
+                            <div class="tools">
+                                <a href="" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="" class="reload">
+                                </a>
+                                <a href="" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            {$form->begin('plugAdd')}
+                            <div class="form-body">
+
+
+                                <div class="form-group">
+                                    {$form->getText('name')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('title')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getText('version')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getText('author')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getTextArea('description')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getBsCheckBox('enable')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getBsCheckBox('isConfig')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"></label>
+
+                                    <div class="col-md-3">
+                                        <textarea  name="isConfigVal" style="display: block;width: 550px;height: 225px">&#60;&#161;php
+return array(
+    'random'=>array(//配置在表单中的键名 ,这个会是config[random]
+    'title'=>'是否开启随机:',//表单的文字
+    'type'=>'radio', //表单的类型：text、textarea、checkbox、radio、select等
+        'options'=>array( //select 和radion、checkbox的子选项
+        '1'=>'开启', //值=>文字
+        '0'=>'关闭',
+        ),
+    'value'=>'1', //表单的默认值
+    ),
+);
+                                        </textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getBsCheckBox('isAdminList')}
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"></label>
+
+                                    <div class="col-md-3">
+                                        <textarea name="isAdminListVal" style="display: block;width: 550px;height: 225px">
+            'model'=>'Example',//要查的表
+            'fields'=>'*',//要查的字段
+            'map'=>'',//查询条件
+            'order'=>'id desc',//排序,
+            'listKey'=>array(
+                '字段名'=>'表头显示名'
+            ),
+                                        </textarea>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    {$form->getSelect('hookName[]')}
+                                </div>
+
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-5 col-md-4">
+                                            <button type="button" onclick="preview();" class="btn purple">预览</button>
+                                            <button type="submit" class="btn green">保存</button>
+                                            <button type="button" onclick="window.history.go(-1)" class="btn default">
+                                                返回
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {$form->end('plugAdd')}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- END CONTAINER -->
+
+<include file="layout@admin@foot"/>
+<script src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+
+
+<script>
+
+    $(function () {
+
+
+        $('.bs-select').selectpicker({
+            iconBase: 'fa',
+            tickIcon: 'fa-check'
+        });
+
+
+        $(".form-horizontal").Validform({
+            tiptype: function (msg, o, cssctl) {
+                o.type = 5
+                var objtip = o.obj.parent().parent(".form-group");
+                cssctl(objtip, o.type);
+                var objtip2 = o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+        //checkBox使用bootstrapSwitch 必须手动添加此段代码
+        $('input[name="istop"],input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            state ? $(this).val(1) : $(this).val(2);
+        });
+        $(".article_tag").click(function () {
+            var val = $("#tags").val();
+            if (val) {
+                val += "," + $(this).text()
+            } else {
+                val = $(this).text();
+            }
+            $("#tags").val(val);
+        })
+        $("#tags").val("{$tTags}")
+    })
+
+
+
+    function preview() {
+
+        var preview_url = '/index.php?m=admin&c=plug&a=preview';
+        $.post(preview_url, $('#plugAdd').serialize(),function(data){
+
+            layer.open({
+                type: 1,
+                title: "预览插件文件",
+                skin: 'layui-layer-rim', //加上边框
+                area: ['730px', '530px'], //宽高
+                content: data
+            });
+
+
+
+        })
+
+
+    }
+
+
+</script>
+
+
+

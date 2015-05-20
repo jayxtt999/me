@@ -420,6 +420,27 @@ class pdoMysql
 
     }
 
+
+    /**
+     *获取表结构
+     * @param $table
+     * @return string
+     */
+    public function getTableStructure($table)
+    {
+
+        $stem = $this->query("SHOW COLUMNS FROM ".$this->prefix.$table);
+        $arr  =array();
+        foreach ($stem as $row) {
+            $arr[$row['Field']] = "";
+        }
+        return ($arr);
+    }
+
+
+
+
+
     /**
      * prepare转sql 用于有些无法使用pdo prepare过滤方式 ==> update table set a=a+1
      * @param $string

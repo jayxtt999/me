@@ -70,7 +70,7 @@ class plugController extends abstractController
         try {
             db()->beginTransaction();
             //获取插件配置信息
-            $config = $plug->getConfig()?serialize(array('config' => json_encode($plug->getConfig()))):"";
+            $config = $plug->getConfig() ? serialize(array('config' => json_encode($plug->getConfig()))) : "";
             $info['name'] = strtolower($info['name']);
             $info['config'] = $config;
             $info['crate_time'] = date("Y-m-d H:i:s");
@@ -223,7 +223,6 @@ class plugController extends abstractController
      */
     public function settingSaveAction()
     {
-
         $id = post("id", "int");
         $config = post("config", "txt");
         $flag = db()->table('plugs')->upDate(array('config' => json_encode($config)), array('id' => $id))->done();
@@ -232,6 +231,87 @@ class plugController extends abstractController
         } else {
             return $this->link()->error("保存失败");
         }
+    }
+
+
+    public function addAction()
+    {
+
+        $form = new \Admin\Plug\Form\addForm(); //获取表单
+        $form->start('plugAdd'); //开始渲染
+
+        $this->getView()->assign(array('form' => $form));
+        return $this->getView()->display();
+
+    }
+
+
+    public function previewAction()
+    {
+
+
+        $name = post("name", "txt");
+        $title = post("title", "txt");
+        $version = post("version", "txt");
+        $author = post("author", "txt");
+        $description = post("description", "txt");
+        $enable = post("enable", "txt") == "info" ? 1 : 0;
+        $isConfigVal = post("isConfig", "txt") == "info" ? trim(post("isConfigVal", "txt")) : "";
+        $isAdminList = post("isAdminList", "txt") == "info" ? trim(post("isAdminListVal", "txt")) : "";
+        $hookName = post("hookName", "txt");
+        $tpl = <<<str
+&#60;?php
+    /*
+     *@plugin 示例插件
+     *@author 无名氏
+     */
+    namespace Content\Plugins\{$name};
+    use \Admin\Plug\Plugin as Plugin;
+    class {$name}Plugin extends Plugin{
+
+         public \$info = array(
+            'name'=>'{$name}',
+            'title'=>'{$title}',
+            'description'=>'{$description}',
+            'status'=>{$enable},
+            'author'=>'{$author}',
+            'version'=>'{$version}'
+
+        );
+
+        public function install(){
+            return true;
+        }
+
+        public function uninstall(){
+            return true;
+        }
+str;
+        foreach($hookName as $v){
+            $tpl .= <<<str
+
+        //实现的{$v}钩子方法
+        public function {$v}(\$param)
+        {
+
+        }
+str;
+        }
+
+        $tpl .= <<<str
+        //实现后台管理方法
+        public function adminList(){
+
+            {$isAdminList}
+
+        }
+str;
+        $tpl.=<<<str
+
+    }
+str;
+
+          exit("<pre style='background-color:black;color:white'>".$tpl."</pre>");
 
     }
 

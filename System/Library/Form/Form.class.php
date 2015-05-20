@@ -244,6 +244,8 @@ class Form
             }
         }
         $this->_select[$name] .= "</select></div>";
+
+
     }
 
     /**

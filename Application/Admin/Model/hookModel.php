@@ -187,6 +187,21 @@ class hookModel  extends \System\Core\Model{
     }
 
 
+    /**
+     * 获取钩子列表，用于添加插件选择对应钩子
+     * * @return array
+     */
+    public function getHookList(){
+
+        $_hooks = db()->table("hook")->getAll()->done();
+        $hooks = array();
+        foreach($_hooks as $v){
+            $hooks[$v['name']] = $v['name'];
+        }
+        return $hooks;
+
+    }
+
 
 
 
