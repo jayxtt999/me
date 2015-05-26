@@ -82,19 +82,22 @@
                                     <label class="col-md-3 control-label"></label>
 
                                     <div class="col-md-3">
-                                        <textarea  name="isConfigVal" style="display: block;width: 550px;height: 225px">&#60;&#161;php
+
+<textarea  name="isConfigVal" style="display: block;width: 550px;height: 225px">
+&lt;?php
 return array(
-    'random'=>array(//配置在表单中的键名 ,这个会是config[random]
-    'title'=>'是否开启随机:',//表单的文字
-    'type'=>'radio', //表单的类型：text、textarea、checkbox、radio、select等
-        'options'=>array( //select 和radion、checkbox的子选项
-        '1'=>'开启', //值=>文字
-        '0'=>'关闭',
-        ),
-    'value'=>'1', //表单的默认值
-    ),
+'random'=>array(//配置在表单中的键名 ,这个会是config[random]
+'title'=>'是否开启随机:',//表单的文字
+'type'=>'radio', //表单的类型：text、textarea、checkbox、radio、select等
+'options'=>array(//select 和radion、checkbox的子选项
+    '1'=>'开启',	//值=>文字
+    '0'=>'关闭',
+),
+'value'=>'1',//表单的默认值
+),
 );
-                                        </textarea>
+</textarea>
+
                                     </div>
                                 </div>
 
@@ -107,15 +110,18 @@ return array(
                                     <label class="col-md-3 control-label"></label>
 
                                     <div class="col-md-3">
-                                        <textarea name="isAdminListVal" style="display: block;width: 550px;height: 225px">
-            'model'=>'Example',//要查的表
+<textarea name="isAdminListVal" style="display: block;width: 550px;height: 225px">
+    'model'=>'Example',//要查的表
             'fields'=>'*',//要查的字段
-            'map'=>'',//查询条件
+            'map'=>'',//查询条件, 如果需要可以再插件类的构造方法里动态重置这个属性
             'order'=>'id desc',//排序,
-            'listKey'=>array(
+            'listKey'=>array(//这里定义的是除了id序号外的表格里字段显示的表头名
                 '字段名'=>'表头显示名'
             ),
-                                        </textarea>
+
+</textarea>
+
+
                                     </div>
                                 </div>
 

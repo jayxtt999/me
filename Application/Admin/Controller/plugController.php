@@ -12,6 +12,9 @@ namespace Admin\Controller;
 class plugController extends abstractController
 {
 
+    /**
+     * plug list
+     */
     public function indexAction()
     {
 
@@ -234,6 +237,9 @@ class plugController extends abstractController
     }
 
 
+    /**
+     * add
+     */
     public function addAction()
     {
 
@@ -245,19 +251,19 @@ class plugController extends abstractController
 
     }
 
-
+    /**
+     * 预览
+     */
     public function previewAction()
     {
-
-
         $name = post("name", "txt");
         $title = post("title", "txt");
         $version = post("version", "txt");
         $author = post("author", "txt");
         $description = post("description", "txt");
         $enable = post("enable", "txt") == "info" ? 1 : 0;
-        $isConfigVal = post("isConfig", "txt") == "info" ? trim(post("isConfigVal", "txt")) : "";
-        $isAdminList = post("isAdminList", "txt") == "info" ? trim(post("isAdminListVal", "txt")) : "";
+        $isConfigVal = post("isConfig", "txt") == "info" ? trim($_POST['isConfigVal']) : "";
+        $adminList = post("isAdminList", "txt") == "info" ? trim($_POST['isAdminListVal']) : "";
         $hookName = post("hookName", "txt");
         $tpl = <<<str
 &#60;?php
@@ -298,20 +304,186 @@ str;
 str;
         }
 
-        $tpl .= <<<str
-        //实现后台管理方法
-        public function adminList(){
+        $tpl.= <<<str
 
-            {$isAdminList}
 
-        }
+        public \$adminList = array(
+            {$adminList}
+        );
 str;
         $tpl.=<<<str
 
     }
 str;
 
-          exit("<pre style='background-color:black;color:white'>".$tpl."</pre>");
+        exit("<pre style='background-color:black;color:white'>".$tpl."</pre>");
+
+    }
+
+
+    /**
+     * 生成插件实体
+     */
+    public function saveAction(){
+
+        //step one 获取引导文件内容
+        $name = post("name", "txt");//插件标识
+        $title = post("title", "txt");//插件标题
+        $version = post("version", "txt");//插件版本
+        $author = post("author", "txt");//插件作者
+        $description = post("description", "txt");//插件描述
+        $enable = post("enable", "txt") == "info" ? 1 : 0;//是否直接安装启用
+        $configVal = post("isConfig", "txt") == "info" ? trim($_POST['isConfigVal']) : "";//插件配置
+        $adminList = post("isAdminList", "txt") == "info" ? trim($_POST['isAdminListVal']) : "";//插件后台
+        $hookName = post("hookName", "txt");
+        $tpl = <<<str
+&#60;?php
+    /*
+     *@plugin 示例插件
+     *@author 无名氏
+     */
+    namespace Content\Plugins\{$name};
+    use \Admin\Plug\Plugin as Plugin;
+    class {$name}Plugin extends Plugin{
+
+         public \$info = array(
+            'name'=>'{$name}',
+            'title'=>'{$title}',
+            'description'=>'{$description}',
+            'status'=>{$enable},
+            'author'=>'{$author}',
+            'version'=>'{$version}'
+
+        );
+
+        public function install(){
+            return true;
+        }
+
+        public function uninstall(){
+            return true;
+        }
+str;
+        foreach($hookName as $v){
+            $tpl .= <<<str
+
+        //实现的{$v}钩子方法
+        public function {$v}(\$param)
+        {
+
+        }
+str;
+        }
+
+        $tpl.= <<<str
+
+
+        public \$adminList = array(
+            {$adminList}
+        );
+str;
+        $tpl.=<<<str
+
+    }
+str;
+        //step two 创建目录插件目录并生成插件引导文件
+        $pluginDir = @dir(PLUGIN_PATH);
+        if($pluginDir){
+            $name = ucfirst($name);
+            $pluginDirA = $pluginDir.$name;
+            if(!is_dir($pluginDirA)){
+                mkdir($pluginDirA,0777) or die("请设置".$pluginDirA."的权限");
+            }
+            $pluginFile = $pluginDirA."/".ucfirst($name)."Plugin.class.php";
+            if (!file_exists($pluginFile)) { // 如果不存在则创建
+                // 检测是否有权限操作
+                if (!is_writetable($pluginFile)){
+                    chmod($pluginFile, 0777) or die("请设置".$pluginDirA."的权限"); // 如果无权限，则修改为0777最大权限
+                }
+                // 写入文件
+                file_put_contents($pluginFile,$tpl) or die ("写入".$pluginFile."失败");;
+            }
+
+            //step three 创建config文件
+            if($configVal){
+                $pluginConfigFile = $pluginDirA."/config.php";
+                if (!file_exists($pluginConfigFile)) { // 如果不存在则创建
+                    // 检测是否有权限操作
+                    if (!is_writetable($pluginConfigFile)){
+                        chmod($pluginConfigFile, 0777) or die("请设置".$pluginDirA."的权限"); // 如果无权限，则修改为0777最大权限
+                    }
+                    // 写入文件
+                    file_put_contents($pluginConfigFile,$configVal) or die ("写入".$pluginConfigFile."失败");;
+                }
+
+            }
+            //step four 创建插件控制器文件
+            $controllerTpl = <<<str
+<?php
+
+namespace Content\Plugins\{$name}\Controller;
+
+class {$name}Controller{
+
+}
+str;
+            $pluginControllerDir = $pluginDir."Controller";
+            if(!is_dir($pluginControllerDir)){
+                mkdir($pluginControllerDir,0777) or die("请设置".$pluginControllerDir."的权限");
+            }
+            $pluginControllerFile = $pluginControllerDir."/".ucfirst($name)."Controller.class.php";
+            if (!file_exists($pluginControllerFile)) { // 如果不存在则创建
+                // 检测是否有权限操作
+                if (!is_writetable($pluginControllerFile)){
+                    chmod($pluginControllerFile, 0777) or die("请设置".$pluginControllerFile."的权限"); // 如果无权限，则修改为0777最大权限
+                }
+                // 写入文件
+                file_put_contents($pluginControllerFile,$controllerTpl) or die ("写入".$pluginControllerFile."失败");;
+            }
+            //step five 创建插件模型文件
+
+            $modelTpl = <<<str
+<?php
+
+namespace Content\Plugins\{$name}\Model;
+class {$name}Model extends \System\Core\Model{
+str;
+            $pluginModelDir = $pluginDir."Model";
+            if(!is_dir($pluginModelDir)){
+                mkdir($pluginModelDir,0777) or die("请设置".$pluginModelDir."的权限");
+            }
+            $pluginModelFile = $pluginModelDir."/".ucfirst($name)."Model.class.php";
+            if (!file_exists($pluginModelFile)) { // 如果不存在则创建
+                // 检测是否有权限操作
+                if (!is_writetable($pluginModelFile)){
+                    chmod($pluginModelFile, 0777) or die("请设置".$pluginModelFile."的权限"); // 如果无权限，则修改为0777最大权限
+                }
+                // 写入文件
+                file_put_contents($pluginModelFile,$modelTpl) or die ("写入".$pluginModelFile."失败");;
+            }
+
+            if($enable){
+                //自动安装
+
+            }
+
+            return $this->link()->success("/index.php?m=admin&c=plug&a=index","安装成功");
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
