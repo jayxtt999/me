@@ -336,13 +336,15 @@ str;
         $configVal = post("isConfig", "txt") == "info" ? trim($_POST['isConfigVal']) : "";//插件配置
         $adminList = post("isAdminList", "txt") == "info" ? trim($_POST['isAdminListVal']) : "";//插件后台
         $hookName = post("hookName", "txt");
+
+        //以下如  namespace Content\Plugins\\{$name}; 多加一个\ 是转义后面的\ 以免 后面的\转义符号‘{’
         $tpl = <<<str
-&#60;?php
+<?php
     /*
      *@plugin 示例插件
      *@author 无名氏
      */
-    namespace Content\Plugins\{$name};
+    namespace Content\Plugins\\{$name};
     use \Admin\Plug\Plugin as Plugin;
     class {$name}Plugin extends Plugin{
 
@@ -390,18 +392,16 @@ str;
         $pluginDir = @dir(PLUGIN_PATH);
         if($pluginDir){
             $name = ucfirst($name);
-            $pluginDirA = $pluginDir.$name;
+            $pluginDirA = $pluginDir->path.$name;
             if(!is_dir($pluginDirA)){
                 mkdir($pluginDirA,0777) or die("请设置".$pluginDirA."的权限");
             }
             $pluginFile = $pluginDirA."/".ucfirst($name)."Plugin.class.php";
             if (!file_exists($pluginFile)) { // 如果不存在则创建
-                // 检测是否有权限操作
-                if (!is_writetable($pluginFile)){
-                    chmod($pluginFile, 0777) or die("请设置".$pluginDirA."的权限"); // 如果无权限，则修改为0777最大权限
-                }
-                // 写入文件
-                file_put_contents($pluginFile,$tpl) or die ("写入".$pluginFile."失败");;
+
+                $pluginFile =   fopen($pluginFile,'w+ ') or die("请设置".$pluginFile."的权限"); // 如果无权限，则修改为0777最大权限;//新建文件命令
+                fwrite($pluginFile,$tpl) or die ("写入".$pluginFile."失败");
+
             }
 
             //step three 创建config文件
@@ -409,8 +409,8 @@ str;
                 $pluginConfigFile = $pluginDirA."/config.php";
                 if (!file_exists($pluginConfigFile)) { // 如果不存在则创建
                     // 检测是否有权限操作
-                    if (!is_writetable($pluginConfigFile)){
-                        chmod($pluginConfigFile, 0777) or die("请设置".$pluginDirA."的权限"); // 如果无权限，则修改为0777最大权限
+                    if (!is_writable($pluginDirA)){
+                        chmod($pluginDirA, 0777) or die("请设置".$pluginDirA."的权限"); // 如果无权限，则修改为0777最大权限
                     }
                     // 写入文件
                     file_put_contents($pluginConfigFile,$configVal) or die ("写入".$pluginConfigFile."失败");;
@@ -421,25 +421,25 @@ str;
             $controllerTpl = <<<str
 <?php
 
-namespace Content\Plugins\{$name}\Controller;
+namespace Content\Plugins\\{$name}\Controller;
 
 class {$name}Controller{
 
 }
 str;
-            $pluginControllerDir = $pluginDir."Controller";
+            $pluginControllerDir = $pluginDirA."/Controller";
             if(!is_dir($pluginControllerDir)){
                 mkdir($pluginControllerDir,0777) or die("请设置".$pluginControllerDir."的权限");
             }
             $pluginControllerFile = $pluginControllerDir."/".ucfirst($name)."Controller.class.php";
+
             if (!file_exists($pluginControllerFile)) { // 如果不存在则创建
-                // 检测是否有权限操作
-                if (!is_writetable($pluginControllerFile)){
-                    chmod($pluginControllerFile, 0777) or die("请设置".$pluginControllerFile."的权限"); // 如果无权限，则修改为0777最大权限
-                }
-                // 写入文件
-                file_put_contents($pluginControllerFile,$controllerTpl) or die ("写入".$pluginControllerFile."失败");;
+
+                $pluginControllerFile =   fopen($pluginControllerFile,'w+ ') or die("请设置".$pluginControllerFile."的权限"); // 如果无权限，则修改为0777最大权限;//新建文件命令
+                fwrite($pluginControllerFile,$tpl) or die ("写入".$pluginControllerFile."失败");
+
             }
+
             //step five 创建插件模型文件
 
             $modelTpl = <<<str
@@ -448,18 +448,17 @@ str;
 namespace Content\Plugins\{$name}\Model;
 class {$name}Model extends \System\Core\Model{
 str;
-            $pluginModelDir = $pluginDir."Model";
+            $pluginModelDir = $pluginDirA."/Model";
             if(!is_dir($pluginModelDir)){
                 mkdir($pluginModelDir,0777) or die("请设置".$pluginModelDir."的权限");
             }
             $pluginModelFile = $pluginModelDir."/".ucfirst($name)."Model.class.php";
+
             if (!file_exists($pluginModelFile)) { // 如果不存在则创建
-                // 检测是否有权限操作
-                if (!is_writetable($pluginModelFile)){
-                    chmod($pluginModelFile, 0777) or die("请设置".$pluginModelFile."的权限"); // 如果无权限，则修改为0777最大权限
-                }
-                // 写入文件
-                file_put_contents($pluginModelFile,$modelTpl) or die ("写入".$pluginModelFile."失败");;
+
+                $pluginModelFile =   fopen($pluginModelFile,'w+ ') or die("请设置".$pluginModelFile."的权限"); // 如果无权限，则修改为0777最大权限;//新建文件命令
+                fwrite($pluginModelFile,$tpl) or die ("写入".$pluginModelFile."失败");
+
             }
 
             if($enable){
@@ -467,7 +466,7 @@ str;
 
             }
 
-            return $this->link()->success("/index.php?m=admin&c=plug&a=index","安装成功");
+            return $this->link()->success("admin:plug:index","安装成功");
 
         }
 
