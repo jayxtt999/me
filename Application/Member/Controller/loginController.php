@@ -61,7 +61,7 @@ class loginController extends abstractController
                     return $this->link()->error("登录失败, 请输入正确的验证码!");
                 }
             }
-            $authInfo = \System\Library\RBAC::authenticate($username);
+            $authInfo = \System\Library\Rbac::authenticate($username);
 
             if (empty($authInfo)) {
                 return $this->link()->error("账号不存在或者被禁用");

@@ -16,7 +16,7 @@ return array(
         'pdoMysql' => array(
             'dsn' => 'mysql:dbname=myframe;host=127.0.0.1;',
             'username' => 'root',
-            'password' => '',
+            'password' => 'root',
             'profiler' => true,
             'options' => array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''

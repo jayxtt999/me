@@ -11,7 +11,7 @@ namespace System\Library;
 
 use Member\Info\Table\Status;
 
-class RBAC
+class Rbac
 {
     private $db;
 
@@ -20,7 +20,7 @@ class RBAC
     static public function authenticate($username) {
 
         if($username){
-            return db()->table("member_info")->getRow(array('username'=>$username,'status'=>\Member\Info\Table\status::STATUS_ENABLE))->done();
+            return db()->table("member_info")->getRow(array('username'=>$username,'status'=>\Member\Info\Table\Status::STATUS_ENABLE))->done();
         }else{
             return false;
         }

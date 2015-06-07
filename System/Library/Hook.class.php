@@ -67,7 +67,7 @@ class Hook
     {
         //$s = new \Content\Plugins\Trace\TracePlugin();
         //$s->appBegin();exit;
-        $plugClass = "\\Content\\Plugins\\".ucfirst($name)."\\".$name."Plugin";
+        $plugClass = "\\Content\\Plugins\\".ucfirst($name)."\\".ucfirst($name)."Plugin";
         $plug = new $plugClass();
         return $plug->$tag($params);
     }
