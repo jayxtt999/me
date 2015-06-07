@@ -2,19 +2,27 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2014/12/16 0016
- * Time: 下午 1:55
+ * Date: 2015/5/8 0008
+ * Time: 下午 2:46
  */
-namespace System\Library\Hook;
+namespace Content\Plugins\Trace;
+use \Admin\Plug\Plugin as Plugin;
 
-class traceHook {
+class TracePlugin extends Plugin{
 
-    public function run($params = null){
+    public $info = array(
+        'name'=>'Trace',
+        'title'=>'Trace追踪',
+        'description'=>'来自于Thinkphp',
+        'status'=>1,
+        'author'=>'Thinkphp',
+        'version'=>'1.0'
+    );
 
+    public function appEnd($param = null){
         if(!IS_AJAX && C('debug:show_page_trace')) {
             echo $this->showTrace();
         }
-
     }
 
     /**
@@ -45,6 +53,7 @@ class traceHook {
         if(is_file($traceFile)) {
             $base   =   array_merge($base,include $traceFile);
         }
+
         $debug  =   trace();
         $tabs   =   C('debug:trace_page_tabs');
         foreach ($tabs as $name=>$title){
@@ -101,7 +110,6 @@ class traceHook {
         return ob_get_clean();
     }
 
-
     /**
      * 获取运行时间
      */
@@ -113,6 +121,13 @@ class traceHook {
         return G('beginTime','viewEndTime').'s ( Load:'.G('beginTime','loadTime').'s Init:'.G('loadTime','initTime').'s Exec:'.G('initTime','viewStartTime').'s Template:'.G('viewStartTime','viewEndTime').'s )';
     }
 
+    public function install(){
+        return true;
+    }
+
+    public function uninstall(){
+        return true;
+    }
 
 
-}
+} 

@@ -127,10 +127,10 @@ class Error
      * @param boolean $record 是否记录日志
      * @return void
      */
-    static public function trace($value = '[think]', $label = '', $level = 'DEBUG', $record = false)
+    static public function trace($value = '[xtt]', $label = '', $level = 'DEBUG', $record = false)
     {
         static $_trace = array();
-        if ('[think]' === $value) { // 获取trace信息
+        if ('[xtt]' === $value) { // 获取trace信息
             return $_trace;
         } else {
             $info = ($label ? $label . ':' : '') . print_r($value, true);

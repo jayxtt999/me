@@ -27,14 +27,14 @@
             </div>
             <div class="details">
                 <div class="number">
-                    1349
+                    {$twitterNum}
                 </div>
                 <div class="desc">
-                    New Feedbacks
+                    说说
                 </div>
             </div>
             <a class="more" href="#">
-                View more <i class="m-icon-swapright m-icon-white"></i>
+                View more <i class="m-icon-swapright m-icon-white" onclick="javascript:window.location.href='/index.php?m=admin&c=twitter&a=index'"></i>
             </a>
         </div>
     </div>
@@ -45,14 +45,14 @@
             </div>
             <div class="details">
                 <div class="number">
-                    12,5M$
+                    {$articleNum}
                 </div>
                 <div class="desc">
-                    Total Profit
+                    日志
                 </div>
             </div>
             <a class="more" href="#">
-                View more <i class="m-icon-swapright m-icon-white"></i>
+                View more <i class="m-icon-swapright m-icon-white" onclick="javascript:window.location.href='/index.php?m=admin&c=article&a=list'"></i>
             </a>
         </div>
     </div>
@@ -63,32 +63,32 @@
             </div>
             <div class="details">
                 <div class="number">
-                    549
+                    {$categoryNum}
                 </div>
                 <div class="desc">
-                    New Orders
+                         分类
                 </div>
             </div>
             <a class="more" href="#">
-                View more <i class="m-icon-swapright m-icon-white"></i>
+                View more <i class="m-icon-swapright m-icon-white" onclick="javascript:window.location.href='/index.php?m=admin&c=category&a=index'"></i>
             </a>
         </div>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="dashboard-stat purple-plum">
             <div class="visual">
-                <i class="fa fa-globe"></i>
+                <i class="fa fa-user"></i>
             </div>
             <div class="details">
                 <div class="number">
-                    +89%
+                    {$memberNum}
                 </div>
                 <div class="desc">
-                    Brand Popularity
+                           用户
                 </div>
             </div>
             <a class="more" href="#">
-                View more <i class="m-icon-swapright m-icon-white"></i>
+                View more <i class="m-icon-swapright m-icon-white" onclick="javascript:window.location.href='/index.php?m=admin&c=member&a=index'"></i>
             </a>
         </div>
     </div>
@@ -96,6 +96,67 @@
 <!-- END DASHBOARD STATS -->
 <div class="clearfix">
 </div>
+
+
+
+
+<div class="row">
+
+<div class="col-md-6 col-sm-6">
+<div class="portlet box green-haze tasks-widget">
+<div class="portlet-title">
+    <div class="caption">
+        <i class="fa fa-dashboard"></i>系统信息
+    </div>
+</div>
+<div class="portlet-body">
+<div class="task-content">
+<div class="scroller" style="height: 305px;" data-always-visible="1" data-rail-visible1="1">
+<!-- START TASK LIST -->
+<ul class="task-list">
+    <li>
+        运行环境：{$system['software']}
+    </li>
+    <li>
+        php版本：{$system['php_version']}
+    </li>
+    <li>
+        mysql 版本：{$system['mysql_info']}
+    </li>
+    <li>
+        GD图形处理库：{$system['gd_ver']}
+    </li>
+    <li>
+        服务器允许上传最大文件：{$system['uploadfile_maxsize']}
+    </li>
+
+</ul>
+<!-- END START TASK LIST -->
+</div>
+</div>
+<div class="task-footer">
+    <div class="btn-arrow-link pull-right">
+        <a href="/index.php?m=admin&c=index&a=phpinfo">更多信息</a>
+        <i class="icon-arrow-right"></i>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+<!-- END DASHBOARD STATS -->
+<div class="clearfix">
+</div>
+
+
+
+
+
+
+
 
 </div>
 </div>
