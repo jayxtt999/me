@@ -14,9 +14,9 @@ return array(
         'db_type' => 'pdoMysql',
         'db_sql_log' => 'false',
         'pdoMysql' => array(
-            'dsn' => 'mysql:dbname=cf_b506598a_276c_4c45_9f62_72a0cd5055b4;host=10.9.1.188;',
-            'username' => 'qcw0IAlMlLIEQUMp&password=VwaN8eMZnOwd97Xv',
-            'password' => 'VwaN8eMZnOwd97Xv',
+            'dsn' => 'mysql:dbname=myframe;host=127.0.0.1;',
+            'username' => 'root',
+            'password' => '',
             'profiler' => true,
             'options' => array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
