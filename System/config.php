@@ -14,7 +14,7 @@ return array(
         'db_type' => 'pdoMysql',
         'db_sql_log' => 'false',
         'pdoMysql' => array(
-            'dsn' => 'mysql:dbname=myframe;host=10.9.1.188;',
+            'dsn' => 'mysql:dbname=cf_b506598a_276c_4c45_9f62_72a0cd5055b4;host=10.9.1.188;',
             'username' => 'qcw0IAlMlLIEQUMp&password=VwaN8eMZnOwd97Xv',
             'password' => 'VwaN8eMZnOwd97Xv',
             'profiler' => true,
