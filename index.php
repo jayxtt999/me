@@ -7,6 +7,7 @@
  * Time: 下午10:09
  */
 
+echo 111;exit;
 // 记录开始运行时间
 $GLOBALS['_beginTime'] = microtime(TRUE);
 // 记录内存初始使用
