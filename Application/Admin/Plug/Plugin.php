@@ -6,16 +6,16 @@
  * Time: 下午 3:21
  */
 namespace Admin\Plug;
-
+use \System\Core\Controller as Controller;
 abstract class Plugin {
 
-    public $config_path          =   '';
+    public $plug_path          =   '';
     public $config_file         =   '';
 
     public function __construct(){
-        $this->config_path   =   PLUGIN_PATH.$this->getName().'/';
-        if(is_file($this->config_path.'config.php')){
-            $this->config_file = $this->config_path.'config.php';
+        $this->plug_path   =   PLUGIN_PATH.$this->getName().'/';
+        if(is_file($this->plug_path.'config.php')){
+            $this->config_file = $this->plug_path.'config.php';
         }
     }
 
@@ -78,6 +78,21 @@ abstract class Plugin {
         return $config;
     }
 
+
+    final public function plugAssign($array){
+
+        $c= new Controller();
+        $c->getView()->assign($array);
+    }
+
+    final public function plugShow($tpl){
+
+        $templateFileName = $tpl?$this->plug_path.$tpl.C('tpl_template_suffix'):$this->plug_path."index".C('tpl_template_suffix');
+        if(!is_file($templateFileName)){
+            throw new \Exception("模板不存在:$templateFileName");
+        }
+        echo  file_get_contents($templateFileName);;
+    }
 
     //必须实现安装
     abstract public function install();

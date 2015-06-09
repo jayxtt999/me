@@ -139,5 +139,7 @@ return array(
     'default_timezone' => 'PRC',
     'user_auth_key'=>'xtt',
     'admin_auth_key'=>'xtt_admin',
+    'tpl_template_suffix'  =>  '.html',     // 默认模板文件后缀
+
 
 );

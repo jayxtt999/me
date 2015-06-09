@@ -49,6 +49,10 @@
                                            onclick="addComment(this,0,0,{$blog['id']});">
                                 </form>
 
+
+                                {:Hook('documentDetailAfter')}
+
+
                                 <p class="comment_controller">
                                     <span>一共有{:count($comments)}条评论</span>
                                     <span onclick="hideComment()">[-]收起评论</span>
