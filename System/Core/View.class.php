@@ -86,6 +86,11 @@ class View
         self::$view->display($template);
     }
 
+
+    /**
+     * @param $template
+     * @return mixed
+     */
     public function fetch($template){
 
         return self::$view->fetch($template);
@@ -93,15 +98,28 @@ class View
     }
 
 
-    // 模板变量获取和设置
+    /**
+     * 模板变量获取和设置
+     * @param $name
+     * @return mixed
+     */
     public function get($name) {
         return self::$assignData[$name];
     }
 
+
+    /**
+     * @param $name
+     * @param $value
+     */
     public function set($name,$value) {
         self::$assignData[$name] = $value;
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function log($id){
 
         return "/index.php?m=home&c=blog&a=show&id=".$id;

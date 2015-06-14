@@ -11,8 +11,10 @@ abstract class Plugin {
 
     public $plug_path          =   '';
     public $config_file         =   '';
+    private $c;
 
     public function __construct(){
+        $this->c= new Controller();
         $this->plug_path   =   PLUGIN_PATH.$this->getName().'/';
         if(is_file($this->plug_path.'config.php')){
             $this->config_file = $this->plug_path.'config.php';
@@ -79,19 +81,17 @@ abstract class Plugin {
     }
 
 
-    final public function plugAssign($array){
+    final public function assign($array){
 
-        $c= new Controller();
-        $c->getView()->assign($array);
+        $this->c->getView()->assign($array);
+
     }
 
-    final public function plugShow($tpl){
 
-        $templateFileName = $tpl?$this->plug_path.$tpl.C('tpl_template_suffix'):$this->plug_path."index".C('tpl_template_suffix');
-        if(!is_file($templateFileName)){
-            throw new \Exception("模板不存在:$templateFileName");
-        }
-        echo  file_get_contents($templateFileName);;
+    final public function display($tpl){
+
+        $templateFileName = $tpl?$this->plug_path.$tpl:$this->plug_path."index";
+        echo $this->c->getView()->fetch($templateFileName);
     }
 
     //必须实现安装

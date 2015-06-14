@@ -297,6 +297,12 @@ class PdoMysql
      */
     public function update($table, array $data, array $where)
     {
+        //$stmt = $this->pdo->prepare("UPDATE xtt_member_info set `status`=(\":d_status\") where id=(\":w_id\")");
+        //$r = $stmt->execute(array('d_status'=>4,'w_id'=>1));
+        //var_dump($r);exit;
+
+
+
         if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
@@ -311,12 +317,12 @@ class PdoMysql
                 } else {
                     $buildModel = false;
                 }
-                $setSql .= "`" . $k . "`" . "=(\"" . ":d_$k" . "\")" . $semicolon;
+                $setSql .= "`" . $k . "`" . "=:d_$k" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
             foreach ($where as $k => $v) {
                 $dataVal["w_" . $k] = $v;
-                $whereSql .= " AND " . "`" . $k . "`" . "=(" . ":w_$k" . ")";
+                $whereSql .= " AND " . "`" . $k . "`" . "=:w_$k";
             }
             $this->sql .= $whereSql;
             try {
@@ -325,9 +331,8 @@ class PdoMysql
                     return $this->pdo->exec($buildSql);
                 } else {
                     $stmt = $this->pdo->prepare($this->sql);
-                    $stmt->execute($dataVal);
-                    return $stmt->rowCount();
-
+                    $r = $stmt->execute($dataVal);
+                    return $r;
                 }
             } catch (\Exception $ex) {
                 exception($ex->getMessage());
@@ -436,9 +441,6 @@ class PdoMysql
         }
         return ($arr);
     }
-
-
-
 
 
     /**

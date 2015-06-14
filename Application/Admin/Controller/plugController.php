@@ -75,6 +75,7 @@ class plugController extends abstractController
             //获取插件配置信息
             $config = $plug->getConfig() ? serialize(array('config' => json_encode($plug->getConfig()))) : "";
             $info['name'] = strtolower($info['name']);
+            $info['has_adminlist'] = strtolower($info['has_adminlist']);
             $info['config'] = $config;
             $info['crate_time'] = date("Y-m-d H:i:s");
             db()->table('plugs')->insert($info)->done();

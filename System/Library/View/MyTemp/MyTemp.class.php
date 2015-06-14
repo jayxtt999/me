@@ -109,10 +109,20 @@ class MyTemp {
     }
 
 
-    //return path
+    /**
+     * TODO 待解决问题 插件路径问题
+     *解析模板路径
+     *@param string $template
+     * @return string
+     */
     public function parseTemplate($template = '')
     {
-        return $this->config['template_dir']."/".$template.$this->config['template_suffix'];
+        if(strpos($template,"Plugins")){
+            return $template.$this->config['template_suffix'];
+        }else{
+            return $this->config['template_dir']."/".$template.$this->config['template_suffix'];
+
+        }
     }
 
     function ParseTemplateBehavior($_data){

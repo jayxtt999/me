@@ -36,8 +36,8 @@ use \Admin\Plug\Plugin as Plugin;
         //实现的pageFooter钩子方法
         public function documentDetailAfter($param){
 
-            $this->plugAssign(array('addons_config'=>$this->getConfig()));
-            $this->plugShow('comment');
+            $this->assign(array('plugs_config'=>$this->getConfig()));
+            $this->display('comment');
 
         }
     }

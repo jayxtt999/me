@@ -79,7 +79,7 @@ class hookModel  extends \System\Core\Model{
         $common = array_intersect($hooks, $methods);
         if(!empty($common)){
             foreach ($common as $hook) {
-                $flag = $this->updateplugs($hook, array($plug_name));
+                $flag = $this->updateplugs($hook,array($plug_name));
                 if(false === $flag){
                     $this->removeHooks($plug_name);
                     return false;
@@ -95,7 +95,7 @@ class hookModel  extends \System\Core\Model{
      * @param $plugs_name
      * @return mixed
      */
-    public function updatePlugs($hook_name, $plugs_name){
+    public function updatePlugs($hook_name,array $plugs_name){
 
         $o_plugs = db()->table("hook")->getRow(array("name"=>$hook_name))->fields('plugs')->done();
         $o_plugs = $o_plugs['plugs'];

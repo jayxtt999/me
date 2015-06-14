@@ -12,7 +12,6 @@ namespace Admin\Controller;
 class userController extends \Admin\Controller\abstractController{
 
     public function profileAction(){
-
         //管理员资料
         $member = $this->getMember();
         $memberRow = db()->Table('member_info')->getRow(array('role' => \Member\Info\Table\Role::LEVEL_ADMIN,'id'=>$member['id']))->done();        //getRow
