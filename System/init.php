@@ -69,7 +69,6 @@ final class Application
         Hook('appEnd');
     }
 
-
     public static function init()
     {
         //设置自动加载类

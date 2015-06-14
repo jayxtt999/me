@@ -86,6 +86,12 @@ class View
         self::$view->display($template);
     }
 
+    public function fetch($template){
+
+        return self::$view->fetch($template);
+
+    }
+
 
     // 模板变量获取和设置
     public function get($name) {
