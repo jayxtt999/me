@@ -21,7 +21,7 @@ class View
      */
     public static function init($type)
     {
-        if (self::$view) {
+        if (is_object(self::$view)) {
             return self::$view;
         }
         if (!empty($type)) {
@@ -48,6 +48,7 @@ class View
     public function assign($data)
     {
         self::$assignData = array_merge(self::$assignData, $data);
+
     }
 
     /**
@@ -58,11 +59,14 @@ class View
     {
         //$template = isset($template)?self::$routeUrl['module']."/".self::$routeUrl['controller']."_".$template.'.html':self::$routeUrl['module']."_".self::$routeUrl['controller'].'.html';
         //m:c:a or index
+
+        //TODO 代码重用性  ↓↓↓↓↓↓↓
         if (is_array(self::$assignData)) {
             foreach (self::$assignData as $key => $value) {
                 self::$view->assign($key, $value);
             }
         }
+        //TODO 代码重用性  ↑↑↑↑↑↑↑
         //如果直接 ：分割 传入路径 不解析模型 应用于common
         if ($isPath) {
             self::$view->display($template);
@@ -92,7 +96,11 @@ class View
      * @return mixed
      */
     public function fetch($template){
-
+        if (is_array(self::$assignData)) {
+            foreach (self::$assignData as $key => $value) {
+                self::$view->assign($key, $value);
+            }
+        }
         return self::$view->fetch($template);
 
     }

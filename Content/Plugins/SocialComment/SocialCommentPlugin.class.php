@@ -38,6 +38,5 @@ use \Admin\Plug\Plugin as Plugin;
 
             $this->assign(array('plugs_config'=>$this->getConfig()));
             $this->display('comment');
-
         }
     }

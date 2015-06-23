@@ -135,8 +135,6 @@ class blogController extends abstractController{
         $comments= ($this->sortOut($comments));
 
         $this->getView()->assign(array('blog'=>$row,"comments"=>$comments));
-
-
         return $this->getView()->display();
     }
 

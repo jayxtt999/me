@@ -70,6 +70,7 @@ class MyTemp {
 
     public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '/')
     {
+
         $content = $this->fetch($templateFile, $content, $prefix);
         $this->render($content, $charset, $contentType);
     }

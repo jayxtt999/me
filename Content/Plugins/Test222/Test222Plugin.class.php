@@ -23,7 +23,8 @@ class test222Plugin extends Plugin{
 
     //实现的documentDetailAfter钩子方法
     public function documentDetailAfter($param){
-        echo "??????";
+
+
     }
 
 }

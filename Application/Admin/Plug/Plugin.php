@@ -48,14 +48,13 @@ abstract class Plugin {
         if(isset($_config[$name])){
             return $_config[$name];
         }
-
         $config =   array();
         $where['name']    =   $name;
         $where['status']  =   1;
 
         $config  =   db()->table('plugs')->getRow($where)->fields('config')->done();
         if($config){
-            $config   =   json_decode($config, true);
+            $config   =   json_decode($config['config'], true);
         }else{
 
             $temp_arr = include $this->config_file;
@@ -81,9 +80,14 @@ abstract class Plugin {
     }
 
 
-    final public function assign($array){
+    final public function getView(){
+        return $this->c->getView();
+    }
 
-        $this->c->getView()->assign($array);
+    final public function assign($array){
+        $c  =$this->c->getView();
+        //$array = array_merge($array,$c::$assignData);
+        $c->assign($array);
 
     }
 
