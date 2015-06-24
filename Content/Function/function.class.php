@@ -189,6 +189,19 @@ function Hook($tag, &$params = NULL)
 
 
 /**
+ * Todo 必须先加载才能获取
+ * 检查钩子是否有插件函数
+ * @param $tag
+ * @param null $params
+ * @return bool
+ */
+function havePlugs($tag)
+{
+   return  db()->table("hook")->getRow(array('name'=>$tag))->fields("plugs")->done();
+}
+
+
+/**
  * session
  * @param $name
  * @param string $value

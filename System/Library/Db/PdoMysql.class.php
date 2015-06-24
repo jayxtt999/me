@@ -263,7 +263,7 @@ class PdoMysql
             }
             $this->debug(false);
 
-            /*
+
             //如果存在 只取fields 多条 返回array 单条 返回值
              if (($fields !== "*")) {
                  if ($model == 2) {
@@ -274,7 +274,7 @@ class PdoMysql
                  } else {
                      $this->res = $this->res[$fields];
                  }
-             }*/
+             }
             //缓存sql结果
             if ($type) {
                 cache("sql_" . $sqlCache, $this->res);
@@ -312,7 +312,8 @@ class PdoMysql
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
-                if (strpos($v, "+") || strpos($v, "-")) {
+                //更新时间戳会出现 -  日了狗了 LOL
+                if ( (strpos($v, "+")&& substr_count("+",$v)==1) || (strpos($v, "-") && substr_count("-",$v)==1) ) {
                     $buildModel = true;
                 } else {
                     $buildModel = false;
@@ -326,10 +327,12 @@ class PdoMysql
             }
             $this->sql .= $whereSql;
             try {
+
                 if ($buildModel) {
                     $buildSql = $this->update_pdo_query($this->sql, $dataVal);
                     return $this->pdo->exec($buildSql);
                 } else {
+
                     $stmt = $this->pdo->prepare($this->sql);
                     $r = $stmt->execute($dataVal);
                     return $r;

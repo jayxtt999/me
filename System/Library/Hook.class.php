@@ -14,11 +14,29 @@ class Hook
 
     static private $tags = array();
 
-
+    /**
+     * @param $tags
+     */
     public static function setTags($tags)
     {
         self::$tags = $tags;
     }
+
+
+    /**
+     * @param $tag
+     * @return bool
+     */
+    public static function haveTag($tag){
+
+           if(in_array($tag,self::$tags[$tag])){
+               return true;
+           }else{
+               return false;
+           }
+
+    }
+
 
     /**
      * 监听标签的插件

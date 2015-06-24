@@ -54,7 +54,7 @@ abstract class Plugin {
 
         $config  =   db()->table('plugs')->getRow($where)->fields('config')->done();
         if($config){
-            $config   =   json_decode($config['config'], true);
+            $config   =   json_decode($config, true);
         }else{
 
             $temp_arr = include $this->config_file;

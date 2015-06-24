@@ -900,7 +900,7 @@ class TagLibCx extends TagLib {
         'php'       =>  array(),
         'volist'    =>  array('attr'=>'name,id,offset,length,key,mod','level'=>3,'alias'=>'iterate'),
         'foreach'   =>  array('attr'=>'name,item,key','level'=>3),
-        'if'        =>  array('attr'=>'condition','level'=>2),
+        'if'        =>  array('attr'=>'condition','level'=>3),
         'elseif'    =>  array('attr'=>'condition','close'=>0),
         'else'      =>  array('attr'=>'','close'=>0),
         'switch'    =>  array('attr'=>'name','level'=>2),
