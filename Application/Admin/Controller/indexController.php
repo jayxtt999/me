@@ -62,12 +62,22 @@ class indexController extends abstractController{
         return $this->getView()->display();
     }
 
+    /**
+     * phpinfo
+     */
     public function phpinfoAction(){
-
         phpinfo();
 
-
     }
+
+
+    public function testAction(){
+
+        $r = db()->table("twitter")->upDate(array('replynum'=>"replynum+100"),array('id'=>10))->build()->done();
+        var_dump($r);exit;
+    }
+
+
 
 
 }

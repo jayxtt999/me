@@ -295,7 +295,7 @@ class PdoMysql
      * @param array $where
      * @return int
      */
-    public function update($table, array $data, array $where)
+    public function update($table, array $data, array $where,$buildModel=false)
     {
         //$stmt = $this->pdo->prepare("UPDATE xtt_member_info set `status`=(\":d_status\") where id=(\":w_id\")");
         //$r = $stmt->execute(array('d_status'=>4,'w_id'=>1));
@@ -312,12 +312,12 @@ class PdoMysql
                 $i++;
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
-                //更新时间戳会出现 -  日了狗了 LOL
-                if ( (strpos($v, "+")&& substr_count("+",$v)==1) || (strpos($v, "-") && substr_count("-",$v)==1) ) {
+                //Todo 存在严重bug 让某个字段自减如 a=a-10 更新会存为字符串 按照以下的解决方式 就无法保存值为-1 解决方案 新增一个参数重写 $buildModel
+                /*if ( (strpos($v, "+")&& substr_count("+",$v)==1) || (strpos($v, "-") && substr_count("-",$v)==1) ) {
                     $buildModel = true;
                 } else {
                     $buildModel = false;
-                }
+                }*/
                 $setSql .= "`" . $k . "`" . "=:d_$k" . $semicolon;
             }
             $this->sql = "UPDATE " . $this->prefix . $table . " SET " . $setSql . " WHERE 1=1";
@@ -456,7 +456,6 @@ class PdoMysql
     {
         //Get the key lengths for each of the array elements.
         $keys = array_map('strlen', array_keys($array));
-
         //Sort the array by string length so the longest strings are replaced first.
         array_multisort($keys, SORT_DESC, $array);
 
@@ -468,7 +467,7 @@ class PdoMysql
                 $replacement = is_numeric($v) ? $v : "'{$v}'";
             }
             //Replace the needle.
-            $string = str_replace("(:" . $k . ")", $replacement, $string);
+            $string = str_replace(":".$k, $replacement, $string);
         }
 
         return $string;

@@ -14,6 +14,7 @@ class DB
     protected $where = null;
     protected $selectmodel;
     protected $data;
+    protected $build =false;
 
     /**
      * @param $property_name
@@ -178,7 +179,7 @@ class DB
                 return $this->db->select($this->selectmodel, $this->table, $this->where, $this->fields, $this->order, $this->limit, $this->count);
                 break;
             case "UPDATE":
-                return $this->db->update($this->table, $this->data, $this->where);
+                return $this->db->update($this->table, $this->data, $this->where,$this->build);
                 break;
             case "INSERT":
                 return $this->db->insert($this->table, $this->data);
@@ -219,6 +220,11 @@ class DB
         $this->options = "UPDATE";
         $this->data = $data;
         $this->where = $where;
+        return $this;
+    }
+
+    public function build(){
+        $this->build = true;
         return $this;
     }
 
