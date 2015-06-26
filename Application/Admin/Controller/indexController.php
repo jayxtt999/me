@@ -72,7 +72,6 @@ class indexController extends abstractController{
 
 
     public function testAction(){
-
         $r = db()->table("twitter")->upDate(array('replynum'=>"replynum+100"),array('id'=>10))->build()->done();
         var_dump($r);exit;
     }

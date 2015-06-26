@@ -97,7 +97,7 @@ class traceHook {
         unset($files,$info,$base);
         // 调用Trace页面模板
         ob_start();
-        include C('debug:tmpl_trace_file')?APP_TEMP_PATH."/".C('debug:tmpl_trace_file'):APP_TEMP_PATH.'/trace.html';
+        include C('debug:tmpl_trace_file')?APP_TEMP_PATH."/".C('debug:tmpl_trace_file'):ADMIM_TPL_PATH.'/trace.html';
         return ob_get_clean();
     }
 

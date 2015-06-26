@@ -77,11 +77,11 @@ class hookController extends abstractController{
         $data = $this->request()->getData();//获取数据
         $data = checkForm::init($data,$form->_name);
         $id = $data['id'];
-        $data['crate_time'] = date("Y-m-d H:i:s");
         if($id){
             unset($data['id']);
             $res = db()->table("hook")->upDate($data,array('id'=>$id))->done();
         }else{
+            $data['crate_time'] = date("Y-m-d H:i:s");
             $res = db()->table("hook")->insert($data)->done();
         }
 

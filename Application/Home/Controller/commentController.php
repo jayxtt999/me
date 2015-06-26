@@ -134,14 +134,14 @@ class commentController extends abstractController
         $where['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
 
         if($operation == "like"){
-            $res = db()->table("comment")->upDate(array("up"=>"up+1"),$where)->done();
+            $res = db()->table("comment")->upDate(array("up"=>"up+1"),$where)->build()->done();
             if($res){
                 return JsonObject(array('status' => true));
             }else{
                 return JsonObject(array('status' => false));
             }
         }elseif($operation == "dislike"){
-            $res = db()->table("comment")->upDate(array("down"=>"down+1"),$where)->done();
+            $res = db()->table("comment")->upDate(array("down"=>"down+1"),$where)->build()->done();
             if($res){
                 return JsonObject(array('status' => true));
             }else{

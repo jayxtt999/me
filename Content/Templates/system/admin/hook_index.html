@@ -92,8 +92,8 @@
                                     {$vo.description}
                                 </td>
                                 <td>
-                                    <if condition="$vo.type eq 1 "> 控制器
-                                        <elseif condition="$vo.type eq 2 "/>视图
+                                    <if condition="$vo.type eq 'controller'"> 控制器
+                                        <elseif condition="$vo.type eq 'type' "/>视图
                                         <else />
                                     </if>
 

@@ -115,7 +115,7 @@ class Error
             //显示在加载配置文件之前的程序错误
             exit('<b>Error:</b>' . $e['message'] . ' in <b> ' . $e['file'] . ' </b> on line <b>' . $e['line'] . '</b>');
         }
-        include APP_TEMP_PATH . "/" . $TMPL_EXCEPTION_FILE;
+        include ADMIM_TPL_PATH . "/" . $TMPL_EXCEPTION_FILE;
         exit;
     }
 

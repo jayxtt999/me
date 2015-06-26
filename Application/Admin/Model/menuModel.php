@@ -62,13 +62,15 @@ class menuModel extends \System\Core\Model
         }
         array_multisort($sort, SORT_NUMERIC, SORT_DESC, $items);
         foreach ($items as $v) {
+
             if ($v['is_display']) {
                 $isDisplay = "<span class='label label-sm label-success'>显示</span>";
             } else {
                 $isDisplay = "<span class='label label-sm label-default'>不显示</span>";
             }
-            $this->html .= "<tr class='odd gradeX'><td><input type='checkbox'class='checkboxes'value='1'/></td><td>" . "|".str_repeat('-', $level+1) . $v['name'] . "</td><td>" . $v['desc'] . "</td><td>" . $v['create_time'] . "</td><td class='center'>" . $isDisplay . "</td><td><a href='/index.php?m=admin&c=menu&a=add&id=".$v['id']."'class='btn green'title='添加子栏目'><i class='fa fa-plus'></i></a><a href='/index.php?m=admin&c=menu&a=edit&id=".$v['id']."'class='btn red'title='修改'><i class='fa fa-edit'></i></a><a href='javascript:menuDel(".$v['id'].");'class='btn purple'title='删除'><i class='fa fa-times'></i></a></td></tr>
-            ";
+            if($v['pid']){
+                $this->html .= "<tr class='odd gradeX'><td><input type='checkbox'class='checkboxes'value='1'/></td><td>" . "|".str_repeat('-', $level+1) . $v['name'] . "</td><td>" . $v['desc'] . "</td><td>" . $v['create_time'] . "</td><td class='center'>" . $isDisplay . "</td><td><a href='/index.php?m=admin&c=menu&a=add&id=".$v['id']."'class='btn green'title='添加子栏目'><i class='fa fa-plus'></i></a><a href='/index.php?m=admin&c=menu&a=edit&id=".$v['id']."'class='btn red'title='修改'><i class='fa fa-edit'></i></a><a href='javascript:menuDel(".$v['id'].");'class='btn purple'title='删除'><i class='fa fa-times'></i></a></td></tr>";
+            }
             if (isset($v['son'])) {
                 $level++;
                 $this->htmlTree($v['son'], $level);

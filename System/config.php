@@ -91,7 +91,7 @@ return array(
     /* 错误设置 */
     'error' => array(
         'error_message' => '服务器内部错误...',//错误显示信息,非调试模式有效
-        'error_page' => '/Content/Templates/error.html',    // 错误定向页面
+        'error_page' => '/Content/Templates/System/error.html',    // 错误定向页面
         'show_error_msg' => true,    // 显示错误信息
         'trace_exception' => false,   // trace错误信息是否抛异常 针对trace方法
         'trace_max_record' => 100,    // 每个级别的错误信息 最大记录数
@@ -137,9 +137,9 @@ return array(
 
     /*杂项*/
     'default_timezone' => 'PRC',
-    'user_auth_key'=>'xtt',
-    'admin_auth_key'=>'xtt_admin',
-    'tpl_template_suffix'  =>  '.html',     // 默认模板文件后缀
+    'user_auth_key' => 'xtt',
+    'admin_auth_key' => 'xtt_admin',
+    'tpl_template_suffix' => '.html',     // 默认模板文件后缀
 
 
 );

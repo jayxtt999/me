@@ -44,7 +44,7 @@ define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SER
 
 define('BLOG_TOKEN', "8D053BCA4C590011BE4A6A8D8C1E7BD7");
 
-define('APP_DEBUG', TRUE);
+define('APP_DEBUG', false);
 
 final class Application
 {
