@@ -43,13 +43,13 @@ return array(
         'smarty' => array(
             'left_delimiter' => '{',
             'right_delimiter' => '}',
-            'template_dir' => 'Content/Templates/default',
+            'template_dir' => 'Content/Templates',
             'compile_dir' => 'Data/template_c',
             'php_handling' => 'SMARTY_PHP_ALLOW',
         ),
         //Thinkphp
         'myTemp' => array(
-            'template_dir' => 'Content/Templates/default',
+            'template_dir' => 'Content/Templates',
             'cache_path' => 'Data/template_c',
             'template_suffix' => '.html',
             'cache_suffix' => '.php',
@@ -91,7 +91,9 @@ return array(
     /* 错误设置 */
     'error' => array(
         'error_message' => '服务器内部错误...',//错误显示信息,非调试模式有效
-        'error_page' => '/Content/Templates/System/error.html',    // 错误定向页面
+        'error_page' => 'error.html',    // 错误定向页面
+        '404_page' => '404.html',    // 错误定向页面
+        '500_page' => '500.html',    // 错误定向页面
         'show_error_msg' => true,    // 显示错误信息
         'trace_exception' => false,   // trace错误信息是否抛异常 针对trace方法
         'trace_max_record' => 100,    // 每个级别的错误信息 最大记录数

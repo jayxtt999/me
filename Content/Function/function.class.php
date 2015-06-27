@@ -197,7 +197,7 @@ function Hook($tag, &$params = NULL)
  */
 function havePlugs($tag)
 {
-   return  db()->table("hook")->getRow(array('name'=>$tag))->fields("plugs")->done();
+    return db()->table("hook")->getRow(array('name' => $tag))->fields("plugs")->done();
 }
 
 
@@ -799,19 +799,20 @@ function getToken($len = 32, $md5 = true)
  * @param $name
  * @return bool
  */
-function deletePlugDir($dir){
+function deletePlugDir($dir)
+{
 
-
-    if(str_replace("/","\\",$dir)!==realpath($dir) || !is_dir($dir)){
+    if (str_replace("/", "\\", $dir) !== realpath($dir) || !is_dir($dir))
+    {
         return false;
     }
 
     //先删除目录下的文件：
     $dh = opendir($dir);
-    while ($file=readdir($dh)) {
-        if($file!="." && $file!="..") {
-            $fullpath=$dir."/".$file;
-            if(!is_dir($fullpath)) {
+    while ($file = readdir($dh)) {
+        if ($file != "." && $file != "..") {
+            $fullpath = $dir . "/" . $file;
+            if (!is_dir($fullpath)) {
                 unlink($fullpath);
             } else {
                 deldir($fullpath);
@@ -820,14 +821,23 @@ function deletePlugDir($dir){
     }
     closedir($dh);
     //删除当前文件夹：
-    if(rmdir($dir)) {
+    if (rmdir($dir)) {
         return true;
     } else {
         return false;
     }
 }
 
+function getTplName()
+{
+    return db()->table("template")->getRow(array('status' => 1))->fields("name")->done();
+}
 
+
+function isManagement()
+{
+    return \System\Core\View::$isManagement;
+}
 
 
 ?>

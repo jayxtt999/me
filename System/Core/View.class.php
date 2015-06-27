@@ -14,6 +14,7 @@ class View
     public static $config;
     public static $assignData = array();
     public static $routeUrl;
+    public static $isManagement;
 
     /**
      * 初始化
@@ -30,11 +31,15 @@ class View
             self::$config = \Application::$appConfig['view'][$type];
             $ro = \Application::$appLib['route'];
             self::$routeUrl = $ro::$routeUrl;
+            //如果是管理员 找system 否则找对应设置的模板文件夹
             if (self::$routeUrl['module'] == "admin") {
                 self::$config['template_dir'] = APP_TEMP_PATH . "/system";
+                self::$isManagement = TRUE;
+            } else {
+                $tpl = getTplName();
+                self::$config['template_dir'] = APP_TEMP_PATH . "/" . $tpl;
             }
             self::$view->init(self::$config);
-
         } else {
             return exception("模版解析模式不能为空！");
         }
@@ -95,7 +100,8 @@ class View
      * @param $template
      * @return mixed
      */
-    public function fetch($template){
+    public function fetch($template)
+    {
         if (is_array(self::$assignData)) {
             foreach (self::$assignData as $key => $value) {
                 self::$view->assign($key, $value);
@@ -111,7 +117,8 @@ class View
      * @param $name
      * @return mixed
      */
-    public function get($name) {
+    public function get($name)
+    {
         return self::$assignData[$name];
     }
 
@@ -120,7 +127,8 @@ class View
      * @param $name
      * @param $value
      */
-    public function set($name,$value) {
+    public function set($name, $value)
+    {
         self::$assignData[$name] = $value;
     }
 
@@ -128,9 +136,10 @@ class View
      * @param $id
      * @return string
      */
-    public function log($id){
+    public function log($id)
+    {
 
-        return "/index.php?m=home&c=blog&a=show&id=".$id;
+        return "/index.php?m=home&c=blog&a=show&id=" . $id;
     }
 
 }

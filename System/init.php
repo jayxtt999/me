@@ -16,17 +16,13 @@ define('SYSTEM_PATH', dirname(__FILE__));
 define('ROOT_PATH', substr(SYSTEM_PATH, 0, -7));
 define('SYS_LIB_PATH', '/System/Library');
 define('Hook_PATH', SYS_LIB_PATH . '/Hook');
-
 define('APP_PATH', ROOT_PATH . '/Application');
 define('APP_TEMP_PATH', ROOT_PATH . '/Content/Templates');
 define('WEB_TEMP_PATH', '/Content/Templates');
 define('PLUGIN_PATH', ROOT_PATH . '/Content/Plugins/');
-
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
-
-//后台模版中css js路径
 define('ADMIM_TPL_PATH', '/Content/Templates/system');
 
 define('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
@@ -44,7 +40,7 @@ define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SER
 
 define('BLOG_TOKEN', "8D053BCA4C590011BE4A6A8D8C1E7BD7");
 
-define('APP_DEBUG', false);
+define('APP_DEBUG', true);
 
 final class Application
 {

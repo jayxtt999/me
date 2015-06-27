@@ -85,7 +85,9 @@ class TpTemplate{
     //return path
     public function parseTemplate($template = '')
     {
-       return $this->template_dir."/".$template;
+        $tpl = getTplName();
+        $tplFile = $tpl?$this->config['template_dir']."/".$tpl:$this->config['template_dir']."/".'default';
+        return $this->template_dir."/".$tplFile."/".$template;
     }
 
     function ParseTemplateBehavior($_data){

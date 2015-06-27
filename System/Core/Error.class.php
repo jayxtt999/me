@@ -101,7 +101,12 @@ class Error
             //否则定向到错误页面
             $error_page = C('error:error_page');
             if (!empty($error_page)) {
-                redirect($error_page);
+                if(true===isManagement()){
+                    redirect(ADMIM_TPL_PATH."/".$error_page);
+                }else{
+                    $tpl = getTplName();
+                    redirect(APP_TEMP_PATH."/".$tpl."/".$error_page);
+                }
             } else {
                 if (C('error:show_error_msg'))
                     $e['message'] = is_array($error) ? $error['message'] : $error;
@@ -115,6 +120,7 @@ class Error
             //显示在加载配置文件之前的程序错误
             exit('<b>Error:</b>' . $e['message'] . ' in <b> ' . $e['file'] . ' </b> on line <b>' . $e['line'] . '</b>');
         }
+
         include ADMIM_TPL_PATH . "/" . $TMPL_EXCEPTION_FILE;
         exit;
     }

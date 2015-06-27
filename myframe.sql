@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2015-06-26 11:20:09
+Date: 2015-06-27 18:11:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -175,7 +175,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -204,6 +204,7 @@ INSERT INTO `xtt_common_menu` VALUES ('225', '插件配置', '插件配置', '20
 INSERT INTO `xtt_common_menu` VALUES ('226', '个人资料', '个人资料', null, 'admin', 'user', 'profile', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('227', '钩子管理', '钩子管理', null, 'admin', 'hook', 'index', '', '1', '1', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('228', '编辑钩子', '编辑钩子', null, 'admin', 'hook', 'edit', '', '1', '0', '', '1', '0', '0');
+INSERT INTO `xtt_common_menu` VALUES ('229', '模板管理', '模板管理', null, 'admin', 'template', 'index', 'www.me.me/index.php?m=admin&c=template&a=index', '1', '1', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -342,7 +343,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -428,6 +429,7 @@ INSERT INTO `xtt_member_login_log` VALUES ('78', '1270', '2015-05-16 13:47:56', 
 INSERT INTO `xtt_member_login_log` VALUES ('79', '1270', '2015-05-18 14:56:24', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('80', '1270', '2015-05-19 09:14:42', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('81', '1270', '2015-06-24 21:38:23', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('82', '1270', '2015-06-27 11:25:39', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
@@ -488,6 +490,26 @@ INSERT INTO `xtt_sidebar` VALUES ('11', '热门日志', 'hotblog', 'a:2:{i:0;a:2
 INSERT INTO `xtt_sidebar` VALUES ('12', '随机日志', 'randblog', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"随机日志\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示随机日志数\";s:4:\"data\";s:2:\"10\";}}', 'system', '1', '11');
 
 -- ----------------------------
+-- Table structure for xtt_template
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_template`;
+CREATE TABLE `xtt_template` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) DEFAULT NULL COMMENT '名字',
+  `status` int(1) DEFAULT '0' COMMENT '是否选定',
+  `crate_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `version` varchar(256) DEFAULT NULL COMMENT '版本',
+  `author` varchar(256) DEFAULT NULL COMMENT '作者',
+  `descriptor` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_template
+-- ----------------------------
+INSERT INTO `xtt_template` VALUES ('1', 'default', '1', '2015-06-27 13:57:05', '1.0', 'reserved', '默认');
+
+-- ----------------------------
 -- Table structure for xtt_twitter
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_twitter`;
@@ -501,7 +523,7 @@ CREATE TABLE `xtt_twitter` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `author` (`author`)
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_twitter
@@ -526,3 +548,4 @@ INSERT INTO `xtt_twitter` VALUES ('27', '我见不得你骗我', '', '1', '2015-
 INSERT INTO `xtt_twitter` VALUES ('28', '再见--张震岳', '', '1', '2015-03-20 13:56:27', '0', '1');
 INSERT INTO `xtt_twitter` VALUES ('29', '传说中的世界末日在12月21日就要到了，如果这天真的是世界末日，你还有什么心理话没说呢？有什么愿望还没有实现呢？此刻！大声的喊出来吧，还犹豫什么？虽说末日要来了，我还是要说：“2013年，我会做的更好，活的更精彩', '', '1', '2015-03-20 13:56:27', '1', '1');
 INSERT INTO `xtt_twitter` VALUES ('36', '跨一步，一步很短，但很宽。跨过去，或璀璨，或萧条。这都只是一种心态罢了', '', '1', '2015-03-20 13:56:27', '0', '1');
+INSERT INTO `xtt_twitter` VALUES ('37', 'test<br><br>', '', '1', '2015-06-26 14:09:12', '0', '1');
