@@ -1,73 +1,82 @@
 <include file="layout@admin@head"/>
+<link href="{:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet"
+      type="text/css"/>
 <link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/portfolio.css" rel="stylesheet" type="text/css"/>
 
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-<!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper">
-<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 
-<include file="layout@layout@menu"/>
-
-
+        <include file="layout@layout@menu"/>
 
 
-</div>
-<!-- END SIDEBAR -->
-<!-- BEGIN CONTENT -->
-<div class="page-content-wrapper">
-<div class="page-content">
-    <include file="layout@layout@widgets"/>
-<div class="row">
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <include file="layout@layout@widgets"/>
+            <div class="row">
 
 
+                <volist name="templateAll" id="template">
+
+                    <div class="row mix-grid thumbnails">
+                        <div class="col-md-4 col-sm-6 mix category_1">
+                            <div class="mix-inner"
+                            <if condition="$template.status eq 1">style="border: 6px solid green;"</if>
+                            >
+                            <img class="img-responsive" src="{:TEMPLATE_PATH}/{$template['name']}/thumbnail.jpg" alt="">
+
+                            <div class="mix-details" style="filter:alpha(opacity=80);-moz-opacity:0.8;opacity:0.8;">
+                                <h3>{$template['title']}</h3>
+
+                                <p>
+                                    安装时间：{$template['crate_time']}<br/>
+                                    作者：{$template['author']}<br/>
+                                    版本：{$template['version']}<br/>
+                                    <p style="height: 120px">
+                                说明：{$template['descriptor']}
+                                    </p>
+
+                                </p>
 
 
-    <volist name="templateAll" id="template">
+                                <a class="btn purple">
+                                    使用<i class="fa fa-check-circle"></i>
+                                </a>
 
-        <div class="row mix-grid thumbnails">
-            <div class="col-md-4 col-sm-6 mix category_1">
-                <div class="mix-inner">
-                    <img class="img-responsive" src="{:ADMIM_TPL_PATH}/assets/admin/pages/media/works/img1.jpg" alt="">
-                    <div class="mix-details">
-                        <h3>{$template['descriptor']}</h3>
-                        <p>
-                            {$template['author']}<br/>
-                            {$template['crate_time']}<br/>
-                            {$template['version']}<br/>
-                        </p>
-                        <a class="mix-link">
-                            <i class="fa fa-link"></i>
-                        </a>
-                        <a class="mix-preview fancybox-button" href="{:ADMIM_TPL_PATH}/assets/admin/pages/media/works/img1.jpg" title="Project Name" data-rel="fancybox-button">
-                            <i class="fa fa-search"></i>
-                        </a>
+
+                                <a class="btn red ">
+                                    删除<i class="fa fa-times-circle"></i>
+                                </a>
+
+
+                                <a class="btn yellow fancybox-button"
+                                   href="{:TEMPLATE_PATH}/{$template['name']}/thumbnail.jpg"
+                                   title="{$template['title']}" alt="查看" data-rel="fancybox-button">
+                                    预览<i class="fa fa-search"></i>
+                                </a>
+
+
+                            </div>
+                        </div>
                     </div>
-                </div>
             </div>
+
+            </volist>
+
+
+        </div>
+        <!-- END DASHBOARD STATS -->
+        <div class="clearfix">
         </div>
 
-    </volist>
 
-
-
-
-</div>
-<!-- END DASHBOARD STATS -->
-<div class="clearfix">
-</div>
-
-
-
-
-
-
-
-
-
-
-</div>
+    </div>
 </div>
 <!-- END CONTENT -->
 <!-- BEGIN QUICK SIDEBAR -->
@@ -122,8 +131,10 @@
                 <span class="badge badge-success">8</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Bob Nilson</h4>
+
                 <div class="media-heading-sub">
                     Project Manager
                 </div>
@@ -131,8 +142,10 @@
         </li>
         <li class="media">
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar1.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Nick Larson</h4>
+
                 <div class="media-heading-sub">
                     Art Director
                 </div>
@@ -143,8 +156,10 @@
                 <span class="badge badge-danger">3</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar4.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Deon Hubert</h4>
+
                 <div class="media-heading-sub">
                     CTO
                 </div>
@@ -152,8 +167,10 @@
         </li>
         <li class="media">
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar2.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Ella Wong</h4>
+
                 <div class="media-heading-sub">
                     CEO
                 </div>
@@ -167,8 +184,10 @@
                 <span class="badge badge-warning">2</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar6.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Lara Kunis</h4>
+
                 <div class="media-heading-sub">
                     CEO, Loop Inc
                 </div>
@@ -182,8 +201,10 @@
                 <span class="label label-sm label-success">new</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar7.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Ernie Kyllonen</h4>
+
                 <div class="media-heading-sub">
                     Project Manager,<br>
                     SmartBizz PTL
@@ -192,8 +213,10 @@
         </li>
         <li class="media">
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar8.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Lisa Stone</h4>
+
                 <div class="media-heading-sub">
                     CTO, Keort Inc
                 </div>
@@ -207,8 +230,10 @@
                 <span class="badge badge-success">7</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar9.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Deon Portalatin</h4>
+
                 <div class="media-heading-sub">
                     CFO, H&D LTD
                 </div>
@@ -216,8 +241,10 @@
         </li>
         <li class="media">
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar10.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Irina Savikova</h4>
+
                 <div class="media-heading-sub">
                     CEO, Tizda Motors Inc
                 </div>
@@ -228,8 +255,10 @@
                 <span class="badge badge-danger">4</span>
             </div>
             <img class="media-object" src="/Content/Templates/system/assets/admin/layout/img/avatar11.jpg" alt="...">
+
             <div class="media-body">
                 <h4 class="media-heading">Maria Gomez</h4>
+
                 <div class="media-heading-sub">
                     Manager, Infomatic Inc
                 </div>
@@ -248,6 +277,7 @@
         <div class="page-quick-sidebar-chat-user-messages">
             <div class="post out">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Bob Nilson</a>
@@ -258,6 +288,7 @@
             </div>
             <div class="post in">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar2.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Ella Wong</a>
@@ -268,6 +299,7 @@
             </div>
             <div class="post out">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Bob Nilson</a>
@@ -278,6 +310,7 @@
             </div>
             <div class="post in">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar2.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Ella Wong</a>
@@ -288,6 +321,7 @@
             </div>
             <div class="post out">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Bob Nilson</a>
@@ -298,6 +332,7 @@
             </div>
             <div class="post in">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar2.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Ella Wong</a>
@@ -308,6 +343,7 @@
             </div>
             <div class="post out">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Bob Nilson</a>
@@ -318,6 +354,7 @@
             </div>
             <div class="post in">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar2.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Ella Wong</a>
@@ -328,6 +365,7 @@
             </div>
             <div class="post out">
                 <img class="avatar" alt="" src="/Content/Templates/system/assets/admin/layout/img/avatar3.jpg"/>
+
                 <div class="message">
                     <span class="arrow"></span>
                     <a href="#" class="name">Bob Nilson</a>
@@ -340,6 +378,7 @@
         <div class="page-quick-sidebar-chat-user-form">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Type a message here...">
+
                 <div class="input-group-btn">
                     <button type="button" class="btn blue"><i class="icon-paper-clip"></i></button>
                 </div>
@@ -673,19 +712,26 @@
         <h3 class="list-heading">General Settings</h3>
         <ul class="list-items borderless">
             <li>
-                Enable Notifications <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Enable Notifications <input type="checkbox" class="make-switch" checked data-size="small"
+                                            data-on-color="success" data-on-text="ON" data-off-color="default"
+                                            data-off-text="OFF">
             </li>
             <li>
-                Allow Tracking <input type="checkbox" class="make-switch" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Allow Tracking <input type="checkbox" class="make-switch" data-size="small" data-on-color="info"
+                                      data-on-text="ON" data-off-color="default" data-off-text="OFF">
             </li>
             <li>
-                Log Errors <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Log Errors <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger"
+                                  data-on-text="ON" data-off-color="default" data-off-text="OFF">
             </li>
             <li>
-                Auto Sumbit Issues <input type="checkbox" class="make-switch" data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Auto Sumbit Issues <input type="checkbox" class="make-switch" data-size="small" data-on-color="warning"
+                                          data-on-text="ON" data-off-color="default" data-off-text="OFF">
             </li>
             <li>
-                Enable SMS Alerts <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Enable SMS Alerts <input type="checkbox" class="make-switch" checked data-size="small"
+                                         data-on-color="success" data-on-text="ON" data-off-color="default"
+                                         data-off-text="OFF">
             </li>
         </ul>
         <h3 class="list-heading">System Settings</h3>
@@ -705,10 +751,14 @@
                 Secondary SMTP Port <input class="form-control input-inline input-sm input-small" value="3560"/>
             </li>
             <li>
-                Notify On System Error <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="danger" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Notify On System Error <input type="checkbox" class="make-switch" checked data-size="small"
+                                              data-on-color="danger" data-on-text="ON" data-off-color="default"
+                                              data-off-text="OFF">
             </li>
             <li>
-                Notify On SMTP Error <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="warning" data-on-text="ON" data-off-color="default" data-off-text="OFF">
+                Notify On SMTP Error <input type="checkbox" class="make-switch" checked data-size="small"
+                                            data-on-color="warning" data-on-text="ON" data-off-color="default"
+                                            data-off-text="OFF">
             </li>
         </ul>
         <div class="inner-content">
@@ -725,15 +775,28 @@
 <!-- END CONTAINER -->
 
 
-
-
 <include file="layout@admin@foot"/>
 <script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/portfolio.js"></script>
-<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-mixitup/jquery.mixitup.min.js"></script>
-<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<script type="text/javascript"
+        src="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-mixitup/jquery.mixitup.min.js"></script>
+<script type="text/javascript"
+        src="{:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <script>
-    $(function(){
+    $(function () {
         $('.mix-grid').mixitup();
+        if ($(".fancybox-button").size() > 0) {
+            $(".fancybox-button").fancybox({
+                groupAttr: 'data-rel',
+                prevEffect: 'none',
+                nextEffect: 'none',
+                closeBtn: true,
+                helpers: {
+                    title: {
+                        type: 'inside'
+                    }
+                }
+            });
+        }
     })
 </script>

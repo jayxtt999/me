@@ -2,21 +2,21 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50520
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : myframe
 
 Target Server Type    : MYSQL
-Target Server Version : 50520
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-06-27 18:11:50
+Date: 2015-06-29 21:49:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for xtt_article
+-- Table structure for `xtt_article`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article`;
 CREATE TABLE `xtt_article` (
@@ -43,7 +43,7 @@ CREATE TABLE `xtt_article` (
 INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>阿SA说adasdadadadasdasd</p>', '', '', '2015-04-22 16:20:21', '1', '1', '100', '100', '1', '1', '1', '123456');
 
 -- ----------------------------
--- Table structure for xtt_article_category
+-- Table structure for `xtt_article_category`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article_category`;
 CREATE TABLE `xtt_article_category` (
@@ -65,7 +65,7 @@ INSERT INTO `xtt_article_category` VALUES ('10', '2222', '222222', '22');
 INSERT INTO `xtt_article_category` VALUES ('11', '4324', '42342', '232');
 
 -- ----------------------------
--- Table structure for xtt_article_tag
+-- Table structure for `xtt_article_tag`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_article_tag`;
 CREATE TABLE `xtt_article_tag` (
@@ -84,7 +84,7 @@ INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1,1');
 INSERT INTO `xtt_article_tag` VALUES ('14', '啊啊啊', null);
 
 -- ----------------------------
--- Table structure for xtt_comment
+-- Table structure for `xtt_comment`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_comment`;
 CREATE TABLE `xtt_comment` (
@@ -156,7 +156,7 @@ INSERT INTO `xtt_comment` VALUES ('45', '2131313', '1231312', '2015-03-30 14:06:
 INSERT INTO `xtt_comment` VALUES ('46', '1313131312', '131313', '2015-03-30 22:35:44', '啊事实上事实上身上', '2', '1', '36', '0', null, '0', '127.0.0.1', '0', null);
 
 -- ----------------------------
--- Table structure for xtt_common_menu
+-- Table structure for `xtt_common_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_common_menu`;
 CREATE TABLE `xtt_common_menu` (
@@ -207,7 +207,7 @@ INSERT INTO `xtt_common_menu` VALUES ('228', '编辑钩子', '编辑钩子', nul
 INSERT INTO `xtt_common_menu` VALUES ('229', '模板管理', '模板管理', null, 'admin', 'template', 'index', 'www.me.me/index.php?m=admin&c=template&a=index', '1', '1', '', '1', '1', '0');
 
 -- ----------------------------
--- Table structure for xtt_config
+-- Table structure for `xtt_config`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_config`;
 CREATE TABLE `xtt_config` (
@@ -248,7 +248,7 @@ INSERT INTO `xtt_config` VALUES ('27', 'login_code', '1');
 INSERT INTO `xtt_config` VALUES ('30', 'comment_order', 'asc');
 
 -- ----------------------------
--- Table structure for xtt_hook
+-- Table structure for `xtt_hook`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_hook`;
 CREATE TABLE `xtt_hook` (
@@ -281,7 +281,7 @@ INSERT INTO `xtt_hook` VALUES ('12', 'appEnd', '应用程序结束', 'controller
 INSERT INTO `xtt_hook` VALUES ('13', 'documentComment', '评论区', 'controller', '2015-06-23 23:37:29', 'socialComment', '1');
 
 -- ----------------------------
--- Table structure for xtt_link
+-- Table structure for `xtt_link`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_link`;
 CREATE TABLE `xtt_link` (
@@ -306,7 +306,7 @@ INSERT INTO `xtt_link` VALUES ('7', '啊啊啊啊啊啊啊啊', '121212', null, 
 INSERT INTO `xtt_link` VALUES ('8', '啊啊啊啊啊啊啊啊', '121212', null, '啊S', '0');
 
 -- ----------------------------
--- Table structure for xtt_member_info
+-- Table structure for `xtt_member_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_member_info`;
 CREATE TABLE `xtt_member_info` (
@@ -332,7 +332,7 @@ CREATE TABLE `xtt_member_info` (
 INSERT INTO `xtt_member_info` VALUES ('1', 'admin', '8225e882a7d7a83c036e4784bc707267', '435024179@qq.com', 'http://www.me.me/Data/upload/image/avatar/1/yt_42da8e3bc1061d3ccc5fac1e163a3390.jpg', '2015-05-12 17:46:04', '1', '职业', '兴趣爱好', '男', '用户说明', '赫本啊啊22223', '1');
 
 -- ----------------------------
--- Table structure for xtt_member_login_log
+-- Table structure for `xtt_member_login_log`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_member_login_log`;
 CREATE TABLE `xtt_member_login_log` (
@@ -343,7 +343,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -430,9 +430,10 @@ INSERT INTO `xtt_member_login_log` VALUES ('79', '1270', '2015-05-18 14:56:24', 
 INSERT INTO `xtt_member_login_log` VALUES ('80', '1270', '2015-05-19 09:14:42', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('81', '1270', '2015-06-24 21:38:23', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('82', '1270', '2015-06-27 11:25:39', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('83', '1270', '2015-06-29 20:21:35', '1');
 
 -- ----------------------------
--- Table structure for xtt_plugs
+-- Table structure for `xtt_plugs`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_plugs`;
 CREATE TABLE `xtt_plugs` (
@@ -459,7 +460,7 @@ INSERT INTO `xtt_plugs` VALUES ('21', 'headtest', 'tempHead插件测试', '插�
 INSERT INTO `xtt_plugs` VALUES ('22', 'socialcomment', '通用社交化评论', '集成了各种社交化评论插件，轻松集成到系统中。', '1', '{\"comment_type\":\"2\",\"comment_uid_youyan\":\"2017124\",\"comment_short_name_duoshuo\":\"164483642\",\"comment_form_pos_duoshuo\":\"top\",\"comment_data_list_duoshuo\":\"10\",\"comment_data_order_duoshuo\":\"desc\"}', 'thinkphp', '0.1', '2015-06-23 23:45:30', '0');
 
 -- ----------------------------
--- Table structure for xtt_sidebar
+-- Table structure for `xtt_sidebar`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_sidebar`;
 CREATE TABLE `xtt_sidebar` (
@@ -490,7 +491,7 @@ INSERT INTO `xtt_sidebar` VALUES ('11', '热门日志', 'hotblog', 'a:2:{i:0;a:2
 INSERT INTO `xtt_sidebar` VALUES ('12', '随机日志', 'randblog', 'a:2:{i:0;a:2:{s:5:\"title\";s:6:\"标题\";s:4:\"data\";s:12:\"随机日志\";}i:1;a:2:{s:5:\"title\";s:27:\"首页显示随机日志数\";s:4:\"data\";s:2:\"10\";}}', 'system', '1', '11');
 
 -- ----------------------------
--- Table structure for xtt_template
+-- Table structure for `xtt_template`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_template`;
 CREATE TABLE `xtt_template` (
@@ -501,16 +502,17 @@ CREATE TABLE `xtt_template` (
   `version` varchar(256) DEFAULT NULL COMMENT '版本',
   `author` varchar(256) DEFAULT NULL COMMENT '作者',
   `descriptor` varchar(256) DEFAULT NULL,
+  `title` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_template
 -- ----------------------------
-INSERT INTO `xtt_template` VALUES ('1', 'default', '1', '2015-06-27 13:57:05', '1.0', 'reserved', '默认');
+INSERT INTO `xtt_template` VALUES ('1', 'default', '1', '2015-06-29 21:04:15', '1.0', 'reserved', '来源于http://sc.chinaz.com/moban/', '默认模板');
 
 -- ----------------------------
--- Table structure for xtt_twitter
+-- Table structure for `xtt_twitter`
 -- ----------------------------
 DROP TABLE IF EXISTS `xtt_twitter`;
 CREATE TABLE `xtt_twitter` (
