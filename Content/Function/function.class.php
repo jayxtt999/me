@@ -846,17 +846,26 @@ function isManagement()
     return \System\Core\View::$isManagement;
 }
 
+/**
+ * 获取文件名后缀
+ */
+function getFileSuffix($fileName) {
+    return strtolower(pathinfo($fileName,  PATHINFO_EXTENSION));
+}
 
 /**
- * @param $zipfile 压缩包
+ * @param $zipFile 压缩包
  * @param $path   要解压的路径
  * @param $type   类型  tpl=>模板 plug=>插件
  */
-function unZip($zipfile,$path,$type){
+function unZip($zipFile,$path,$type){
 
     if (class_exists('ZipArchive', FALSE)) {
         $zip = new ZipArchive();
-        if (@$zip->open($zipfile) === TRUE) {
+        if (@$zip->open("/Data/upload/zip/ASSSDBenchmark.3987.zip") === TRUE) {
+            $zip->extractTo('/aaa');
+            $zip->close();
+            echo 'ok';exit;
             $r = explode('/', $zip->getNameIndex(0), 2);
             $dir = isset($r[0]) ? $r[0] . '/' : '';
             switch ($type) {
@@ -879,6 +888,8 @@ function unZip($zipfile,$path,$type){
                 return 1;
             }
         } else {
+            echo(1212121);exit;
+
             return 2;
         }
     } else {
