@@ -3,7 +3,10 @@
       type="text/css"/>
 <link href="{:ADMIM_TPL_PATH}/assets/admin/pages/css/portfolio.css" rel="stylesheet" type="text/css"/>
 
+<link rel="stylesheet" type="text/css" href="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-fileinput/css/fileinput.css"/>
+
 <!-- BEGIN CONTAINER -->
+
 <div class="page-container">
     <!-- BEGIN SIDEBAR -->
     <div class="page-sidebar-wrapper">
@@ -19,6 +22,57 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <include file="layout@layout@widgets"/>
+
+
+            <div class="row">
+                <div class="col-md-12">
+            <div class="portlet box blue-hoki">
+
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-gift"></i>上传模板
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config">
+                    </a>
+                    <a href="javascript:;" class="reload">
+                    </a>
+                    <a href="javascript:;" class="remove">
+                    </a>
+                </div>
+            </div>
+
+
+
+            <div class="portlet-body form">
+
+                <form action="#" class="form-horizontal form-bordered">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">格式：ZIP,RAR,GZ,TGZ</label>
+                            <div class="col-md-10">
+
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+
+                                    <input id="input-tpl" type="file" multiple="true">
+                                    <div id="errorTplBlock" class="help-block"></div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+                </div>
+            </div>
+
             <div class="row">
 
 
@@ -775,12 +829,18 @@
 <!-- END CONTAINER -->
 
 
+
 <include file="layout@admin@foot"/>
 <script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/portfolio.js"></script>
 <script type="text/javascript"
         src="{:ADMIM_TPL_PATH}/assets/global/plugins/jquery-mixitup/jquery.mixitup.min.js"></script>
 <script type="text/javascript"
         src="{:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-fileinput/js/fileinput.js"></script>
+
+
+
 <!-- END PAGE LEVEL PLUGINS -->
 <script>
     $(function () {
@@ -798,5 +858,21 @@
                 }
             });
         }
+        $("#input-tpl").fileinput({
+
+            showPreview: false,
+            allowedFileExtensions: ["zip", "rar", "gz", "tgz"],
+            elErrorContainer: "#errorTplBlock",
+            minFileCount:1,
+            maxFileCount:5,
+            maxFileSize:5120,
+            uploadUrl: "/index.php?m=admin&c=template&a=uploadTpl", // server upload action
+            uploadAsync: true
+
+    })
+
+
+
+
     })
 </script>

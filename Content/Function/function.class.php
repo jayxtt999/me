@@ -828,15 +828,68 @@ function deletePlugDir($dir)
     }
 }
 
+/**
+ *  获取模板名
+ * @return mixed
+ */
 function getTplName()
 {
     return db()->table("template")->getRow(array('status' => 1))->fields("name")->done();
 }
 
-
+/**
+ * 是否为后台管理界面
+ * @return mixed
+ */
 function isManagement()
 {
     return \System\Core\View::$isManagement;
+}
+
+
+/**
+ * @param $zipfile 压缩包
+ * @param $path   要解压的路径
+ * @param $type   类型  tpl=>模板 plug=>插件
+ */
+function unZip($zipfile,$path,$type){
+
+    if (class_exists('ZipArchive', FALSE)) {
+        $zip = new ZipArchive();
+        if (@$zip->open($zipfile) === TRUE) {
+            $r = explode('/', $zip->getNameIndex(0), 2);
+            $dir = isset($r[0]) ? $r[0] . '/' : '';
+            switch ($type) {
+                case 'tpl':
+                    $re = $zip->getFromName($dir . 'header.php');
+                    if (false === $re)
+                        return -2;
+                    break;
+                case 'plugin':
+                    $plugin_name = substr($dir, 0, -1);
+                    $re = $zip->getFromName($dir . $plugin_name . '.php');
+                    if (false === $re)
+                        return -1;
+                    break;
+            }
+            if (true === @$zip->extractTo($path)) {
+                $zip->close();
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 2;
+        }
+    } else {
+        return "请先开启 ZipArchive";
+    }
+
+
+
+
+
+
 }
 
 
