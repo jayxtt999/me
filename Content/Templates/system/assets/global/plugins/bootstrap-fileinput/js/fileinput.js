@@ -2129,7 +2129,6 @@
             var $this = $(this), data = $this.data('fileinput'), defaults,
                 options = typeof option === 'object' && option,
                 lang = options.language || $this.data('language') || 'en';
-
             if (!data) {
                 defaults = $.extend({}, $.fn.fileinput.defaults);
                 if (lang !== 'en' && !isEmpty($.fn.fileinputLocales[lang])) {

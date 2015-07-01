@@ -862,15 +862,12 @@ function unZip($zipFile,$path,$type){
 
     if (class_exists('ZipArchive', FALSE)) {
         $zip = new ZipArchive();
-        if (@$zip->open("/Data/upload/zip/ASSSDBenchmark.3987.zip") === TRUE) {
-            $zip->extractTo('/aaa');
-            $zip->close();
-            echo 'ok';exit;
+        if (@$zip->open($zipFile) === TRUE) {
             $r = explode('/', $zip->getNameIndex(0), 2);
             $dir = isset($r[0]) ? $r[0] . '/' : '';
             switch ($type) {
                 case 'tpl':
-                    $re = $zip->getFromName($dir . 'header.php');
+                    $re = $zip->getFromName($dir . 'info.log');
                     if (false === $re)
                         return -2;
                     break;
@@ -881,19 +878,17 @@ function unZip($zipFile,$path,$type){
                         return -1;
                     break;
             }
-            if (true === @$zip->extractTo($path)) {
+            if (true === @$zip->extractTo(APP_TEMP_PATH)) {
                 $zip->close();
                 return 0;
             } else {
                 return 1;
             }
         } else {
-            echo(1212121);exit;
-
             return 2;
         }
     } else {
-        return "请先开启 ZipArchive";
+        return -3;
     }
 
 

@@ -838,7 +838,7 @@
         src="{:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
 
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-fileinput/js/fileinput.js"></script>
-
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/assets/global/plugins/bootstrap-fileinput/js/fileinput_locale_zh.js"></script>
 
 
 <!-- END PAGE LEVEL PLUGINS -->
@@ -867,7 +867,8 @@
             maxFileCount:5,
             maxFileSize:5120,
             uploadUrl: "/index.php?m=admin&c=template&a=uploadTpl", // server upload action
-            uploadAsync: true
+            uploadAsync: true,
+            language: "zh"
 
     })
 
