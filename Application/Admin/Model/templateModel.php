@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/7/2 0002
- * Time: ÏÂÎç 5:59
+ * Time: ä¸‹åˆ 5:59
  */
 
 namespace Admin\Model;
@@ -11,7 +11,7 @@ namespace Admin\Model;
 
 class templateModel extends \System\Core\Model{
 
-    public static  $infoKey = array("name","varsion","author","descriptor");
+    public static  $infoKey = array("name","version","author","descriptor","title");
 
     /**
      * @param $name
@@ -20,14 +20,14 @@ class templateModel extends \System\Core\Model{
     public function getTemplate($name){
 
         if($name){
-            return db("template")->getRow(array('name'=>$name))->done();
+            return db()->table("template")->getRow(array('name'=>$name))->done();
         }else{
             return false;
         }
     }
 
     /**
-     * Ä£°åÊÇ·ñ´æÔÚ
+     * æ¨¡æ¿æ˜¯å¦å­˜åœ¨
      * @param $name
      * @return bool
      */
@@ -43,18 +43,18 @@ class templateModel extends \System\Core\Model{
     }
 
     /**
-     * ÉèÖÃÎªÄ¬ÈÏÄ£°å
+     * è®¾ç½®ä¸ºé»˜è®¤æ¨¡æ¿
      * @param $name
      * @return mixed
      */
     public function setTplDefault($name){
 
         db("template")->upDate(array('status'=>0),array())->done();
-        return db("template")->upDate(array('status'=>1),array('name'=>$name))->done();
+        return db()->table("template")->upDate(array('status'=>1),array('name'=>$name))->done();
     }
 
     /**
-     * Ìí¼ÓÄ£°åÊý¾Ý
+     * æ·»åŠ æ¨¡æ¿æ•°æ®
      * @param $data
      * @return bool|mixed
      */
@@ -64,10 +64,11 @@ class templateModel extends \System\Core\Model{
             return false;
         }
         if($this->isHaveTpl($data['name'])){
-            db("template")->upDate($data,array('name'=>$data['name']))->done();
+            db()->table("template")->upDate($data,array('name'=>$data['name']))->done();
             return true;
         }else{
-            return  db("template")->insert($data)->done();
+            $data['crate_time'] = date("Y-m-d H:i:s");
+            return db()->table("template")->insert($data)->done();
         }
 
     }

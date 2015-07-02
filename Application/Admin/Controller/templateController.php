@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/6/27 0027
- * Time: ä¸‹åˆ 4:30
+ * Time: ÏÂÎç 4:30
  */
 
 namespace Admin\Controller;
@@ -13,10 +13,10 @@ use Admin\Model\templateModel as templateModel;
 class templateController extends abstractController
 {
     private $error = array(
-        -3=>"å¼€å¯ZipArchive",
-        -2=>"ä¸Šä¼ å¤±è´¥ï¼Œç¼ºå°‘æ¨¡æ¿å¿…è¦çš„è¯´æ˜æ–‡ä»¶",
-        -1=>"ä¸Šä¼ å¤±è´¥ï¼Œæ’ä»¶å†…éƒ¨é”™è¯¯",
-         0=>"ä¸Šä¼ æˆåŠŸ",
+        -3=>"¿ªÆôZipArchive",
+        -2=>"ÉÏ´«Ê§°Ü£¬È±ÉÙÄ£°å±ØÒªµÄËµÃ÷ÎÄ¼ş",
+        -1=>"ÉÏ´«Ê§°Ü£¬²å¼şÄÚ²¿´íÎó",
+         0=>"ÉÏ´«³É¹¦",
 
     );
 
@@ -40,48 +40,45 @@ class templateController extends abstractController
         $error = $zipFile["error"];
 
         if (getFileSuffix($zipFile['name']) != 'zip') {
-            return ('æ–‡ä»¶ç±»å‹é”™è¯¯');
+            return ('ÎÄ¼şÀàĞÍ´íÎó');
         }
         if (!$zipFile || $error >= 1 || empty($tmp_name)) {
-            return ('æ’ä»¶ä¸Šä¼ å¤±è´¥');
+            return ('²å¼şÉÏ´«Ê§°Ü');
         }
         $ret = unZip($tmp_name,"/Content/Templates","tpl");
-
         switch ($ret) {
             case -3:
-                return JsonObject(array("error"=>'ä¸Šä¼ é”™è¯¯ï¼šè¯·å…ˆå¼€å¯ZipArchive'));
+                return JsonObject(array("error"=>'ÉÏ´«´íÎó£ºÇëÏÈ¿ªÆôZipArchive'));
                 break;
             case -2:
-                return JsonObject(array("error"=>'ä¸Šä¼ é”™è¯¯ï¼šè¯·æ£€æŸ¥æ¨¡æ¿æ–‡ä»¶å®Œæ•´æ€§'));
+                return JsonObject(array("error"=>'ÉÏ´«´íÎó£ºÇë¼ì²éÄ£°åÎÄ¼şÍêÕûĞÔ'));
                 break;
             case 0:
-                //æ›´æ–°è®°å½•
+                //¸üĞÂ¼ÇÂ¼
                 $info = array();
+
                 $templateModel = new templateModel();
-                $data = file_get_contents(WEB_TEMP_PATH."/".$name."/info.log");
+                $data = file_get_contents(APP_TEMP_PATH."/".basename($name,".zip")."/info.log");
                 $data = explode("\r\n",$data);
                 foreach($data as $v){
-                    $v = str_replace("ï¼š",":",$v);
+                    $v = str_replace("£º",":",$v);
                     $infos = explode(":",$v);
-                    foreach($infos as $k=>$v){
-                        if(in_array($k,$templateModel::$infoKey)){
-                            $info[$k]= $v;
-                        }
+                    if(in_array($infos[0],$templateModel::$infoKey)){
+                        $info[$infos[0]]= $infos[1];
                     }
-
                 }
                 $r = $templateModel->addTpl($info);
                 if($r){
-                    return JsonObject(array("success"=>'ä¸Šä¼ æˆåŠŸ'));
+                    return JsonObject(array("success"=>'ÉÏ´«³É¹¦'));
                 }else{
-                    return JsonObject(array("error"=>'è¯·è”ç³»ç®¡ç†å‘˜'));
+                    return JsonObject(array("error"=>'ÇëÁªÏµ¹ÜÀíÔ±'));
                 }
                 break;
             case 1:
-                return JsonObject(array("error"=>'ä¸Šä¼ æˆåŠŸ,è§£å‹å¤±è´¥'));
+                return JsonObject(array("error"=>'ÉÏ´«³É¹¦,½âÑ¹Ê§°Ü'));
                 break;
             case 2:
-                return JsonObject(array("error"=>'æ‰“å¼€æ¨¡æ¿å‹ç¼©åŒ…å¤±è´¥'));
+                return JsonObject(array("error"=>'´ò¿ªÄ£°åÑ¹Ëõ°üÊ§°Ü'));
                 break;
         }
     }

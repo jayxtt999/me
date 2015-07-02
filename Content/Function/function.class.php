@@ -863,6 +863,7 @@ function unZip($zipFile,$path,$type){
     if (class_exists('ZipArchive', FALSE)) {
         $zip = new ZipArchive();
         if (@$zip->open($zipFile) === TRUE) {
+
             $r = explode('/', $zip->getNameIndex(0), 2);
             $dir = isset($r[0]) ? $r[0] . '/' : '';
             switch ($type) {
