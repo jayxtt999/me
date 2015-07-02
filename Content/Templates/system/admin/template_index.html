@@ -859,9 +859,8 @@
             });
         }
         $("#input-tpl").fileinput({
-
             showPreview: false,
-            allowedFileExtensions: ["zip", "rar", "gz", "tgz"],
+            allowedFileExtensions: ["zip"],
             elErrorContainer: "#errorTplBlock",
             minFileCount:1,
             maxFileCount:5,
@@ -869,8 +868,15 @@
             uploadUrl: "/index.php?m=admin&c=template&a=uploadTpl", // server upload action
             uploadAsync: true,
             language: "zh"
+        }).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            response = data.response
+            if(response.success){
+                alert(response.success);
+                window.location.reload()
+            }
+        });
 
-    })
+
 
 
 

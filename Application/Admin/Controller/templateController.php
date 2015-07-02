@@ -3,19 +3,20 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/6/27 0027
- * Time: ���� 4:30
+ * Time: 下午 4:30
  */
 
 namespace Admin\Controller;
+use Admin\Model\templateModel as templateModel;
 
 
 class templateController extends abstractController
 {
     private $error = array(
-        -3=>"����ZipArchive",
-        -2=>"�ϴ�ʧ�ܣ�ȱ��ģ���Ҫ��˵���ļ�",
-        -1=>"�ϴ�ʧ�ܣ�����ڲ�����",
-         0=>"�ϴ��ɹ�",
+        -3=>"开启ZipArchive",
+        -2=>"上传失败，缺少模板必要的说明文件",
+        -1=>"上传失败，插件内部错误",
+         0=>"上传成功",
 
     );
 
@@ -39,27 +40,48 @@ class templateController extends abstractController
         $error = $zipFile["error"];
 
         if (getFileSuffix($zipFile['name']) != 'zip') {
-            return ('�ļ����ʹ���');
+            return ('文件类型错误');
         }
         if (!$zipFile || $error >= 1 || empty($tmp_name)) {
-            return ('����ϴ�ʧ��');
+            return ('插件上传失败');
         }
         $ret = unZip($tmp_name,"/Content/Templates","tpl");
+
         switch ($ret) {
             case -3:
-                return JsonObject(array("error"=>'�ϴ��������ȿ���ZipArchive'));
+                return JsonObject(array("error"=>'上传错误：请先开启ZipArchive'));
                 break;
             case -2:
-                return JsonObject(array("error"=>'�ϴ���������ģ���ļ�������'));
+                return JsonObject(array("error"=>'上传错误：请检查模板文件完整性'));
                 break;
             case 0:
-                return JsonObject(array("success"=>'�ϴ��ɹ�'));
+                //更新记录
+                $info = array();
+                $templateModel = new templateModel();
+                $data = file_get_contents(WEB_TEMP_PATH."/".$name."/info.log");
+                $data = explode("\r\n",$data);
+                foreach($data as $v){
+                    $v = str_replace("：",":",$v);
+                    $infos = explode(":",$v);
+                    foreach($infos as $k=>$v){
+                        if(in_array($k,$templateModel::$infoKey)){
+                            $info[$k]= $v;
+                        }
+                    }
+
+                }
+                $r = $templateModel->addTpl($info);
+                if($r){
+                    return JsonObject(array("success"=>'上传成功'));
+                }else{
+                    return JsonObject(array("error"=>'请联系管理员'));
+                }
                 break;
             case 1:
-                return JsonObject(array("error"=>'�ϴ��ɹ�,��ѹʧ��'));
+                return JsonObject(array("error"=>'上传成功,解压失败'));
                 break;
             case 2:
-                return JsonObject(array("error"=>'��ģ��ѹ����ʧ��'));
+                return JsonObject(array("error"=>'打开模板压缩包失败'));
                 break;
         }
     }
