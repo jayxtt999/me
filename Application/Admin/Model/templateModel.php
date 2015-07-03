@@ -49,8 +49,15 @@ class templateModel extends \System\Core\Model{
      */
     public function setTplDefault($name){
 
-        db("template")->upDate(array('status'=>0),array())->done();
-        return db()->table("template")->upDate(array('status'=>1),array('name'=>$name))->done();
+        $r =  $this->getTemplate($name);
+        if($r){
+            db()->table("template")->upDate(array('status'=>0),array())->done();
+            db()->table("template")->upDate(array('status'=>1),array('name'=>$name))->done();
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     /**
@@ -69,6 +76,24 @@ class templateModel extends \System\Core\Model{
         }else{
             $data['crate_time'] = date("Y-m-d H:i:s");
             return db()->table("template")->insert($data)->done();
+        }
+
+    }
+
+
+    public function delTpl($name){
+
+        if($this->isHaveTpl($name)){
+            $res =  db()->table("template")->delete(array('name'=>$name))->done();
+            //删除文件夹
+            if(1){
+                $dir = APP_TEMP_PATH ."/".trim($name);
+                return deleteDir($dir);
+            }else{
+                return true;
+            }
+        }else{
+           return false;
         }
 
     }

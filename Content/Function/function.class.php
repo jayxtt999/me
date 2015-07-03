@@ -799,7 +799,7 @@ function getToken($len = 32, $md5 = true)
  * @param $name
  * @return bool
  */
-function deletePlugDir($dir)
+function deleteDir($dir)
 {
 
     if (str_replace("/", "\\", $dir) !== realpath($dir) || !is_dir($dir))

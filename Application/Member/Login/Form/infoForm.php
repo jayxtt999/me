@@ -21,6 +21,10 @@ class infoForm extends \System\Library\Form\Form
             "role" => "form",
         );
         $this->init($formName, '/index.php?m=member&c=info&a=save', '', $array);
+
+        $array = array(
+            "class" => "form-control",
+        );
         $this->setText("profession", "职业", $array, array('datatype' => 's0-24',));
         $this->setText("favorite", "兴趣爱好", $array, array('datatype' => 's0-24',));
         $this->setText("nickname", "昵称", $array, array('datatype' => 's0-24',));

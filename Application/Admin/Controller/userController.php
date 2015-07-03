@@ -18,10 +18,15 @@ class userController extends \Admin\Controller\abstractController{
         $memberForm = new \Member\Login\Form\infoForm();
         $memberForm->bind($memberRow); //绑定Row
         $memberForm->start('info'); //开始渲染
+
+
+        $memberPwd = new \Member\Login\Form\passwordForm();
+        $memberPwd->start('password'); //开始渲染
+
         $token  = getToken();
         session('avatarToken',$token);
         //获取头像
-        $this->getView()->assign(array('memberform' => $memberForm,'avatar'=>$member['avatar'],'token'=>$token));
+        $this->getView()->assign(array('memberform' => $memberForm,'memberPwd' => $memberPwd,'avatar'=>$member['avatar'],'token'=>$token));
         return $this->getView()->display();
     }
 

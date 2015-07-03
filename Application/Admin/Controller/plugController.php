@@ -141,7 +141,7 @@ class plugController extends abstractController
     public function deletePlugDir($name)
     {
         $dir = PLUGIN_PATH . ucfirst(trim($name));
-        return deletePlugDir($dir);
+        return deleteDir($dir);
     }
 
     /**
