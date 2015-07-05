@@ -26,13 +26,13 @@ class passwordForm extends \System\Library\Form\Form
         $array = array(
             "class" => "form-control",
         );
-        $this->setText("oldPassword", "当前密码", $array, array('datatype' => '*6-16'),"password");
-        $this->setText("password", "新密码", $array, array('datatype' => '*6-16'),"password");
+        $this->setText("oldPassword", "当前密码", $array, array('datatype' => '*5-16'),"password");
+        $this->setText("password", "新密码", $array, array('datatype' => '*5-16'),"password");
         $array = array(
             "class" => "form-control",
             "recheck"=>"password"
         );
-        $this->setText("password2", "确认密码", $array, array('datatype' => '*6-16'),"password");
+        $this->setText("password2", "确认密码", $array, array('datatype' => '*5-16'),"password");
 
     }
 

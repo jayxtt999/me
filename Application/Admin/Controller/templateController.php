@@ -16,7 +16,7 @@ class templateController extends abstractController
         -3=>"开启ZipArchive",
         -2=>"上传失败，缺少模板必要的说明文件",
         -1=>"上传失败，插件内部错误",
-         0=>"上传成功",
+        0=>"上传成功",
 
     );
 
@@ -129,4 +129,4 @@ class templateController extends abstractController
 
 
 
-} 
+}

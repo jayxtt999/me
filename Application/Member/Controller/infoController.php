@@ -48,17 +48,23 @@ class infoController extends abstractController
         $password = post("password", "txt");
         $password2 = post("password2", "txt");
         if ($password !== $password2) {
-            return $this->link()->error("admin:user:profile", "二次密码不一致");
+            return $this->link()->error("二次密码不一致");
         }
         //验证当前密码
         $member = $this->getMember();
         if ($member['password'] != (string)(new \Member\Login\Table\Password($oldPassword))) {
-            return $this->link()->error("admin:user:profile", "密码错误");
+            return $this->link()->error("密码错误");
+        }
+        //验证是否与原密码一致
+        if ($member['password'] == (string)(new \Member\Login\Table\Password($password))) {
+            return $this->link()->error("修改失败");
         }
 
+        //Todo  防暴力破解 设置错误次数加验证码
         $newPassword = (string)(new \Member\Login\Table\Password($password));
         $r = db()->table("member")->update(array("password" => $newPassword), array("id" => $member['id']));
         if ($r) {
+            //Todo 退出登录
             return $this->link()->success("admin:user:profile", "更新成功");
         } else {
             return $this->link()->error("admin:user:profile", "更新失败");
