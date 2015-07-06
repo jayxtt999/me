@@ -15,8 +15,7 @@ switch ($action) {
 
     /* 上传图片 */
     case 'uploadimage':
-    /* 上传涂鸦 */'
-    '
+    /* 上传涂鸦 */
     case 'uploadscrawl':
     /* 上传视频 */
     case 'uploadvideo':
