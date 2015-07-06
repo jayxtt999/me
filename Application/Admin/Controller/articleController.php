@@ -100,6 +100,12 @@ class articleController extends abstractController{
 
     public function saveAction(){
 
+        $upload = new \System\Library\Upload\Local\Local("uploadimage");
+        $upload->upFile("thumbnail");
+        var_dump($upload->getFileInfo());
+        exit;
+
+
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->start('articleEdit');
         $data = $this->request()->getData();//获取数据

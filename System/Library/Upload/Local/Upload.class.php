@@ -5,76 +5,84 @@
  * User: taoqili
  * Date: 12-7-18
  * Time: 上午11: 32
- * UEditor编辑器通用上传类
  */
-class Uploader
+namespace System\Library\Upload\Local;
+
+class Upload extends \System\Library\Upload\Local\Local
 {
-    private $fileField; //文件域名
-    private $file; //文件上传对象
-    private $base64; //文件上传对象
-    private $config; //配置信息
-    private $oriName; //原始文件名
-    private $fileName; //新文件名
-    private $fullName; //完整文件名,即从当前配置目录开始的URL
-    private $filePath; //完整文件名,即从当前配置目录开始的URL
-    private $fileSize; //文件大小
-    private $fileType; //文件类型
-    private $stateInfo; //上传状态信息,
-    private $stateMap = array( //上传状态映射表，国际化用户需考虑此处数据的国际化
-        "SUCCESS", //上传成功标记，在UEditor中内不可改变，否则flash判断会出错
-        "文件大小超出 upload_max_filesize 限制",
-        "文件大小超出 MAX_FILE_SIZE 限制",
-        "文件未被完整上传",
-        "没有文件被上传",
-        "上传文件为空",
-        "ERROR_TMP_FILE" => "临时文件错误",
-        "ERROR_TMP_FILE_NOT_FOUND" => "找不到临时文件",
-        "ERROR_SIZE_EXCEED" => "文件大小超出网站限制",
-        "ERROR_TYPE_NOT_ALLOWED" => "文件类型不允许",
-        "ERROR_CREATE_DIR" => "目录创建失败",
-        "ERROR_DIR_NOT_WRITEABLE" => "目录没有写权限",
-        "ERROR_FILE_MOVE" => "文件保存时出错",
-        "ERROR_FILE_NOT_FOUND" => "找不到上传文件",
-        "ERROR_WRITE_CONTENT" => "写入文件内容错误",
-        "ERROR_UNKNOWN" => "未知错误",
-        "ERROR_DEAD_LINK" => "链接不可用",
-        "ERROR_HTTP_LINK" => "链接不是http链接",
-        "ERROR_HTTP_CONTENTTYPE" => "链接contentType不正确"
-    );
 
     /**
      * 构造函数
-     * @param string $fileField 表单名称
+     * @param string $fileField 表单名称  如果为远程 则填写远程url
      * @param array $config 配置项
      * @param bool $base64 是否解析base64编码，可省略。若开启，则$fileField代表的是base64编码的字符串表单名
      */
-    public function __construct($fileField, $config, $type = "upload")
+    public function __construct($uploadType,$config=array())
+    {
+        $CONFIG = array_merge($this->getConfig(),$config);
+        $base64 = "upload";
+        switch (htmlspecialchars($uploadType)) {
+            case 'uploadimage':
+                $this->config = array(
+                    "pathFormat" => $CONFIG['imagePathFormat'],
+                    "maxSize" => $CONFIG['imageMaxSize'],
+                    "allowFiles" => $CONFIG['imageAllowFiles']
+                );
+                $fieldName = $CONFIG['imageFieldName'];
+                break;
+            case 'uploadvideo':
+                $this->config = array(
+                    "pathFormat" => $CONFIG['videoPathFormat'],
+                    "maxSize" => $CONFIG['videoMaxSize'],
+                    "allowFiles" => $CONFIG['videoAllowFiles']
+                );
+                $fieldName = $CONFIG['videoFieldName'];
+                break;
+            case 'uploadfile':
+            $this->config = array(
+                    "pathFormat" => $CONFIG['filePathFormat'],
+                    "maxSize" => $CONFIG['fileMaxSize'],
+                    "allowFiles" => $CONFIG['fileAllowFiles']
+                );
+                $fieldName = $CONFIG['fileFieldName'];
+                break;
+            default:
+                $allowFiles = $CONFIG['imageManagerAllowFiles'];
+                $listSize = $CONFIG['imageManagerListSize'];
+                $path = $CONFIG['imageManagerListPath'];
+        }
+    }
+
+
+    /**
+     * 上传文件的主处理方法
+     * @return mixed
+     */
+    public function upFile($fileField, $type = "upload")
     {
         $this->fileField = $fileField;
-        $this->config = $config;
         $this->type = $type;
         if ($type == "remote") {
             $this->saveRemote();
         } else if($type == "base64") {
             $this->upBase64();
         } else {
-            $this->upFile();
+            $this->upFileLocal();
         }
-
         $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] = iconv('unicode', 'utf-8', $this->stateMap['ERROR_TYPE_NOT_ALLOWED']);
+
     }
 
-    /**
-     * 上传文件的主处理方法
-     * @return mixed
-     */
-    private function upFile()
-    {
+
+    private function upFileLocal(){
+
         $file = $this->file = $_FILES[$this->fileField];
+
         if (!$file) {
             $this->stateInfo = $this->getStateInfo("ERROR_FILE_NOT_FOUND");
             return;
         }
+
         if ($this->file['error']) {
             $this->stateInfo = $this->getStateInfo($file['error']);
             return;
@@ -106,6 +114,7 @@ class Uploader
             return;
         }
 
+
         //创建目录失败
         if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
             $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
@@ -114,13 +123,13 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
             return;
         }
-
         //移动文件
         if (!(move_uploaded_file($file["tmp_name"], $this->filePath) && file_exists($this->filePath))) { //移动失败
             $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
         } else { //移动成功
             $this->stateInfo = $this->stateMap[0];
         }
+
     }
 
     /**
@@ -129,7 +138,7 @@ class Uploader
      */
     private function upBase64()
     {
-        $base64Data = $_POST[$this->fileField];
+        $base64Data = $this->fileField;
         $img = base64_decode($base64Data);
 
         $this->oriName = $this->config['oriName'];
@@ -272,16 +281,18 @@ class Uploader
         $format = str_replace("{ii}", $d[5], $format);
         $format = str_replace("{ss}", $d[6], $format);
         $format = str_replace("{time}", $t, $format);
-
         //过滤文件名的非法自负,并替换文件名
         $oriName = substr($this->oriName, 0, strrpos($this->oriName, '.'));
         $oriName = preg_replace("/[\|\?\"\<\>\/\*\\\\]+/", '', $oriName);
         $format = str_replace("{filename}", $oriName, $format);
 
+
         //替换随机字符串
         $randNum = rand(1, 10000000000) . rand(1, 10000000000);
         if (preg_match("/\{rand\:([\d]*)\}/i", $format, $matches)) {
             $format = preg_replace("/\{rand\:[\d]*\}/i", substr($randNum, 0, $matches[1]), $format);
+            var_dump($format);exit;
+
         }
 
         $ext = $this->getFileExt();
