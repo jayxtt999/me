@@ -97,13 +97,11 @@ class articleController extends abstractController{
         $this->getView()->display();
     }
 
-
+    /**
+     * @return mixed
+     */
     public function saveAction(){
 
-        $upload = new \System\Library\Upload\Local\Local("uploadimage");
-        $upload->upFile("thumbnail");
-        var_dump($upload->getFileInfo());
-        exit;
 
 
         $form = new \Admin\Article\Form\editForm();        //获取表单
@@ -127,7 +125,7 @@ class articleController extends abstractController{
         $data['member_id'] = $member['id'];
         //处理日志缩略图（空则取文章第一张,文章没有则取默认图片）
         if($_FILES['thumbnail']['name']){
-            //thumbnail不为空
+          /*  //thumbnail不为空
             $targetFolder = 'Data/upload/image/article'; // Relative to the root
             //验证来路合法性
             //验证图片合法性
@@ -155,9 +153,13 @@ class articleController extends abstractController{
             //move_uploaded_file
             $code = time().rand(0,9999);
             $targetFile = $targetDir . '/yt_' . md5($member['id'].$code) . "." . $fileParts['extension'];
-            move_uploaded_file($tempFile, $targetFile);
+            move_uploaded_file($tempFile, $targetFile);*/
+
+            $upload = new \System\Library\Upload\Local\Upload("uploadimage");
+            $upload->upFile("thumbnail");
+            $fileInfo = $upload->getFileInfo();
             //保存
-            $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST']."/", $targetFile);
+            $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST']."/", $fileInfo['url']);
         }elseif($data['content']){
             //thumbnail为空
             preg_match ("<img.*src=[\"](.*?)[\"].*?>",$data['content'],$match);
@@ -191,6 +193,9 @@ class articleController extends abstractController{
 
     }
 
+    /**
+     * @return mixed
+     */
     public function delAction(){
         $id = get("id","int");
         $res = db()->Table('article')->upDate(array('status'=>\Admin\Article\Type\Status::STATUS_UNABLE),array('id'=>$id))->done();

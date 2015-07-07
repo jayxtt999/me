@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: xiett
  * Date: 15-7-6
- * Time: ÏÂÎç10:13
+ * Time: ä¸‹åˆ10:13
  */
 namespace System\Library\Upload\Local;
 
@@ -26,13 +26,13 @@ class Lists extends \System\Library\Upload\Local\Local{
     public function get($size,$start){
 
         switch (htmlspecialchars($this->getListType)) {
-            /* ÁĞ³öÎÄ¼ş */
+            /* åˆ—å‡ºæ–‡ä»¶ */
             case 'listfile':
                 $allowFiles = $this->config['fileManagerAllowFiles'];
                 $listSize = $this->config['fileManagerListSize'];
                 $path = $this->config['fileManagerListPath'];
                 break;
-            /* ÁĞ³öÍ¼Æ¬ */
+            /* åˆ—å‡ºå›¾ç‰‡ */
             case 'listimage':
             default:
                 $allowFiles = $this->config['imageManagerAllowFiles'];
@@ -41,7 +41,7 @@ class Lists extends \System\Library\Upload\Local\Local{
         }
 
         $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);
-        /* »ñÈ¡²ÎÊı */
+        /* è·å–å‚æ•° */
         $size = isset($_GET['size']) ? htmlspecialchars($_GET['size']) : $listSize;
         $start = isset($_GET['start']) ? htmlspecialchars($_GET['start']) : 0;
         $end = $start + $size;
@@ -55,12 +55,12 @@ class Lists extends \System\Library\Upload\Local\Local{
                 "total" => count($files)
             ));
         }
-        /* »ñÈ¡Ö¸¶¨·¶Î§µÄÁĞ±í */
+        /* è·å–æŒ‡å®šèŒƒå›´çš„åˆ—è¡¨ */
         $len = count($files);
         for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $start; $i--){
             $list[] = $files[$i];
         }
-        /* ·µ»ØÊı¾İ */
+        /* è¿”å›æ•°æ® */
         $result = json_encode(array(
             "state" => "SUCCESS",
             "list" => $list,

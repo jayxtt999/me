@@ -7,8 +7,9 @@
  * Time: 上午11: 32
  */
 namespace System\Library\Upload\Local;
+use \System\Library\Upload\Local\Local as Local;
 
-class Upload extends \System\Library\Upload\Local\Local
+class Upload extends Local
 {
 
     /**
@@ -28,7 +29,6 @@ class Upload extends \System\Library\Upload\Local\Local
                     "maxSize" => $CONFIG['imageMaxSize'],
                     "allowFiles" => $CONFIG['imageAllowFiles']
                 );
-                $fieldName = $CONFIG['imageFieldName'];
                 break;
             case 'uploadvideo':
                 $this->config = array(
@@ -36,7 +36,6 @@ class Upload extends \System\Library\Upload\Local\Local
                     "maxSize" => $CONFIG['videoMaxSize'],
                     "allowFiles" => $CONFIG['videoAllowFiles']
                 );
-                $fieldName = $CONFIG['videoFieldName'];
                 break;
             case 'uploadfile':
             $this->config = array(
@@ -44,12 +43,13 @@ class Upload extends \System\Library\Upload\Local\Local
                     "maxSize" => $CONFIG['fileMaxSize'],
                     "allowFiles" => $CONFIG['fileAllowFiles']
                 );
-                $fieldName = $CONFIG['fileFieldName'];
                 break;
             default:
-                $allowFiles = $CONFIG['imageManagerAllowFiles'];
-                $listSize = $CONFIG['imageManagerListSize'];
-                $path = $CONFIG['imageManagerListPath'];
+                $this->config = array(
+                    "pathFormat" => $CONFIG['filePathFormat'],
+                    "maxSize" => $CONFIG['fileMaxSize'],
+                    "allowFiles" => $CONFIG['fileAllowFiles']
+                );
         }
     }
 
@@ -291,7 +291,6 @@ class Upload extends \System\Library\Upload\Local\Local
         $randNum = rand(1, 10000000000) . rand(1, 10000000000);
         if (preg_match("/\{rand\:([\d]*)\}/i", $format, $matches)) {
             $format = preg_replace("/\{rand\:[\d]*\}/i", substr($randNum, 0, $matches[1]), $format);
-            var_dump($format);exit;
 
         }
 
