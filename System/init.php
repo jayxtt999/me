@@ -111,6 +111,8 @@ final class Application
     {
         //加载方法库
         require_once(APP_FUNCTION_PATH . '/function' . EXT);
+        //加载拓展库
+        require_once ROOT_PATH.'/vendor/autoload.php';
         //自动加载
         spl_autoload_register('loader');
         //Core
