@@ -155,6 +155,10 @@ class articleController extends abstractController{
             $targetFile = $targetDir . '/yt_' . md5($member['id'].$code) . "." . $fileParts['extension'];
             move_uploaded_file($tempFile, $targetFile);*/
 
+            $upload = new \Common\Upload("uploadimage");
+            //$upload->upFile("thumbnail");
+            var_dump($upload);exit;
+            exit;
             $upload = new \System\Library\Upload\Local\Upload("uploadimage");
             $upload->upFile("thumbnail");
             $fileInfo = $upload->getFileInfo();

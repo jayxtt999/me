@@ -137,21 +137,8 @@ return array(
         "radis" => array(),
     ),
 
-  /*  //upload 设置
-    'upload'=>array(
-        'images'=>array(
-            "imageMaxSize"=> 2048000, // 上传大小限制，单位B
-             "imageAllowFiles"=> [".png", ".jpg", ".jpeg", ".gif", ".bmp"], /* 上传图片格式显示
-
-
-        ),
-
-
-
-    ),*/
-
-
-
+    /*upload 设置*/
+    'upload_type'=>"Local",//  Local , Qiniu
 
     /*杂项*/
     'default_timezone' => 'PRC',
