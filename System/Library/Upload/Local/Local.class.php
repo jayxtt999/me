@@ -13,25 +13,43 @@ class Local extends Config
 {
 
     private $type;
+    private $uploadType;
     private $configFull;
     
     /**
      * 构造函数
-     * @param string $fileField 表单名称  如果为远程 则填写远程url
-     * @param array $config 配置项
-     * @param bool $base64 是否解析base64编码，可省略。若开启，则$fileField代表的是base64编码的字符串表单名
+     * @param array $config 获取配置
      */
-    public function __construct($type,$config=array())
+    public function __construct($config=array())
     {
-
-        $this->type = $type;
         $this->configFull = array_merge($this->getConfig(),$config);
-        switch (htmlspecialchars($this->type)) {
+
+    }
+
+    /**
+     * @param $fileField 字段
+     * @param $type 上传类型 直接上传本地 or 抓取远程图片 or base64
+     * @param $uploadType
+     */
+    public function upFile($fileField,$type,$uploadType)
+    {
+        $this->type = $type;
+        $this->fileField = $fileField;
+        $this->uploadType = $uploadType;
+        switch (htmlspecialchars($this->uploadType)) {
             case 'uploadimage':
                 $this->config = array(
                     "pathFormat" => $this->configFull['imagePathFormat'],
                     "maxSize" => $this->configFull['imageMaxSize'],
                     "allowFiles" => $this->configFull['imageAllowFiles']
+                );
+                break;
+            case 'uploadscrawl':
+                $config = array(
+                    "pathFormat" => $this->configFull['scrawlPathFormat'],
+                    "maxSize" => $this->configFull['scrawlMaxSize'],
+                    "allowFiles" => $this->configFull['scrawlAllowFiles'],
+                    "oriName" => "scrawl.png"
                 );
                 break;
             case 'uploadvideo':
@@ -42,32 +60,15 @@ class Local extends Config
                 );
                 break;
             case 'uploadfile':
-            $this->config = array(
-                    "pathFormat" => $this->configFull['filePathFormat'],
-                    "maxSize" => $this->configFull['fileMaxSize'],
-                    "allowFiles" => $this->configFull['fileAllowFiles']
-                );
-                break;
-            default:
                 $this->config = array(
                     "pathFormat" => $this->configFull['filePathFormat'],
                     "maxSize" => $this->configFull['fileMaxSize'],
                     "allowFiles" => $this->configFull['fileAllowFiles']
                 );
+                break;
         }
-    }
 
 
-    /**
-     * 上传文件的主处理方法
-     * @return mixed
-     */
-    public function upFile($fileField, $type = "upload")
-    {
-
-
-        $this->fileField = $fileField;
-        $this->type = $type;
         if ($type == "remote") {
             $this->saveRemote();
         } else if($type == "base64") {
@@ -79,6 +80,9 @@ class Local extends Config
     }
 
 
+    /**
+     * 本地上传
+     */
     private function upFileLocal(){
 
 
@@ -104,9 +108,7 @@ class Local extends Config
         $this->fileSize = $file['size'];
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
-
         $this->filePath = $this->getFilePath();
-        $this->fileName = $this->getFileName();
         $dirname = dirname($this->filePath);
 
         //检查文件大小是否超出限制
@@ -153,8 +155,7 @@ class Local extends Config
         $this->fileSize = strlen($img);
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
-        $this->filePath = $this->
-        FilePath();
+        $this->filePath = $this->FilePath();
         $this->fileName = $this->getFileName();
         $dirname = dirname($this->filePath);
 
@@ -373,21 +374,21 @@ class Local extends Config
      * @param $start
      * @return string
      */
-    public function get($type,$size,$start){
+    public function get($size,$start,$type){
 
         switch (htmlspecialchars($type)) {
             /* 列出文件 */
             case 'listfile':
-                $allowFiles = $this->config['fileManagerAllowFiles'];
-                $listSize = $this->config['fileManagerListSize'];
-                $path = $this->config['fileManagerListPath'];
+                $allowFiles = $this->configFull['fileManagerAllowFiles'];
+                $listSize = $this->configFull['fileManagerListSize'];
+                $path = $this->configFull['fileManagerListPath'];
                 break;
             /* 列出图片 */
             case 'listimage':
-            default:
-                $allowFiles = $this->config['imageManagerAllowFiles'];
-                $listSize = $this->config['imageManagerListSize'];
-                $path = $this->config['imageManagerListPath'];
+                $allowFiles = $this->configFull['imageManagerAllowFiles'];
+                $listSize = $this->configFull['imageManagerListSize'];
+                $path = $this->configFull['imageManagerListPath'];
+                break;
         }
 
         $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);

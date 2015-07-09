@@ -20,12 +20,12 @@ class  Upload {
      * @param array  $config 配置
      * @param string $driver 要使用的上传驱动 LOCAL-本地上传驱动，FTP-FTP上传驱动
      */
-    public function __construct($type,$driver = '', $driverConfig = array()){
+    public function __construct($driverConfig = array(),$driver = '' ){
         //$Upload = new \Think\Upload($setting);
         //$info = $Upload->upload($_FILES);
         /* 设置上传驱动 */
         $driver = $driver?$driver:C("upload_type");
-        $this->setDriver($type,$driver, $driverConfig);
+        $this->setDriver($driver, $driverConfig);
 
     }
 
@@ -35,11 +35,11 @@ class  Upload {
      * @param string $driver 驱动名称
      * @param array $config 驱动配置
      */
-    private function setDriver($type,$driver = null, $driverConfig){
+    private function setDriver($driver = null, $driverConfig){
         $this->driver = $driver;
         $this->driverConfig = $driverConfig;
         $className = "\\System\\Library\\Upload\\".ucfirst($driver)."\\".ucfirst($driver);
-        $this->uploader = new $className($type,$driverConfig);
+        $this->uploader = new $className($driverConfig);
         //$this->uploader = new \System\Library\Upload\Local\Local($type,$driverConfig);
         //var_dump($this->uploader);exit;
         if(!$this->uploader){
@@ -48,17 +48,23 @@ class  Upload {
     }
 
 
-    public function upload($fileField, $type = "upload"){
+    /**
+     * @param $fileField 上传filename
+     * @param string $type 上传方式 远程remote,base64,本地upload
+     * @param string $uploadType
+     * @return mixed
+     */
+    public function upload($fileField, $type = "upload",$uploadType="uploadfile"){
 
-        $this->uploader->upFile($fileField, $type = "upload");
+        $this->uploader->upFile($fileField, $type,$uploadType);
         return $this->uploader->getFileInfo();
     }
 
 
 
-    public function get($size,$start){
+    public function get($size=10,$start=0,$type="listimage"){
 
-        return $this->uploader->get($size,$start);
+        return $this->uploader->get($size,$start,$type);
 
     }
 
