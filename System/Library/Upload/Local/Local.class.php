@@ -13,6 +13,7 @@ class Local extends Config
 {
 
     private $type;
+    private $configFull;
     
     /**
      * 构造函数
@@ -22,36 +23,36 @@ class Local extends Config
      */
     public function __construct($type,$config=array())
     {
+
         $this->type = $type;
-        $CONFIG = array_merge($this->getConfig(),$config);
-        $base64 = "upload";
+        $this->configFull = array_merge($this->getConfig(),$config);
         switch (htmlspecialchars($this->type)) {
             case 'uploadimage':
                 $this->config = array(
-                    "pathFormat" => $CONFIG['imagePathFormat'],
-                    "maxSize" => $CONFIG['imageMaxSize'],
-                    "allowFiles" => $CONFIG['imageAllowFiles']
+                    "pathFormat" => $this->configFull['imagePathFormat'],
+                    "maxSize" => $this->configFull['imageMaxSize'],
+                    "allowFiles" => $this->configFull['imageAllowFiles']
                 );
                 break;
             case 'uploadvideo':
                 $this->config = array(
-                    "pathFormat" => $CONFIG['videoPathFormat'],
-                    "maxSize" => $CONFIG['videoMaxSize'],
-                    "allowFiles" => $CONFIG['videoAllowFiles']
+                    "pathFormat" => $this->configFull['videoPathFormat'],
+                    "maxSize" => $this->configFull['videoMaxSize'],
+                    "allowFiles" => $this->configFull['videoAllowFiles']
                 );
                 break;
             case 'uploadfile':
             $this->config = array(
-                    "pathFormat" => $CONFIG['filePathFormat'],
-                    "maxSize" => $CONFIG['fileMaxSize'],
-                    "allowFiles" => $CONFIG['fileAllowFiles']
+                    "pathFormat" => $this->configFull['filePathFormat'],
+                    "maxSize" => $this->configFull['fileMaxSize'],
+                    "allowFiles" => $this->configFull['fileAllowFiles']
                 );
                 break;
             default:
                 $this->config = array(
-                    "pathFormat" => $CONFIG['filePathFormat'],
-                    "maxSize" => $CONFIG['fileMaxSize'],
-                    "allowFiles" => $CONFIG['fileAllowFiles']
+                    "pathFormat" => $this->configFull['filePathFormat'],
+                    "maxSize" => $this->configFull['fileMaxSize'],
+                    "allowFiles" => $this->configFull['fileAllowFiles']
                 );
         }
     }
@@ -63,6 +64,7 @@ class Local extends Config
      */
     public function upFile($fileField, $type = "upload")
     {
+
 
         $this->fileField = $fileField;
         $this->type = $type;
@@ -78,6 +80,7 @@ class Local extends Config
 
 
     private function upFileLocal(){
+
 
         $file = $this->file = $_FILES[$this->fileField];
 
@@ -101,6 +104,7 @@ class Local extends Config
         $this->fileSize = $file['size'];
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
+
         $this->filePath = $this->getFilePath();
         $this->fileName = $this->getFileName();
         $dirname = dirname($this->filePath);
@@ -149,7 +153,8 @@ class Local extends Config
         $this->fileSize = strlen($img);
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
-        $this->filePath = $this->getFilePath();
+        $this->filePath = $this->
+        FilePath();
         $this->fileName = $this->getFileName();
         $dirname = dirname($this->filePath);
 
@@ -368,9 +373,9 @@ class Local extends Config
      * @param $start
      * @return string
      */
-    public function get($size,$start){
+    public function get($type,$size,$start){
 
-        switch (htmlspecialchars($this->type)) {
+        switch (htmlspecialchars($type)) {
             /* 列出文件 */
             case 'listfile':
                 $allowFiles = $this->config['fileManagerAllowFiles'];
@@ -416,7 +421,6 @@ class Local extends Config
         return $result;
 
     }
-
 
     /**
      *
