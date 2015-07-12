@@ -9,8 +9,8 @@
 // | Author: yangweijie <yangweijiester@gmail.com> <http://www.code-tech.diandian.com>
 // +----------------------------------------------------------------------
 
-namespace System\Library\Upload\Qiniu;
-use System\Library\Upload\Qiniu\QiniuStorage as QiniuStorage;
+namespace Library\Upload;
+use Library\Upload\Qiniu\QiniuStorage;
 
 class Qiniu{
     /**
@@ -26,10 +26,10 @@ class Qiniu{
     private $error = '';
 
     private $config = array(
-        'secrectKey'     => '4SFm-8qup_rZYRaw5ZWXICT8gJ86F-ykk5WraGGd', //sk
-        'accessKey'      => 'l0A9D4knNZXQd2_ibiffXlNw3w4om5ThxunJv2kK', //ak
-        'domain'         => '7xk4xv.com1.z0.glb.clouddn.com', //域名
-        'bucket'         => 'test', //空间名称
+        'secrectKey'     => '', //七牛服务器
+        'accessKey'      => '', //七牛用户
+        'domain'         => '', //七牛密码
+        'bucket'         => '', //空间名称
         'timeout'        => 300, //超时时间
     );
 

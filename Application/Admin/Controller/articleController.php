@@ -44,7 +44,7 @@ class articleController extends abstractController{
         $this->getView()->assign(array('articleAll'=>$all));
         //获取分类
         $menu = new \Admin\Model\articleModel();
-        $category  = $menu->getCategory();
+        $category = $menu->getCategory();
         //获取标签
         $tag = new \Admin\Model\articleModel();
         $tags = $tag->getTags();
@@ -155,16 +155,16 @@ class articleController extends abstractController{
             $targetFile = $targetDir . '/yt_' . md5($member['id'].$code) . "." . $fileParts['extension'];
             move_uploaded_file($tempFile, $targetFile);*/
 
-            $upload = new \Common\Upload\Upload();
-            $fileInfo = $upload->upload("thumbnail","upload","uploadimage");
-
-            $r = $upload->get(10,1);
-            var_dump($r);exit;
-
-            $upload = $upload->getClass();
-            var_dump($upload);exit;
-            $upload->upFile("thumbnail");
-            var_dump($upload);exit;
+            $upload = new \Common\Upload\Upload();// 实例化上传类
+            // 上传文件
+            $info = $upload->upload();
+            if(!$info) {// 上传错误提示错误信息
+                $this->error($upload->getError());
+            }else{// 上传成功 获取上传文件信息
+                foreach($info as $file){
+                    echo $file['savepath'].$file['savename'];
+                }
+            }
             exit;
             $upload = new \System\Library\Upload\Local\Upload("uploadimage");
             $upload->upFile("thumbnail");

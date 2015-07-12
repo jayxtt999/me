@@ -1,301 +1,429 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xiett
- * Date: 15-7-8
- * Time: ÏÂÎç9:28
- */
-
+// +----------------------------------------------------------------------
+// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
+// +----------------------------------------------------------------------
+// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
+// +----------------------------------------------------------------------
+// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+// +----------------------------------------------------------------------
+// | Author: éº¦å½“è‹—å„¿ <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
+// +----------------------------------------------------------------------
 namespace Common\Upload;
-
-
-class  Upload
-{
-
-    private $uploader;
-    private $driver;
-    private $driverConfig;
-    private $error = ''; //ÉÏ´«´íÎóĞÅÏ¢
-
-    /*   private $error = array( //ÉÏ´«×´Ì¬Ó³Éä±í£¬¹ú¼Ê»¯ÓÃ»§Ğè¿¼ÂÇ´Ë´¦Êı¾İµÄ¹ú¼Ê»¯
-            "SUCCESS", //ÉÏ´«³É¹¦±ê¼Ç£¬ÔÚUEditorÖĞÄÚ²»¿É¸Ä±ä£¬·ñÔòflashÅĞ¶Ï»á³ö´í
-            "ÎÄ¼ş´óĞ¡³¬³ö upload_max_filesize ÏŞÖÆ",
-            "ÎÄ¼ş´óĞ¡³¬³ö MAX_FILE_SIZE ÏŞÖÆ",
-            "ÎÄ¼şÎ´±»ÍêÕûÉÏ´«",
-            "Ã»ÓĞÎÄ¼ş±»ÉÏ´«",
-            "ÉÏ´«ÎÄ¼şÎª¿Õ",
-            "ERROR_TMP_FILE" => "ÁÙÊ±ÎÄ¼ş´íÎó",
-            "ERROR_TMP_FILE_NOT_FOUND" => "ÕÒ²»µ½ÁÙÊ±ÎÄ¼ş",
-            "ERROR_TMPFILE" => "ÉÏ´«Òì³£·ÇPOST",
-            "ERROR_SIZE_EXCEED" => "ÎÄ¼ş´óĞ¡³¬³öÍøÕ¾ÏŞÖÆ",
-            "ERROR_TYPE_NOT_ALLOWED" => "ÎÄ¼şÀàĞÍ²»ÔÊĞí",
-            "ERROR_CREATE_DIR" => "Ä¿Â¼´´½¨Ê§°Ü",
-            "ERROR_DIR_NOT_WRITEABLE" => "Ä¿Â¼Ã»ÓĞĞ´È¨ÏŞ",
-            "ERROR_FILE_MOVE" => "ÎÄ¼ş±£´æÊ±³ö´í",
-            "ERROR_FILE_NOT_FOUND" => "ÕÒ²»µ½ÉÏ´«ÎÄ¼ş",
-            "ERROR_WRITE_CONTENT" => "Ğ´ÈëÎÄ¼şÄÚÈİ´íÎó",
-            "ERROR_UNKNOWN" => "Î´Öª´íÎó",
-            "ERROR_DEAD_LINK" => "Á´½Ó²»¿ÉÓÃ",
-            "ERROR_HTTP_LINK" => "Á´½Ó²»ÊÇhttpÁ´½Ó",
-            "ERROR_HTTP_CONTENTTYPE" => "Á´½ÓcontentType²»ÕıÈ·"
-        );*/
-
-    private $uploadMethodsConfig = array();
-
+class Upload {
+    /**
+     * é»˜è®¤ä¸Šä¼ é…ç½®
+     * @var array
+     */
     private $config = array(
-
-        'rootPath' => '/Data/upload', //±£´æ¸ùÂ·¾¶
-        /* ÉÏ´«Í¼Æ¬ÅäÖÃÏî */
-        "imageActionName" => "uploadimage", /* Ö´ĞĞÉÏ´«Í¼Æ¬µÄactionÃû³Æ */
-        "imageMaxSize" => 2048000, /* ÉÏ´«´óĞ¡ÏŞÖÆ£¬µ¥Î»B */
-        "imageAllowFiles" => array(".png", ".jpg", ".jpeg", ".gif", ".bmp"), /* ÉÏ´«Í¼Æ¬¸ñÊ½ÏÔÊ¾ */
-        "imageCompressEnable" => true, /* ÊÇ·ñÑ¹ËõÍ¼Æ¬,Ä¬ÈÏÊÇtrue */
-        "imageCompressBorder" => 1600, /* Í¼Æ¬Ñ¹Ëõ×î³¤±ßÏŞÖÆ */
-        "imageInsertAlign" => "none", /* ²åÈëµÄÍ¼Æ¬¸¡¶¯·½Ê½ */
-        "imageUrlPrefix" => "", /* Í¼Æ¬·ÃÎÊÂ·¾¶Ç°×º */
-        "imagePathFormat" => "/Data/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* ÉÏ´«±£´æÂ·¾¶,¿ÉÒÔ×Ô¶¨Òå±£´æÂ·¾¶ºÍÎÄ¼şÃû¸ñÊ½ */
-        /* {filename} »áÌæ»»³ÉÔ­ÎÄ¼şÃû,ÅäÖÃÕâÏîĞèÒª×¢ÒâÖĞÎÄÂÒÂëÎÊÌâ */
-        /* {rand:6} »áÌæ»»³ÉËæ»úÊı,ºóÃæµÄÊı×ÖÊÇËæ»úÊıµÄÎ»Êı */
-        /* {time} »áÌæ»»³ÉÊ±¼ä´Á */
-        /* {yyyy} »áÌæ»»³ÉËÄÎ»Äê·İ */
-        /* {yy} »áÌæ»»³ÉÁ½Î»Äê·İ */
-        /* {mm} »áÌæ»»³ÉÁ½Î»ÔÂ·İ */
-        /* {dd} »áÌæ»»³ÉÁ½Î»ÈÕÆÚ */
-        /* {hh} »áÌæ»»³ÉÁ½Î»Ğ¡Ê± */
-        /* {ii} »áÌæ»»³ÉÁ½Î»·ÖÖÓ */
-        /* {ss} »áÌæ»»³ÉÁ½Î»Ãë */
-        /* ·Ç·¨×Ö·û \ => * ? " < > | */
-
-        /* base64±àÂëÉÏ´«ÅäÖÃÏî */
-        "scrawlActionName" => "uploadscrawl", /* Ö´ĞĞÉÏ´«Í¿Ñ»µÄactionÃû³Æ */
-        "scrawlPathFormat" => "/Data/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* ÉÏ´«±£´æÂ·¾¶,¿ÉÒÔ×Ô¶¨Òå±£´æÂ·¾¶ºÍÎÄ¼şÃû¸ñÊ½ */
-        "scrawlMaxSize" => 2048000, /* ÉÏ´«´óĞ¡ÏŞÖÆ£¬µ¥Î»B */
-        "scrawlUrlPrefix" => "", /* Í¼Æ¬·ÃÎÊÂ·¾¶Ç°×º */
-        "scrawlInsertAlign" => "none",
-
-        /* ×¥È¡Ô¶³ÌÍ¼Æ¬ÅäÖÃ */
-        "catcherLocalDomain" => array("127.0.0.1", "localhost", "img.baidu.com"),
-        "catcherActionName" => "catchimage", /* Ö´ĞĞ×¥È¡Ô¶³ÌÍ¼Æ¬µÄactionÃû³Æ */
-        "catcherFieldName" => "source", /* Ìá½»µÄÍ¼Æ¬ÁĞ±í±íµ¥Ãû³Æ */
-        "catcherPathFormat" => "/Data/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}", /* ÉÏ´«±£´æÂ·¾¶,¿ÉÒÔ×Ô¶¨Òå±£´æÂ·¾¶ºÍÎÄ¼şÃû¸ñÊ½ */
-        "catcherUrlPrefix" => "", /* Í¼Æ¬·ÃÎÊÂ·¾¶Ç°×º */
-        "catcherMaxSize" => 2048000, /* ÉÏ´«´óĞ¡ÏŞÖÆ£¬µ¥Î»B */
-        "catcherAllowFiles" => array(".png", ".jpg", ".jpeg", ".gif", ".bmp"), /* ×¥È¡Í¼Æ¬¸ñÊ½ÏÔÊ¾ */
-
-
-        /* ÉÏ´«ÊÓÆµÅäÖÃ */
-        "videoActionName" => "uploadvideo", /* Ö´ĞĞÉÏ´«ÊÓÆµµÄactionÃû³Æ */
-        "videoPathFormat" => "/Data/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}", /* ÉÏ´«±£´æÂ·¾¶,¿ÉÒÔ×Ô¶¨Òå±£´æÂ·¾¶ºÍÎÄ¼şÃû¸ñÊ½ */
-        "videoUrlPrefix" => "", /* ÊÓÆµ·ÃÎÊÂ·¾¶Ç°×º */
-        "videoMaxSize" => 102400000, /* ÉÏ´«´óĞ¡ÏŞÖÆ£¬µ¥Î»B£¬Ä¬ÈÏ100MB */
-        "videoAllowFiles" => array(
-            ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
-            ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid"), /* ÉÏ´«ÊÓÆµ¸ñÊ½ÏÔÊ¾ */
-
-        /* ÉÏ´«ÎÄ¼şÅäÖÃ */
-        "fileActionName" => "uploadfile", /* controllerÀï,Ö´ĞĞÉÏ´«ÊÓÆµµÄactionÃû³Æ */
-        "filePathFormat" => "/Data/upload/file/{yyyy}{mm}{dd}/{time}{rand:6}", /* ÉÏ´«±£´æÂ·¾¶,¿ÉÒÔ×Ô¶¨Òå±£´æÂ·¾¶ºÍÎÄ¼şÃû¸ñÊ½ */
-        "fileUrlPrefix" => "", /* ÎÄ¼ş·ÃÎÊÂ·¾¶Ç°×º */
-        "fileMaxSize" => 51200000, /* ÉÏ´«´óĞ¡ÏŞÖÆ£¬µ¥Î»B£¬Ä¬ÈÏ50MB */
-        "fileAllowFiles" => array(
-            ".png", ".jpg", ".jpeg", ".gif", ".bmp",
-            ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg",
-            ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid",
-            ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
-            ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml"
-        ), /* ÉÏ´«ÎÄ¼ş¸ñÊ½ÏÔÊ¾ */
-
-
-
-        /*'mimes' => array(), //ÔÊĞíÉÏ´«µÄÎÄ¼şMiMeÀàĞÍ
-        'maxSize' => 0, //ÉÏ´«µÄÎÄ¼ş´óĞ¡ÏŞÖÆ (0-²»×öÏŞÖÆ)
-        'exts' => array(), //ÔÊĞíÉÏ´«µÄÎÄ¼şºó×º
-        'autoSub' => true, //×Ô¶¯×ÓÄ¿Â¼±£´æÎÄ¼ş
-        'subName' => array('date', 'Y-m-d'), //×ÓÄ¿Â¼´´½¨·½Ê½£¬[0]-º¯ÊıÃû£¬[1]-²ÎÊı£¬¶à¸ö²ÎÊıÊ¹ÓÃÊı×é
-        'rootPath' => './Uploads/', //±£´æ¸ùÂ·¾¶
-        'savePath' => '', //±£´æÂ·¾¶
-        'saveName' => array('uniqid', ''), //ÉÏ´«ÎÄ¼şÃüÃû¹æÔò£¬[0]-º¯ÊıÃû£¬[1]-²ÎÊı£¬¶à¸ö²ÎÊıÊ¹ÓÃÊı×é
-        'saveExt' => '', //ÎÄ¼ş±£´æºó×º£¬¿ÕÔòÊ¹ÓÃÔ­ºó×º
-        'replace' => false, //´æÔÚÍ¬ÃûÊÇ·ñ¸²¸Ç
-        'hash' => true, //ÊÇ·ñÉú³Éhash±àÂë
-        'callback' => false, //¼ì²âÎÄ¼şÊÇ·ñ´æÔÚ»Øµ÷£¬Èç¹û´æÔÚ·µ»ØÎÄ¼şĞÅÏ¢Êı×é
-        'driver' => '', // ÎÄ¼şÉÏ´«Çı¶¯
-        'driverConfig' => array(), // ÉÏ´«Çı¶¯ÅäÖÃ*/
+        'mimes'         =>  array(), //å…è®¸ä¸Šä¼ çš„æ–‡ä»¶MiMeç±»å‹
+        'maxSize'       =>  0, //ä¸Šä¼ çš„æ–‡ä»¶å¤§å°é™åˆ¶ (0-ä¸åšé™åˆ¶)
+        'exts'          =>  array(), //å…è®¸ä¸Šä¼ çš„æ–‡ä»¶åç¼€
+        'autoSub'       =>  true, //è‡ªåŠ¨å­ç›®å½•ä¿å­˜æ–‡ä»¶
+        'subName'       =>  array('date', 'Ymd'), //å­ç›®å½•åˆ›å»ºæ–¹å¼ï¼Œ[0]-å‡½æ•°åï¼Œ[1]-å‚æ•°ï¼Œå¤šä¸ªå‚æ•°ä½¿ç”¨æ•°ç»„
+        'rootPath'      =>  './Data/upload', //ä¿å­˜æ ¹è·¯å¾„
+        'savePath'      =>  '', //ä¿å­˜è·¯å¾„
+        'saveName'      =>  array('uniqid', ''), //ä¸Šä¼ æ–‡ä»¶å‘½åè§„åˆ™ï¼Œ[0]-å‡½æ•°åï¼Œ[1]-å‚æ•°ï¼Œå¤šä¸ªå‚æ•°ä½¿ç”¨æ•°ç»„
+        'saveExt'       =>  '', //æ–‡ä»¶ä¿å­˜åç¼€ï¼Œç©ºåˆ™ä½¿ç”¨åŸåç¼€
+        'replace'       =>  false, //å­˜åœ¨åŒåæ˜¯å¦è¦†ç›–
+        'hash'          =>  true, //æ˜¯å¦ç”Ÿæˆhashç¼–ç 
+        'callback'      =>  false, //æ£€æµ‹æ–‡ä»¶æ˜¯å¦å­˜åœ¨å›è°ƒï¼Œå¦‚æœå­˜åœ¨è¿”å›æ–‡ä»¶ä¿¡æ¯æ•°ç»„
+        'driver'        =>  '', // æ–‡ä»¶ä¸Šä¼ é©±åŠ¨
+        'driverConfig'  =>  array(), // ä¸Šä¼ é©±åŠ¨é…ç½®
     );
 
+    /**
+     * ä¸Šä¼ é”™è¯¯ä¿¡æ¯
+     * @var string
+     */
+    private $error = ''; //ä¸Šä¼ é”™è¯¯ä¿¡æ¯
 
     /**
-     * ¹¹Ôì·½·¨£¬ÓÃÓÚ¹¹ÔìÉÏ´«ÊµÀı
-     * @param array $config ÅäÖÃ
-     * @param string $driver ÒªÊ¹ÓÃµÄÉÏ´«Çı¶¯ LOCAL-±¾µØÉÏ´«Çı¶¯£¬FTP-FTPÉÏ´«Çı¶¯
+     * ä¸Šä¼ é©±åŠ¨å®ä¾‹
+     * @var Object
      */
-    public function __construct($config = array(), $driver = '', $driverConfig = null)
-    {
-        //$Upload = new \Think\Upload($setting);
-        //$info = $Upload->upload($_FILES);
-        /* ÉèÖÃÉÏ´«Çı¶¯ */
-        $driver = $driver ? $driver : C("upload_type");
-        $this->config = array_merge($this->config, $config);
+    private $uploader;
+
+    /**
+     * æ„é€ æ–¹æ³•ï¼Œç”¨äºæ„é€ ä¸Šä¼ å®ä¾‹
+     * @param array  $config é…ç½®
+     * @param string $driver è¦ä½¿ç”¨çš„ä¸Šä¼ é©±åŠ¨ LOCAL-æœ¬åœ°ä¸Šä¼ é©±åŠ¨ï¼ŒFTP-FTPä¸Šä¼ é©±åŠ¨
+     */
+    public function __construct($config = array(), $driver = '', $driverConfig = null){
+        /* è·å–é…ç½® */
+        $this->config   =   array_merge($this->config, $config);
+
+        /* è®¾ç½®ä¸Šä¼ é©±åŠ¨ */
         $this->setDriver($driver, $driverConfig);
+
+        /* è°ƒæ•´é…ç½®ï¼ŒæŠŠå­—ç¬¦ä¸²é…ç½®å‚æ•°è½¬æ¢ä¸ºæ•°ç»„ */
+        if(!empty($this->config['mimes'])){
+            if(is_string($this->mimes)) {
+                $this->config['mimes'] = explode(',', $this->mimes);
+            }
+            $this->config['mimes'] = array_map('strtolower', $this->mimes);
+        }
+        if(!empty($this->config['exts'])){
+            if (is_string($this->exts)){
+                $this->config['exts'] = explode(',', $this->exts);
+            }
+            $this->config['exts'] = array_map('strtolower', $this->exts);
+        }
     }
 
     /**
-     * Ê¹ÓÃ $this->name »ñÈ¡ÅäÖÃ
-     * @param  string $name ÅäÖÃÃû³Æ
-     * @return multitype    ÅäÖÃÖµ
+     * ä½¿ç”¨ $this->name è·å–é…ç½®
+     * @param  string $name é…ç½®åç§°
+     * @return multitype    é…ç½®å€¼
      */
-    public function __get($name)
-    {
+    public function __get($name) {
         return $this->config[$name];
     }
 
-    public function __set($name, $value)
-    {
-        if (isset($this->config[$name])) {
+    public function __set($name,$value){
+        if(isset($this->config[$name])) {
             $this->config[$name] = $value;
-            if ($name == 'driverConfig') {
-                //¸Ä±äÇı¶¯ÅäÖÃºóÖØÖÃÉÏ´«Çı¶¯
-                //×¢Òâ£º±ØĞëÑ¡¸Ä±äÇı¶¯È»ºóÔÙ¸Ä±äÇı¶¯ÅäÖÃ
+            if($name == 'driverConfig'){
+                //æ”¹å˜é©±åŠ¨é…ç½®åé‡ç½®ä¸Šä¼ é©±åŠ¨
+                //æ³¨æ„ï¼šå¿…é¡»é€‰æ”¹å˜é©±åŠ¨ç„¶åå†æ”¹å˜é©±åŠ¨é…ç½®
                 $this->setDriver();
             }
         }
     }
 
-    public function __isset($name)
-    {
+    public function __isset($name){
         return isset($this->config[$name]);
     }
 
     /**
-     * ÉèÖÃÉÏ´«Çı¶¯
-     * @param string $driver Çı¶¯Ãû³Æ
-     * @param array $config Çı¶¯ÅäÖÃ
+     * è·å–æœ€åä¸€æ¬¡ä¸Šä¼ é”™è¯¯ä¿¡æ¯
+     * @return string é”™è¯¯ä¿¡æ¯
      */
-    private function setDriver($driver = null, $driverConfig = array())
-    {
-        $this->driver = $driver;
-        $this->driverConfig = $driverConfig;
-        $className = "\\System\\Library\\Upload\\" . ucfirst($driver) . "\\" . ucfirst($driver);
-        $this->uploader = new $className($driverConfig);
-        if (!$this->uploader) {
-            E("²»´æÔÚÉÏ´«Çı¶¯£º$className");
-        }
+    public function getError(){
+        return $this->error;
     }
 
+    /**
+     * ä¸Šä¼ å•ä¸ªæ–‡ä»¶
+     * @param  array  $file æ–‡ä»¶æ•°ç»„
+     * @return array        ä¸Šä¼ æˆåŠŸåçš„æ–‡ä»¶ä¿¡æ¯
+     */
+    public function uploadOne($file){
+        $info = $this->upload(array($file));
+        return $info ? $info[0] : $info;
+    }
 
-    public function upload($files = '',$type="",$uploadType="uploadfile")
-    {
-        switch ($uploadType) {
-            case 'uploadimage':
-                $this->uploadMethodsConfig = array(
-                    "pathFormat" => $this->config['imagePathFormat'],
-                    "maxSize" => $this->config['imageMaxSize'],
-                    "allowFiles" => $this->config['imageAllowFiles']
-                );
-                break;
-            case 'uploadscrawl':
-                $this->uploadMethodsConfig = array(
-                    "pathFormat" => $this->config['scrawlPathFormat'],
-                    "maxSize" => $this->config['scrawlMaxSize'],
-                    "allowFiles" => $this->config['scrawlAllowFiles'],
-                    "oriName" => "scrawl.png"
-                );
-                break;
-            case 'uploadvideo':
-                $this->uploadMethodsConfig = array(
-                    "pathFormat" => $this->config['videoPathFormat'],
-                    "maxSize" => $this->config['videoMaxSize'],
-                    "allowFiles" => $this->config['videoAllowFiles']
-                );
-                break;
-            case 'uploadfile':
-            default:
-            $this->uploadMethodsConfig = array(
-                    "pathFormat" => $this->config['filePathFormat'],
-                    "maxSize" => $this->config['fileMaxSize'],
-                    "allowFiles" => $this->config['fileAllowFiles']
-                );
-                break;
+    /**
+     * ä¸Šä¼ æ–‡ä»¶
+     * @param æ–‡ä»¶ä¿¡æ¯æ•°ç»„ $files ï¼Œé€šå¸¸æ˜¯ $_FILESæ•°ç»„
+     */
+    public function upload($files='') {
+        if('' === $files){
+            $files  =   $_FILES;
         }
-        if ("" === $files) {
-            $files = $_FILES;
-        }
-        if (empty($files)) {
-            $this->error = 'ÕÒ²»µ½ÉÏ´«ÎÄ¼ş£¡';
+        if(empty($files)){
+            $this->error = 'æ²¡æœ‰ä¸Šä¼ çš„æ–‡ä»¶ï¼';
             return false;
         }
 
-        /*ÕÒ²»µ½ÉÏ´«¸ùÄ¿Â¼*/
-        if(!$this->checkRootPath($this->config['rootPath'])){
-            $this->error = "ÕÒ²»µ½ÉÏ´«¸ùÄ¿Â¼".$this->config['rootPath'].",ÇëĞÂ½¨ºóÖØÊÔ";
+        /* æ£€æµ‹ä¸Šä¼ æ ¹ç›®å½• */
+        if(!$this->uploader->checkRootPath($this->rootPath)){
+            $this->error = $this->uploader->getError();
             return false;
         }
 
-
-        /* ¼ì²éÉÏ´«Ä¿Â¼ */
-        preg_match("/\(/.*?\){/",$this->uploadMethodsConfig['pathFormat'],$results);
-        if($results[0]){
-            $this->savePath = ROOT_PATH.$results[0];
-        }else{
-            $this->error = "ÉÏ´«Ä¿Â¼Î´±»ÉèÖÃ";
-        }
-
+        /* æ£€æŸ¥ä¸Šä¼ ç›®å½• */
         if(!$this->uploader->checkSavePath($this->savePath)){
             $this->error = $this->uploader->getError();
             return false;
         }
 
-        /* Öğ¸ö¼ì²â²¢ÉÏ´«ÎÄ¼ş */
+        /* é€ä¸ªæ£€æµ‹å¹¶ä¸Šä¼ æ–‡ä»¶ */
         $info    =  array();
         if(function_exists('finfo_open')){
             $finfo   =  finfo_open ( FILEINFO_MIME_TYPE );
         }
-        // ¶ÔÉÏ´«ÎÄ¼şÊı×éĞÅÏ¢´¦Àí
+        // å¯¹ä¸Šä¼ æ–‡ä»¶æ•°ç»„ä¿¡æ¯å¤„ç†
         $files   =  $this->dealFiles($files);
         foreach ($files as $key => $file) {
+            $file['name']  = strip_tags($file['name']);
+            if(!isset($file['key']))   $file['key']    =   $key;
+            /* é€šè¿‡æ‰©å±•è·å–æ–‡ä»¶ç±»å‹ï¼Œå¯è§£å†³FLASHä¸Šä¼ $FILESæ•°ç»„è¿”å›æ–‡ä»¶ç±»å‹é”™è¯¯çš„é—®é¢˜ */
+            if(isset($finfo)){
+                $file['type']   =   finfo_file ( $finfo ,  $file['tmp_name'] );
+            }
 
+            /* è·å–ä¸Šä¼ æ–‡ä»¶åç¼€ï¼Œå…è®¸ä¸Šä¼ æ— åç¼€æ–‡ä»¶ */
+            $file['ext']    =   pathinfo($file['name'], PATHINFO_EXTENSION);
 
+            /* æ–‡ä»¶ä¸Šä¼ æ£€æµ‹ */
+            if (!$this->check($file)){
+                continue;
+            }
 
+            /* è·å–æ–‡ä»¶hash */
+            if($this->hash){
+                $file['md5']  = md5_file($file['tmp_name']);
+                $file['sha1'] = sha1_file($file['tmp_name']);
+            }
 
+            /* è°ƒç”¨å›è°ƒå‡½æ•°æ£€æµ‹æ–‡ä»¶æ˜¯å¦å­˜åœ¨ */
+            $data = call_user_func($this->callback, $file);
+            if( $this->callback && $data ){
+                if ( file_exists('.'.$data['path'])  ) {
+                    $info[$key] = $data;
+                    continue;
+                }elseif($this->removeTrash){
+                    call_user_func($this->removeTrash,$data);//åˆ é™¤åƒåœ¾æ®
+                }
+            }
 
+            /* ç”Ÿæˆä¿å­˜æ–‡ä»¶å */
+            $savename = $this->getSaveName($file);
+            if(false == $savename){
+                continue;
+            } else {
+                $file['savename'] = $savename;
+            }
+
+            /* æ£€æµ‹å¹¶åˆ›å»ºå­ç›®å½• */
+            $subpath = $this->getSubPath($file['name']);
+            if(false === $subpath){
+                continue;
+            } else {
+                $file['savepath'] = $this->savePath . $subpath;
+            }
+
+            /* å¯¹å›¾åƒæ–‡ä»¶è¿›è¡Œä¸¥æ ¼æ£€æµ‹ */
+            $ext = strtolower($file['ext']);
+            if(in_array($ext, array('gif','jpg','jpeg','bmp','png','swf'))) {
+                $imginfo = getimagesize($file['tmp_name']);
+                if(empty($imginfo) || ($ext == 'gif' && empty($imginfo['bits']))){
+                    $this->error = 'éæ³•å›¾åƒæ–‡ä»¶ï¼';
+                    continue;
+                }
+            }
+
+            /* ä¿å­˜æ–‡ä»¶ å¹¶è®°å½•ä¿å­˜æˆåŠŸçš„æ–‡ä»¶ */
+            if ($this->uploader->save($file,$this->replace)) {
+                unset($file['error'], $file['tmp_name']);
+                $info[$key] = $file;
+            } else {
+                $this->error = $this->uploader->getError();
+            }
         }
-
-
-
-      /*  if ($type == "remote") {
-            $this->saveRemote($files);
-        } else if($type == "base64") {
-            $this->upBase64($files);
-        } else {
-            $this->upFile($files);
+        if(isset($finfo)){
+            finfo_close($finfo);
         }
-
-        $this->error = 'ÎÄ¼şÀàĞÍ²»ÔÊĞí£¡';
-        return;*/
-
+        return empty($info) ? false : $info;
     }
 
+    /**
+     * è½¬æ¢ä¸Šä¼ æ–‡ä»¶æ•°ç»„å˜é‡ä¸ºæ­£ç¡®çš„æ–¹å¼
+     * @access private
+     * @param array $files  ä¸Šä¼ çš„æ–‡ä»¶å˜é‡
+     * @return array
+     */
+    private function dealFiles($files) {
+        $fileArray  = array();
+        $n          = 0;
+        foreach ($files as $key=>$file){
+            if(is_array($file['name'])) {
+                $keys       =   array_keys($file);
+                $count      =   count($file['name']);
+                for ($i=0; $i<$count; $i++) {
+                    $fileArray[$n]['key'] = $key;
+                    foreach ($keys as $_key){
+                        $fileArray[$n][$_key] = $file[$_key][$i];
+                    }
+                    $n++;
+                }
+            }else{
+                $fileArray = $files;
+                break;
+            }
+        }
+        return $fileArray;
+    }
 
-    public function upFile($files){
+    /**
+     * è®¾ç½®ä¸Šä¼ é©±åŠ¨
+     * @param string $driver é©±åŠ¨åç§°
+     * @param array $config é©±åŠ¨é…ç½®
+     */
+    private function setDriver($driver = null, $config = null){
+        $driver = $driver ? : ($this->driver       ? : C('FILE_UPLOAD_TYPE'));
+        $config = $config ? : ($this->driverConfig ? : C('UPLOAD_TYPE_CONFIG'));
+        $class = strpos($driver,'\\')? $driver : 'Library\\Upload\\'.ucfirst(strtolower($driver));
+        $this->uploader = new $class($config);
+        if(!$this->uploader){
+            E("ä¸å­˜åœ¨ä¸Šä¼ é©±åŠ¨ï¼š{$name}");
+        }
+    }
 
+    /**
+     * æ£€æŸ¥ä¸Šä¼ çš„æ–‡ä»¶
+     * @param array $file æ–‡ä»¶ä¿¡æ¯
+     */
+    private function check($file) {
+        /* æ–‡ä»¶ä¸Šä¼ å¤±è´¥ï¼Œæ•è·é”™è¯¯ä»£ç  */
+        if ($file['error']) {
+            $this->error($file['error']);
+            return false;
+        }
 
+        /* æ— æ•ˆä¸Šä¼  */
+        if (empty($file['name'])){
+            $this->error = 'æœªçŸ¥ä¸Šä¼ é”™è¯¯ï¼';
+        }
 
+        /* æ£€æŸ¥æ˜¯å¦åˆæ³•ä¸Šä¼  */
+        if (!is_uploaded_file($file['tmp_name'])) {
+            $this->error = 'éæ³•ä¸Šä¼ æ–‡ä»¶ï¼';
+            return false;
+        }
 
+        /* æ£€æŸ¥æ–‡ä»¶å¤§å° */
+        if (!$this->checkSize($file['size'])) {
+            $this->error = 'ä¸Šä¼ æ–‡ä»¶å¤§å°ä¸ç¬¦ï¼';
+            return false;
+        }
+
+        /* æ£€æŸ¥æ–‡ä»¶Mimeç±»å‹ */
+        //TODO:FLASHä¸Šä¼ çš„æ–‡ä»¶è·å–åˆ°çš„mimeç±»å‹éƒ½ä¸ºapplication/octet-stream
+        if (!$this->checkMime($file['type'])) {
+            $this->error = 'ä¸Šä¼ æ–‡ä»¶MIMEç±»å‹ä¸å…è®¸ï¼';
+            return false;
+        }
+
+        /* æ£€æŸ¥æ–‡ä»¶åç¼€ */
+        if (!$this->checkExt($file['ext'])) {
+            $this->error = 'ä¸Šä¼ æ–‡ä»¶åç¼€ä¸å…è®¸';
+            return false;
+        }
+
+        /* é€šè¿‡æ£€æµ‹ */
+        return true;
     }
 
 
     /**
-     * ÑéÖ¤ÉÏ´«¸ùÄ¿Â¼ÊÇ·ñ´æÔÚ
-     * @param $rooPath
-     * @return mixed
+     * è·å–é”™è¯¯ä»£ç ä¿¡æ¯
+     * @param string $errorNo  é”™è¯¯å·
      */
-    public function checkRootPath($rooPath){
-
-        return $this->uploader->checkRootPath($rooPath);
-
+    private function error($errorNo) {
+        switch ($errorNo) {
+            case 1:
+                $this->error = 'ä¸Šä¼ çš„æ–‡ä»¶è¶…è¿‡äº† php.ini ä¸­ upload_max_filesize é€‰é¡¹é™åˆ¶çš„å€¼ï¼';
+                break;
+            case 2:
+                $this->error = 'ä¸Šä¼ æ–‡ä»¶çš„å¤§å°è¶…è¿‡äº† HTML è¡¨å•ä¸­ MAX_FILE_SIZE é€‰é¡¹æŒ‡å®šçš„å€¼ï¼';
+                break;
+            case 3:
+                $this->error = 'æ–‡ä»¶åªæœ‰éƒ¨åˆ†è¢«ä¸Šä¼ ï¼';
+                break;
+            case 4:
+                $this->error = 'æ²¡æœ‰æ–‡ä»¶è¢«ä¸Šä¼ ï¼';
+                break;
+            case 6:
+                $this->error = 'æ‰¾ä¸åˆ°ä¸´æ—¶æ–‡ä»¶å¤¹ï¼';
+                break;
+            case 7:
+                $this->error = 'æ–‡ä»¶å†™å…¥å¤±è´¥ï¼';
+                break;
+            default:
+                $this->error = 'æœªçŸ¥ä¸Šä¼ é”™è¯¯ï¼';
+        }
     }
 
+    /**
+     * æ£€æŸ¥æ–‡ä»¶å¤§å°æ˜¯å¦åˆæ³•
+     * @param integer $size æ•°æ®
+     */
+    private function checkSize($size) {
+        return !($size > $this->maxSize) || (0 == $this->maxSize);
+    }
 
+    /**
+     * æ£€æŸ¥ä¸Šä¼ çš„æ–‡ä»¶MIMEç±»å‹æ˜¯å¦åˆæ³•
+     * @param string $mime æ•°æ®
+     */
+    private function checkMime($mime) {
+        return empty($this->config['mimes']) ? true : in_array(strtolower($mime), $this->mimes);
+    }
 
+    /**
+     * æ£€æŸ¥ä¸Šä¼ çš„æ–‡ä»¶åç¼€æ˜¯å¦åˆæ³•
+     * @param string $ext åç¼€
+     */
+    private function checkExt($ext) {
+        return empty($this->config['exts']) ? true : in_array(strtolower($ext), $this->exts);
+    }
+
+    /**
+     * æ ¹æ®ä¸Šä¼ æ–‡ä»¶å‘½åè§„åˆ™å–å¾—ä¿å­˜æ–‡ä»¶å
+     * @param string $file æ–‡ä»¶ä¿¡æ¯
+     */
+    private function getSaveName($file) {
+        $rule = $this->saveName;
+        if (empty($rule)) { //ä¿æŒæ–‡ä»¶åä¸å˜
+            /* è§£å†³pathinfoä¸­æ–‡æ–‡ä»¶åBUG */
+            $filename = substr(pathinfo("_{$file['name']}", PATHINFO_FILENAME), 1);
+            $savename = $filename;
+        } else {
+            $savename = $this->getName($rule, $file['name']);
+            if(empty($savename)){
+                $this->error = 'æ–‡ä»¶å‘½åè§„åˆ™é”™è¯¯ï¼';
+                return false;
+            }
+        }
+
+        /* æ–‡ä»¶ä¿å­˜åç¼€ï¼Œæ”¯æŒå¼ºåˆ¶æ›´æ”¹æ–‡ä»¶åç¼€ */
+        $ext = empty($this->config['saveExt']) ? $file['ext'] : $this->saveExt;
+
+        return $savename . '.' . $ext;
+    }
+
+    /**
+     * è·å–å­ç›®å½•çš„åç§°
+     * @param array $file  ä¸Šä¼ çš„æ–‡ä»¶ä¿¡æ¯
+     */
+    private function getSubPath($filename) {
+        $subpath = '';
+        $rule    = $this->subName;
+        if ($this->autoSub && !empty($rule)) {
+            $subpath = $this->getName($rule, $filename) . '/';
+
+            if(!empty($subpath) && !$this->uploader->mkdir($this->savePath . $subpath)){
+                $this->error = $this->uploader->getError();
+                return false;
+            }
+        }
+        return $subpath;
+    }
+
+    /**
+     * æ ¹æ®æŒ‡å®šçš„è§„åˆ™è·å–æ–‡ä»¶æˆ–ç›®å½•åç§°
+     * @param  array  $rule     è§„åˆ™
+     * @param  string $filename åŸæ–‡ä»¶å
+     * @return string           æ–‡ä»¶æˆ–ç›®å½•åç§°
+     */
+    private function getName($rule, $filename){
+        $name = '';
+        if(is_array($rule)){ //æ•°ç»„è§„åˆ™
+            $func     = $rule[0];
+            $param    = (array)$rule[1];
+            foreach ($param as &$value) {
+                $value = str_replace('__FILE__', $filename, $value);
+            }
+            $name = call_user_func_array($func, $param);
+        } elseif (is_string($rule)){ //å­—ç¬¦ä¸²è§„åˆ™
+            if(function_exists($rule)){
+                $name = call_user_func($rule);
+            } else {
+                $name = $rule;
+            }
+        }
+        return $name;
+    }
 
 }

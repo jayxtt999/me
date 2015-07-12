@@ -892,11 +892,26 @@ function unZip($zipFile,$path,$type){
         return -3;
     }
 
+}
 
+/**
+ * 创建目录
+ * @param $path
+ * @return bool
+ */
+function makeDir($path){
 
-
-
-
+    if(""===$path){
+        return false;
+    }
+    if(is_dir($path)){
+        return true;
+    }
+    if(mkdir($path, 0777, true)){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
