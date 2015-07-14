@@ -53,8 +53,8 @@ class Upload {
         $this->config   =   array_merge($this->config, $config);
 
         /* 设置上传驱动 */
-        $this->setDriver($driver, $driverConfig);
 
+        $this->setDriver($driver, $driverConfig);
         /* 调整配置，把字符串配置参数转换为数组 */
         if(!empty($this->config['mimes'])){
             if(is_string($this->mimes)) {
@@ -68,6 +68,7 @@ class Upload {
             }
             $this->config['exts'] = array_map('strtolower', $this->exts);
         }
+
     }
 
     /**
@@ -251,13 +252,17 @@ class Upload {
      * @param array $config 驱动配置
      */
     private function setDriver($driver = null, $config = null){
-        $driver = $driver ? : ($this->driver       ? : C('FILE_UPLOAD_TYPE'));
-        $config = $config ? : ($this->driverConfig ? : C('UPLOAD_TYPE_CONFIG'));
-        $class = strpos($driver,'\\')? $driver : 'Library\\Upload\\'.ucfirst(strtolower($driver));
-        $this->uploader = new $class($config);
+
+        $driver = $driver ? : ($this->driver       ? : C('file_upload_type'));
+        $config = $config ? : ($this->driverConfig ? : C('upload_type_config'));
+        $class = strpos($driver,'\\')? $driver : '\\Library\\Upload\\'.ucfirst(strtolower($driver));
+        //$this->uploader = new $class($config);
+        $this->uploader = new \Library\Upload\Local();
+        echo 111;exit;
         if(!$this->uploader){
-            E("不存在上传驱动：{$name}");
+            E("不存在上传驱动：{$driver}");
         }
+
     }
 
     /**

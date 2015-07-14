@@ -1,5 +1,5 @@
 <?php
-namespace Library\Upload\Bcs;
+namespace System\Library\Upload\Bcs;
 
 /**
  * Handles all HTTP requests using cURL and manages the responses.

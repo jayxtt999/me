@@ -9,8 +9,8 @@
 // | Author: yangweijie <yangweijiester@gmail.com> <http://www.code-tech.diandian.com>
 // +----------------------------------------------------------------------
 
-namespace Library\Upload;
-use Library\Upload\Qiniu\QiniuStorage;
+namespace System\Library\Upload;
+use System\Library\Upload\Qiniu\QiniuStorage;
 
 class Qiniu{
     /**

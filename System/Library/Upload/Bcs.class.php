@@ -8,8 +8,8 @@
 // +----------------------------------------------------------------------
 // | Author: Jay <yangweijiester@gmail.com> <http://code-tech.diandian.com>
 // +----------------------------------------------------------------------
-namespace Library\Upload;
-use Library\Upload\Bcs\BaiduBcs;
+namespace System\Library\Upload;
+use System\Library\Upload\Bcs\BaiduBcs as BaiduBcs;
 class Bcs {
     /**
      * 上传文件根目录

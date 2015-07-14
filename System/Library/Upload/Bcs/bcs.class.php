@@ -1,8 +1,8 @@
 <?php
-namespace Library\Upload\Bcs;
-use Library\Upload\Bcs\BCS_MimeTypes;
-use Library\Upload\Bcs\BCS_RequestCore;
-use Library\Upload\Bcs\BCS_ResponseCore;
+namespace System\Library\Upload\Bcs;
+use System\Library\Upload\Bcs\BCS_MimeTypes;
+use System\Library\Upload\Bcs\BCS_RequestCore;
+use System\Library\Upload\Bcs\BCS_ResponseCore;
 
 if (! defined ( 'BCS_API_PATH' )) {
 	define ( 'BCS_API_PATH', dirname ( __FILE__ ) );

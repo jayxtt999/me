@@ -1,5 +1,5 @@
 <?php
-namespace Library\Upload\Qiniu;
+namespace System\Library\Upload\Qiniu;
 
 class QiniuStorage
 {
