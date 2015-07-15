@@ -9,7 +9,7 @@
 // | Author: luofei614<weibo.com/luofei614>
 // +----------------------------------------------------------------------
 
-namespace Library\Upload\Driver;
+namespace System\Library\Upload\Driver;
 class Sae{
     /**
      * Storage的Domain

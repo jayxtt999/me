@@ -166,8 +166,7 @@ class articleController extends abstractController{
                 }
             }
             exit;
-            $upload = new \System\Library\Upload\Local\Upload("uploadimage");
-            $upload->upFile("thumbnail");
+
             $fileInfo = $upload->getFileInfo();
             //保存
             $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST']."/", $fileInfo['url']);

@@ -1,5 +1,5 @@
 <?php
-namespace Library\Upload\Bcs;
+namespace System\Library\Upload\Bcs;
 class BCS_MimeTypes {
 	public static $mime_types = array (
 			'3gp' => 'video/3gpp', 'ai' => 'application/postscript',

@@ -9,7 +9,7 @@
 // | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
 // +----------------------------------------------------------------------
 
-namespace Library\Upload;
+namespace System\Library\Upload;
 class Ftp {
     /**
      * 上传文件根目录
