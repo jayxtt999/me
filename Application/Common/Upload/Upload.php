@@ -69,6 +69,7 @@ class Upload {
             }
             $this->config['exts'] = array_map('strtolower', $this->exts);
         }
+
     }
 
     /**
@@ -254,9 +255,11 @@ class Upload {
         $config = $config ? : ($this->driverConfig ? : C('upload_type_config'));
         $class = strpos($driver,'\\')? $driver : '\\System\\Library\\Upload\\'.ucfirst(strtolower($driver));
         $this->uploader = new $class($config);
+
         if(!$this->uploader){
             E("不存在上传驱动：{$driver}");
         }
+
     }
 
     /**

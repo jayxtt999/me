@@ -141,6 +141,7 @@ return array(
     'upload_type'=>"Local",//  Local , Qiniu
     'upload_type_config'=>array(),//  Local , Qiniu
 
+
     /*杂项*/
     'default_timezone' => 'PRC',
     'user_auth_key' => 'xtt',

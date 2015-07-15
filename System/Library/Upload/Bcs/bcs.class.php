@@ -1,5 +1,6 @@
 <?php
-namespace Library\Upload\Bcs;
+
+namespace System\Library\Upload\Bcs;
 use System\Library\Upload\Bcs\BCS_MimeTypes;
 use System\Library\Upload\Bcs\BCS_RequestCore;
 use System\Library\Upload\Bcs\BCS_ResponseCore;
