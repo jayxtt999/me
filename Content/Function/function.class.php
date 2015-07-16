@@ -900,11 +900,11 @@ function unZip($zipFile,$path,$type){
  * @return bool
  */
 function makeDir($path){
-
     if(""===$path){
         return false;
     }
     if(is_dir($path)){
+
         return true;
     }
     if(mkdir($path, 0777, true)){
