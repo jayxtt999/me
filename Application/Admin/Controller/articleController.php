@@ -163,6 +163,7 @@ class articleController extends abstractController
             $upload = new \Common\Upload\Upload();// 实例化上传类
             // 上传文件
             //$info = $upload->upload();
+
             $info = $upload->upload("image","http://www.sinacloud.com/static/image/top_sae.png","remote");
             exit;
             if (!$info) {// 上传错误提示错误信息

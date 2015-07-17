@@ -152,7 +152,7 @@ class Upload
 
         }else if($model == "remote"){
 
-            return $this->saveRemote($files);
+            return $this->saveRemote($type,$files);
 
         }else if($model == "base64"){
 
@@ -261,8 +261,7 @@ class Upload
         return empty($info) ? false : $info;
     }
 
-
-    private function saveRemote($files){
+    private function saveRemote($type,$files){
 
         $imgUrl = htmlspecialchars($files);
         $imgUrl = str_replace("&amp;", "&", $imgUrl);
@@ -284,7 +283,7 @@ class Upload
         if($fileExt && $this->checkExt($fileExt) == false){
             return false;
         }
-
+        $info = array();
         ob_start();
         $context = stream_context_create(
             array('http' => array(
@@ -295,37 +294,56 @@ class Upload
         $img = ob_get_contents();
         ob_end_clean();
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
-        $fileNname = $m ? $m[1]:"";
-        var_dump(makeDir(ROOT_PATH.$this->cachePath));exit;
-
-        if (!file_put_contents(ROOT_PATH.$this->cachePath,$img) || makeDir(ROOT_PATH.$this->cachePath)) {
+        $fileCache['name'] = $m ? $m[1]:"";
+        $fileCache['ext'] = $fileExt;
+        $saveName = $this->getSaveName($fileCache);
+        if (!file_put_contents(ROOT_PATH.$this->cachePath.$saveName,$img) || !makeDir(ROOT_PATH.$this->cachePath)) {
             $this->error = "写入上传中转文件失败";
             return false;
         }
-        /*$file = array();
-        $file['name'] = $m ? $m[1]:"";
-        $file['type'] = str_replace("Content-Type: ","",$head[3]);
-        $file['type'] = "";*/
 
+        /* 检测上传根目录 */
+        if (!$this->uploader->checkRootPath($this->rootPath)) {
+            $this->error = $this->uploader->getError();
+            return false;
+        }
 
+        /* 检查上传目录 */
+        //检验type，默认file
+        $this->savePath = $this->savePath ? $this->savePath : array_key_exists($type, $this->type) ? $type . "/" : 'file/';
+        if (!$this->uploader->checkSavePath($this->savePath)) {
+            $this->error = $this->uploader->getError();
+            return false;
+        }
+        /* 检测并创建子目录 */
+        $subpath = $this->getSubPath($fileCache['name']);
+        if (false === $subpath) {
+            return;
+        } else {
+            $fileCache['savepath'] = $this->savePath . $subpath;
+        }
 
-        /*
-  'name' => string 'xizang-001.jpg' (length=14)
-  'type' => string 'image/jpeg' (length=10)
-  'tmp_name' => string 'D:\wamp\tmp\php391C.tmp' (length=23)
-  'error' => int 0
-  'size' => int 15166
-  'key' => string 'thumbnail' (length=9)
-  'ext' => string 'jpg' (length=3)
-  'md5' => string '22853ad4c0db5ead07f6695b4198be59' (length=32)
-  'sha1' => string 'dab6582ac451a7847b62446295789dade3102825' (length=40)
-  'savename' => string '1437039998.jpg' (length=14)
-  'savepath' => string 'file/20150716/' (length=14)
-         * */
-        var_dump($m);exit;
+        $fileCache['savename'] = $saveName;
+        $fileCache['tmp_name'] = ROOT_PATH.$this->cachePath.$saveName;
 
+        /* 获取文件hash */
+        if ($this->hash) {
+            $fileCache['md5'] = md5_file($fileCache['tmp_name']);
+            $fileCache['sha1'] = sha1_file($fileCache['tmp_name']);
+        }
 
-
+        /* 保存文件 并记录保存成功的文件 */
+        if ($this->uploader->save($fileCache, $this->replace)) {
+            $this->error = $this->uploader->getError();
+            $info[] =  $fileCache;
+        } else {
+            $this->error = $this->uploader->getError();
+        }
+        //unlink(ROOT_PATH.$this->cachePath.$saveName);
+        if (isset($finfo)) {
+            finfo_close($finfo);
+        }
+        return empty($info) ? false : $info;
     }
 
 
