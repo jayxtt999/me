@@ -70,7 +70,7 @@ class Local{
      * @param  boolean $replace 同名文件是否覆盖
      * @return boolean          保存状态，true-成功，false-失败
      */
-    public function save($file, $replace=true) {
+    public function save($file, $replace=true,$isRemote = false) {
         $filename = $this->rootPath . $file['savepath'] . $file['savename'];
         /* 不覆盖同名文件 */
         if (!$replace && is_file($filename)) {
@@ -78,16 +78,25 @@ class Local{
             return false;
         }
 
-        /* 移动文件 */
-        echo $file['tmp_name'];
-        var_dump(move_uploaded_file($file['tmp_name'], $filename));exit;
-        if (!move_uploaded_file($file['tmp_name'], $filename)) {
-            $this->error = '文件上传保存错误！';
-            return false;
+        /* 移动文件  如果为远程模式，则去设置的缓存目录取*/
+        if($isRemote){
+
+            if (!copy($file['tmp_name'], $filename)) {
+                $this->error = '文件上传保存错误！';
+                return false;
+            }
+        }else{
+            if (!move_uploaded_file($file['tmp_name'], $filename)) {
+                $this->error = '文件上传保存错误！';
+                return false;
+            }
         }
         
         return true;
     }
+
+
+
 
     /**
      * 创建目录

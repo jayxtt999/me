@@ -129,9 +129,9 @@ class Upload
 
     /**
      * 上传文件
-     * @param string $type 上传
+     * @param string $type 上传类型  直接影响上传目录以及验证类型和后缀名
      * @param string $files
-     * @param string $model
+     * @param string $model 上传方式 upload本地上传 remote远程路径转cache本地上传  base64 base64转本地缓存上传
      * @return array|bool
      */
     public function upload($type = '', $files = '', $model = 'upload')
@@ -155,8 +155,7 @@ class Upload
             return $this->saveRemote($type,$files);
 
         }else if($model == "base64"){
-
-            return $this->saveBase64();
+            return $this->saveBase64($type,$files);
 
         }
 
@@ -165,6 +164,8 @@ class Upload
     private function uploadLocal($type,$files){
         if ('' === $files) {
             $files = $_FILES;
+        }else{
+            $files = array($files=>$_FILES[$files]);
         }
         if (empty($files)) {
             $this->error = '没有上传的文件！';
@@ -333,19 +334,71 @@ class Upload
         }
 
         /* 保存文件 并记录保存成功的文件 */
-        if ($this->uploader->save($fileCache, $this->replace)) {
+        if ($this->uploader->save($fileCache, $this->replace,true)) {
             $this->error = $this->uploader->getError();
             $info[] =  $fileCache;
         } else {
             $this->error = $this->uploader->getError();
         }
-        //unlink(ROOT_PATH.$this->cachePath.$saveName);
+        unlink(ROOT_PATH.$this->cachePath.$saveName);
         if (isset($finfo)) {
             finfo_close($finfo);
         }
         return empty($info) ? false : $info;
     }
 
+    private  function saveBase64($type,$files){
+
+        $img = base64_decode($files);
+        $fileCache['name'] = "scrawl".time().rand(1,9999).".png";
+        $fileCache['ext'] = "png";
+        $saveName = $this->getSaveName($fileCache);
+        if (!file_put_contents(ROOT_PATH.$this->cachePath.$saveName,$img) || !makeDir(ROOT_PATH.$this->cachePath)) {
+            $this->error = "写入上传中转文件失败";
+            return false;
+        }
+        /* 检测上传根目录 */
+        if (!$this->uploader->checkRootPath($this->rootPath)) {
+            $this->error = $this->uploader->getError();
+            return false;
+        }
+        /* 检查上传目录 */
+        //检验type，默认file
+        $this->savePath = $this->savePath ? $this->savePath : array_key_exists($type, $this->type) ? $type . "/" : 'file/';
+        if (!$this->uploader->checkSavePath($this->savePath)) {
+            $this->error = $this->uploader->getError();
+            return false;
+        }
+        /* 检测并创建子目录 */
+        $subpath = $this->getSubPath($fileCache['name']);
+        if (false === $subpath) {
+            return;
+        } else {
+            $fileCache['savepath'] = $this->savePath . $subpath;
+        }
+
+        $fileCache['savename'] = $saveName;
+        $fileCache['tmp_name'] = ROOT_PATH.$this->cachePath.$saveName;
+
+        /* 获取文件hash */
+        if ($this->hash) {
+            $fileCache['md5'] = md5_file($fileCache['tmp_name']);
+            $fileCache['sha1'] = sha1_file($fileCache['tmp_name']);
+        }
+
+        /* 保存文件 并记录保存成功的文件 */
+        if ($this->uploader->save($fileCache, $this->replace,true)) {
+            $this->error = $this->uploader->getError();
+            $info[] =  $fileCache;
+        } else {
+            $this->error = $this->uploader->getError();
+        }
+        unlink(ROOT_PATH.$this->cachePath.$saveName);
+        if (isset($finfo)) {
+            finfo_close($finfo);
+        }
+        return empty($info) ? false : $info;
+    }
 
 
     /**
@@ -406,37 +459,31 @@ class Upload
             $this->error($file['error']);
             return false;
         }
-
         /* 无效上传 */
         if (empty($file['name'])) {
             $this->error = '未知上传错误！';
         }
-
         /* 检查是否合法上传 */
         if (!is_uploaded_file($file['tmp_name'])) {
             $this->error = '非法上传文件！';
             return false;
         }
-
         /* 检查文件大小 */
         if (!$this->checkSize($file['size'])) {
             $this->error = '上传文件大小不符！';
             return false;
         }
-
         /* 检查文件Mime类型 */
         //TODO:FLASH上传的文件获取到的mime类型都为application/octet-stream
         if (!$this->checkMime($file['type'])) {
             $this->error = '上传文件MIME类型不允许！';
             return false;
         }
-
         /* 检查文件后缀 */
         if (!$this->checkExt($file['ext'])) {
             $this->error = '上传文件后缀不允许';
             return false;
         }
-
         /* 通过检测 */
         return true;
     }
@@ -534,7 +581,6 @@ class Upload
         $rule = $this->subName;
         if ($this->autoSub && !empty($rule)) {
             $subpath = $this->getName($rule, $filename) . '/';
-
             if (!empty($subpath) && !$this->uploader->mkdir($this->savePath . $subpath)) {
                 $this->error = $this->uploader->getError();
                 return false;

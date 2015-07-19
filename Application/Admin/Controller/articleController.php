@@ -130,7 +130,9 @@ class articleController extends abstractController
         $data['member_id'] = $member['id'];
         //处理日志缩略图（空则取文章第一张,文章没有则取默认图片）
         if ($_FILES['thumbnail']['name']) {
-            /*  //thumbnail不为空
+            /*
+            上传文件old
+            //thumbnail不为空
               $targetFolder = 'Data/upload/image/article'; // Relative to the root
               //验证来路合法性
               //验证图片合法性
@@ -162,20 +164,16 @@ class articleController extends abstractController
 
             $upload = new \Common\Upload\Upload();// 实例化上传类
             // 上传文件
-            //$info = $upload->upload();
-
-            $info = $upload->upload("image","http://www.sinacloud.com/static/image/top_sae.png","remote");
-            exit;
+            $info = $upload->upload("image","thumbnail","upload");
             if (!$info) {// 上传错误提示错误信息
-               var_dump($upload->getError());
+               trace($upload->getError());
             } else {// 上传成功 获取上传文件信息
-                foreach ($info as $file) {
+                /*
+                 * 调试用
+                 * foreach ($info as $file) {
                     echo $file['savepath'] . $file['savename'];
-                }
+                }*/
             }
-            exit;
-
-            $fileInfo = $upload->getFileInfo();
             //保存
             $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'] . "/", $fileInfo['url']);
         } elseif ($data['content']) {
