@@ -17,12 +17,11 @@ class loginController extends abstractController
 
     public function indexAction()
     {
-
         if(session(C('USER_AUTH_KEY')) && session(C('ADMIN_AUTH_KEY'))){
             return $this->link()->success("admin:index:index","跳转中");
         }
 
-        $redirect = $this->getRequest()->getRedirect();
+
         $view = $this->getView();
 
         if ($this->getRequest()->getMethod() == "POST") {
@@ -71,8 +70,8 @@ class loginController extends abstractController
                     return $this->link()->error("账号密码错误!");
                 } else {
                     $this->LoginGmc($authInfo);
-                    $url = "admin:index:index";
-                    return $this->link()->success($url,"登陆成功");
+                    $redirect = urldecode(get("referer","string"));
+                    return $this->link()->dispatchJump($redirect,3,"登陆成功",true);
                 }
             }
         }

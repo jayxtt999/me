@@ -136,7 +136,6 @@ class Upload
      */
     public function upload($type = '', $files = '', $model = 'upload')
     {
-
         if ($type) {
             //根据$type类型设置允许上传的exts 与 mimes； 默认为允许全部
             $this->mimes = array_key_exists($type, $this->allowMimes) ? $this->allowMimes[$type] : $this->allowMimes['file'];
@@ -145,20 +144,13 @@ class Upload
             $this->mimes = $this->allowMimes['file'];
             $this->exts = $this->type['file'];
         }
-
         if ($model == "upload") {
-
             return $this->uploadLocal($type,$files);
-
         }else if($model == "remote"){
-
             return $this->saveRemote($type,$files);
-
         }else if($model == "base64"){
             return $this->saveBase64($type,$files);
-
         }
-
     }
 
     private function uploadLocal($type,$files){
@@ -176,6 +168,7 @@ class Upload
             $this->error = $this->uploader->getError();
             return false;
         }
+
         /* 检查上传目录 */
         //检验type，默认file
         $this->savePath = $this->savePath ? $this->savePath : array_key_exists($type, $this->type) ? $type . "/" : 'file/';
@@ -211,7 +204,6 @@ class Upload
                 $file['md5'] = md5_file($file['tmp_name']);
                 $file['sha1'] = sha1_file($file['tmp_name']);
             }
-
             /* 调用回调函数检测文件是否存在 */
             $data = call_user_func($this->callback, $file);
             if ($this->callback && $data) {
@@ -323,7 +315,6 @@ class Upload
         } else {
             $fileCache['savepath'] = $this->savePath . $subpath;
         }
-
         $fileCache['savename'] = $saveName;
         $fileCache['tmp_name'] = ROOT_PATH.$this->cachePath.$saveName;
 
@@ -581,7 +572,7 @@ class Upload
         $rule = $this->subName;
         if ($this->autoSub && !empty($rule)) {
             $subpath = $this->getName($rule, $filename) . '/';
-            if (!empty($subpath) && !$this->uploader->mkdir($this->savePath . $subpath)) {
+            if (!empty($subpath) && !$this->uploader->makeDir($this->savePath . $subpath)) {
                 $this->error = $this->uploader->getError();
                 return false;
             }

@@ -53,7 +53,8 @@ class abstractController extends \System\Core\Controller
     {
         session("[start]");
         if(!session(C('USER_AUTH_KEY'))){
-            return $this->link()->dispatchJump("/index.php?m=member&c=login&a=index",1,"请先登陆!",0);
+            $redirect = $this->getRequest()->getRedirect();
+            return $this->link()->dispatchJump("/index.php?m=member&c=login&a=index&referer=".urlencode("http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"]),1,"请先登陆!",0);
         }elseif(!session(C('ADMIN_AUTH_KEY'))){
             return $this->link()->dispatchJump("/index.php?m=member&c=login&a=index",1,"该用户没有操作权限!",0);
         }

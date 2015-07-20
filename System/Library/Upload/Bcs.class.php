@@ -73,7 +73,7 @@ class Bcs {
      * @param  string $savepath 目录名称
      * @return boolean          true-创建成功，false-创建失败
      */
-    public function mkdir($savepath){
+    public function makeDir($savepath){
     	return true;
     }
 

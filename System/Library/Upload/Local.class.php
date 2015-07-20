@@ -51,7 +51,7 @@ class Local{
      */
     public function checkSavePath($savepath){
         /* 检测并创建目录 */
-        if (!$this->mkdir($savepath)) {
+        if (!$this->makeDir($savepath)) {
             return false;
         } else {
             /* 检测目录是否可写 */
@@ -65,22 +65,20 @@ class Local{
     }
 
     /**
-     * 保存指定文件
-     * @param  array   $file    保存的文件信息
-     * @param  boolean $replace 同名文件是否覆盖
-     * @return boolean          保存状态，true-成功，false-失败
+     * @param $file 保存的文件信息
+     * @param bool|true $replace 同名文件是否覆盖
+     * @param bool|false $isRemote 是否远程模式 远程或base64
+     * @return bool 保存状态，true-成功，false-失败
      */
-    public function save($file, $replace=true,$isRemote = false) {
+    public function save(&$file, $replace=true,$isRemote = false) {
         $filename = $this->rootPath . $file['savepath'] . $file['savename'];
         /* 不覆盖同名文件 */
         if (!$replace && is_file($filename)) {
             $this->error = '存在同名文件' . $file['savename'];
             return false;
         }
-
         /* 移动文件  如果为远程模式，则去设置的缓存目录取*/
         if($isRemote){
-
             if (!copy($file['tmp_name'], $filename)) {
                 $this->error = '文件上传保存错误！';
                 return false;
@@ -91,7 +89,8 @@ class Local{
                 return false;
             }
         }
-        
+        $url = str_replace("\\","/",$filename);
+        $file['url'] =  'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'] . "/", $url);;
         return true;
     }
 
@@ -103,7 +102,7 @@ class Local{
      * @param  string $savepath 要创建的穆里
      * @return boolean          创建状态，true-成功，false-失败
      */
-    public function mkdir($savepath){
+    public function makeDir($savepath){
         $dir = $this->rootPath . $savepath;
         if(is_dir($dir)){
             return true;

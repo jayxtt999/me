@@ -92,7 +92,7 @@ class Sae{
         return true;
     }
 
-    public function mkdir(){
+    public function makeDir(){
         return true;
     }
 

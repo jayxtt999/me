@@ -74,7 +74,7 @@ class Ftp {
      */
     public function checkSavePath($savepath){
         /* 检测并创建目录 */
-        if (!$this->mkdir($savepath)) {
+        if (!$this->makeDir($savepath)) {
             return false;
         } else {
             //TODO:检测目录是否可写
@@ -110,7 +110,7 @@ class Ftp {
      * @param  string $savepath 要创建的穆里
      * @return boolean          创建状态，true-成功，false-失败
      */
-    public function mkdir($savepath){
+    public function makeDir($savepath){
         $dir = $this->rootPath . $savepath;
         if(ftp_chdir($this->link, $dir)){
             return true;
@@ -118,7 +118,7 @@ class Ftp {
 
         if(ftp_mkdir($this->link, $dir)){
             return true;
-        } elseif($this->mkdir(dirname($savepath)) && ftp_mkdir($this->link, $dir)) {
+        } elseif($this->makeDir(dirname($savepath)) && ftp_mkdir($this->link, $dir)) {
             return true;
         } else {
             $this->error = "目录 {$savepath} 创建失败！";

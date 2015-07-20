@@ -108,7 +108,6 @@ class articleController extends abstractController
     public function saveAction()
     {
 
-
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->start('articleEdit');
         $data = $this->request()->getData();//获取数据
@@ -164,9 +163,9 @@ class articleController extends abstractController
 
             $upload = new \Common\Upload\Upload();// 实例化上传类
             // 上传文件
-            $info = $upload->upload("image","thumbnail","upload");
-            if (!$info) {// 上传错误提示错误信息
-               trace($upload->getError());
+            $fileInfo = $upload->upload("image", "thumbnail", "upload");
+            if (!$fileInfo) {// 上传错误提示错误信息
+                trace($upload->getError());
             } else {// 上传成功 获取上传文件信息
                 /*
                  * 调试用
@@ -175,7 +174,7 @@ class articleController extends abstractController
                 }*/
             }
             //保存
-            $data['thumbnail'] = 'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'] . "/", $fileInfo['url']);
+            $data['thumbnail'] = $fileInfo['thumbnail']['url'];
         } elseif ($data['content']) {
             //thumbnail为空
             preg_match("<img.*src=[\"](.*?)[\"].*?>", $data['content'], $match);

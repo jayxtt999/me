@@ -76,7 +76,6 @@ class QiniuStorage
     public function upload($config, $file)
     {
         $uploadToken = $this->UploadToken($this->sk, $this->ak, $config);
-
         $url = "{$this->QINIU_UP_HOST}";
         $mimeBoundary = md5(microtime());
         $header = array('Content-Type' => 'multipart/form-data;boundary=' . $mimeBoundary);
@@ -86,7 +85,6 @@ class QiniuStorage
             'token' => $uploadToken,
             'key' => $config['saveName'] ? $config['save_name'] : $file['fileName'],
         );
-
         if (is_array($config['custom_fields']) && $config['custom_fields'] !== array()) {
             $fields = array_merge($fields, $config['custom_fields']);
         }
@@ -253,7 +251,6 @@ class QiniuStorage
     private function request($path, $method, $headers = null, $body = null)
     {
         $ch = curl_init($path);
-
         $_headers = array('Expect:');
         if (!is_null($headers) && is_array($headers)) {
             foreach ($headers as $k => $v) {
@@ -284,7 +281,6 @@ class QiniuStorage
 
         // array_push($_headers, 'Authorization: ' . $this->sign($method, $uri, $date, $length));
         array_push($_headers, "Date: {$date}");
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $_headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_HEADER, 1);

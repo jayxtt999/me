@@ -26,10 +26,10 @@ class Qiniu{
     private $error = '';
 
     private $config = array(
-        'secrectKey'     => '', //七牛服务器
-        'accessKey'      => '', //七牛用户
-        'domain'         => '', //七牛密码
-        'bucket'         => '', //空间名称
+        'accessKey'      => 'l0A9D4knNZXQd2_ibiffXlNw3w4om5ThxunJv2kK', //ak
+        'secrectKey'     => '4SFm-8qup_rZYRaw5ZWXICT8gJ86F-ykk5WraGGd', //sk
+        'domain'         => '7xk4xv.com1.z0.glb.clouddn.com', //七牛域名
+        'bucket'         => 'test', //空间名称
         'timeout'        => 300, //超时时间
     );
 
@@ -40,7 +40,7 @@ class Qiniu{
     public function __construct($config){
         $this->config = array_merge($this->config, $config);
         /* 设置根目录 */
-        $this->qiniu = new QiniuStorage($config);
+        $this->qiniu = new QiniuStorage($this->config);
     }
 
     /**
@@ -67,7 +67,7 @@ class Qiniu{
      * @param  string $savepath 目录名称
      * @return boolean          true-创建成功，false-创建失败
      */
-    public function mkdir($savepath){
+    public function makeDir($savepath){
         return true;
     }
 
