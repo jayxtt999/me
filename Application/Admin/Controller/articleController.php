@@ -165,6 +165,7 @@ class articleController extends abstractController
             $upload = new \Common\Upload\Upload();// 实例化上传类
             // 上传文件
             $info = $upload->upload("image","thumbnail","upload");
+            exit;
             if (!$info) {// 上传错误提示错误信息
                trace($upload->getError());
             } else {// 上传成功 获取上传文件信息

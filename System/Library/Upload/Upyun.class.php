@@ -24,10 +24,10 @@ class Upyun{
     private $error = '';
 
     private $config = array(
-        'host'     => '', //又拍云服务器
-        'username' => '', //又拍云用户
-        'password' => '', //又拍云密码
-        'bucket'   => '', //空间名称
+        'host'     => 'http://v0.api.upyun.com', //又拍云服务器
+        'username' => 'aaacd123', //又拍云用户
+        'password' => 'aaacd123', //又拍云密码
+        'bucket'   => 'yatocc', //空间名称
         'timeout'  => 90, //超时时间
     );
 
@@ -36,7 +36,7 @@ class Upyun{
      * @param array  $config FTP配置
      */
     public function __construct($config){
-        /* 默认FTP配置 */
+        /* 默认Upyun配置 */
         $this->config = array_merge($this->config, $config);
         $this->config['password'] = md5($this->config['password']);
     }
@@ -47,6 +47,7 @@ class Upyun{
      * @return boolean true-检测通过，false-检测失败
      */
     public function checkRootPath($rootpath){
+
         /* 设置根目录 */
         $this->rootPath = trim($rootpath, './') . '/';
         return true;
@@ -61,14 +62,22 @@ class Upyun{
         return true;
     }
 
+
     /**
-     * 创建文件夹 (又拍云上传时支持自动创建目录，直接返回)
-     * @param  string $savepath 目录名称
-     * @return boolean          true-创建成功，false-创建失败
+     * 创建目录
+     * @param $path 路径
+     * @param $auto_mkdir 是否自动创建父级目录，最多10层次
+     *
+     * @return void
      */
-    public function mkdir($savepath){
-        return true;
+    public function makeDir($path, $auto_mkdir = true) {/*{{{*/
+        $headers = array('Folder' => 'true');
+        if ($auto_mkdir) $headers['Mkdir'] = 'true';
+        return $this->request('PUT', $path, $headers);
     }
+
+
+
 
     /**
      * 保存指定文件
@@ -81,9 +90,8 @@ class Upyun{
         $header['Content-MD5'] 	= $file['md5'];
         $header['Mkdir'] = 'true';
         $resource = fopen($file['tmp_name'], 'r');
-
-        $save = $this->rootPath . $file['savepath'] . $file['savename'];
-        $data = $this->request($save, 'PUT', $header, $resource);
+        $save = "/".$file['savepath'] . $file['savename'];
+        $data = $this->request('PUT',$save,$header, $resource);
         return false === $data ? false : true;
     }
 
@@ -103,10 +111,9 @@ class Upyun{
      * @param  resource $body    上传文件资源
      * @return boolean
      */
-    private function request($path, $method, $headers = null, $body = null){
+    private function request($method, $path, $headers = NULL, $body= NULL, $file_handle= NULL){
         $uri = "/{$this->config['bucket']}/{$path}";
         $ch  = curl_init($this->config['host'] . $uri);
-
         $_headers = array('Expect:');
         if (!is_null($headers) && is_array($headers)){
             foreach($headers as $k => $v) {
@@ -137,7 +144,6 @@ class Upyun{
 
         array_push($_headers, 'Authorization: ' . $this->sign($method, $uri, $date, $length));
         array_push($_headers, "Date: {$date}");
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $_headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->config['timeout']);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -157,9 +163,9 @@ class Upyun{
 
         $response = curl_exec($ch);
         $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         curl_close($ch);
         list($header, $body) = explode("\r\n\r\n", $response, 2);
-
         if ($status == 200) {
             if ($method == 'GET') {
                 return $body;

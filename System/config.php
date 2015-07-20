@@ -138,7 +138,7 @@ return array(
     ),
 
     /*upload 设置*/
-    'upload_type'=>"Local",//  Local , Qiniu
+    'upload_type'=>"Upyun",//  Local , Qiniu
     'upload_type_config'=>array(),//  Local , Qiniu
 
 

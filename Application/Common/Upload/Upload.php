@@ -233,6 +233,7 @@ class Upload
 
             /* 检测并创建子目录 */
             $subpath = $this->getSubPath($file['name']);
+
             if (false === $subpath) {
                 continue;
             } else {
@@ -323,7 +324,6 @@ class Upload
         } else {
             $fileCache['savepath'] = $this->savePath . $subpath;
         }
-
         $fileCache['savename'] = $saveName;
         $fileCache['tmp_name'] = ROOT_PATH.$this->cachePath.$saveName;
 
@@ -581,7 +581,7 @@ class Upload
         $rule = $this->subName;
         if ($this->autoSub && !empty($rule)) {
             $subpath = $this->getName($rule, $filename) . '/';
-            if (!empty($subpath) && !$this->uploader->mkdir($this->savePath . $subpath)) {
+            if (!empty($subpath) && !$this->uploader->makeDir($this->savePath . $subpath)) {
                 $this->error = $this->uploader->getError();
                 return false;
             }
