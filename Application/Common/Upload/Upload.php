@@ -225,6 +225,7 @@ class Upload
 
             /* 检测并创建子目录 */
             $subpath = $this->getSubPath($file['name']);
+
             if (false === $subpath) {
                 continue;
             } else {
