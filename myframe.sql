@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 50520
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : myframe
 
 Target Server Type    : MYSQL
-Target Server Version : 50520
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-03 18:04:44
+Date: 2015-07-23 18:18:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ CREATE TABLE `xtt_article` (
 -- ----------------------------
 -- Records of xtt_article
 -- ----------------------------
-INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>阿SA说adasdadadadasdasd</p>', '', '', '2015-04-22 16:20:21', '1', '1', '100', '100', '1', '1', '1', '123456');
+INSERT INTO `xtt_article` VALUES ('1', '测试0000', '<p>阿SA说adasdadadadasdasd</p>', '', 'http://www.me.me/Data/upload/image/20150721/1437469612.jpg', '2015-07-21 17:06:52', '1', '1', '100', '100', '1', '1', '1', '123456');
 
 -- ----------------------------
 -- Table structure for xtt_article_category
@@ -78,10 +78,28 @@ CREATE TABLE `xtt_article_tag` (
 -- ----------------------------
 -- Records of xtt_article_tag
 -- ----------------------------
-INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1,1,1');
-INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1,1,1');
-INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('11', '啊大大的', '1,1,1,1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('12', '1231212', '1,1,1,1,1,1,1,1');
+INSERT INTO `xtt_article_tag` VALUES ('13', '12121212', '1,1,1,1,1,1,1,1');
 INSERT INTO `xtt_article_tag` VALUES ('14', '啊啊啊', null);
+
+-- ----------------------------
+-- Table structure for xtt_calendar
+-- ----------------------------
+DROP TABLE IF EXISTS `xtt_calendar`;
+CREATE TABLE `xtt_calendar` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `starttime` int(11) NOT NULL,
+  `endtime` int(11) DEFAULT NULL,
+  `allday` tinyint(1) NOT NULL DEFAULT '0',
+  `color` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of xtt_calendar
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for xtt_comment
@@ -343,7 +361,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -436,6 +454,18 @@ INSERT INTO `xtt_member_login_log` VALUES ('85', '1270', '2015-07-02 15:05:32', 
 INSERT INTO `xtt_member_login_log` VALUES ('86', '1270', '2015-07-03 09:25:46', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('87', '1270', '2015-07-03 11:04:09', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('88', '1270', '2015-07-03 16:48:12', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('89', '1270', '2015-07-20 17:17:19', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('90', '1270', '2015-07-21 10:12:09', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('91', '1270', '2015-07-21 17:25:13', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('92', '1270', '2015-07-21 17:45:06', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('93', '1270', '2015-07-21 17:46:22', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('94', '1270', '2015-07-21 17:53:00', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('95', '1270', '2015-07-21 17:55:09', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('96', '1270', '2015-07-21 17:56:52', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('97', '1270', '2015-07-21 17:59:01', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('98', '1270', '2015-07-21 18:00:10', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('99', '1270', '2015-07-21 18:02:42', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('100', '1270', '2015-07-23 09:23:15', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
