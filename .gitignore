@@ -1,7 +1,0 @@
-# Build folder and log file
-build/
-build.log
-/Data
-/DOC
-/tp
-/System/config.php

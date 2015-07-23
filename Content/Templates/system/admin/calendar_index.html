@@ -196,22 +196,16 @@
 <!-- END CONTAINER -->
 
 
-<a id="showdiv"   href="#inline" title="显示一个DIV内容">aaaaaaaaaaaaaaaaaaaaa</a>
-<div style="display:none">
-</div>
-
 <include file="layout@admin@foot"/>
 
 <script src={:ADMIM_TPL_PATH}/assets/global/plugins/fullcalendar/fullcalendar/fullcalendar.min.js></script>
-<script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/calendar.js"></script>
 <script src={:ADMIM_TPL_PATH}/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js></script>
+<script src="{:ADMIM_TPL_PATH}/assets/admin/pages/scripts/calendar.js"></script>
 
 
 <script>
     jQuery(document).ready(function() {
         Calendar.init();
-        $(".fc-widget-content").fancybox({
-            'centerOnScroll':true
-        });
+
     });
 </script>

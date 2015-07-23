@@ -3,37 +3,38 @@
  * Created by PhpStorm.
  * User: xiett
  * Date: 15-7-22
- * Time: ÏÂÎç9:53
+ * Time: ä¸‹åˆ9:53
  */
 
 namespace Admin\Controller;
 
 
-class calendarController extends abstractController{
+class calendarController extends abstractController
+{
 
-    public function indexAction(){
-
-
+    public function indexAction()
+    {
         return $this->getView()->display();
     }
 
     /**
-     * ³õÊ¼Êı¾İ
+     * åˆå§‹æ•°æ®
      */
-    public function showAction(){
+    public function showAction()
+    {
 
         $data = db()->table("calendar")->getAll();
-        foreach($data as $k=>$v){
+        foreach ($data as $k => $v) {
 
             $allday = $v['allday'];
-            $is_allday = $allday==1?true:false;
+            $is_allday = $allday == 1 ? true : false;
             $data[] = array(
-                'id' => $v['id'],//ÊÂ¼şid
-                'title' => $v['title'],//ÊÂ¼ş±êÌâ
-                'start' => date('Y-m-d H:i',$v['starttime']),//ÊÂ¼ş¿ªÊ¼Ê±¼ä
-                'end' => date('Y-m-d H:i',$v['endtime']),//½áÊøÊ±¼ä
-                'allDay' => $is_allday, //ÊÇ·ñÎªÈ«ÌìÊÂ¼ş
-                'color' => $v['color'] //ÊÂ¼şµÄ±³¾°É«
+                'id' => $v['id'], //äº‹ä»¶id
+                'title' => $v['title'], //äº‹ä»¶æ ‡é¢˜
+                'start' => date('Y-m-d H:i', $v['starttime']), //äº‹ä»¶å¼€å§‹æ—¶é—´
+                'end' => date('Y-m-d H:i', $v['endtime']), //ç»“æŸæ—¶é—´
+                'allDay' => $is_allday, //æ˜¯å¦ä¸ºå…¨å¤©äº‹ä»¶
+                'color' => $v['color'] //äº‹ä»¶çš„èƒŒæ™¯è‰²
             );
 
         }
@@ -41,5 +42,13 @@ class calendarController extends abstractController{
         return JsonObject($data);
     }
 
+
+    public function addAction()
+    {
+        $date = get("date", "string");
+        $this->getView()->assign(array("date"=>$date));
+        $this->getView()->display();
+
+    }
 
 } 

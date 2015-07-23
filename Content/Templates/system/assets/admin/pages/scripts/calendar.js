@@ -1,4 +1,4 @@
-﻿var Calendar = function () {
+var Calendar = function () {
 
 
     return {
@@ -21,7 +21,7 @@
             var h = {};
 
             if (Metronic.isRTL()) {
-                 if ($('#calendar').parents(".portlet").width() <= 720) {
+                if ($('#calendar').parents(".portlet").width() <= 720) {
                     $('#calendar').addClass("mobile");
                     h = {
                         right: 'title, prev, next',
@@ -35,9 +35,9 @@
                         center: '',
                         left: 'agendaDay, agendaWeek, month, today, prev,next'
                     };
-                }                
+                }
             } else {
-                 if ($('#calendar').parents(".portlet").width() <= 720) {
+                if ($('#calendar').parents(".portlet").width() <= 720) {
                     $('#calendar').addClass("mobile");
                     h = {
                         left: 'title, prev, next',
@@ -53,7 +53,7 @@
                     };
                 }
             }
-           
+
 
             var initDrag = function (el) {
                 // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
@@ -93,7 +93,7 @@
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
             $('#calendar').fullCalendar({ //re-initialize the calendar
                 header: h,
-                defaultView: 'month', // change default view with available options from http://arshaw.com/fullcalendar/docs/views/Available_Views/ 
+                defaultView: 'month', // change default view with available options from http://arshaw.com/fullcalendar/docs/views/Available_Views/
                 slotMinutes: 15,
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
@@ -110,18 +110,20 @@
                     day: '日',
                     prev: '上一月',
                     next: '下一月'
-               },
+                },
                 events: '/index.php?m=admin&c=calendar&a=show',    //事件数据
-
                 dayClick: function(date, allDay, jsEvent, view) {
                     var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期
-
+                    $.fancybox({//调用fancybox弹出层
+                        'type':'ajax',
+                        'href':'/index.php?m=admin&c=calendar&a=add&date='+selDate
+                    });
                 }
+
+
             });
 
         }
-
-
 
     };
 
