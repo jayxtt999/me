@@ -96,29 +96,63 @@ var Calendar = function () {
                 defaultView: 'month', // change default view with available options from http://arshaw.com/fullcalendar/docs/views/Available_Views/
                 slotMinutes: 15,
                 editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar !!!
-                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                dayNames: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
-                dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
-                today: ["今天"],
-                firstDay: 1,
-                buttonText: {
-                    today: '本月',
-                    month: '月',
-                    week: '周',
-                    day: '日',
-                    prev: '上一月',
-                    next: '下一月'
+                dragOpacity: {//设置拖动时事件的透明度
+                    agenda: .5,
+                    '':.6
                 },
+                //拖动事件
+                eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+                    $.post("/index.php?m=admin&c=calendar&a=event&ac=drag",{
+                        id:event.id,
+                        daydiff:dayDelta,
+                        minudiff:minuteDelta,
+                        allday:allDay
+                    },function(msg){
+                        if(msg!=1){
+                            alert(msg);
+                            revertFunc(); //恢复原状
+                        }
+                    });
+                },
+
+                eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
+                    $.post("/index.php?m=admin&c=calendar&a=event&ac=resize",{id:event.id,daydiff:dayDelta,minudiff:minuteDelta},function(msg){
+                        if(msg!=1){
+                            alert(msg);
+                            revertFunc();
+                        }
+                    });
+                },
+
+                selectable: true,
+                select: function( startDate, endDate, allDay, jsEvent, view ){
+                    var start =$.fullCalendar.formatDate(startDate,'yyyy-MM-dd');
+                    var end =$.fullCalendar.formatDate(endDate,'yyyy-MM-dd');
+                    $.fancybox({
+                        'type':'ajax',
+                        'href':'/index.php?m=admin&c=calendar&a=event&ac=add&start='+start+'&end='+end
+                    });
+                },
+
+
+
                 events: '/index.php?m=admin&c=calendar&a=show',    //事件数据
                 dayClick: function(date, allDay, jsEvent, view) {
-                    var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期
+                    var start =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期
                     $.fancybox({//调用fancybox弹出层
                         'type':'ajax',
-                        'href':'/index.php?m=admin&c=calendar&a=add&date='+selDate
+                        'href':'/index.php?m=admin&c=calendar&a=event&ac=add&start='+start
                     });
-                }
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    $.fancybox({
+                        'type':'ajax',
+                        'href':'/index.php?m=admin&c=calendar&a=event&ac=edit&id='+calEvent.id
+                    });
+                },
+
+
+
 
 
             });
