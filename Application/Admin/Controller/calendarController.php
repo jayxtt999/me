@@ -75,23 +75,23 @@ class calendarController extends abstractController
             exit;
         } else if ($ac == "drag") {
             $id = post('id', 'number');
-            $daydiff = post('id', 'daydiff') * 24 * 60 * 60;
-            $minudiff = post('id', 'minudiff') * 60;
-            $allday = $_POST['allday'];
+            $daydiff = post('daydiff', 'number') * 24 * 60 * 60;
+            $minudiff = post('minudiff', 'number') * 60;
+            $allday = post('allday','string');
             $row = db()->table("calendar")->getRow(array('id' => $id))->done();
             if ($allday == "true") {//如果是全天事件
                 if ($row['endtime'] == 0) {
-                    $r = db()->table("calendar")->upDate(array('starttime+=' => $daydiff), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff), array('id' => $id))->build()->done();
                 } else {
-                    $r = db()->table("calendar")->upDate(array('starttime+=' => $daydiff, 'endtime+=' => $daydiff), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff, 'endtime' =>"endtime+".$daydiff), array('id' => $id))->build()->done();
                 }
 
             } else {
                 $difftime = $daydiff + $minudiff;
                 if ($row['endtime'] == 0) {
-                    $r = db()->table("calendar")->upDate(array('starttime+=' => $difftime), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime+' => "starttime+".$daydiff), array('id' => $id))->build()->done();
                 } else {
-                    $r = db()->table("calendar")->upDate(array('starttime+=' => $difftime, 'endtime+=' => $difftime), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime+' => "starttime+".$daydiff, 'endtime+' => "endtime+".$daydiff), array('id' => $id))->build()->done();
                 }
             }
             if ($r) {

@@ -301,8 +301,6 @@ class PdoMysql
         //$r = $stmt->execute(array('d_status'=>4,'w_id'=>1));
         //var_dump($r);exit;
 
-
-
         if (is_array($data) && is_array($where)) {
             $setSql = $whereSql = "";
             $len = count($data);
@@ -313,7 +311,7 @@ class PdoMysql
                 $semicolon = $len == $i ? " " : ",";
                 $dataVal["d_" . $k] = $v;
                 //Todo 存在严重bug 让某个字段自减如 a=a-10 更新会存为字符串 按照以下的解决方式 就无法保存值为-1 解决方案 新增一个参数重写 $buildModel
-                /*if ( (strpos($v, "+")&& substr_count("+",$v)==1) || (strpos($v, "-") && substr_count("-",$v)==1) ) {
+               /* if ( (strpos($v, "+")&& substr_count("+",$v)==1) || (strpos($v, "-") && substr_count("-",$v)==1) ) {
                     $buildModel = true;
                 } else {
                     $buildModel = false;

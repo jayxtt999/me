@@ -102,13 +102,13 @@ var Calendar = function () {
                 },
                 //拖动事件
                 eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-                    $.post("/index.php?m=admin&c=calendar&a=event&ac=drag",{
-                        id:event.id,
-                        daydiff:dayDelta,
-                        minudiff:minuteDelta,
-                        allday:allDay
-                    },function(msg){
-                        if(msg!=1){
+                    $.post("/index.php?m=admin&c=calendar&a=event&ac=drag", {
+                        id: event.id,
+                        daydiff: dayDelta,
+                        minudiff: minuteDelta,
+                        allday: allDay
+                    }, function (msg) {
+                        if (msg != 1) {
                             alert(msg);
                             revertFunc(); //恢复原状
                         }
@@ -135,7 +135,6 @@ var Calendar = function () {
                 },
 
 
-
                 events: '/index.php?m=admin&c=calendar&a=show',    //事件数据
                 dayClick: function(date, allDay, jsEvent, view) {
                     var start =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期
@@ -149,7 +148,7 @@ var Calendar = function () {
                         'type':'ajax',
                         'href':'/index.php?m=admin&c=calendar&a=event&ac=edit&id='+calEvent.id
                     });
-                },
+                }
 
 
 
