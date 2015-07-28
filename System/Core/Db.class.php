@@ -42,7 +42,7 @@ class DB
      * 初始化配置
      * @param $config
      */
-    public function init($config)
+    public  function init($config)
     {
         $this->db = new \System\Library\Db\PdoMysql($config[$config['db_type']]);
     }

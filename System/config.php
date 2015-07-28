@@ -135,6 +135,7 @@ return array(
         ),
         "memcache" => array(),
         "radis" => array(),
+        "opcache"=>array(),
     ),
 
     /*upload 设置*/

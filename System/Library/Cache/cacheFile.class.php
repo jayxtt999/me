@@ -3,14 +3,14 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/2/10 0010
- * Time: ÉÏÎç 9:25
+ * Time: ä¸Šåˆ 9:25
  */
 
 namespace System\Library\Cache;
 
-use System\Core\Cache;
+use System\Library\Cache\cacheFactory;
 
-class cacheFile extends Cache{
+abstract class cacheFile implements cacheFactory{
 
     private $options = array();
 
@@ -26,7 +26,7 @@ class cacheFile extends Cache{
         $this->options['suffix']    =   isset($options['suffix'])?  $options['suffix']  :   C('cache:file:suffix');
         $this->options['expire']    =   isset($options['expire'])?  $options['expire']  :   C('cache:file:expire');
         if(substr($this->options['path'], -1) != '/')    $this->options['temp'] .= '/';
-        //¼ì²éÄ¿Â¼ÊÇ·ñ´æÔÚ
+        //æ£€æŸ¥ç›®å½•æ˜¯å¦å­˜åœ¨
         if (!is_dir($this->options['path'])) {
             mkdir($this->options['path'],0777);
         }
@@ -34,13 +34,13 @@ class cacheFile extends Cache{
 
 
     /**
-     * Ôö¼ÓÒ»¶Ô»º´æÊı¾İ
+     * å¢åŠ ä¸€å¯¹ç¼“å­˜æ•°æ®
      * @param $key
      * @param $value
      */
     public function set($key, $value,$path,$model) {
         $filename = $this->_get_cache_file($key,$path,$model);
-        //Ğ´ÎÄ¼ş, ÎÄ¼şËø±ÜÃâ³ö´í
+        //å†™æ–‡ä»¶, æ–‡ä»¶é”é¿å…å‡ºé”™
         file_put_contents($filename, "<?php exit;//".serialize($value), LOCK_EX);
         if(file_exists($filename)){
             return true;
@@ -49,7 +49,7 @@ class cacheFile extends Cache{
         }
     }
 
-    /**É¾³ı¶ÔÓ¦µÄÒ»¸ö»º´æ
+    /**åˆ é™¤å¯¹åº”çš„ä¸€ä¸ªç¼“å­˜
      * @param $key
      */
     public function delete($key,$path,$model) {
@@ -58,7 +58,7 @@ class cacheFile extends Cache{
     }
 
     /**
-     * »ñÈ¡»º´æ
+     * è·å–ç¼“å­˜
      * @param $key
      * @return bool|mixed
      */
@@ -77,7 +77,7 @@ class cacheFile extends Cache{
     }
 
     /**
-     * É¾³ıËùÓĞ»º´æ
+     * åˆ é™¤æ‰€æœ‰ç¼“å­˜
      */
     public function flush() {
         $fp = opendir($this->cache_path);
@@ -90,7 +90,7 @@ class cacheFile extends Cache{
     }
 
     /**
-     * ÊÇ·ñ´æÔÚ»º´æ
+     * æ˜¯å¦å­˜åœ¨ç¼“å­˜
      * @param $key
      * @return bool
      */
@@ -99,7 +99,7 @@ class cacheFile extends Cache{
     }
 
     /**
-     * ÊÇ·ñ´æÔÚ»º´æ
+     * æ˜¯å¦å­˜åœ¨ç¼“å­˜
      * @param $key
      * @return bool
      */
@@ -113,7 +113,7 @@ class cacheFile extends Cache{
 
 
     /**
-     * ÑéÖ¤cache keyÊÇ·ñºÏ·¨£¬¿ÉÒÔ×ÔĞĞÔö¼Ó¹æÔò
+     * éªŒè¯cache keyæ˜¯å¦åˆæ³•ï¼Œå¯ä»¥è‡ªè¡Œå¢åŠ è§„åˆ™
      * @param $key
      * @return bool
      */
@@ -131,11 +131,11 @@ class cacheFile extends Cache{
     private function _safe_filename($key,$path,$model) {
         if ($this->_is_valid_key($key)) {
             if($path){
-                //Èç¹ûÊÖ¶¯Ö¸¶¨ÁËÄ¿Â¼
+                //å¦‚æœæ‰‹åŠ¨æŒ‡å®šäº†ç›®å½•
                 $path = $this->options['path'] .$path;
                 if(!is_readable($path))
                 {
-                    //Ä¿Â¼²»´æÔÚÔò´´½¨
+                    //ç›®å½•ä¸å­˜åœ¨åˆ™åˆ›å»º
                     is_file($path) or mkdir($path,0700);
                 }
             }else{
@@ -147,12 +147,12 @@ class cacheFile extends Cache{
                 return $path.'/'.md5($key);
             }
         }
-        //key²»ºÏ·¨µÄÊ±ºò£¬¾ùÊ¹ÓÃÄ¬ÈÏÎÄ¼ş'unvalid_cache_key'£¬²»Ê¹ÓÃÅ×³öÒì³££¬¼ò»¯Ê¹ÓÃ£¬ÔöÇ¿Èİ´íĞÔ
+        //keyä¸åˆæ³•çš„æ—¶å€™ï¼Œå‡ä½¿ç”¨é»˜è®¤æ–‡ä»¶'unvalid_cache_key'ï¼Œä¸ä½¿ç”¨æŠ›å‡ºå¼‚å¸¸ï¼Œç®€åŒ–ä½¿ç”¨ï¼Œå¢å¼ºå®¹é”™æ€§
         return 'unvalid_cache_key';
     }
 
     /**
-     * Æ´½Ó»º´æÂ·¾¶
+     * æ‹¼æ¥ç¼“å­˜è·¯å¾„
      * @param $key
      * @return string
      */
