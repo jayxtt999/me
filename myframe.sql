@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-23 18:18:48
+Date: 2015-07-28 18:21:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -94,12 +94,16 @@ CREATE TABLE `xtt_calendar` (
   `endtime` int(11) DEFAULT NULL,
   `allday` tinyint(1) NOT NULL DEFAULT '0',
   `color` varchar(20) DEFAULT NULL,
+  `member_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_calendar
 -- ----------------------------
+INSERT INTO `xtt_calendar` VALUES ('6', '111111111111112222222', '1435766400', '1435766400', '1', '#360', null);
+INSERT INTO `xtt_calendar` VALUES ('7', '222222222222222', '1436976000', '1437321600', '1', '#06c', null);
+INSERT INTO `xtt_calendar` VALUES ('10', '1111111111111', '1437667200', '-28800', '1', '#f30', null);
 
 -- ----------------------------
 -- Table structure for xtt_comment
@@ -193,36 +197,37 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
 -- ----------------------------
 INSERT INTO `xtt_common_menu` VALUES ('1', '主栏目', '122', '2014-04-21 17:55:58', 'admin', 'index', 'index', 'http://www.me.me/index.php?m=admin&c=index&a=index', '1', '1', '1', '0', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', '100', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '0', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('2', '栏目列表', '阿达说的', '2014-04-21 18:25:09', 'admin', 'menu', 'index', 'www.baidu.com', '10', '1', 'icon-list', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('3', '配置列表', '配置列表', '2014-06-03 16:50:19', 'admin', 'config', 'index', '/admin/common_config/index', '1', '1', 'icon-speedometer', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('4', '会员登陆', '会员登陆', '2015-02-11 09:59:27', 'member', 'login', 'index', 'www.baidu.com', '1', '0', '1', '1', '0', '0');
 INSERT INTO `xtt_common_menu` VALUES ('200', '主页', '主页', '2015-03-18 16:42:17', 'home', 'index', 'index', '', '2', '1', '', '1', '0', '1');
 INSERT INTO `xtt_common_menu` VALUES ('210', '栏目列表添加', '', '2014-09-28 11:43:54', 'admin', 'common_menu', 'add', '', '0', '0', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('211', '栏目列表编辑', '', '2014-09-28 11:44:22', 'admin', 'menu', 'edit', '', '0', '0', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('212', '栏目列表删除', '', '2014-09-28 11:44:40', 'admin', 'common_menu', 'del', '', '0', '0', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('213', '日志管理', '日志管理', '2015-02-28 10:47:15', 'admin', 'article', 'list', '', '1', '1', 'icon-note', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('214', '添加日志', '添加日志', '2015-02-28 16:06:42', 'admin', 'article', 'add', '', '1', '0', '1', '1', '0', '0');
 INSERT INTO `xtt_common_menu` VALUES ('215', '编辑日志', '编辑日志', '2015-02-28 16:07:12', 'admin', 'article', 'edit', '', '1', '0', '', '1', '0', '0');
 INSERT INTO `xtt_common_menu` VALUES ('216', 'Blog', '博文', '2015-03-18 16:42:17', 'home', 'blog', 'index', '', '1', '1', '', '1', '0', '1');
-INSERT INTO `xtt_common_menu` VALUES ('217', '说说管理', '说说管理', null, 'admin', 'twitter', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('217', '说说管理', '说说管理', null, 'admin', 'twitter', 'index', '', '1', '1', 'icon-pencil', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('218', '博文详情', '博文详情', null, 'home', 'blog', 'show', '', '1', '0', '', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('219', 'Twitter', '说说', null, 'home', 'twitter', 'index', '', '1', '1', '', '1', '0', '1');
-INSERT INTO `xtt_common_menu` VALUES ('220', '分类管理', 'category', null, 'admin', 'category', 'index', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('221', '标签管理', '文章标签管理', null, 'admin', 'tags', 'index', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理', null, 'admin', 'sidebar', 'index', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('223', '链接管理', '链接管理', null, 'admin', 'link', 'index', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('224', '插件管理', '插件管理', null, 'admin', 'plug', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('220', '分类管理', 'category', null, 'admin', 'category', 'index', '', '1', '1', 'icon-grid', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('221', '标签管理', '文章标签管理', null, 'admin', 'tags', 'index', '', '1', '1', 'icon-pin', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('222', '侧边栏管理', '侧边栏管理', null, 'admin', 'sidebar', 'index', '', '1', '1', 'icon-paper-plane', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('223', '链接管理', '链接管理', null, 'admin', 'link', 'index', '', '1', '1', 'icon-link', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('224', '插件管理', '插件管理', null, 'admin', 'plug', 'index', '', '1', '1', 'icon-puzzle', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('225', '插件配置', '插件配置', '2015-05-11 14:39:17', 'admin', 'plug', 'setting', '', '1', '0', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('226', '个人资料', '个人资料', null, 'admin', 'user', 'profile', '', '1', '1', '', '1', '1', '0');
-INSERT INTO `xtt_common_menu` VALUES ('227', '钩子管理', '钩子管理', null, 'admin', 'hook', 'index', '', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('226', '个人资料', '个人资料', null, 'admin', 'user', 'profile', '', '1', '1', 'icon-user', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('227', '钩子管理', '钩子管理', null, 'admin', 'hook', 'index', '', '1', '1', 'icon-anchor', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('228', '编辑钩子', '编辑钩子', null, 'admin', 'hook', 'edit', '', '1', '0', '', '1', '0', '0');
-INSERT INTO `xtt_common_menu` VALUES ('229', '模板管理', '模板管理', null, 'admin', 'template', 'index', 'www.me.me/index.php?m=admin&c=template&a=index', '1', '1', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('229', '模板管理', '模板管理', null, 'admin', 'template', 'index', 'www.me.me/index.php?m=admin&c=template&a=index', '1', '1', 'icon-magic-wand', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('230', 'calendar', 'calendar', null, 'admin', 'calendar', 'index', 'http://www.me.me/index.php?m=admin&c=calendar&a=index', '1', '0', '', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -361,7 +366,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -466,6 +471,8 @@ INSERT INTO `xtt_member_login_log` VALUES ('97', '1270', '2015-07-21 17:59:01', 
 INSERT INTO `xtt_member_login_log` VALUES ('98', '1270', '2015-07-21 18:00:10', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('99', '1270', '2015-07-21 18:02:42', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('100', '1270', '2015-07-23 09:23:15', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('101', '1270', '2015-07-24 09:36:26', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('102', '1270', '2015-07-28 16:49:20', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs

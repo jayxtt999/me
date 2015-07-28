@@ -87,7 +87,7 @@ class commonModel extends \System\Core\Model
             $this->html .= "
                         <li class='".$liClass."'>
                         <a href='".$mca."'>
-                            <i class='icon-diamond'></i>
+                            <i class='" . $v['ico'] . "'></i>
                             <span class='title'>" . $v['name'] . "</span>" . $arrow . "
                         </a>";
             if (isset($v['son'])) {

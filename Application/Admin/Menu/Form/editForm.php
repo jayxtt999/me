@@ -70,7 +70,7 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "URL",
         );
-        $this->setText("url", "URL", $array, array('datatype' => 'url',));
+        $this->setText("url", "URL", $array, array('datatype' => '/^\\s*$/|*1-126|url',));
 
         $array = array(
             "class" => "form-control",
@@ -110,13 +110,13 @@ class editForm extends \System\Library\Form\Form
             "class" => "form-control",
             "placeholder" => "ICON",
         );
-        $this->setText("icon", "图标", $array, array('datatype' => 's0-24',));
+        $this->setText("icon", "图标", $array, array('datatype' => '/^\\s*$/|*1-24',));
 
         $array = array(
             "class" => "form-control",
             "placeholder" => "DESC",
         );
-        $this->setText("desc", "栏目描述", $array, array('datatype' => 's0-24',));
+        $this->setText("desc", "栏目描述", $array, array('datatype' => 's1-126',));
 
     }
 

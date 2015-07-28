@@ -12,6 +12,7 @@ namespace Admin\Controller;
 class calendarController extends abstractController
 {
 
+
     public function indexAction()
     {
         return $this->getView()->display();
@@ -22,7 +23,11 @@ class calendarController extends abstractController
      */
     public function showAction()
     {
-        $data = db()->table("calendar")->getAll()->done();
+        $member = $this->getMember();
+        if(!$member){
+            echo '加载失败！';
+        }
+        $data = db()->table("calendar")->getAll(array('member_id'=>$member['id']))->done();
         foreach ($data as $k => $v) {
             $allday = $v['allday'];
             $is_allday = $allday == 1 ? true : false;
@@ -38,8 +43,15 @@ class calendarController extends abstractController
         return JsonObject($data);
     }
 
+    /**
+     * 事件
+     */
     public function eventAction()
     {
+        $member = $this->getMember();
+        if(!$member){
+            echo '变更失败！';
+        }
         $ac = get("ac", "string");
         if ($ac == "add") {
             //$viewDate['starttime'] = $viewDate['endtime'] = strtotime(get("date", "string"));
@@ -60,13 +72,13 @@ class calendarController extends abstractController
         } else if ($ac == "edit") {
             $id = get("id", "number");
             if ($id) {
-                $viewDate = db()->table("calendar")->getRow(array('id' => $id))->done();
+                $viewDate = db()->table("calendar")->getRow(array('id' => $id,'member_id'=>$member['id']))->done();
             }
         } else if ($ac == "del") {
             $id = get("id", "number");
             if ($id) {
                 try {
-                    db()->table("calendar")->delete(array('id' => $id))->done();
+                    db()->table("calendar")->delete(array('id' => $id,'member_id'=>$member['id']))->done();
                     echo 1;
                 } catch (\Exception $e) {
                     echo $e->getMessage();
@@ -81,9 +93,9 @@ class calendarController extends abstractController
             $row = db()->table("calendar")->getRow(array('id' => $id))->done();
             if ($allday == "true") {//如果是全天事件
                 if ($row['endtime'] == 0) {
-                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff), array('id' => $id,'member_id'=>$member['id']))->build()->done();
                 } else {
-                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff, 'endtime' =>"endtime+".$daydiff), array('id' => $id))->build()->done();
+                    $r = db()->table("calendar")->upDate(array('starttime' => "starttime+".$daydiff, 'endtime' =>"endtime+".$daydiff), array('id' => $id,'member_id'=>$member['id']))->build()->done();
                 }
 
             } else {
@@ -105,13 +117,13 @@ class calendarController extends abstractController
             $daydiff = post('id', 'daydiff') * 24 * 60 * 60;
             $minudiff = post('id', 'minudiff') * 60;
 
-            $row = db()->table("calendar")->getRow(array('id' => $id))->done();
+            $row = db()->table("calendar")->getRow(array('id' => $id,'member_id'=>$member['id']))->done();
             //echo $allday;exit;
             $difftime = $daydiff + $minudiff;
             if ($row['endtime'] == 0) {
-                $r = db()->table("calendar")->upDate(array('endtime=starttime+' => $difftime), array('id' => $id))->build()->done();
+                $r = db()->table("calendar")->upDate(array('endtime=starttime+' => $difftime), array('id' => $id,'member_id'=>$member['id']))->build()->done();
             } else {
-                $r = db()->table("calendar")->upDate(array('endtime+=' => $difftime), array('id' => $id))->build()->done();
+                $r = db()->table("calendar")->upDate(array('endtime+=' => $difftime), array('id' => $id,'member_id'=>$member['id']))->build()->done();
             }
             if ($r) {
                 echo '1';
@@ -128,11 +140,16 @@ class calendarController extends abstractController
 
     }
 
-
+    /**
+     * 保存
+     */
     public function saveAction()
     {
 
-
+        $member = $this->getMember();
+        if(!$member){
+            echo '操作失败！';
+        }
         $action = post("action", 'txt');//事件类型
         $id = post("id", 'number');//事件类型
         $events = post("event", 'txt');//事件内容
@@ -168,6 +185,7 @@ class calendarController extends abstractController
             "endtime" => $endtime,
             "allday" => $isallday,
             "color" => $color,
+            'member_id'=>$member['id']
         );
         if ($action == "add" && !$id) {
             $res = db()->table("calendar")->insert($array)->done();
