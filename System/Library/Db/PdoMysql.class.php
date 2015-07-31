@@ -262,8 +262,6 @@ class PdoMysql
                 }
             }
             $this->debug(false);
-
-
             //如果存在 只取fields 多条 返回array 单条 返回值
              if (($fields !== "*")) {
                  if ($model == 2) {

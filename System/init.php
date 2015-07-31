@@ -26,6 +26,7 @@ define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
 define('ADMIM_TPL_PATH', '/Content/Templates/system');
 define('TEMPLATE_PATH', '/Content/Templates');
 define('UPLOAD_PATH','/Data/upload/');
+define('CACHE_PATH','Data/cache/');
 
 define('IS_CGI', substr(PHP_SAPI, 0, 3) == 'cgi' ? 1 : 0);
 define('IS_WIN', strstr(PHP_OS, 'WIN') ? 1 : 0);

@@ -101,7 +101,7 @@ return array(
     /* 日志设置 */
     'log' => array(
         'log_type' => 'file', // 日志记录类型 默认为文件方式
-        'log_path' => '/Data/Log', // 日志记录类型 默认为文件方式
+        'log_path' => '/Data/log', // 日志记录类型 默认为文件方式
         'log_level' => 'emerg,alert,crit,err',// 允许记录的日志级别
         'log_file_size' => 2097152,    // 日志文件大小限制
         'log_exception_record' => false,    // 是否记录异常信息日志
@@ -127,14 +127,25 @@ return array(
 
     /*数据缓存设置*/
     'cache' => array(
-        "type" => "file", //File or Memcache Radis
+        "type" => "file", //File or Memcache or Radis
+        'expire' => 3,
+        'prefix' => "xtt_",
         "file" => array(
-            'expire' => 86400,
             'suffix' => ".php",
-            'path' => "Data/Cache/"
+            'path' => CACHE_PATH
         ),
-        "memcache" => array(),
-        "radis" => array(),
+        "memcache" => array(
+            'host'        =>  '127.0.0.1',
+            'port'        =>   11211,
+            'timeout'     =>   false,
+            'persistent'  =>  false,
+        ),
+        "radis" => array(
+            'host'        =>  '127.0.0.1',
+            'port'        =>   6379,
+            'timeout'     =>   false,
+            'persistent'  =>  false,
+        ),
         "opcache"=>array(),
     ),
 

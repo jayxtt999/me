@@ -27,13 +27,31 @@ class Cache
         return $this->cache;
     }
 
+
+    /**
+     * 取得缓存类实例
+     * @static
+     * @access public
+     * @return mixed
+     */
+    static function getInstance($type='',$options=array()) {
+        static $_instance	=	array();
+        $guid	=	$type.to_guid_string($options);
+        if(!isset($_instance[$guid])){
+            $obj	=	new Cache();
+            $_instance[$guid]	=	$obj->init($type,$options);
+        }
+        return $_instance[$guid];
+    }
+
+
     /**
      * @param $name
      * @return mixed
      */
     public function __get($name)
     {
-        return $this->get($name);
+        return $this->cache->get($name);
     }
 
     /**
@@ -43,7 +61,7 @@ class Cache
      */
     public function __set($name, $value)
     {
-        return $this->set($name, $value);
+        return $this->cache->set($name, $value);
     }
 
     /**
@@ -51,7 +69,7 @@ class Cache
      */
     public function __unset($name)
     {
-        $this->delete($name);
+        $this->cache->delete($name);
     }
 
     /**
@@ -73,24 +91,6 @@ class Cache
     }
 
 
-    public function set($name, $value)
-    {
-       $this->cache->set($name, $value);
-    }
-
-
-    public function get($name)
-    {
-        $this->cache->get($name);
-
-    }
-
-
-    public function delete($name)
-    {
-        $this->cache->delete($name);
-
-    }
 
 
 }

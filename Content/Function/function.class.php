@@ -434,29 +434,45 @@ function loader($class)
 
 }
 
-/**
- * 缓存
- * @param $key
- * @param string $val
- * @param string $model model 默认文件名为 MD5（key ）,否则为自定义文件名模式
- */
-function cache($key, $val = "", $path = "", $model = "")
-{
 
-    $cache = new \System\Core\Cache();
-    $type = C("cache:type");
-    $cache = new \System\Library\Cache\cacheFile();
-    $cache->connect($type, C("cache:$type"));
-    if (!empty($key) && !empty($val)) {
-        $cache->set($key, $val, $path, $model);
-    } else if ($key && !$val) {
-        if ($cache->get($key, $path, $model)) {
-            return $cache->get($key, $path, $model);
-        } else {
-            $cache->delete($key, $path, $model);
-        }
+/**
+ * 缓存管理
+ * @param mixed $name 缓存名称，如果为数组表示进行缓存设置
+ * @param mixed $value 缓存值
+ * @param mixed $options 缓存参数
+ * @return mixed
+ *
+ *
+ */
+function cache($name, $value = "", $options = "")
+{
+    static $cache  =   '';
+    if(is_array($options) && empty($cache)){
+        // 缓存操作的同时初始化
+        $type       =   isset($options['type'])?$options['type']:'';
+        $cache = \System\Core\Cache::getInstance($type, $options);
+    }elseif(is_array($name)) { // 缓存初始化
+        $type       =   isset($name['type'])?$name['type']:'';
+        $cache = \System\Core\Cache::getInstance($type, $options);
+        return $cache;
+    }elseif(empty($cache)) { // 自动初始化
+        $type = C("cache:type");
+        $options = $options ? $options : C("cache:$type");
+        $cache = \System\Core\Cache::getInstance($type, $options);
     }
 
+    if ('' === $value) { // 获取缓存
+        return $cache->get($name);
+    } elseif (is_null($value)) { // 删除缓存
+        return $cache->delete($name);
+    } else { // 缓存数据
+        if (is_array($options)) {
+            $expire = isset($options['expire']) ? $options['expire'] : NULL;
+        } else {
+            $expire = is_numeric($options) ? $options : NULL;
+        }
+        return $cache->set($name, $value, $expire);
+    }
 }
 
 
@@ -802,8 +818,7 @@ function getToken($len = 32, $md5 = true)
 function deleteDir($dir)
 {
 
-    if (str_replace("/", "\\", $dir) !== realpath($dir) || !is_dir($dir))
-    {
+    if (str_replace("/", "\\", $dir) !== realpath($dir) || !is_dir($dir)) {
         return false;
     }
 
@@ -849,8 +864,9 @@ function isManagement()
 /**
  * 获取文件名后缀
  */
-function getFileSuffix($fileName) {
-    return strtolower(pathinfo($fileName,  PATHINFO_EXTENSION));
+function getFileSuffix($fileName)
+{
+    return strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 }
 
 /**
@@ -858,7 +874,8 @@ function getFileSuffix($fileName) {
  * @param $path   要解压的路径
  * @param $type   类型  tpl=>模板 plug=>插件
  */
-function unZip($zipFile,$path,$type){
+function unZip($zipFile, $path, $type)
+{
 
     if (class_exists('ZipArchive', FALSE)) {
         $zip = new ZipArchive();
@@ -899,19 +916,36 @@ function unZip($zipFile,$path,$type){
  * @param $path
  * @return bool
  */
-function makeDir($path){
-    if(""===$path){
+function makeDir($path)
+{
+    if ("" === $path) {
         return false;
     }
-    if(is_dir($path)){
+    if (is_dir($path)) {
 
         return true;
     }
-    if(mkdir($path, 0777, true)){
+    if (mkdir($path, 0777, true)) {
         return true;
     } else {
         return false;
     }
+}
+
+/**
+ * @param $mix
+ * @return string
+ */
+function to_guid_string($mix)
+{
+    if (is_object($mix)) {
+        return spl_object_hash($mix);
+    } elseif (is_resource($mix)) {
+        $mix = get_resource_type($mix) . strval($mix);
+    } else {
+        $mix = serialize($mix);
+    }
+    return md5($mix);
 }
 
 

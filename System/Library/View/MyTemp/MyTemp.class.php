@@ -92,7 +92,6 @@ class MyTemp {
             $params = array('var' => $this->tVar, 'file' => $templateFile, 'content' => $content, 'prefix' => $prefix);
             $this->ParseTemplateBehavior($params);
         }
-
         $content = ob_get_clean();
         $this->ContentReplaceBehavior($content);
         return $content;
