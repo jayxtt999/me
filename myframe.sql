@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-07-28 18:21:43
+Date: 2015-08-03 22:28:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -101,9 +101,9 @@ CREATE TABLE `xtt_calendar` (
 -- ----------------------------
 -- Records of xtt_calendar
 -- ----------------------------
-INSERT INTO `xtt_calendar` VALUES ('6', '111111111111112222222', '1435766400', '1435766400', '1', '#360', null);
-INSERT INTO `xtt_calendar` VALUES ('7', '222222222222222', '1436976000', '1437321600', '1', '#06c', null);
-INSERT INTO `xtt_calendar` VALUES ('10', '1111111111111', '1437667200', '-28800', '1', '#f30', null);
+INSERT INTO `xtt_calendar` VALUES ('6', '111111111111112222222', '1435766400', '1435766400', '1', '#360', '1');
+INSERT INTO `xtt_calendar` VALUES ('7', '222222222222222', '1436976000', '1437321600', '1', '#06c', '1');
+INSERT INTO `xtt_calendar` VALUES ('10', '1111111111111', '1437667200', '-28800', '1', '#f30', '1');
 
 -- ----------------------------
 -- Table structure for xtt_comment
@@ -197,7 +197,7 @@ CREATE TABLE `xtt_common_menu` (
   `is_admin` tinyint(1) DEFAULT '0' COMMENT '权限控制',
   `is_nav` tinyint(1) DEFAULT '0' COMMENT '是否为导航',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8 COMMENT='栏目菜单';
 
 -- ----------------------------
 -- Records of xtt_common_menu
@@ -228,6 +228,7 @@ INSERT INTO `xtt_common_menu` VALUES ('227', '钩子管理', '钩子管理', nul
 INSERT INTO `xtt_common_menu` VALUES ('228', '编辑钩子', '编辑钩子', null, 'admin', 'hook', 'edit', '', '1', '0', '', '1', '0', '0');
 INSERT INTO `xtt_common_menu` VALUES ('229', '模板管理', '模板管理', null, 'admin', 'template', 'index', 'www.me.me/index.php?m=admin&c=template&a=index', '1', '1', 'icon-magic-wand', '1', '1', '0');
 INSERT INTO `xtt_common_menu` VALUES ('230', 'calendar', 'calendar', null, 'admin', 'calendar', 'index', 'http://www.me.me/index.php?m=admin&c=calendar&a=index', '1', '0', '', '1', '1', '0');
+INSERT INTO `xtt_common_menu` VALUES ('231', '用户管理', '用户管理', null, 'admin', 'member', 'index', 'http://www.me.me/index.php?m=admin&c=member&a=index', '1', '1', 'icon-users', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for xtt_config
@@ -366,7 +367,7 @@ CREATE TABLE `xtt_member_login_log` (
   PRIMARY KEY (`id`),
   KEY `member_fk_idx` (`member_id`),
   CONSTRAINT `member_fk` FOREIGN KEY (`member_id`) REFERENCES `xtt_member_info` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of xtt_member_login_log
@@ -473,6 +474,11 @@ INSERT INTO `xtt_member_login_log` VALUES ('99', '1270', '2015-07-21 18:02:42', 
 INSERT INTO `xtt_member_login_log` VALUES ('100', '1270', '2015-07-23 09:23:15', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('101', '1270', '2015-07-24 09:36:26', '1');
 INSERT INTO `xtt_member_login_log` VALUES ('102', '1270', '2015-07-28 16:49:20', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('103', '1270', '2015-07-28 21:51:33', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('104', '1270', '2015-08-01 10:35:26', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('105', '1270', '2015-08-01 20:11:39', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('106', '1270', '2015-08-02 10:37:23', '1');
+INSERT INTO `xtt_member_login_log` VALUES ('107', '1270', '2015-08-03 21:59:35', '1');
 
 -- ----------------------------
 -- Table structure for xtt_plugs
