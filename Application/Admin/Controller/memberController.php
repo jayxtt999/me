@@ -26,12 +26,6 @@ class memberController extends \Admin\Controller\abstractController{
 
 
     public function editAction(){
-
-	
-	
-	
-	
-	
 	
         $id = get("id","int");
         $memberRow = db()->Table('member_info')->getRow(array('id' => $id))->done();        //getRow
