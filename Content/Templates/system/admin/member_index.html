@@ -98,7 +98,9 @@
                                     {$vo.create_time}
                                 </td>
                                 <td>
-                                    {$vo.status}
+                                    <?php
+                                       echo ($status->getById($vo['status'])['name']);
+                                    ?>
                                 </td>
                                 <td>
                                     <a href='/index.php?m=admin&c=member&a=edit&id={$vo.id}' class='btn red'
