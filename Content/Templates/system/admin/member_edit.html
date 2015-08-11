@@ -1,0 +1,174 @@
+<include file="layout@admin@head"/>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+
+            <include file="layout@layout@widgets"/>
+
+            <!-- END PAGE HEADER-->
+
+            <div class="row">
+                <div class="col-md-9 ">
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+                            </div>
+                            <div class="tools">
+                                <a href="" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="" class="reload">
+                                </a>
+                                <a href="" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            {$form->begin('info')}
+                            <div class="form-body">
+
+
+                                <div class="form-group">
+
+                                    <php>
+                                        if($data['avatar']){
+                                    </php>
+                                    <label class="col-md-3 control-label">头像</label>
+
+                                    <div class="col-md-9">
+                                        <img src="{$data['thumbnail']}" style="width: 260px;height:210px;cursor: pointer" onclick="removeImg(this)" >
+                                        <div style="display: none">
+                                            {$form->getText('avatar')}
+                                        </div>
+                                        <php>
+                                            }else{
+                                        </php>
+                                        {$form->getText('avatar')}
+                                        <php>
+                                            }
+                                        </php>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('nickname')}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {$form->getText('password2')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getSelect('sex')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('email')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('profession')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('favorite')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('userinfo')}
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-5 col-md-4">
+                                        <button type="submit" class="btn green">Submit</button>
+                                        <button type="button" class="btn default">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {$form->end('info')}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+<include file="layout@admin@foot"/>
+
+
+<script>
+
+    $(function () {
+
+        $(".form-horizontal").Validform({
+            tiptype: function (msg, o, cssctl) {
+                o.type = 5
+                var objtip = o.obj.parent().parent(".form-group");
+                cssctl(objtip, o.type);
+                var objtip2 = o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+        //checkBox使用bootstrapSwitch 必须手动添加此段代码
+        $('input[name="istop"]，input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            state ? $(this).val(1) : $(this).val(2);
+        });
+        $(".article_tag").click(function () {
+            var val = $("#tags").val();
+            if(val){
+                val +=  ","+$(this).text()
+            }else{
+                val = $(this).text();
+            }
+            $("#tags").val(val);
+        })
+        $("#tags").val("{$tTags}")
+    })
+
+    //更换图片
+
+    function removeImg(z){
+        if(!confirm("确定更换？")){
+            return false;
+        }
+        $(z).next().css("display","block");
+        $(z).parent().remove();
+    }
+
+
+</script>
+
+
+

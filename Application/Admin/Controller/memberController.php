@@ -35,7 +35,8 @@ class memberController extends \Admin\Controller\abstractController{
         $memberForm = new \Member\Login\Form\infoForm();
         $memberForm->bind($memberRow); //绑定Row
         $memberForm->start('info'); //开始渲染
-        $this->getView()->assign(array('form' => $memberForm));
+        $this->getView()->assign(array('form' => $memberForm, 'data' => $memberRow));
+        return $this->getView()->display();
 
     }
 
