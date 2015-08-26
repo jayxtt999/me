@@ -34,7 +34,7 @@ class statusGateway {
 
         if(isset($this->data[$id]))
         {
-            return ($this->data[$id]);
+            return (arrayToObject($this->data[$id]));
         }
         return null;
 
@@ -48,7 +48,7 @@ class statusGateway {
 
         foreach ($this->data as $val) {
             if($val['key'] == $key) {
-                return $val['key'];
+                return arrayToObject($val['key']);
             }
         }
 
@@ -64,10 +64,9 @@ class statusGateway {
 
         foreach ($this->data as $val) {
             if($val['name'] == $name) {
-                return $val['name'];
+                return arrayToObject($val['name']);
             }
         }
-
         return null;
 
     }

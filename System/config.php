@@ -135,23 +135,57 @@ return array(
             'path' => CACHE_PATH
         ),
         "memcache" => array(
-            'host'        =>  '127.0.0.1',
-            'port'        =>   11211,
-            'timeout'     =>   false,
-            'persistent'  =>  false,
+            'host' => '127.0.0.1',
+            'port' => 11211,
+            'timeout' => false,
+            'persistent' => false,
         ),
         "radis" => array(
-            'host'        =>  '127.0.0.1',
-            'port'        =>   6379,
-            'timeout'     =>   false,
-            'persistent'  =>  false,
+            'host' => '127.0.0.1',
+            'port' => 6379,
+            'timeout' => false,
+            'persistent' => false,
         ),
-        "opcache"=>array(),
+        "opcache" => array(),
     ),
 
     /*upload 设置*/
-    'upload_type'=>"Upyun",//  Local , Qiniu
-    'upload_type_config'=>array(),//  Local , Qiniu
+    'upload_type' => "Upyun",//  Local , Qiniu
+    'upload_type_config' => array(),//  Local , Qiniu
+
+    /*第三方登录配置*/
+    'open' => array(
+
+        'weibo' =>
+            array(
+                'app_key' => '1580187308',
+                'app_aecret' => '21370110d0bfeeab8f21e007bf4bdce0',
+                'callback_url' => 'http://www.hthouse.me/member/open/callback/id/1',
+            ),
+        'qq' =>
+            array(
+                /*'appid' => '101212806',
+                'appkey' => '2752d3600c9a43dd1d2801592e1358e6',
+                'callback' => 'http://www.xietaotao.cn/member/open/callback/id/2',*/
+                'appid' => '101162743',
+                'appkey' => 'd8b0fa6da4e2ee7a968b0b7fb46e2077',
+                'callback' => 'www.hthouse.net/member/open/callback/id/2',
+            ),
+        'renren' =>
+            array(
+                'app_id' => '272638',
+                'app_key' => '70eb0c95b7d444c8820afb081d86d1ac',
+                'app_secret' => '206fe1328a374fa18e3a7230f637c57c',
+                'callback_url' => 'http://www.hthouse.me/member/open/callback/id/4',
+            ),
+        'baidu' =>
+            array(
+                'client_id' => '3SQvGelTv3ANtdseG5GgLuI2',
+                'clientSecret' => 'HWGnc0CFmjVFP4H6ZB1PLEcqTY6Fl24x',
+                'redirect_url' => 'http://www.hthouse.me/member/open/callback/id/3',
+            ),
+
+    ),
 
 
     /*杂项*/

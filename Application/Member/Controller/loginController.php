@@ -13,8 +13,6 @@ use System\Library\Form\checkForm as checkForm;
 
 class loginController extends abstractController
 {
-
-
     public function indexAction()
     {
         if(session(C('USER_AUTH_KEY')) && session(C('ADMIN_AUTH_KEY'))){
@@ -106,6 +104,19 @@ class loginController extends abstractController
             'member_id'=>$user['id'],
         );
         db()->table("member_login_log")->insert($data)->done();
+    }
+
+
+    /**
+     * 第三方登录
+     */
+    public function OauthAction(){
+
+        $type = get("type","string");
+        echo $type;
+
+
+
     }
 
 

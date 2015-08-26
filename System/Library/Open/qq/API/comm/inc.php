@@ -1,0 +1,2 @@
+<?php die('forbidden'); ?>
+{"appid":"101163262","appkey":"a16e13a91be13b85a6d446bccb4e3ec8","callback":"www.hthouse.net/member/open/callback/id/2","scope":"get_user_info","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"root","database":"test"}
