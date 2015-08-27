@@ -8,8 +8,16 @@
 
 namespace System\Library\Form;
 
+/**
+ *
+ * $this->_name[$name] ;本身应该为$valid  在有些不需要配置的情况下  写成$this->_name[$name] = true 为抑制错误用
+ * Class Form
+ * @package System\Library\Form
+ */
+
 class Form
 {
+
     //>setAttribute  add  setLabel
     private $_form = array();
     private $_start;
@@ -79,7 +87,7 @@ class Form
         if (!$name) {
             trace("Text name" . $name . "未定义", '', 'ERR');
         }
-        $this->_name[$name];
+        $this->_name[$name] =true;
         $this->setText($name, $label = "", $param, $valid = "", true);
     }
 
@@ -132,7 +140,7 @@ class Form
         if (!$name) {
             trace("Text name" . $name . "未定义", '', 'ERR');
         }
-        $this->_name[$name] = $valid;
+        $this->_name[$name] = true;
         if (is_array($param)) {
             $paramS = "";
             foreach ($param as $k => $v) {
@@ -145,18 +153,18 @@ class Form
             $label = "";
         }
         if ($this->_bindDate[$name]) {
-            $value = $val ? "value='" . $val . "'": $this->_bindDate[$name] ? "value='" . $this->_bindDate[$name] . "'" : "";
+            $value = isset($val) ? "value='" . $val . "'": $this->_bindDate[$name] ? "value='" . $this->_bindDate[$name] . "'" : "";
         }
         if ($valid) {
             $validHtml = "";
             $additional = "";
-            if ($valid['datatype']) {
+            if (!empty($valid['datatype'])) {
                 $validHtml .= "datatype='" . $valid['datatype'] . "'";
             }
-            if ($valid['errormsg']) {
+            if (!empty($valid['errormsg'])) {
                 $validHtml .= "errormsg='" . $valid['errormsg'] . "'";
             }
-            if ($valid['nullmsg']) {
+            if (!empty($valid['nullmsg'])) {
                 $validHtml .= "nullmsg='" . $valid['nullmsg'] . "'";
             }
             $additional .= "<span class='help-block help-block-error' style='display:none'></span>";
@@ -184,14 +192,15 @@ class Form
      */
     public function setTextArea($name, $label = "", $param = "", $valid = "", $isHide = false, $lw = 3, $dw = 9)
     {
+
         if (!$name) {
             trace("Text name" . $name . "未定义", '', 'ERR');
         }
-        $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
-        if ($this->_bindDate[$name]) {
+        $label = !empty($label) ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
+        if (isset($this->_bindDate[$name])) {
             $value = $this->_bindDate[$name];
         }
-        $this->_name[$name];
+        $this->_name[$name] = true;
         if (is_array($param)) {
             $paramS = "";
             foreach ($param as $k => $v) {
@@ -229,7 +238,7 @@ class Form
             trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $label = $label ? "<label class='col-md-" . $lw . " control-label'>$label</label>" : "";
-        $this->_name[$name];
+        $this->_name[$name] = true;
         if (is_array($param)) {
             $paramS = "";
             foreach ($param as $k => $v) {
@@ -276,7 +285,7 @@ class Form
         if ($this->_bindDate[$name]) {
             $value = htmlspecialchars_decode($this->_bindDate[$name],ENT_COMPAT);
         }
-        $this->_name[$name];
+        $this->_name[$name] =true;
         if (is_array($param)) {
             $paramS = "";
             foreach ($param as $k => $v) {

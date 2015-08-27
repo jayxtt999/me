@@ -248,7 +248,14 @@ class MyTemp {
 
         $this->parseTagLib('cx',$content,true);
         //解析普通模板标签 {tagName}
-        $content = preg_replace('/('.$this->config['tmpl_begin'].')([^\d\s'.$this->config['tmpl_begin'].$this->config['tmpl_end'].'].+?)('.$this->config['tmpl_end'].')/eis',"\$this->parseTag('\\2')",$content);
+        if ( version_compare(PHP_VERSION,'5.3.0')<0 ) {
+            $content = preg_replace('/('.$this->config['tmpl_begin'].')([^\d\s'.$this->config['tmpl_begin'].$this->config['tmpl_end'].'].+?)('.$this->config['tmpl_end'].')/eis',"\$this->parseTag('\\2')",$content);
+        }else{
+            $patterns = '/('.$this->config['tmpl_begin'].')([^\d\s'.$this->config['tmpl_begin'].$this->config['tmpl_end'].'].+?)('.$this->config['tmpl_end'].')/';
+            $content = preg_replace_callback($patterns, function($matches){
+                return $this->parseTag($matches[2]);
+            },$content);
+        }
         return $content;
     }
 
@@ -604,48 +611,58 @@ class MyTemp {
         return;
     }
 
-
-
-
     public function parseTagLib($tagLib,&$content,$hide=false) {
         $begin = $this->config['taglib_begin'];
-        $end        =   $this->config['taglib_end'];
         $end = $this->config['taglib_end'];
+        $className = 'TagLib'.ucwords($tagLib);
         $tLib = new TagLibCx();
         $that = $this;
         foreach ($tLib->getTags() as $name=>$val){
-
             $tags = array($name);
             if(isset($val['alias'])) {// 别名设置
-                $tags       = explode(',',$val['alias']);
-                $tags[]     =  $name;
+                $tags = explode(',',$val['alias']);
+                $tags[] = $name;
             }
-            $level      =   isset($val['level'])?$val['level']:1;
-            $closeTag   =   isset($val['close'])?$val['close']:true;
+            $level = isset($val['level'])?$val['level']:1;
+            $closeTag = isset($val['close'])?$val['close']:true;
             foreach ($tags as $tag){
                 $parseTag = !$hide? $tagLib.':'.$tag: $tag;// 实际要解析的标签名称
                 if(!method_exists($tLib,'_'.$tag)) {
                     // 别名可以无需定义解析方法
-                    $tag  =  $name;
+                    $tag = $name;
                 }
                 $n1 = empty($val['attr'])?'(\s*?)':'\s([^'.$end.']*)';
-                if (!$closeTag){
-                    $patterns       = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/eis';
-                    $replacement    = "\$this->parseXmlTag('$tagLib','$tag','$1','')";
-                    $content        = preg_replace($patterns, $replacement,$content);
-                }else{
-                    $patterns       = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/eis';
+                $this->tempVar = array($tagLib, $tag);
 
-                    $replacement    = "\$this->parseXmlTag('$tagLib','$tag','$1','$2')";
-                    for($i=0;$i<$level;$i++){
-                        $content=preg_replace($patterns,$replacement,$content);
+                if (!$closeTag){
+                    if ( version_compare(PHP_VERSION,'5.3.0')<0 ) {
+                        $patterns = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/eis';
+                        $replacement = "\$this->parseXmlTag('$tagLib','$tag','$1','')";
+                        $content = preg_replace($patterns, $replacement,$content);
+                    }else{
+                        $patterns = '/'.$begin.$parseTag.$n1.'\/(\s*?)'.$end.'/is';
+                        $content = preg_replace_callback($patterns, function($matches) use($tagLib,$tag,$that){
+                            return $that->parseXmlTag($tagLib,$tag,$matches[1],$matches[2]);
+                        },$content);
+                    }
+                }else{
+                    if ( version_compare(PHP_VERSION,'5.3.0')<0 ) {
+                        $patterns = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/eis';
+                        $replacement = "\$this->parseXmlTag('$tagLib','$tag','$1','$2')";
+                        for($i=0;$i<$level;$i++)
+                            $content=preg_replace($patterns,$replacement,$content);
+                    }else{
+                        $patterns = '/'.$begin.$parseTag.$n1.$end.'(.*?)'.$begin.'\/'.$parseTag.'(\s*?)'.$end.'/is';
+                        for($i=0;$i<$level;$i++) {
+                            $content=preg_replace_callback($patterns,function($matches) use($tagLib,$tag,$that){
+                                return $that->parseXmlTag($tagLib,$tag,$matches[1],$matches[2]);
+                            },$content);
+                        }
                     }
                 }
             }
         }
     }
-
-
 
 
     /**

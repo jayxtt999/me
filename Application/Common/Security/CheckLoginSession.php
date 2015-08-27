@@ -15,7 +15,6 @@ class CheckLoginSession {
 
     public function __construct()
     {
-        session('[start]');
         $this->loginCheck = "Member_Login";
     }
 

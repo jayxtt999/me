@@ -75,7 +75,7 @@ final class Application
         //自动加载 run
         self::autoload();
         // 设定错误和异常处理
-        self::loadError();
+       // self::loadError();
         //设定插件加载映射
         self::loadPlug();
         //设置网页压缩方式
