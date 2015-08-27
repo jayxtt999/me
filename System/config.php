@@ -167,9 +167,7 @@ return array(
                 /*'appid' => '101212806',
                 'appkey' => '2752d3600c9a43dd1d2801592e1358e6',
                 'callback' => 'http://www.xietaotao.cn/member/open/callback/id/2',*/
-                'appid' => '101162743',
-                'appkey' => 'd8b0fa6da4e2ee7a968b0b7fb46e2077',
-                'callback' => 'www.hthouse.net/member/open/callback/id/2',
+
             ),
         'renren' =>
             array(

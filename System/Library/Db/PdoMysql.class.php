@@ -21,7 +21,7 @@ class PdoMysql
     function __construct($config)
     {
         try {
-            $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']);
+            $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password'], $config['options']) ;
             $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); //Display exception
             $this->prefix = $config['prefix'];

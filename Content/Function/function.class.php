@@ -79,6 +79,7 @@ function curPageURL()
     return $pageURL;
 }
 
+
 /**
  *
  * 获取设置(获取config配置)当被覆盖赋值时是返回赋值
@@ -91,32 +92,36 @@ function curPageURL()
  */
 function C($name = null, $val = null)
 {
-
     static $_config = array();
     $name = $name ? strtolower($name) : null;
     $val = $val ? strtolower($val) : null;
-    if (isset($name) && isset($val) && is_string($name)) {
+    if ($name && $val && is_string($name)) {
+        //设置模式
         if (strpos($name, ":")) {
-            $configStr = "";
-            $config = explode(":", $name);
-            foreach ($config as $v) {
-                $configStr .= "['" . $v . "']";
-            }
-            eval("return \$_config$configStr = \$val;");
+            //如果存在多级 即 C(A:B) 相当于 array(A=>array(B=>array()))
+            $config = explode(":",$name);
+            $_config[$config[0]][$config[1]] = $val;
+            return;
         } else {
+            //返回单个
             return $_config[$name] = $val;
+
         }
     } elseif (isset($name) && !$val) {
+        //获取单个
         if (strpos($name, ":")) {
+            //如果存在多级
             $configStr = "";
             $config = explode(":", $name);
-            foreach ($config as $v) {
-                $configStr .= "['" . $v . "']";
+            $c1 = Application::$appConfig;
+            foreach($config as $v){
+                $c1 = isset($c1[$v])?$c1[$v]:null;
             }
-            $c1 = $c2 = "";
-            eval("\$c1 = Application::\$appConfig$configStr;");
-            eval("\$c2 = \$_config$configStr;");
-            if (isset($c)) {
+            foreach($config as $v){
+                $c2 = isset($_config[$v])?$_config[$v]:null;
+            }
+            //优先获取设置项目
+            if (isset($c2)) {
                 return $c2;
             } else {
                 return $c1;
@@ -125,11 +130,11 @@ function C($name = null, $val = null)
             if (isset($_config[$name])) {
                 return $_config[$name];
             } else {
-                return Application::$appConfig[$name];
+                return isset(Application::$appConfig[$name])?Application::$appConfig[$name]:null;
             }
         }
     } else {
-        //返回全部
+        ////获取全部
         return array_merge(Application::$appConfig, $_config);
     }
 

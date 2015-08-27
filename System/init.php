@@ -167,7 +167,7 @@ final class Application
     /**
      * 读取钩子与插件的对应关系
      */
-    public function loadPlug()
+    public static function loadPlug()
     {
         $plugsAll = \Admin\Model\hookModel::getPlugs();
         \System\Library\Hook::setTags($plugsAll);

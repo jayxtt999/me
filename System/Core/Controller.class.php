@@ -12,12 +12,15 @@ use \System\Library\Request;
 
 class Controller
 {
+    private $view;
+
     /**
      * 视图
      * @return View
      */
     final public function getView()
     {
+        //Todo 工厂模式加载
         if(is_object($this->view)){
             return $this->view;
         }

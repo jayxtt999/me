@@ -7,7 +7,7 @@
  * Time: 11:26 AM
  */
 namespace System\Library\Open;
-include_once( __DIR__ . '/qq/QC.class.php' );
+include_once( __DIR__ . '/qq/API/qqConnectAPI.php' );
 
 class Qq extends OpenAbstract
 {
