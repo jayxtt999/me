@@ -62,20 +62,23 @@ final class Application
         //初始化
         self::init();
         // 项目开始拓展
-        //Hook('appBegin');
+        Hook('appBegin');
         $route = self::$appLib['route'];
+        //call_user_func_array(array($route, "init"), array(self::$appConfig['route']));
         $route::init(self::$appConfig['route']); //设置url的类型
         Hook('appEnd');
+
     }
 
     public static function init()
     {
+
         //设置自动加载类
         self::setAutoLibs();
         //自动加载 run
         self::autoload();
         // 设定错误和异常处理
-       // self::loadError();
+        self::loadError();
         //设定插件加载映射
         self::loadPlug();
         //设置网页压缩方式

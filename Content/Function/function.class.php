@@ -425,6 +425,12 @@ function loader($class)
         if (file_exists($classPath)) {
             return include $classPath;
         }
+    }  //服务
+    elseif (substr($class, -8) == "Services" && strlen($class) !== 8) {
+        $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
+        if (file_exists($classPath)) {
+            return include $classPath;
+        }
     } elseif (is_file(APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext)) {
         $classPath = APP_PATH . "/" . str_replace('\\', '/', $namespace) . str_replace('_', '/', $class) . ext;
         if (file_exists($classPath)) {
@@ -451,6 +457,7 @@ function loader($class)
  */
 function cache($name, $value = "", $options = "")
 {
+
     static $cache  =   '';
     if(is_array($options) && empty($cache)){
         // 缓存操作的同时初始化

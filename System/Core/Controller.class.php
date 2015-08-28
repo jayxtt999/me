@@ -21,7 +21,7 @@ class Controller
     final public function getView()
     {
         //Todo 工厂模式加载
-        if(is_object($this->view)){
+        if (is_object($this->view)) {
             return $this->view;
         }
         $this->view = new View;
@@ -44,7 +44,10 @@ class Controller
     }
 
 
-
+    /**
+     *  跳转
+     * @return \System\Library\Link
+     */
     final public function link()
     {
         $link = new \System\Library\Link();
@@ -52,6 +55,23 @@ class Controller
         $link->view = $this->getView();
         return $link;
     }
+
+
+    final  public function getServices(){
+        $backtrace = debug_backtrace();
+        array_shift($backtrace);
+        $class = $backtrace[0]['class'];
+        $class = explode("\\",$class);
+        if(is_array($class) && $class[1]=="Controller"){
+            $class = new \ReflectionClass("\\$class[0]\Services\\".str_replace("Controller","",$class[2])."Services");//建立反射类
+            $instance  = $class->newInstanceArgs();//实例化
+            return $instance;
+        }else{
+            trace("getServices Error");
+        }
+
+    }
+
 
 }
 

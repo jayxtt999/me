@@ -19,12 +19,13 @@ class sidebar
      * @param $data
      * @return mixed|void
      */
-    public function init($callback, $data)
+    public static function  init($callback, $data)
     {
-        if (cache('sidebar_' . $callback,'','sidebar','sidebar')) {
-            return cache('sidebar_' . $callback,'','sidebar','sidebar');
+
+        if (cache('sidebar_' . $callback)) {
+            return cache('sidebar_' . $callback);
         } else {
-            cache('sidebar_' . $callback, self::$callback($data),'sidebar','sidebar');
+            cache('sidebar_' . $callback, self::$callback($data));
             return self::$callback($data);
         }
     }
@@ -112,11 +113,9 @@ class sidebar
         $title = $data[0]['data'];
         $archiveBlog = db()->table("article")->getAll(array('status' => \Admin\Article\Type\Status::STATUS_ENABLE))->done();
         $archive = array();
-
         foreach ($archiveBlog as $k => $v) {
-
             $time = gmdate("Y年n月", strtotime($v['time']));
-            if ($archive[$time]) {
+            if (isset($archive[$time])) {
                 $archive[$time] += 1;
             } else {
                 $archive[$time] = 1;

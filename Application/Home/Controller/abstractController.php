@@ -13,6 +13,9 @@ use System\Core\View;
 class abstractController extends \System\Core\Controller
 {
 
+    /**
+     * 初始化 菜单信息 路由信息  网站设置 侧边栏模块
+     */
     function __construct()
     {
         //获取菜单
@@ -37,6 +40,7 @@ class abstractController extends \System\Core\Controller
             'sidebarSystem' => $sidebar['system'],
             'sidebarDiy' => $sidebar['diy'],
         );
+
         //var_dump( $sidebar['system']);exit;
         $this->getView()->assign($tplData);
 

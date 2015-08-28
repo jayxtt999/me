@@ -52,6 +52,7 @@ class Qq extends OpenAbstract
      */
     public function getCallbackCode()
     {
+        var_dump($_REQUEST);exit;
         return $_REQUEST['code'];
     }
 
