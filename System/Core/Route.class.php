@@ -12,6 +12,10 @@ class Route{
     public static  $urlQuery;
     public static  $routeUrl = array();
 
+    /**
+     * 初始化 暂时只支持默认模式
+     * @param $config
+     */
     public static  function init($config) {
         self::$config = $config;
         self::$urlQuery = parse_url($_SERVER['REQUEST_URI']);
@@ -28,6 +32,9 @@ class Route{
         }
     }
 
+    /**
+     * 路由默认模式
+     */
     public static   function defaultToArray(){
         $query = explode("&",self::$urlQuery['query']);
         $q = array('m'=>'','c'=>'','a'=>'');
@@ -49,15 +56,19 @@ class Route{
         }
     }
 
+    /**
+     * 控制器实现
+     */
     public static  function routeToCm(){
+
         //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/abstractController.php');
         //require_once(APP_PATH.'/'.ucfirst(self::$routeUrl['module']).'/Controller/'.self::$routeUrl['controller'].'Controller.php');
-
         //Admin\Controller\Index;
         $controller = "\\".ucfirst(self::$routeUrl['module'])."\\Controller\\".self::$routeUrl['controller'].'Controller';
         $controller = new $controller;
         $action = self::$routeUrl['action'].'Action';
         try{
+
             $ca  = new \ReflectionMethod($controller,$action);
             $ca->invoke(new $controller,isset($params)?$params:null);
         }catch (\Exception $e){

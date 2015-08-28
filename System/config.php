@@ -164,9 +164,9 @@ return array(
             ),
         'qq' =>
             array(
-                /*'appid' => '101212806',
+                'appid' => '101212806',
                 'appkey' => '2752d3600c9a43dd1d2801592e1358e6',
-                'callback' => 'http://www.xietaotao.cn/member/open/callback/id/2',*/
+                'callback' => 'http://www.xietaotao.cn/callback.php',
 
             ),
         'renren' =>

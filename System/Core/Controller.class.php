@@ -21,7 +21,7 @@ class Controller
     final public function getView()
     {
         //Todo 工厂模式加载
-        if(is_object($this->view)){
+        if (is_object($this->view)) {
             return $this->view;
         }
         $this->view = new View;
@@ -44,13 +44,23 @@ class Controller
     }
 
 
-
+    /**
+     *  跳转
+     * @return \System\Library\Link
+     */
     final public function link()
     {
         $link = new \System\Library\Link();
         $link->init();
         $link->view = $this->getView();
         return $link;
+    }
+
+
+    final public function getServices($this)
+    {
+
+
     }
 
 }

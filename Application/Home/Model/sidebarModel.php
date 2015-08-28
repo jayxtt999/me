@@ -19,12 +19,12 @@ class sidebarModel extends \System\Core\Model{
         foreach($res as $v){
             $data = unserialize($v['data']);
             $callback = $v['title'];
+            $sidebarSystemData = $sidebarDiyData = array();
             if($v['group'] == \Admin\Sidebar\Type\Group::SIDEBAR_SYSTEM){
                 /*$class = new \ReflectionClass('\System\Library\sidebar');
                 $instance  = $class->newInstanceArgs();
                 $method = $class->getmethod($callback);
                 $sidebarSystemData[$callback] = $method->invokeArgs($instance,array($data));*/
-
                 $sidebarSystemData[$callback] = \System\Library\sidebar::init($callback,$data);
             }else{
                 $sidebarDiyData[$callback] = \System\Library\sidebar::init($callback,$data);
