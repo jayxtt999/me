@@ -9,6 +9,7 @@
 namespace Member\Services;
 class loginServices
 {
+
     public function LoginGmc($row){
         if($row['status'] !=  \Member\Info\Table\Status::STATUS_ENABLE){
             return $this->link()->error("该账号不可用 , 登录失败!");
