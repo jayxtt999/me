@@ -141,8 +141,8 @@ class Form
             trace("Text name" . $name . "未定义", '', 'ERR');
         }
         $this->_name[$name] = true;
+        $paramS = "";
         if (is_array($param)) {
-            $paramS = "";
             foreach ($param as $k => $v) {
                 $paramS .= "$k=\"$v\" ";
             }
@@ -152,12 +152,13 @@ class Form
         } else {
             $label = "";
         }
-        if ($this->_bindDate[$name]) {
+        $value = "";
+        if (isset($this->_bindDate[$name])) {
             $value = isset($val) ? "value='" . $val . "'": $this->_bindDate[$name] ? "value='" . $this->_bindDate[$name] . "'" : "";
         }
+        $validHtml = "";
+        $additional = "";
         if ($valid) {
-            $validHtml = "";
-            $additional = "";
             if (!empty($valid['datatype'])) {
                 $validHtml .= "datatype='" . $valid['datatype'] . "'";
             }

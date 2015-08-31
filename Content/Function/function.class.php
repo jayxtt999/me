@@ -534,7 +534,7 @@ function get($key, $limit = '')
     if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
     } else {
-        $igc = $var[$key];
+        $igc = isset($var[$key])?$var[$key]:"";
         return \System\Library\safeFilter::$limit($igc);
     }
 }
@@ -555,7 +555,7 @@ function post($key, $limit = '')
     if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
     } else {
-        $igc = $var[$key];
+        $igc = isset($var[$key])?$var[$key]:"";
         return \System\Library\safeFilter::$limit($igc);
     }
 }
@@ -978,6 +978,28 @@ function objectToArray($e){
             $e[$k]=(array)objectToArray($v);
     }
     return $e;
+}
+
+
+/**
+ * 二维数组  array_diff_assoc
+ * @param $array1
+ * @param $array2
+ * @return array
+ */
+function arrayDiffAssoc2Deep($array1, $array2) {
+    $ret = array();
+    foreach ($array1 as $k => $v) {
+        if (!isset($array2[$k])) $ret[$k] = $v;
+        else if (is_array($v) && is_array($array2[$k])) $ret[$k] = arrayDiffAssoc2Deep($v, $array2[$k]);
+        else if ($v !=$array2[$k]) $ret[$k] = $v;
+        else
+        {
+            unset($array1[$k]);
+        }
+
+    }
+    return $ret;
 }
 
 ?>

@@ -21,15 +21,16 @@ class plugController extends abstractController
         $plugNewAll = array();
         $plugModel = new \Admin\Model\plugModel();
         $plugLocAll = $plugModel->getPlugins();
+        $plugLocAll = is_array($plugLocAll)?$plugLocAll:array();
         $plugDb = db()->table('plugs')->getAll()->done();
-
         foreach ($plugDb as $k => $v) {
             $plugAll[$v['name']] = $v;
             $plugAll[$v['name']]['isInstall'] = true;
         }
-
-        $arr = array_diff_assoc($plugLocAll, $plugAll);
-
+        $array1 = array("a" => array(1,2,3), "b" => "brown", "c" => "blue", "red");
+        //$array2 = array("a" => "green", "yellow", "red");
+        //$result = array_diff_assoc($array1, $array2);
+        $arr = arrayDiffAssoc2Deep($plugLocAll, $plugAll);
         if ($arr) {
             $plugAll = array_merge($plugAll, $arr);
         }
@@ -40,7 +41,6 @@ class plugController extends abstractController
         );
 
         $this->getView()->assign($data);
-
         return $this->getView()->display();
 
     }
