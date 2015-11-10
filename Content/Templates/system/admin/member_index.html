@@ -106,7 +106,7 @@
                                     <a href='/index.php?m=admin&c=member&a=edit&id={$vo.id}' class='btn red'
                                        title='修改'><i class='fa fa-edit'></i></a>
 
-                                    <a href="javascript:articleDel('{$vo.id}');" class='btn
+                                    <a href="javascript:memberDel('{$vo.id}');" class='btn
                                                 purple' title='删除'><i class='fa fa-times'></i></a></td>
                             </tr>
 
@@ -227,9 +227,9 @@
     }();
     TableManaged.init();
 
-    function articleDel(id) {
+    function memberDel(id) {
         layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=member&c=article&a=del&id=" + id
+            window.location.href = "/index.php?m=admin&c=member&a=del&id=" + id
         });
     }
 </script>

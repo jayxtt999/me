@@ -99,8 +99,10 @@ function C($name = null, $val = null)
         //设置模式
         if (strpos($name, ":")) {
             //如果存在多级 即 C(A:B) 相当于 array(A=>array(B=>array()))
-            $config = explode(":",$name);
-            $_config[$config[0]][$config[1]] = $val;
+            $config = explode(":", $name);
+            $v = Application::$appConfig[$config[0]];
+            $v[$config[1]] = $val;
+            $_config[$config[0]] = $v;
             return;
         } else {
             //返回单个
@@ -308,9 +310,9 @@ function session($name, $value = '')
 
 }
 
-function db()
+function db($name="default")
 {
-    return \System\Core\Model::getDb();
+    return \System\Core\Model::getDb($name);
 }
 
 /**

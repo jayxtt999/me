@@ -18,7 +18,7 @@ class memberController extends \Admin\Controller\abstractController{
     public function indexAction(){
 
         $status = new \Member\Info\Table\Status();
-        $all = db()->Table('member_info')->getAll()->done();//getAll
+        $all = db()->Table('member_info')->getAll(array("role?<>"=>"1"))->done();//getAll
         $this->getView()->assign(array('memberAll' => $all,'status'=>$status));
         return $this->getView()->display();
 
@@ -38,6 +38,16 @@ class memberController extends \Admin\Controller\abstractController{
         return $this->getView()->display();
 
     }
+
+
+    public function groupAction(){
+        $status = new \Member\Info\Table\GroupStatus();
+        $all = db()->Table('member_group')->getAll()->done();//getAll
+        $this->getView()->assign(array('memberGroupAll' => $all,'status'=>$status));
+        return $this->getView()->display();
+
+    }
+
 
 
 } 

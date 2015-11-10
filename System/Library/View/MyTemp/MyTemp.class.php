@@ -70,7 +70,6 @@ class MyTemp {
 
     public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '/')
     {
-
         $content = $this->fetch($templateFile, $content, $prefix);
         $this->render($content, $charset, $contentType);
     }
@@ -130,7 +129,7 @@ class MyTemp {
         $_data['prefix'] = !empty($_data['prefix']) ? $_data['prefix'] : '';
         if ((!empty($_data['content']) && $this->checkContentCache($_data['content'], $_data['prefix'])) || $this->checkCache($_data['file'], $_data['prefix'])) {
             extract($_data['var'], EXTR_OVERWRITE);
-            include $this->cache_path ."/". $_data['prefix'] . md5($_content) .$this->tmpl_cachfile_suffix;
+            include $this->config['cache_path'] ."/". $_data['prefix'] . md5($_content) .$this->config['tmpl_cachfile_suffix'];
         } else {
             $this->Myfetch($_content, $_data['var'], $_data['prefix']);
         }

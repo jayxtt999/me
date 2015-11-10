@@ -36,11 +36,16 @@ class Route{
      * 路由默认模式
      */
     public static   function defaultToArray(){
-        $query = explode("&",self::$urlQuery['query']);
         $q = array('m'=>'','c'=>'','a'=>'');
-        foreach($query as $v){
-            $arr = explode("=",$v);
-            $q[$arr[0]] = $arr[1];
+        $query = @self::$urlQuery["query"];
+        if($query){
+            $query = explode("&",$query);
+        }
+        if(is_array($query)){
+            foreach($query as $v){
+                $arr = explode("=",$v);
+                $q[$arr[0]] = $arr[1];
+            }
         }
         self::$routeUrl['module'] = $q['m']?$q['m']:"home";
         self::$routeUrl['controller'] = $q['c']?$q['c']:self::$config['default_controller'];

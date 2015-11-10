@@ -33,7 +33,7 @@ class menuModel extends \System\Core\Model
      */
     public function getMenuAll()
     {
-        $Db = parent::getDb();
+        $Db = Db();
         //获取菜单数据
         $Menu = $Db->table('common_menu')->getAll()->order('parent_id')->done();
         //排序

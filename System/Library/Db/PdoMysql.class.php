@@ -219,6 +219,7 @@ class PdoMysql
                     $whereVal["w_" . $key] = $val;
                     $whereData .= " and " . "`" . $key . "` " . $parame . "(:w_$key)";
                     $whereDataCache .= " and " . "`" . $key . "` " . $parame . "\"$val\"";
+
                 }
             } else {
                 exception("$where not is array()");

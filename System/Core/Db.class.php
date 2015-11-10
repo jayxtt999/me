@@ -71,11 +71,10 @@ class DB
         $this->order = "";
         $this->limit = "";
         $this->count = false;
+        $this->fields = "*";
         return $this;
+
     }
-
-
-
 
     public function getNewRow()
     {

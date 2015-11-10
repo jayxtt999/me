@@ -45,12 +45,13 @@
 
                                 <div class="form-group">
 
-                                    <php>
-                                        if($data['avatar']){
-                                    </php>
                                     <label class="col-md-3 control-label">头像</label>
 
                                     <div class="col-md-9">
+
+                                        <php>
+                                            if($data['avatar']){
+                                        </php>
                                         <img src="{$data['thumbnail']}" style="width: 260px;height:210px;cursor: pointer" onclick="removeImg(this)" >
                                         <div style="display: none">
                                             {$form->getText('avatar')}
@@ -142,7 +143,7 @@
             }
         });
         //checkBox使用bootstrapSwitch 必须手动添加此段代码
-        $('input[name="istop"]，input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        $('input[name="istop"],input[name="allowcomment"]').on('switchChange.bootstrapSwitch', function (event, state) {
             state ? $(this).val(1) : $(this).val(2);
         });
         $(".article_tag").click(function () {
@@ -164,7 +165,7 @@
             return false;
         }
         $(z).next().css("display","block");
-        $(z).parent().remove();
+        $(z).remove();
     }
 
 

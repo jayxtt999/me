@@ -8,16 +8,17 @@
 namespace System\Core;
 class Model {
 
-    public static  $db;
+    public static  $db = array();
     public static  $cache;
 
-    final static function getDb(){
-        if(self::$db){
-            return self::$db;
+    final static function getDb($name){
+        if(self::$db[$name]){
+            return self::$db[$name];
         }else{
             $DB = new DB();
+            //C('db:db_type',$name);
             $DB->init(C('db'));
-            self::$db = $DB;
+            self::$db[$name] = $DB;
             return $DB;
         }
     }

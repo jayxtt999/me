@@ -32,7 +32,9 @@ class infoForm extends \System\Library\Form\Form
         $this->setText("password2", "密码", $array, array('datatype' => '*5-15'),"password",3,9);
         $this->setText("email", "邮箱", $array, array('datatype' => 'e',));
         $this->setSelect("sex", "性别", $array, array("男"=>"男", "女"=>"女", "其它"=>"其它"));
-        $this->setText("avatar", "", $array,"","hidden");
+        //$this->setText("avatar", "", $array,"","hidden");
+        $this->setText("avatar", "", $array,"","file");
+
 
     }
 
