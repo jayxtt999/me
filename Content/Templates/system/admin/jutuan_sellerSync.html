@@ -40,7 +40,7 @@
                 <div class="portlet-body">
                     <div class="form-group">
                         <div class="pull-right col-md-2">
-                            <a style="margin-top: 20px;" href='/index.php?m=admin&c=jutuan&a=productSyncGo' class='btn btn-lg green'>与WEB端商家同步
+                            <a style="margin-top: 20px;" href='javascript:;' onclick="productSyncGo()" class='btn btn-lg green'>与WEB端商家同步
                                 <i class="fa fa-refresh"></i>
                             </a>
                         </div>
@@ -81,46 +81,6 @@
                             </th>
                         </tr>
                         </thead>
-                        <!--<tbody>
-
-
-                        <tr class='odd gradeX'>
-                            <td><input type='checkbox' class='checkboxes' value='1'/></td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                                {$vo.CITY_NAME}
-                            </td>
-                            <td>
-                                {$vo.COUNTY_NAME}
-                            </td>
-                            <td>
-                                {$vo.DISTRICT_ID}
-                            </td>
-                            <td>
-                                {$vo.INSERT_TIME}
-                            </td>
-
-                            <td>
-                                <a href='/index.php?m=admin&c=article&a=edit&id={$vo.id}' class='btn red'
-                                   title='修改'><i class='fa fa-edit'></i></a>
-
-                                <a href="javascript:articleDel('{$vo.id}');" class='btn
-                                                purple' title='删除'><i class='fa fa-times'></i></a>
-                            </td>
-                        </tr>
-
-
-
-                        </tbody>-->
-
 
                     </table>
                 </div>
@@ -248,4 +208,17 @@
             window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
         });
     }
+
+    function productSyncGo(){
+        layer.open({
+            type: 2,
+            title: "同步商家",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: '/index.php?m=admin&c=jutuan&a=sellerSyncGo' //iframe的url
+        });
+
+    }
+
 </script>

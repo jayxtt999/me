@@ -49,7 +49,7 @@ class jutuanController extends abstractController
         $newArr = [];
         foreach($sellerAll as $k=>$v){
 
-            $newArr[$k][0] = "<td><input type='checkbox' class='checkboxes' value='1'/></td>";
+            $newArr[$k][0] = "<td><div class='checker'><span class=''><input type='checkbox' class='checkboxes' value='1'></span></div></td>";
             $newArr[$k][1] = $v['SELLER_NAME'];
             $newArr[$k][2] = $v['AGENT_ID'];
             $newArr[$k][3] = db("jutuan")->table("tb_area")->getRow(array("area_code"=>$v['PROVINCE_ID']))->fields("AREA_NAME")->done();
@@ -94,8 +94,28 @@ class jutuanController extends abstractController
             return $this->link()->error("参数错误");
         }
 
+    }
+
+    public function sellerSyncGoAction(){
+
+        echo('<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>');
 
 
+
+
+
+        print str_repeat(" ", 4096);
+        /*for ($i=10; $i>0; $i--)
+        {
+            echo $i.'<br />';
+            echo('<script> $("body").scrollTop($("body")[0].scrollHeight);</script>');
+            ob_flush();
+            flush();
+            sleep(1);
+        }
+        ob_end_flush();*/
+
+        echo 1212;exit;
 
     }
 
