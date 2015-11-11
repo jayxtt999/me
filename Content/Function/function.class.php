@@ -526,7 +526,7 @@ function getUrl($url = "")
  * @param string $limit
  * @return mixed
  */
-function get($key, $limit = '')
+function get($key, $limit = 'string')
 {
 
     $var = $_GET;

@@ -22,6 +22,16 @@ return array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ),
             'prefix' => 'xtt_',
+        ),
+        'jutuan' => array(
+            'dsn' => 'mysql:dbname=a0923142448;host=120.25.159.240;',
+            'username' => 'root',
+            'password' => 'jt23@#zz2f#$',
+            'profiler' => true,
+            'options' => array(
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+            ),
+            'prefix' => '',
         )
     ),
 

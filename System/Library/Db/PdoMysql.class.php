@@ -195,6 +195,9 @@ class PdoMysql
         if (is_array($table)) {
             $table = implode(', ', $table);
         }
+        if($count){
+            $fields = "count(1)";
+        }
         if (is_array($fields)) {
             $fields = implode(', ', $fields);
         }
@@ -235,7 +238,6 @@ class PdoMysql
             $this->sql = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
             $sqlCache = "select $fields from " . $this->prefix . "$table where 1=1 $whereDataCache order by $order $limit";
         }
-
         $type = C("cache:type") ? C("cache:type") : false;
         $type = false;
         //如果存在缓存
@@ -253,20 +255,13 @@ class PdoMysql
                 $exeres = $stmt->execute($whereVal);
             }
             //根据查询条件取出结果集
-            if ($model == 1) {
-                $this->res = $stmt->fetch(\PDO::FETCH_ASSOC);
-            } else if ($model == 2) {
-                if ($count) {
-                    $this->res = $stmt->rowCount();
-                } else {
-                    $this->res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-                }
-            }
+            $this->res = ($model == 1)?$stmt->fetch(\PDO::FETCH_ASSOC):$stmt->fetchAll(\PDO::FETCH_ASSOC);
             $this->debug(false);
             //如果存在 只取fields 多条 返回array 单条 返回值
              if (($fields !== "*")) {
                  if ($model == 2) {
                      foreach ($this->res as $v) {
+
                          $_res[] = $v[$fields];
                      }
                      $this->res = $_res;
