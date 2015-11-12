@@ -1,0 +1,204 @@
+<include file="layout@admin@head"/>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+
+            <include file="layout@layout@widgets"/>
+
+            <!-- END PAGE HEADER-->
+
+            <div class="row">
+                <div class="col-md-9 ">
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+                            </div>
+                            <div class="tools">
+                                <a href="" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="" class="reload">
+                                </a>
+                                <a href="" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            {$form->begin('sellerEdit')}
+                            <div class="form-body">
+
+                                <div class="form-group">
+                                    {$form->getText('SELLER_ID')}
+                                </div>
+                                <div class="form-group">
+                                    {$form->getText('SELLER_NAME')}
+                                </div>
+                                <div class="form-group">
+                                    {$form->getText('AGENT_ID')}
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('DISTRICT_ID')}
+                                </div>
+                                <div class="form-group">
+                                    {$form->getText('ADDR_DETAIL')}
+                                </div>
+                                <div class="form-group">
+                                    {$form->getText('TELEPHONE')}
+                                </div>
+                                <div class="form-group">
+                                    {$form->getText('LINK_MAN')}
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"></label>
+                                    <div class="col-md-9">
+                                      <input type="text" class="form-control input-medium" style="position: absolute;z-index: 1;" id="suggestId" size="20" value="百度" style="width:150px;" autocomplete="off">
+                                    <div id="allmap" class="clearfix" style="height:600px;">
+                                    </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {$form->getText('LONGITUDE')}
+                                    {$form->getText('LATITUDE')}
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label class="col-md-3 control-label">商户名</label>
+
+                                    <div class="col-md-9">
+                                        <select id="loc_province" name="PROVINCE_ID"  class="input-medium">
+                                        </select>
+                                        <select id="loc_city" name="CITY_ID" class="input-medium">
+                                        </select>
+                                        <select id="loc_town" name="COUNTY_ID" class="input-medium">
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-5 col-md-4">
+                                        <button type="submit" class="btn green">Submit</button>
+                                        <button type="button" class="btn default">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {$form->end('sellerEdit')}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+<include file="layout@admin@foot"/>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/select2-achieve-the-three/js/location.js"></script>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/select2-achieve-the-three/js/area.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1528cac5b605a9ae6d7b2db751f0f593"></script>
+
+<script>
+    $(function () {
+        //验证
+        $(".form-horizontal").Validform({
+            tiptype: function (msg, o, cssctl) {
+                o.type = 5
+                var objtip = o.obj.parent().parent(".form-group");
+                cssctl(objtip, o.type);
+                var objtip2 = o.obj.next();
+                objtip2.show();
+                objtip2.text(msg);
+                return true
+            }
+        });
+        //三级联动
+        showLocation({$data.PROVINCE_ID},{$data.CITY_ID},{$data.COUNTY_ID});
+        //地图
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom("深圳", 12);
+        map.setDefaultCursor("crosshair");
+        map.addEventListener("click", function (e) {
+            $("input[name='LONGITUDE']").val(e.point.lng)
+            $("input[name='LATITUDE']").val(e.point.lat)
+        });
+
+        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+                {"input" : "suggestId"
+                    ,"location" : map
+                });
+
+        ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+            var str = "";
+            var _value = e.fromitem.value;
+            var value = "";
+            if (e.fromitem.index > -1) {
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+            value = "";
+            if (e.toitem.index > -1) {
+                _value = e.toitem.value;
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+            G("searchResultPanel").innerHTML = str;
+        });
+
+        var myValue;
+        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+            setPlace();
+        });
+
+        function setPlace(){
+            map.clearOverlays();    //清除地图上所有覆盖物
+            function myFun(){
+                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, 18);
+                map.addOverlay(new BMap.Marker(pp));    //添加标注
+            }
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+            local.search(myValue);
+        }
+    })
+
+</script>
+
+
+
