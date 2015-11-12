@@ -4611,7 +4611,7 @@ function Location() {
             653128:'岳普湖',
             653129:'伽师',
             653130:'巴楚',
-            653131:'塔什库尔干',
+            653131:'塔什库尔干'
         },
         '0,65,6532':
         {
@@ -4622,7 +4622,7 @@ function Location() {
             653224:'洛浦',
             653225:'策勒',
             653226:'于田',
-            653227:'民丰',
+            653227:'民丰'
         },
         '0,65,6540':
         {
@@ -4635,7 +4635,7 @@ function Location() {
             654025:'新源',
             654026:'昭苏',
             654027:'特克斯',
-            654028:'尼勒克',
+            654028:'尼勒克'
         },
         '0,65,6542':
         {
@@ -4645,7 +4645,7 @@ function Location() {
             654223:'沙湾',
             654224:'托里',
             654225:'裕民',
-            654226:'和布克赛尔',
+            654226:'和布克赛尔'
         },
         '0,65,6543':
         {
@@ -4655,15 +4655,15 @@ function Location() {
             654323:'福海',
             654324:'哈巴河',
             654325:'青河',
-            654326:'吉木乃',
+            654326:'吉木乃'
         },
         '0,65,6590':
         {
             659001:'石河子',
             659002:'阿拉尔',
             659003:'图木舒克',
-            659004:'五家渠',
-        },};
+            659004:'五家渠'
+        }};
 
 }
 
@@ -4677,17 +4677,18 @@ Location.prototype.fillOption = function (el_id, loc_id, selected_id) {
     var el = $('#' + el_id);
     var json = this.find(loc_id);
     if (json) {
-        var selected_index = "";
+        var selected_index = 0;
+        var index = 0
         $.each(json, function (k, v) {
             var option = '<option value="' + k + '">' + v + '</option>';
             el.append(option);
             if (k == selected_id) {
-                selected_index = v;
+                selected_index = k;
             }
         })
-        alert(selected_index)
-        //el.options[el.selectedIndex].text= selected_index
+        el.attr("selectedIndex",selected_index)
+
     }
-    el.select2("val", "");
+    el.select2().select2("val",selected_index)
 }
 

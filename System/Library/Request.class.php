@@ -162,7 +162,7 @@ class Request
         $safeFilter = new \System\Library\safeFilter();
         foreach ($_POST as $post_key=>$post_var)
         {
-            if (is_numeric($post_var)) {
+            if (is_int($post_var)) {
                 $date[strtolower($post_key)] = $safeFilter::int($post_var);
             } else {
                 $date[strtolower($post_key)] = $safeFilter::string($post_var);

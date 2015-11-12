@@ -91,14 +91,14 @@ class sellerEditForm extends \System\Library\Form\Form
             "placeholder" => "LONGITUDE",
             "readonly" => "readonly",
         );
-        $this->setText("LONGITUDE", "经度", $array, array('datatype' => 's1-126',));
+        $this->setText("LONGITUDE", "经度", $array, array('datatype' => '*1-126',));
 
         $array = array(
             "class" => "form-control",
             "placeholder" => "LATITUDE",
             "readonly" => "readonly",
         );
-        $this->setText("LATITUDE", "纬度", $array, array('datatype' => 's1-126',));
+        $this->setText("LATITUDE", "纬度", $array, array('datatype' => '*1-126',));
 
 
     }

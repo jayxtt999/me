@@ -28,7 +28,7 @@ function showLocation(province, city, town) {
     })
 
     if (province) {
-        loc.fillOption('loc_province', '0', province);return false;
+        loc.fillOption('loc_province', '0', province);
         if (city) {
             loc.fillOption('loc_city', '0,' + province, city);
 
