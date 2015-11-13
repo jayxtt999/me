@@ -4691,3 +4691,5 @@ Location.prototype.fillOption = function (el_id, loc_id, selected_id) {
     el.select2("val", "");
 }
 
+
+
