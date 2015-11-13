@@ -7,9 +7,11 @@
  */
 
 namespace Admin\Controller;
+use System\Library\Form\checkForm as checkForm;
 
 
 class jutuanController extends abstractController
+
 {
     public function sellerSyncAction(){
 
@@ -48,8 +50,7 @@ class jutuanController extends abstractController
 
         $newArr = [];
         foreach($sellerAll as $k=>$v){
-
-            $newArr[$k][0] = "<td><div class='checker'><span class=''><input type='checkbox' class='checkboxes' value='1'></span></div></td>";
+            $newArr[$k][0] = "<td><input type='checkbox' class='checkboxes' value='1'/></td>";
             $newArr[$k][1] = $v['SELLER_NAME'];
             $newArr[$k][2] = $v['AGENT_ID'];
             $newArr[$k][3] = db("jutuan")->table("tb_area")->getRow(array("area_code"=>$v['PROVINCE_ID']))->fields("AREA_NAME")->done();
@@ -60,7 +61,7 @@ class jutuanController extends abstractController
             $newArr[$k][8] = "
 <td>
 	<a href='/index.php?m=admin&c=jutuan&a=sellerSyncEdit&id=".$v['SELLER_ID']."' class='btn red' title='修改'><i class='fa fa-edit'></i></a>
-	<a href='javascript:articleDel('".$v['SELLER_ID']."');' class='btn purple' title='删除'><i class='fa fa-times'></i></a>
+	<a href='javascript:sellerDel('".$v['SELLER_ID']."');' class='btn purple' title='删除'><i class='fa fa-times'></i></a>
 </td>";
 
         }
@@ -145,13 +146,41 @@ class jutuanController extends abstractController
         $this->getView()->display();
     }
 
+
+
+    public  function sellerEditSaveAction(){
+
+        $form = new \Admin\Jutuan\Form\sellerEditForm();        //获取表单
+        $form->start('sellerEdit');
+        $data = $this->request()->getData();//获取数据
+        $data = checkForm::init($data, $form->_name);
+
+        $seller_id = $data['id'];
+        unset($data['seller_id']);
+        //更新
+        $res = db("jutuan")->table("td_seller_info")->upDate($data, array('seller_id' => $seller_id))->done();
+        if ($res) {
+            return $this->link()->success("admin:jutuan:sellerSync", "更新成功");
+        } else {
+            return $this->link()->error("更新失败");
+        }
+
+        var_dump($data);exit;
+
+    }
+
+    public function sellerDelAction()
+    {
+        $id = get("id", "int");
+        $res = db()->Table('article')->delete(array('id' => $id));
+        return $res;
+
+    }
+
+
     public function sellerSyncGoAction(){
 
         echo('<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>');
-
-
-
-
 
         print str_repeat(" ", 4096);
         /*for ($i=10; $i>0; $i--)

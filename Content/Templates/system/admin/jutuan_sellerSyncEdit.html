@@ -68,7 +68,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"></label>
                                     <div class="col-md-9">
-                                      <input type="text" class="form-control input-medium" style="position: absolute;z-index: 1;" id="suggestId" size="20" value="百度" style="width:150px;" autocomplete="off">
+                                      <input type="text" class="form-control input-medium" placeholder="输入地址.." style="position: absolute;z-index: 1;margin-top: 20px" id="suggestId" size="20" autocomplete="off">
                                     <div id="allmap" class="clearfix" style="height:600px;">
                                     </div>
 
@@ -125,6 +125,8 @@
 <include file="layout@admin@foot"/>
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/select2-achieve-the-three/js/location.js"></script>
 <script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/select2-achieve-the-three/js/area.js"></script>
+<script type="text/javascript" src="{:ADMIM_TPL_PATH}/plugins/select2-achieve-the-three/js/select2.js"></script>
+
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1528cac5b605a9ae6d7b2db751f0f593"></script>
 
 <script>
@@ -143,7 +145,8 @@
         });
         //三级联动
         showLocation({$data.PROVINCE_ID},{$data.CITY_ID},{$data.COUNTY_ID});
-        //地图
+
+    //地图
         var map = new BMap.Map("allmap");
         map.centerAndZoom("深圳", 12);
         map.setDefaultCursor("crosshair");

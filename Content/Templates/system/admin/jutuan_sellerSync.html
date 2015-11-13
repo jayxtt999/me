@@ -206,9 +206,12 @@
     }();
     TableManaged.init();
 
-    function articleDel(id) {
+
+
+
+    function sellerDel(id) {
         layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
+            window.location.href = "/index.php?m=admin&c=juutan&a=sellerDel&id=" + id
         });
     }
 
