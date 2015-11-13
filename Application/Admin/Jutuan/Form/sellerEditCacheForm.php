@@ -8,7 +8,7 @@
 namespace Admin\Jutuan\Form;
 use System\Library\Form\Form;
 
-class sellerEditForm extends \System\Library\Form\Form
+class sellerEditCacheForm extends \System\Library\Form\Form
 {
 
     public function start($formName)
@@ -17,7 +17,7 @@ class sellerEditForm extends \System\Library\Form\Form
             "class" => "form-horizontal",
             "role" => "form",
         );
-        $this->init($formName, '/index.php?m=admin&c=jutuan&a=sellerEditSave', '', $array);
+        $this->init($formName, '/index.php?m=admin&c=jutuan&a=sellerEditCacheSave', '', $array);
 
         $array = array(
             "class" => "form-control",

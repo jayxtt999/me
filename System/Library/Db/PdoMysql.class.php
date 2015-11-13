@@ -324,7 +324,6 @@ class PdoMysql
                     $buildSql = $this->update_pdo_query($this->sql, $dataVal);
                     return $this->pdo->exec($buildSql);
                 } else {
-
                     $stmt = $this->pdo->prepare($this->sql);
                     $r = $stmt->execute($dataVal);
                     return $r;
