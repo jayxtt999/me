@@ -1,0 +1,94 @@
+<include file="layout@admin@head"/>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+
+        <include file="layout@layout@menu"/>
+
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <include file="layout@layout@widgets"/>
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="glyphicon glyphicon-arrow-left"
+                                      onclick="javascript:history.go(-1);"></span>
+
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="javascript:;" class="reload">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="portlet-body">
+                            <form action="/index.php?m=admin&c=member&a=rulesSave" class="form-horizontal" method="post">
+
+                            <div class="form-group">
+                                <input type="hidden" name="id" value="{$id}">
+                                <h2>用户组权限编辑 <span class="label label-success">
+                                    {$name} </span>
+                                </h2>
+
+                            </div>
+
+                                <div class="form-group clearfix">
+
+                                    <volist name="rulesData" key="k" id="vo">
+   
+                                        <div class="col-md-2">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" name="role[]" id="inlineCheckbox1" value="{$k}"
+                                            <if condition="$vo.ischeck eq 1">checked</if>> {$vo.title}
+                                        </label>
+                                        </div>
+
+                                    </volist>
+                                </div>
+
+
+                                <div class=" form-group clearfix ">
+                                   <div style="width: 160px;margin: 0 auto;padding-top: 20px" >
+                                    <button type="submit" class="btn green">Submit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                   </div>
+                               </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+
+<include file="layout@admin@foot"/>
+
+

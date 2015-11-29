@@ -91,7 +91,7 @@
                                             ?>
                                         </td>
                                         <td>
-                                            <a href="/index.php?m=admin&c=member&a=rules&id= {$vo.id}">访问权限设置</a>
+                                            <a href="/index.php?m=admin&c=member&a=rules&id={$vo.id}">访问权限设置</a>
                                         </td>
                                         <td>
                                             {$vo.create_time}
@@ -102,9 +102,9 @@
                                             <?php
                                                 if($vo['status']){
                                             ?>
-                                            <a href='/index.php?m=admin&c=member&a=group&id={$vo.id}&status=<?php echo \\Member\\Info\\Table\\GroupStatus::STATUS_UNABLE;  ?>' class='btn red'><i class='icon-lock'></i></a>
+                                            <a href='javascript:groupStatus({$vo.id},<?php echo \\Member\\Info\\Table\\GroupStatus::STATUS_UNABLE;?>);' class='btn red'><i class='icon-lock'></i></a>
                                             <?php }else{?>
-                                            <a href='/index.php?m=admin&c=member&a=group&id={$vo.id}&status=<?php echo \\Member\\Info\\Table\\GroupStatus::STATUS_ENABLE;  ?>' class='btn red'><i class='icon-lock'></i></a>
+                                            <a href='javascript:groupStatus({$vo.id},<?php echo \\Member\\Info\\Table\\GroupStatus::STATUS_ENABLE;?>)' class='btn red'><i class='icon-lock'></i></a>
                                             <?php }?>
                                         </td>
                                     </tr>
@@ -224,9 +224,21 @@
     }();
     TableManaged.init();
 
-    function memberDel(id) {
-        layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=member&a=del&id=" + id
-        });
+    function groupStatus(id,status) {
+        $.ajax({
+            'url':"/index.php?m=admin&c=member&a=groupStatus",
+            'type':"post",
+            'datetype':"json",
+            'date':{
+                id:id,status:status
+            },
+            'success':function(d){
+                if(d.status){
+
+                }
+            }
+
+
+        })
     }
 </script>

@@ -63,6 +63,21 @@ class safeFilter
      * @param $val
      * @return bool
      */
+    public  static  function _array($val){
+
+        if(is_array($val)){
+            return $val;
+        }else{
+            return false;
+        }
+
+
+    }
+
+    /**
+     * @param $val
+     * @return bool
+     */
     public static function chars($val)
     {
         if (preg_match('/^[\w\-\+\/\=]+$/i', $val)) {

@@ -1,131 +1,108 @@
 <include file="layout@admin@head"/>
 <!-- BEGIN CONTAINER -->
 <div class="page-container">
-<!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 
-    <include file="layout@layout@menu"/>
+        <include file="layout@layout@menu"/>
 
-</div>
-<!-- END SIDEBAR -->
-<!-- BEGIN CONTENT -->
-<div class="page-content-wrapper">
-<div class="page-content">
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <include file="layout@layout@widgets"/>
-    <!-- END PAGE HEADER-->
-    <div class="row">
-        <div class="col-md-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet box grey-cascade">
-                <div class="portlet-title">
-                    <div class="caption">
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <include file="layout@layout@widgets"/>
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box grey-cascade">
+                        <div class="portlet-title">
+                            <div class="caption">
                                 <span class="glyphicon glyphicon-arrow-left"
                                       onclick="javascript:history.go(-1);"></span>
 
-                    </div>
-                    <div class="tools">
-                        <a href="javascript:;" class="collapse">
-                        </a>
-                        <a href="#portlet-config" data-toggle="modal" class="config">
-                        </a>
-                        <a href="javascript:;" class="reload">
-                        </a>
-                        <a href="javascript:;" class="remove">
-                        </a>
-                    </div>
-                </div>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse">
+                                </a>
+                                <a href="#portlet-config" data-toggle="modal" class="config">
+                                </a>
+                                <a href="javascript:;" class="reload">
+                                </a>
+                                <a href="javascript:;" class="remove">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-2">
+                                    <a style="margin-top: 20px;margin-bottom: 20px;" href='javascript:;'
+                                       onclick="productSyncGo()" class='btn btn-lg green'>与WEB端商家同步
+                                        <i class="fa fa-refresh"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-2">
+                                    <a style="margin-top: 20px;margin-bottom: 20px;" href='/index.php?m=admin&c=jutuan&a=productSyncCache'
+                                       class='btn btn-lg blue'>查看预加载数据
+                                        <i class="fa fa-database"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-4"></div>
 
+                            </div>
+                            <div class="clearfix"></div>
+                            <table class="table table-striped table-bordered table-hover" id="sample_menu">
+                                <thead>
+                                <tr>
+                                    <th class="table-checkbox">
+                                        <input type="checkbox" class="group-checkable"
+                                               data-set="#sample_menu .checkboxes"/>
+                                    </th>
 
-                <div class="portlet-body">
-                    <div class="form-group">
-                        <div class="pull-left col-md-2">
-                            <a style="margin-top: 20px;" href='/index.php?m=admin&c=jutuan&a=productSyncGo' class='btn btn-lg green'>与WEB端同步
-                                <i class="fa fa-refresh"></i>
-                            </a>
+                                    <th>
+                                        商家名
+                                    </th>
+
+                                    <th>
+                                        所属代理商编号
+                                    </th>
+                                    <th>
+                                        省份
+                                    </th>
+                                    <th>
+                                        城市
+                                    </th>
+                                    <th>
+                                        区县
+                                    </th>
+                                    <th>
+                                        商圈
+                                    </th>
+                                    <th>
+                                        入表时间
+                                    </th>
+                                    <th>
+                                        操作
+                                    </th>
+                                </tr>
+                                </thead>
+
+                            </table>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <table class="table table-striped table-bordered table-hover" id="sample_menu">
-                        <thead>
-                        <tr>
-                            <th class="table-checkbox">
-                                <input type="checkbox" class="group-checkable"
-                                       data-set="#sample_menu .checkboxes"/>
-                            </th>
-
-                            <th>
-                                标题
-                            </th>
-
-                            <th>
-                                作者
-                            </th>
-                            <th>
-                                分类
-                            </th>
-                            <th>
-                                时间
-                            </th>
-                            <th>
-                                评论
-                            </th>
-                            <th>
-                                阅读
-                            </th>
-                            <th>
-                                操作
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <php>
-                            foreach($articleAll as $vo){
-                        </php>
-                        <tr class='odd gradeX'>
-                            <td><input type='checkbox' class='checkboxes' value='1'/></td>
-                            <td>
-                               <a target="_blank" href="/index.php?m=home&c=blog&a=show&id=<php>echo $vo['id']</php>"> <php> echo $vo['title']</php></a>
-                            </td>
-                            <td>
-                                <php> echo member($vo['member_id'])</php>
-                            </td>
-                            <td>
-                                <php> echo $vo['category']</php>
-                            </td>
-                            <td>{$vo.time}</td>
-                            <td>{$vo.comment_num}</td>
-                            <td>{$vo.view_num}</td>
-                            <td>
-                                <a href='/index.php?m=admin&c=article&a=edit&id={$vo.id}' class='btn red'
-                                   title='修改'><i class='fa fa-edit'></i></a>
-
-                                <a href="javascript:articleDel('{$vo.id}');" class='btn
-                                                purple' title='删除'><i class='fa fa-times'></i></a></td>
-                        </tr>
-
-                        <php>
-                            }
-                        </php>
-
-
-                        </tbody>
-
-
-                    </table>
+                    <!-- END EXAMPLE TABLE PORTLET-->
                 </div>
             </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
+
+
         </div>
+
     </div>
-
-
-</div>
-
-</div>
 </div>
 
 </div>
@@ -145,11 +122,19 @@
             var table = $('#sample_menu');
             // begin first table
             table.dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/index.php?m=admin&c=jutuan&a=productSyncDate",
+                    "dataType": "jsonp"
+                },
                 "columns": [{
                     "orderable": false
                 }, {
                     "orderable": false
                 }, {
+                    "orderable": false
+                }, {
                     "orderable": true
                 }, {
                     "orderable": true
@@ -158,10 +143,11 @@
                 }, {
                     "orderable": false
                 }, {
-                    "orderable": false
+                    "orderable": true
                 }, {
                     "orderable": false
                 }
+
                 ],
                 "lengthMenu": [
                     [10, 20, -1],
@@ -227,9 +213,21 @@
     }();
     TableManaged.init();
 
-    function articleDel(id) {
+    function productDel(id) {
         layer.confirm('确定删除吗？', function () {
-            window.location.href = "/index.php?m=admin&c=article&a=del&id=" + id
+            window.location.href = "/index.php?m=admin&c=juutan&a=productDel&id=" + id
         });
     }
+
+    function productSyncGo() {
+        layer.open({
+            type: 2,
+            title: '数据同步,请不要关闭',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: '/index.php?m=admin&c=jutuan&a=productSyncGo' //iframe的url
+        });
+    }
+
 </script>
