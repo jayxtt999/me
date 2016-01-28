@@ -47,7 +47,7 @@ define('APP_DEBUG', true);
 
 final class Application
 {
-    public static $appLib = null;
+    public static $appLib = array();
     public static $appConfig = null;
     public static $rqFile = array();
 

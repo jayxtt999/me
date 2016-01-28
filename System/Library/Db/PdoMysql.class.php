@@ -195,11 +195,13 @@ class PdoMysql
         if (is_array($table)) {
             $table = implode(', ', $table);
         }
-        if($count){
-            $fields = "count(1)";
-        }
+
         if (is_array($fields)) {
             $fields = implode(', ', $fields);
+        }
+        if($count){
+            $fields = "count(1)";
+            $model = 1;
         }
         //$whereDataCache 用于缓存
         $whereData = $whereDataCache = "";
@@ -261,7 +263,6 @@ class PdoMysql
              if (($fields !== "*")) {
                  if ($model == 2) {
                      foreach ($this->res as $v) {
-
                          $_res[] = $v[$fields];
                      }
                      $this->res = $_res;

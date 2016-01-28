@@ -33,9 +33,8 @@ class menuModel extends \System\Core\Model
      */
     public function getMenuAll()
     {
-        $Db = Db();
         //获取菜单数据
-        $Menu = $Db->table('common_menu')->getAll()->order('parent_id')->done();
+        $Menu = db()->table('common_menu')->getAll()->order('parent_id')->done();
         //排序
         foreach ($Menu as $k => $v) {
             $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'], 'ico' => $v['icon'], 'desc' => $v['desc'],'sort' => $v['sort'],'is_display' => $v['is_display'],'create_time' => $v['create_time'],'m' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
@@ -97,8 +96,7 @@ class menuModel extends \System\Core\Model
 
     public function getMenuSelect(){
 
-        $Db = parent::getDb();
-        $Menu = $Db->table('common_menu')->getAll()->order('id')->done();
+        $Menu = db()->table('common_menu')->getAll()->order('id')->done();
         foreach($Menu as $k=>$v){
             $res[$v['id']]= $v['name'];
         }

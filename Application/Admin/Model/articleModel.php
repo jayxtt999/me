@@ -17,8 +17,7 @@ class articleModel extends \System\Core\Model{
      * @return mixed
      */
     public function getCategory(){
-        $Db = parent::getDb();
-        $Menu = $Db->table('article_category')->getAll()->order('id')->done();
+        $Menu = db()->table('article_category')->getAll()->order('id')->done();
         foreach($Menu as $k=>$v){
             $res[$v['id']]= $v['name'];
         }
@@ -33,9 +32,8 @@ class articleModel extends \System\Core\Model{
      */
     public function getTags($tid="",$isHtml=false){
 
-        $Db = parent::getDb();
         if($tid){
-            $tags = $Db->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
+            $tags = db()->table('article_tag')->getAll(array("gid?LIKE"=>"%$tid%"))->order('id')->done();
             if($isHtml){
                 foreach($tags as $k=>$v){
                     $tags[$k] = $v['tagname'];
@@ -43,7 +41,7 @@ class articleModel extends \System\Core\Model{
                 $tags =  implode(",",$tags);
             }
         }else{
-            $tags = $Db->table('article_tag')->getAll()->order('id')->done();
+            $tags = db()->table('article_tag')->getAll()->order('id')->done();
             if($isHtml){
                 $tags = "<ul class='nav nav-pills'>";
                 foreach($tags as $k=>$v){

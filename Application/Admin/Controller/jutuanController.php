@@ -30,7 +30,6 @@ class jutuanController extends abstractController
         $draw = get("draw","int");
 
         $total = db("jutuan")->table("td_seller_info")->getAll()->count()->done();
-        $total = $total[0];
         $sellerAll = db("jutuan")->table("td_seller_info")->getAll()->limit($start,$length)->order("SELLER_ID")->done();
 
         $newArr = [];
@@ -268,7 +267,6 @@ class jutuanController extends abstractController
         $draw = get("draw","int");
 
         $total = db("jutuan")->table("td_seller_info_copy")->getAll()->count()->done();
-        $total = $total[0];
         $sellerAll = db("jutuan")->table("td_seller_info_copy")->getAll()->limit($start,$length)->order("SELLER_ID")->done();
 
         $newArr = [];
@@ -331,7 +329,6 @@ class jutuanController extends abstractController
         $draw = get("draw","int");
 
         $total = db("jutuan")->table("td_product_info_copy")->getAll()->count()->done();
-        $total = $total[0];
         $sellerAll = db("jutuan")->table("td_product_info_copy")->getAll()->limit($start,$length)->order("SELLER_ID")->done();
 
         $newArr = [];

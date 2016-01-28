@@ -32,9 +32,8 @@ class commonModel extends \System\Core\Model
      * 获取栏目序列，因为路由信息是与栏目菜单存在关联，在有些地方 如注册，登陆，这些可能不需要栏目数据，所以独立出来
      */
     public function getSequence(){
-        $Db = parent::getDb();
         //获取菜单数据
-        $Menu = $Db->table('common_menu')->getAll()->order('parent_id')->done();
+        $Menu = db()->table('common_menu')->getAll()->order('parent_id')->done();
         //排序
         foreach ($Menu as $k => $v) {
             $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'],'is_display' => $v['is_display'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);
@@ -48,9 +47,8 @@ class commonModel extends \System\Core\Model
      */
     public function getMenu()
     {
-        $Db = parent::getDb();
         //获取菜单数据
-        $Menu = $Db->table('common_menu')->getAll()->order('parent_id,sort')->done();
+        $Menu = db()->table('common_menu')->getAll()->order('parent_id,sort')->done();
         //排序
         foreach ($Menu as $k => $v) {
             $this->array[$v['id']] = array('id' => $v['id'], 'pid' => $v['parent_id'], 'name' => $v['name'],'is_display' => $v['is_display'],'is_nav' => $v['is_nav'], 'ico' => $v['icon'], 'desc' => $v['desc'], 'sort' => $v['sort'], 'm' => $v['module_name'], 'c' => $v['controller_name'], 'a' => $v['action_name']);

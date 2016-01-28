@@ -21,6 +21,7 @@ class twitterController extends abstractController
             $where['id'] = $id;
             $this->getView()->assign(array('id'=>$id));
         }
+
         $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
         $count = db()->Table('twitter')->getAll($where)->count()->done();
         $page = new \System\Library\Page($count);
@@ -40,6 +41,7 @@ class twitterController extends abstractController
             $lists[$k]['comment_count'] =  count(db()->Table('comment')->getAll(array_merge($commentWhere,array('ref_id'=>0)))->done());
             $lists[$k]['comment'] =  $this->sortOut(db()->Table('comment')->getAll($commentWhere)->done());
         }
+
         $this->getView()->assign(array('list'=>$lists));
         $this->getView()->display();
     }

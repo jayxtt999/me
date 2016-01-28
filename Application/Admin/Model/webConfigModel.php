@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/2/9 0009
- * Time: ÏÂÎç 3:56
+ * Time: ï¿½ï¿½ï¿½ï¿½ 3:56
  */
 
 namespace Admin\Model;
@@ -13,13 +13,12 @@ class webConfigModel extends \System\Core\Model{
 
 
     /**
-     * »ñÈ¡ÍøÕ¾ÌîÐ´µÄÇ°Ì¨ÉèÖÃ
+     * ï¿½ï¿½È¡ï¿½ï¿½Õ¾ï¿½ï¿½Ð´ï¿½ï¿½Ç°Ì¨ï¿½ï¿½ï¿½ï¿½
      * @return array
      */
     public function getConfig(){
 
-        $db = parent::getDb();
-        $config =  $db->table('config')->getAll()->done();
+        $config =  db()->table('config')->getAll()->done();
         $array = array();
         foreach($config as  $v){
             $array[$v['option_name']] =  $v['option_value'];
