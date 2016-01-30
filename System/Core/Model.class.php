@@ -11,9 +11,9 @@ class Model {
     public static  $db = array();
     public static  $cache;
 
-    final static function getDb($name){
+    final static function getDb($name=""){
 
-        if(self::$db[$name]){
+        if(isset(self::$db[$name])){
             return self::$db[$name];
         }else{
             $DB = new DB();
@@ -27,7 +27,7 @@ class Model {
 
     final static function getCache(){
 
-        if(self::$cache){
+        if(isset(self::$cache)){
             return self::$cache;
         }else{
             $cache = new Cache();

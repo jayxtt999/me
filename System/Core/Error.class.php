@@ -102,7 +102,7 @@ class Error
             $error_page = C('error:error_page');
             if (!empty($error_page)) {
                 if(true===isManagement()){
-                    redirect(ADMIM_TPL_PATH."/".$error_page);
+                    redirect(ADMIM_TPLS_PATH."/".$error_page);
                 }else{
                     $tpl = getTplName();
                     redirect(APP_TEMP_PATH."/".$tpl."/".$error_page);
@@ -121,7 +121,7 @@ class Error
             exit('<b>Error:</b>' . $e['message'] . ' in <b> ' . $e['file'] . ' </b> on line <b>' . $e['line'] . '</b>');
         }
 
-        include ADMIM_TPL_PATH . "/" . $TMPL_EXCEPTION_FILE;
+        include ADMIM_TPLS_PATH . "/" . $TMPL_EXCEPTION_FILE;
         exit;
     }
 

@@ -23,6 +23,7 @@ define('PLUGIN_PATH', ROOT_PATH . '/Content/Plugins/');
 define('APP_FUNCTION_PATH', ROOT_PATH . '/Content/Function');
 define('SYS_CORE_PATH', SYSTEM_PATH . '/Core');
 define('JS_PLUGINS_PATH', ROOT_PATH . '/APP_TEMP_PATH/System/plugins');
+define('ADMIM_TPLS_PATH', APP_TEMP_PATH.'/system');
 define('ADMIM_TPL_PATH', '/Content/Templates/system');
 define('TEMPLATE_PATH', '/Content/Templates');
 define('UPLOAD_PATH','/Data/upload/');
