@@ -19,7 +19,7 @@ class Cache
     {
         if (empty($type)) $type = C('cache_type');
         $type = strtolower(trim($type));
-        $class = 'System\Library\Cache\Cache' . ucwords($type);
+        $class = 'System\Library\Cache\cache' . ucwords($type);
         if (class_exists($class))
             $this->cache = new $class($options);
         else
