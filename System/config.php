@@ -161,11 +161,16 @@ return array(
 
     /*upload 设置*/
     'upload_type' => "Upyun",//  Local , Qiniu
-    'upload_type_config' => array(),//  Local , Qiniu
+    'upload_type_config' => array(
+        'host'     => 'http://v0.api.upyun.com', //又拍云服务器
+        'username' => 'aaacd123', //又拍云用户
+        'password' => 'aaacd123', //又拍云密码
+        'bucket'   => 'naixtop2', //空间名称
+        'timeout'  => 90, //超时时间
+    ),//  Local , Qiniu
 
     /*第三方登录配置*/
     'open' => array(
-
         'weibo' =>
             array(
                 'app_key' => '1580187308',

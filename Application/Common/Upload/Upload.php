@@ -168,7 +168,6 @@ class Upload
             $this->error = $this->uploader->getError();
             return false;
         }
-
         /* 检查上传目录 */
         //检验type，默认file
         $this->savePath = $this->savePath ? $this->savePath : array_key_exists($type, $this->type) ? $type . "/" : 'file/';
@@ -244,6 +243,7 @@ class Upload
             /* 保存文件 并记录保存成功的文件 */
             if ($this->uploader->save($file, $this->replace)) {
                 unset($file['error'], $file['tmp_name']);
+                $file['url'] = $this->uploader->getUrl($file['savepath'].$file['savename']);
                 $info[$key] = $file;
             } else {
                 $this->error = $this->uploader->getError();

@@ -9,8 +9,14 @@
 
                 <volist name="articleAll" id="vo">
 
-
                     <div class="content-grid-sec">
+
+
+                        <div class="content-sec-img">
+
+                            <img src="http://naixtop2.b0.upaiyun.com/image/20160201/1454312158.jpg">
+
+                        </div>
                         <div class="content-sec-info">
                             <h3><a href="{$vo.url}">
 
@@ -76,6 +82,7 @@
                                 <div style="clear: both"></div>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                     </div>
 
 
@@ -86,9 +93,12 @@
 
             </div>
 
+            <div class="col-md-4 content-main-right">
 
+                <include file="home@index@sidebar"/>
 
-            <include file="home@index@sidebar"/>
+            </div>
+
 
             <div class="clearfix"></div>
         </div>

@@ -27,7 +27,7 @@ class Upyun{
         'host'     => 'http://v0.api.upyun.com', //又拍云服务器
         'username' => 'aaacd123', //又拍云用户
         'password' => 'aaacd123', //又拍云密码
-        'bucket'   => 'yatocc', //空间名称
+        'bucket'   => 'naixtop2', //空间名称
         'timeout'  => 90, //超时时间
     );
 
@@ -219,6 +219,15 @@ class Upyun{
         list($v, $code, $message) = explode(" ", $status, 3);
         $message = is_null($message) ? 'File Not Found' : "[{$status}]:{$message}";
         $this->error = $message;
+    }
+
+    /**
+     * @param $save
+     * @return string
+     */
+    public function getUrl($save){
+
+        return "http://".$this->config['bucket'].".b0.upaiyun.com/".$save;
     }
 
 }
