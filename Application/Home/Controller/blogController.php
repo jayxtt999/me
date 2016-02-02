@@ -21,8 +21,6 @@ class blogController extends abstractController{
         //标签
         $tag = get("tag","txt")?trim(get("tag","txt")):"";
 
-
-
         //获取文章列表
         $where = $logList = array();
         $where['status'] = \Admin\Article\Type\Status::STATUS_ENABLE;
@@ -62,7 +60,9 @@ class blogController extends abstractController{
             $logList[$k]['id'] = $v['id'];
             $logList[$k]['url'] = $this->getView()->log($v['id']);
             $cookiePassword = cookie('xtt_logpwd_'.$v['id'])?addslashes(trim(cookie('xtt_logpwd_'.$v['id']))) : '';
-            $logList[$k]['excerpt'] = empty($v['excerpt']) ? breakLog($v['content'], $v['id']) : $v['excerpt'];
+            $excerpt = empty($v['excerpt']) ? breakLog($v['content'], $v['id']) : $v['excerpt'];
+            $excerpt = mb_substr(strip_tags($excerpt),0,60);
+            $logList[$k]['excerpt'] = $v['excerpt'] = $excerpt;
             if (!empty($v['password']) && $cookiePassword != $v['password']) {
                 $logList[$k]['excerpt'] = '<p>[该日志已设置加密，请点击标题输入密码访问]</p>';
             } else {
@@ -85,6 +85,7 @@ class blogController extends abstractController{
             $logList[$k]['comment_num'] = $v['comment_num'];
             $logList[$k]['view_num'] = $v['view_num'];
             $logList[$k]['istop'] = $v['istop'];
+            $logList[$k]['content'] = handleContent($v['content']);
 
         }
         $this->getView()->assign(array('articleAll'=>$logList,'show'=>$showPage));
@@ -123,8 +124,9 @@ class blogController extends abstractController{
             $row['tags'] =explode(",",$tags);
         }
         $row['author'] = member($row['member_id']);
+        $row['content'] = stripslashes($row['content']);
 
-        //加载评论
+            //加载评论
         $commentWhere['status'] = \Admin\Comment\Type\Status::STATUS_ENABLE;
         $commentWhere['type'] = \Admin\Comment\Type\Type::TYPE_ARTICLE;
         $commentWhere['data'] = $id;

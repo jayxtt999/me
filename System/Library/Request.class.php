@@ -165,7 +165,7 @@ class Request
             if (is_int($post_var)) {
                 $date[strtolower($post_key)] = $safeFilter::int($post_var);
             } else {
-                $date[strtolower($post_key)] = $safeFilter::string($post_var);
+                $date[strtolower($post_key)] = $safeFilter::txt($post_var);
             }
         }
         return $date;

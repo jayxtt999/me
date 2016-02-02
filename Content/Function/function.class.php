@@ -116,11 +116,11 @@ function C($name = null, $val = null)
             $configStr = "";
             $config = explode(":", $name);
             $c1 = Application::$appConfig;
-            foreach($config as $v){
-                $c1 = isset($c1[$v])?$c1[$v]:null;
+            foreach ($config as $v) {
+                $c1 = isset($c1[$v]) ? $c1[$v] : null;
             }
-            foreach($config as $v){
-                $c2 = isset($_config[$v])?$_config[$v]:null;
+            foreach ($config as $v) {
+                $c2 = isset($_config[$v]) ? $_config[$v] : null;
             }
             //优先获取设置项目
             if (isset($c2)) {
@@ -132,7 +132,7 @@ function C($name = null, $val = null)
             if (isset($_config[$name])) {
                 return $_config[$name];
             } else {
-                return isset(Application::$appConfig[$name])?Application::$appConfig[$name]:null;
+                return isset(Application::$appConfig[$name]) ? Application::$appConfig[$name] : null;
             }
         }
     } else {
@@ -310,7 +310,7 @@ function session($name, $value = '')
 
 }
 
-function db($name="default")
+function db($name = "default")
 {
     return \System\Core\Model::getDb($name);
 }
@@ -460,16 +460,16 @@ function loader($class)
 function cache($name, $value = "", $options = "")
 {
 
-    static $cache  =   '';
-    if(is_array($options) && empty($cache)){
+    static $cache = '';
+    if (is_array($options) && empty($cache)) {
         // 缓存操作的同时初始化
-        $type       =   isset($options['type'])?$options['type']:'';
+        $type = isset($options['type']) ? $options['type'] : '';
         $cache = \System\Core\Cache::getInstance($type, $options);
-    }elseif(is_array($name)) { // 缓存初始化
-        $type       =   isset($name['type'])?$name['type']:'';
+    } elseif (is_array($name)) { // 缓存初始化
+        $type = isset($name['type']) ? $name['type'] : '';
         $cache = \System\Core\Cache::getInstance($type, $options);
         return $cache;
-    }elseif(empty($cache)) { // 自动初始化
+    } elseif (empty($cache)) { // 自动初始化
         $type = C("cache:type");
         $options = $options ? $options : C("cache:$type");
         $cache = \System\Core\Cache::getInstance($type, $options);
@@ -536,7 +536,7 @@ function get($key, $limit = 'string')
     if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
     } else {
-        $igc = isset($var[$key])?$var[$key]:"";
+        $igc = isset($var[$key]) ? $var[$key] : "";
         return \System\Library\safeFilter::$limit($igc);
     }
 }
@@ -557,7 +557,7 @@ function post($key, $limit = '')
     if ($limit == '') {
         $igc = isset($var[$key]) ? $var[$key] : false;
     } else {
-        $igc = isset($var[$key])?$var[$key]:"";
+        $igc = isset($var[$key]) ? $var[$key] : "";
         return \System\Library\safeFilter::$limit($igc);
     }
 }
@@ -597,6 +597,22 @@ function breakLog($content, $lid)
         $a[0] .= '<p class="readmore"><a href="' . Url::log($lid) . '">阅读全文&gt;&gt;</a></p>';
     }
     return $a[0];
+}
+
+/**
+ * @des 处理日志正文中的图片包裹标签  若被p标签包裹就要替换掉p标签
+ * @param content 日志正文
+ * @return string
+ */
+function handleContent($content)
+{
+    $pcre = '/<p[^>]*>\s*(<a[^>]*>){0,1}\s*(<img\s+src=".*?"\s+.*?\/*>)\s*(<\/a>){0,1}\s*<\/p>/i';
+    //正则匹配版本进行处理
+    $pcrecontent = preg_replace_callback($pcre, preg_call_back, $content);
+    if ($pcrecontent) {
+        return $pcrecontent;
+    }
+    return $content;
 }
 
 /**
@@ -963,21 +979,23 @@ function to_guid_string($mix)
 }
 
 
-function arrayToObject($e){
-    if( gettype($e)!='array' ) return;
-    foreach($e as $k=>$v){
-        if( gettype($v)=='array' || getType($v)=='object' )
-            $e[$k]=(object)arrayToObject($v);
+function arrayToObject($e)
+{
+    if (gettype($e) != 'array') return;
+    foreach ($e as $k => $v) {
+        if (gettype($v) == 'array' || getType($v) == 'object')
+            $e[$k] = (object)arrayToObject($v);
     }
     return (object)$e;
 }
 
-function objectToArray($e){
-    $e=(array)$e;
-    foreach($e as $k=>$v){
-        if( gettype($v)=='resource' ) return;
-        if( gettype($v)=='object' || gettype($v)=='array' )
-            $e[$k]=(array)objectToArray($v);
+function objectToArray($e)
+{
+    $e = (array)$e;
+    foreach ($e as $k => $v) {
+        if (gettype($v) == 'resource') return;
+        if (gettype($v) == 'object' || gettype($v) == 'array')
+            $e[$k] = (array)objectToArray($v);
     }
     return $e;
 }
@@ -989,14 +1007,14 @@ function objectToArray($e){
  * @param $array2
  * @return array
  */
-function arrayDiffAssoc2Deep($array1, $array2) {
+function arrayDiffAssoc2Deep($array1, $array2)
+{
     $ret = array();
     foreach ($array1 as $k => $v) {
         if (!isset($array2[$k])) $ret[$k] = $v;
         else if (is_array($v) && is_array($array2[$k])) $ret[$k] = arrayDiffAssoc2Deep($v, $array2[$k]);
-        else if ($v !=$array2[$k]) $ret[$k] = $v;
-        else
-        {
+        else if ($v != $array2[$k]) $ret[$k] = $v;
+        else {
             unset($array1[$k]);
         }
 

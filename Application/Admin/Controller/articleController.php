@@ -88,6 +88,9 @@ class articleController extends abstractController
         if (!$row) {
             return $this->link()->error("参数错误");
         }
+        $row['title'] = htmlspecialchars($row['title']);
+        $row['content'] = htmlspecialchars($row['content']);
+        $row['excerpt'] = htmlspecialchars($row['excerpt']);
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->bind($row);                                  //绑定Row
         $form->start('articleEdit');                      //开始渲染
@@ -111,7 +114,6 @@ class articleController extends abstractController
         $form = new \Admin\Article\Form\editForm();        //获取表单
         $form->start('articleEdit');
         $data = $this->request()->getData();//获取数据
-
         $data['id'] = post("id", 'int');
         $data['title'] = post("title", 'string');
         $data['tag'] = post("tag", 'string');
@@ -123,7 +125,6 @@ class articleController extends abstractController
         $data = checkForm::init($data, $form->_name);
         $id = $data['id'];
         unset($data['id']);
-
         $data['time'] = date("Y-m-d H:i:s");
         $member = $this->getMember();
         $data['member_id'] = $member['id'];
@@ -197,7 +198,6 @@ class articleController extends abstractController
             }
         }
         unset($data['tag']);
-
         //更新
         $res = db()->table("article")->upDate($data, array('id' => $id))->done();
         if ($res) {

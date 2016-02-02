@@ -141,7 +141,7 @@ class safeFilter
      * @param $val
      * @return mixed
      */
-    function remove_xss($val) {
+    function xss($val) {
         $val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
         $search = 'abcdefghijklmnopqrstuvwxyz';
         $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

@@ -86,12 +86,14 @@ class Upyun{
      * @return boolean          保存状态，true-成功，false-失败
      */
     public function save($file, $replace = true) {
+
         $header['Content-Type'] = $file['type'];
         $header['Content-MD5'] 	= $file['md5'];
         $header['Mkdir'] = 'true';
         $resource = fopen($file['tmp_name'], 'r');
         $save = "/".$file['savepath'] . $file['savename'];
         $data = $this->request('PUT',$save,$header, $resource);
+        $file['url'] =  "http://".$this->config['bucket'].".b0.upaiyun.com/".$save;
         return false === $data ? false : true;
     }
 

@@ -90,7 +90,7 @@ class Local{
             }
         }
         $url = str_replace("\\","/",$filename);
-        $file['url'] =  'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'] . "/", $url);;
+        $file['url'] =  'http://' . str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['HTTP_HOST'] . "/", $url);
         return true;
     }
 

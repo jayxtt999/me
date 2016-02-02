@@ -120,16 +120,20 @@ ul,label{
     padding:0.8em 1em;
 }
 .content-grid-head h3{
-    float:left;
     color:#E9330C;
-    font-size:1.1em;
+    margin-top: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Source Sans Pro', sans-serif;
+
 }
 .content-grid-head h4{
-    float:right;
     color:#C3AEA3;
     font-size:0.85em;
     text-decoration:none;
     font-family: 'Source Sans Pro', sans-serif;
+    margin-top: 5px;
+    font-weight: lighter;
 }
 .content-grid-head h4 a{
     color:#EB5A41;
@@ -140,7 +144,6 @@ ul,label{
 }
 .content-grid-info,.content-grid-single{
     background:url(../images/cntnt-bg.jpg) repeat 0px 0px;
-    background-size:100% 100%;
     padding:1em 18px;
 }
 .content-grid-info h3,.content-sec-info h3{
@@ -1433,7 +1436,9 @@ img.single-pic{
 
 
 /*        附加 侧边栏          */
-
+.conten-sec-data{
+    font-size: 14px;
+}
 .bg-blue-madison {
     border-color: #578ebe !important;
     background-image: none !important;
